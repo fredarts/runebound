@@ -74,10 +74,14 @@ This project serves as a foundation for the game, implementing the core UI flow,
 *Add screenshots here to showcase the UI.*
 
 *Example:*
-*   *(Screenshot of Title Screen)*
-*   *(Screenshot of Profile Screen)*
-*   *(Screenshot of Deck Builder)*
-*   *(Screenshot of Battle Screen)*
+![Alt text](assets/images/printscreens/01.png)
+![Alt text](assets/images/printscreens/02.png)
+![Alt text](assets/images/printscreens/03.png)
+![Alt text](assets/images/printscreens/04.png)
+![Alt text](assets/images/printscreens/05.png)
+![Alt text](assets/images/printscreens/06.png)
+![Alt text](assets/images/printscreens/07.png)
+![Alt text](assets/images/printscreens/08.png)
 
 ## Tech Stack
 
