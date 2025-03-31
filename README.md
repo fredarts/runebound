@@ -7,7 +7,7 @@ A strategic 1v1 Card Game prototype built with HTML, CSS, and JavaScript. Player
 
 **Note:** This is currently a prototype focusing on the front-end structure, account management, deck building, and simulating a local game loop. Networking for true online play is planned for future development.
 
-![Runebound Clash Logo](runebound-clash/assets/images/ui/runebound_logo.png)
+![Runebound Clash Logo](assets/images/ui/runebound_logo.png)
 <!-- TODO: Add a better banner image or GIF showing gameplay -->
 
 ## Table of Contents
@@ -71,9 +71,9 @@ This project serves as a foundation for the game, implementing the core UI flow,
 ## Screenshots
 
 <!-- TODO: Add screenshots of key screens -->
-*Add screenshots here to showcase the UI.*
 
-*Example:*
+
+*Screens Example:*
 ![Alt text](assets/images/printscreens/01.png)
 ![Alt text](assets/images/printscreens/02.png)
 ![Alt text](assets/images/printscreens/03.png)
