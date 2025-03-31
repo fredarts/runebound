@@ -1,0 +1,122 @@
+/* css/animations.css - Transitions and Keyframe Animations */
+
+/* === SCREEN TRANSITIONS === */
+
+/* Base state handled by .screen in style.css (display: none, opacity: 0) */
+/* .screen.active sets display: flex/block, opacity: 1 */
+
+/* Class added just before fade-in starts */
+.screen.screen-prepare-fade-in {
+    opacity: 0;
+    z-index: 2; /* Ensure incoming screen is on top */
+}
+
+/* Class added to trigger fade-in */
+.screen.screen-fade-in {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out; /* Match JS duration */
+}
+
+/* Class added to trigger fade-out */
+.screen.screen-fade-out {
+    opacity: 0;
+    transition: opacity 300ms ease-in-out; /* Match JS duration */
+    z-index: 1; /* Keep behind incoming screen */
+}
+
+
+/* === CARD ANIMATIONS === */
+
+/* Card Draw (Example - Fly in from top/deck area) */
+/* Trigger by adding/removing class via JS */
+@keyframes card-draw-fly-in {
+    from {
+        opacity: 0;
+        transform: translateY(-150px) rotateY(60deg) scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateY(0) scale(1);
+    }
+}
+.card.draw-animation {
+    animation: card-draw-fly-in 0.4s ease-out;
+}
+
+/* Card Discard/Destroy (Example - Fly off to side/graveyard) */
+/* Trigger by adding/removing class via JS */
+@keyframes card-discard-fly-out {
+    to {
+        opacity: 0;
+        transform: translateX(200px) translateY(50px) rotateZ(30deg) scale(0.5);
+    }
+}
+.card.discard-animation {
+    animation: card-discard-fly-out 0.4s ease-in forwards; /* forwards keeps end state */
+}
+
+/* Card Play (Example - Grow slightly from hand to field) */
+@keyframes card-play-grow {
+    from {
+        transform: scale(1); /* Assuming it starts at hand scale */
+        opacity: 1;
+    }
+    50% {
+         transform: scale(1.2); /* Grow bigger */
+         opacity: 0.9;
+         box-shadow: 0 0 15px cyan;
+    }
+    to {
+        transform: scale(1); /* Settle at field scale */
+        opacity: 1;
+    }
+}
+.card.play-animation {
+    /* Applied when moving to battlefield */
+    animation: card-play-grow 0.3s ease-out;
+    z-index: 150; /* Ensure visible during animation */
+}
+
+/* --- Card Feedback Animations --- */
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+.card.feedback-shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes invalid-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7); } /* Start red glow */
+  70% { box-shadow: 0 0 0 10px rgba(255, 82, 82, 0); } /* Expand glow out */
+  100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); } /* Fade glow */
+}
+.card.feedback-invalid-target {
+    animation: invalid-pulse 0.6s ease-out;
+    /* Keep outline for clarity */
+    outline: 2px solid red;
+    outline-offset: 1px;
+}
+
+@keyframes damage-flash {
+  from, to { background-color: inherit; /* Or original card background */ }
+  50% { background-color: rgba(255, 0, 0, 0.6); /* Red flash */ }
+}
+.card.feedback-damage {
+    /* Note: This overrides card image temporarily. Maybe use border/overlay? */
+    animation: damage-flash 0.4s ease-out;
+}
+
+@keyframes heal-flash {
+  from, to { background-color: inherit; }
+  50% { background-color: rgba(144, 238, 144, 0.6); /* Light green flash */ }
+}
+.card.feedback-heal {
+    animation: heal-flash 0.4s ease-out;
+}
+
+/* Add more keyframes and classes for other animations as needed */
