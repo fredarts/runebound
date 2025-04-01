@@ -5,6 +5,10 @@
  * @returns {string} HTML da tela de batalha.
  */
 export function generateBattleScreenHTML() {
+    // --- CAMINHO DAS IMAGENS ---
+    const deckCoverImage = 'assets/images/cards/card_cover.png';
+    const graveyardPlaceholderImage = 'assets/images/ui/graveyard.png'; // Certifique-se que esta imagem existe no caminho
+
     return `
         <div id="battle-screen" class="screen battle-screen-layout">
 
@@ -27,15 +31,19 @@ export function generateBattleScreenHTML() {
                     </div>
                 </div>
                  <div class="player-zones">
-                    <div class="deck-zone" title="Deck do Oponente">
-                        <div class="deck-count" id="opponent-deck-count">0</div>
-                        <span>Deck</span>
-                    </div>
-                    <div class="graveyard-zone" title="Cemitério do Oponente">
-                        <div class="graveyard-count" id="opponent-graveyard-count">0</div>
-                        <span>Cemitério</span>
-                    </div>
-                </div>
+                     
+                     <div class="deck-zone" title="Deck do Oponente">
+                         <img id="opponent-deck-img" src="${deckCoverImage}" alt="Deck Oponente" class="zone-image deck-image"> {/* <-- Imagem do Deck Adicionada */}
+                         <div class="deck-count" id="opponent-deck-count">0</div>
+                         <span>Deck</span>
+                     </div>
+                    
+                     <div class="graveyard-zone" title="Cemitério do Oponente">
+                         <img id="opponent-graveyard-img" src="${graveyardPlaceholderImage}" alt="Cemitério Oponente" class="zone-image graveyard-image"> {/* <-- Imagem do Cemitério Adicionada */}
+                         <div class="graveyard-count" id="opponent-graveyard-count">0</div>
+                         <span>Cemitério</span>
+                     </div>
+                 </div>
                 <div id="opponent-battlefield" class="battlefield card-zone">
                     <!-- Criaturas e Runebindings do oponente -->
                 </div>
@@ -72,14 +80,18 @@ export function generateBattleScreenHTML() {
                     <!-- Criaturas e Runebindings do jogador -->
                 </div>
                  <div class="player-zones">
-                     <div class="deck-zone" title="Seu Deck">
-                         <div class="deck-count" id="player-deck-count">0</div>
-                         <span>Deck</span>
-                     </div>
-                     <div class="graveyard-zone" title="Seu Cemitério">
-                          <div class="graveyard-count" id="player-graveyard-count">0</div>
-                          <span>Cemitério</span>
-                     </div>
+                     
+                      <div class="deck-zone" title="Seu Deck">
+                          <img id="player-deck-img" src="${deckCoverImage}" alt="Seu Deck" class="zone-image deck-image"> {/* <-- Imagem do Deck Adicionada */}
+                          <div class="deck-count" id="player-deck-count">0</div>
+                          <span>Deck</span>
+                      </div>
+                      
+                      <div class="graveyard-zone" title="Seu Cemitério">
+                           <img id="player-graveyard-img" src="${graveyardPlaceholderImage}" alt="Seu Cemitério" class="zone-image graveyard-image"> {/* <-- Imagem do Cemitério Adicionada */}
+                           <div class="graveyard-count" id="player-graveyard-count">0</div>
+                           <span>Cemitério</span>
+                      </div>
                  </div>
                 <div id="player-hand" class="hand card-zone">
                     <!-- Suas cartas na mão -->

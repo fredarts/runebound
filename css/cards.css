@@ -65,7 +65,7 @@
     margin-right: 5px; /* Space before cost */
 }
 .card-cost {
-    background: #03a9f4; /* Blue mana cost */
+    background: #000000; /* Blue mana cost */
     color: white;
     border-radius: 50%;
     min-width: 18px; /* Ensure circle size */
@@ -77,6 +77,8 @@
     font-weight: bold;
     box-shadow: inset 0 0 2px rgba(0,0,0,0.5);
     flex-shrink: 0;
+    margin-left: 52px;
+    margin-top: -3px;
 }
 
 .card-image {

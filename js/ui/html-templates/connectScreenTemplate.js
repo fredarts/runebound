@@ -9,13 +9,15 @@ export function generateConnectScreenHTML() {
     // A lógica real de rede não está aqui, apenas a estrutura da UI
     return `
         <div id="connect-screen" class="screen connect-layout">
+        <img class="connect-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
             <h2>Conectar e Jogar</h2>
-            <p class="subtle-text">(Simulação de Conexão - Inicia Jogo Solo)</p>
+            
 
             <div class="connect-options">
                 <!-- Opção 1: Criar um Jogo (Simulado) -->
                 <div class="connect-section">
                     <h3>Criar Partida</h3>
+                    <img class="connect-host" src="assets/images/ui/host.png" alt="Runebound Clash Logo" class="title-logo">
                     <button id="btn-create-server">Criar Jogo (Host)</button>
 
                     <div id="server-status-section" style="display: none; margin-top: 15px; padding: 10px; border: 1px solid #ccc;">
@@ -28,6 +30,7 @@ export function generateConnectScreenHTML() {
                 <!-- Opção 2: Entrar em um Jogo (Simulado) -->
                 <div class="connect-section">
                     <h3>Entrar em Partida</h3>
+                    <img class="connect-join" src="assets/images/ui/join.png" alt="Runebound Clash Logo" class="title-logo">
                     <button id="btn-show-join-options">Procurar Jogo (Join)</button>
 
                     <div id="join-game-section" style="display: none; margin-top: 15px;" class="form-container">
