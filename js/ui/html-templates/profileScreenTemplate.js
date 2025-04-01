@@ -56,7 +56,7 @@ export function generateProfileScreenHTML() {
                      <!-- Coleção de Cartas -->
                     <div class="profile-section profile-collection">
                         <h3>Coleção (<span id="profile-card-count">0</span> cartas)</h3>
-                        <p class="subtle-text">Clique para ampliar</p>
+                        <p class="subtle-text">Clique com o botão direito do mouse para ampliar a carta</p>
                         <div id="profile-unlocked-cards" class="card-grid scrollable-list">
                             <p>(Carregando coleção...)</p>
                             <!-- Mini-cards são renderizados aqui pelo UIManager -->
