@@ -40,16 +40,21 @@ runebound_dccg/
         objects/
             00/
                 d56d7158bdefb196e5bfd9c750a2d6b6c43cf8
+            02/
+                03c26eb576253bed5a397f7998ccb22bab6805
             05/
                 b7cc3e8513e6031222432ed1f3afb0bbaff21f
+                c72ced70d301770803c7a0d6f3b2e08391c8b0
             0b/
                 5165fab49a805e6d3ce8084bc4eaefad521eda
+                facdac434312080060df27705cda1d608f9c15
             0c/
                 5b573312ebe229808df327388fa63ed47105c0
                 d620c9458ced659ca6661bfb963ef02f2d7e7e
             0d/
                 95b0db212f1eed3d7cd0ebb4c61358ef03f82e
             10/
+                35489a3ad90fb79ddc75dcbb770fc391dc2577
                 685dd3e7b02399b4ba6c1f8e4fbab8dca55bf6
             11/
                 b481f5fd6cd59c836b7697e933f253683c8ff3
@@ -83,6 +88,7 @@ runebound_dccg/
                 553de290aa47b662bd10bc4c0465e49417871b
                 85f327eec533ce89a7c0f9d99f3fa55b13bfc1
             34/
+                acf84b943010640f4727f2a296a120a4e8a23d
                 cf0b22f1773b5abb5aec08c14d3a505c16820a
             35/
                 787ecce228914a7dc7853da764c6018031171f
@@ -93,8 +99,12 @@ runebound_dccg/
                 ca4f42939b8b55b41f474b00f80a2ac4b12e19
             3f/
                 3f2cf88bb0f031b4467df6e8eb2cf28ef2c0b2
+            41/
+                91e9c28efc857d9e38282504a6883b783f1edb
             42/
                 5ea9a9d53773298b442e11509a2d57a741b2e1
+            48/
+                759a3e0a804983d196dd99c15288485529ae37
             49/
                 0a4bc15ef601fd87d8053ceea0e8f4d11fef21
             4b/
@@ -107,6 +117,8 @@ runebound_dccg/
                 900869b9694bdb03dea6a4ad2a0fc34236eda9
             58/
                 7c65dee4dae69dfc89a4bf8d2b1f154c20c0f4
+            59/
+                af3be4ce712fa53f0cd23536da909a926781cb
             5d/
                 6c9de058820d614c54e95f89b6a5ef5bfa838c
                 8b3975a825da20c90f5bd5716bf04a71e72137
@@ -123,6 +135,8 @@ runebound_dccg/
                 6d3b814bfed4830e6f517f74dcac49c206788f
             68/
                 d37e178889acbb8090173d119b562bd6f8f6b6
+            6c/
+                d073f322848b3e06d6f3710f6218e541f8815e
             6f/
                 b4c96ab0cfb834b1509791cf3d5771efdd5ec2
             70/
@@ -132,6 +146,10 @@ runebound_dccg/
                 eff917ea2bc2cb514aafef15cd3b42b562fe84
             79/
                 f3abfd2fdd7ecb2dcac777212f1ebfd2a458b0
+            7a/
+                fa18feb94cc97978c939b7af2532770793a086
+            7d/
+                374a426b785d0ec47b935603faa6c1b7393720
             7f/
                 5558172f2953e481884f0366005967f445004b
             80/
@@ -143,6 +161,8 @@ runebound_dccg/
                 73cbeb90528ff0407e7f6293e6a81024e52092
             86/
                 dd7796e77990867efd177b297fe16144e51bc5
+            8a/
+                1e495e2ef6c5de879151867481a78b5bbd8074
             8c/
                 53465ea535f135ad16ed75ace76db63c810f8e
             8d/
@@ -174,6 +194,8 @@ runebound_dccg/
                 2a812df8a9a85a97c0a641ef6697667f44edad
             a3/
                 a0b5c3514231b4dba53c70200af5814dba26dc
+            a5/
+                7085d27ab3da7b5245c2eac210a4d0f96c610f
             ac/
                 620d6b8316f0f1798c861c07e896fddeca1fd0
             b0/
@@ -190,6 +212,8 @@ runebound_dccg/
             c1/
                 b6a3cf069a9d2fbc751546ae36ae38bb775ad9
                 cd2c8855df81df9f834b417e3dd5e7ff39bff3
+            c4/
+                a52ef327332de6c060d591e21e0c33ca86558a
             c8/
                 0cf582d03d9b7a7c955395c2167fd57efa3ea9
             ca/
@@ -197,8 +221,10 @@ runebound_dccg/
                 2c968f574091733b025c5e353c3ee8945388e8
                 4ae4e94d8eb68439657169437d241927c69ca7
             cd/
+                201dfd41304ad1cd335a50bf0786ec9d75cf64
                 699b089645c967198742c6c7d4e74d67abf37e
             d1/
+                12defc5f664db2e88e34d83db4f5580fb552b8
                 287ab8825496d0678994eb009df60136051e84
             d2/
                 f1be81e8649f0751ff7363d180cd3516e29589
@@ -209,6 +235,7 @@ runebound_dccg/
                 060f9f16f56b16f12e651993be61c445f4ae00
                 f2e139e0a0ddd3b0f2f03f759acf93b3105d9b
             da/
+                41442fffd6c2daff3dac068cec33b29cb58de8
                 8700f6d35deaa6abb61515a6caf920178cb4e2
             dc/
                 2f3f356258eb4185fd056b0fba5a216b1c3c08
@@ -232,6 +259,8 @@ runebound_dccg/
             f5/
                 43afbe0c503d2bfcc021bc053fa053bfdf74b5
                 9eff8f0fafbc9b0a295075ed2ae96019d08264
+            f6/
+                55da995f26f0c12507152359dcb4eb0e9c80bd
             f7/
                 de9117bfaf1038ed8a1920b2d497b56e010ac2
             info/
@@ -254,6 +283,7 @@ runebound_dccg/
                 default.png
             cards/
                 arcane_familiar.png
+                card_cover.png
                 destroy.png
                 draw.png
                 draw_rune.png
@@ -290,7 +320,10 @@ runebound_dccg/
                 08.png
             ui/
                 battle_background.jpg
+                connect_background.jpg
                 create_account_background.jpg
+                host.png
+                join.png
                 login_background.jpg
                 logo_placeholder.png
                 logo_small_placeholder.png
@@ -3210,13 +3243,15 @@ export function generateConnectScreenHTML() {
     // A lógica real de rede não está aqui, apenas a estrutura da UI
     return `
         <div id="connect-screen" class="screen connect-layout">
+        <img class="connect-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
             <h2>Conectar e Jogar</h2>
-            <p class="subtle-text">(Simulação de Conexão - Inicia Jogo Solo)</p>
+            
 
             <div class="connect-options">
                 <!-- Opção 1: Criar um Jogo (Simulado) -->
                 <div class="connect-section">
                     <h3>Criar Partida</h3>
+                    <img class="connect-host" src="assets/images/ui/host.png" alt="Runebound Clash Logo" class="title-logo">
                     <button id="btn-create-server">Criar Jogo (Host)</button>
 
                     <div id="server-status-section" style="display: none; margin-top: 15px; padding: 10px; border: 1px solid #ccc;">
@@ -3229,6 +3264,7 @@ export function generateConnectScreenHTML() {
                 <!-- Opção 2: Entrar em um Jogo (Simulado) -->
                 <div class="connect-section">
                     <h3>Entrar em Partida</h3>
+                    <img class="connect-join" src="assets/images/ui/join.png" alt="Runebound Clash Logo" class="title-logo">
                     <button id="btn-show-join-options">Procurar Jogo (Join)</button>
 
                     <div id="join-game-section" style="display: none; margin-top: 15px;" class="form-container">
@@ -3574,7 +3610,7 @@ export function generateProfileScreenHTML() {
                      <!-- Coleção de Cartas -->
                     <div class="profile-section profile-collection">
                         <h3>Coleção (<span id="profile-card-count">0</span> cartas)</h3>
-                        <p class="subtle-text">Clique para ampliar</p>
+                        <p class="subtle-text">Clique com o botão direito do mouse para ampliar a carta</p>
                         <div id="profile-unlocked-cards" class="card-grid scrollable-list">
                             <p>(Carregando coleção...)</p>
                             <!-- Mini-cards são renderizados aqui pelo UIManager -->
@@ -4266,7 +4302,7 @@ export default class DeckBuilderUI {
         const initialLength = this.#dbState.currentDeckCards.length;
         const index = this.#dbState.currentDeckCards.indexOf(cardId);
         console.log(`_removeCardFromDeck: Trying to remove ${cardId}. Index: ${index}`);
-
+    
         if (index > -1) {
             this.#dbState.currentDeckCards.splice(index, 1);
              if (this.#dbState.currentDeckCards.length < initialLength) {
@@ -4278,7 +4314,7 @@ export default class DeckBuilderUI {
         console.warn("DeckBuilderUI State: ID not found, cannot remove:", cardId);
         return false;
     }
-
+    
     _updateDeckValidity() {
         const count = this.#dbState.currentDeckCards.length;
         const min = 30; const max = 40;
@@ -4423,15 +4459,14 @@ export default class DeckBuilderUI {
     _initializeSortables() {
         if (this.#collectionSortable) this.#collectionSortable.destroy();
         if (this.#deckSortable) this.#deckSortable.destroy();
-
-        // Usa os elementos DOM cacheados
+    
         if (!this.#collectionListElement || !this.#deckListElement) {
             console.error("DeckBuilderUI Error: Sortable list DOM elements not found.");
             return;
         }
         console.log("DeckBuilderUI: Initializing/Re-initializing SortableJS...");
-        const self = this; // Referência à instância do DeckBuilderUI
-
+        const self = this;
+    
         const commonSortableOptions = {
             animation: 150,
             filter: '.placeholder-message',
@@ -4439,47 +4474,58 @@ export default class DeckBuilderUI {
             onMove: function (evt) {
                 $(evt.to).addClass('drag-over');
                 const $relatedList = $(evt.related).closest('.card-list');
-                if ($relatedList.is(self.#collectionListElement)) { // Verifica se é a lista da coleção
+                if ($relatedList.is(self.#collectionListElement)) {
                     $relatedList.addClass('drag-over');
                 }
                 if (!$relatedList.length) { $('body').addClass('drag-over-body'); }
-                 else { $('body').removeClass('drag-over-body'); }
+                else { $('body').removeClass('drag-over-body'); }
             },
             onUnchoose: function(evt) {
                 $('.card-list').removeClass('drag-over');
                 $('body').removeClass('drag-over-body');
             }
         };
-
+    
         this.#collectionSortable = new Sortable(this.#collectionListElement, {
             ...commonSortableOptions,
-            group: { name: 'deckBuilderShared', pull: 'clone', put: false },
+            group: { name: 'deckBuilderShared', pull: 'clone', put: true }, // Adicionado put:true para permitir que cards sejam colocados de volta
             sort: false,
             onStart: () => { $('body').removeClass('dragging-from-deck'); }
         });
-
+    
         this.#deckSortable = new Sortable(this.#deckListElement, {
             ...commonSortableOptions,
             group: { name: 'deckBuilderShared', pull: true, put: true },
             sort: true,
             onAdd: function (evt) {
-                 const cardId = $(evt.item).data('card-id');
-                 const added = self._addCardToDeck(cardId); // Usa self
-                 if (!added) $(evt.item).remove();
-                 $(evt.to).removeClass('drag-over');
+                const cardId = $(evt.item).data('card-id');
+                const added = self._addCardToDeck(cardId);
+                if (!added) $(evt.item).remove();
+                $(evt.to).removeClass('drag-over');
             },
             onRemove: function (evt) {
                 const cardId = $(evt.item).data('card-id');
-                const removed = self._removeCardFromDeck(cardId); // Usa self e atualiza UI dentro
+                console.log(`Removing card from deck: ${cardId}`); // Debug log
+                const removed = self._removeCardFromDeck(cardId);
                 if (!removed) console.warn(`Failed to remove ${cardId} from state.`);
-                $('body').removeClass('drag-over-body'); $(evt.from).removeClass('drag-over');
+                
+                // Adiciona sinalização vermelha no container da coleção
+                $(self.#collectionListElement).addClass('drag-removal');
+                
+                // Remove a classe após 500ms para limpar o efeito
+                setTimeout(() => {
+                    $(self.#collectionListElement).removeClass('drag-removal');
+                }, 500);
+                
+                $('body').removeClass('drag-over-body');
+                $(evt.from).removeClass('drag-over');
             },
             onUpdate: function (evt) {
-                 setTimeout(() => {
-                     self.#dbState.currentDeckCards = $(self.#deckListElement).children('.mini-card').map((i, el) => $(el).data('card-id')).get(); // Usa self
-                     self._updateDeckValidity(); // Usa self
-                     console.log("DeckBuilderUI State: Deck reordered", self.#dbState.currentDeckCards);
-                 }, 0);
+                setTimeout(() => {
+                    self.#dbState.currentDeckCards = $(self.#deckListElement).children('.mini-card').map((i, el) => $(el).data('card-id')).get();
+                    self._updateDeckValidity();
+                    console.log("DeckBuilderUI State: Deck reordered", self.#dbState.currentDeckCards);
+                }, 0);
             },
             onStart: () => { $('body').addClass('dragging-from-deck'); },
             onEnd: () => { $('body').removeClass('dragging-from-deck'); }
@@ -4487,6 +4533,8 @@ export default class DeckBuilderUI {
         console.log("DeckBuilderUI: SortableJS initialized/re-initialized.");
     }
 }
+
+
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\DeckBuilderUI.js ---
 
 
