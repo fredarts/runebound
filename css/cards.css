@@ -3,8 +3,8 @@
 /* --- Base Card Styling --- */
 .card {
     /* Dimensions and Box Model */
-    width: 80px; /* Slightly larger base size */
-    height: 115px;
+    width: 100px; /* Slightly larger base size */
+    height: 146px;
     border: 1px solid #aaa;
     border-radius: 6px; /* Slightly more rounded */
     padding: 5px;
