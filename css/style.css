@@ -133,7 +133,7 @@ label { display: block; margin-bottom: 5px; color: var(--text-color); font-size:
 
 /* --- Container das Telas --- */
 #screens-container {
-    position: relative; /* Changed from absolute to relative */
+    position: relative;
     width: 100%;
     height: 100%; /* Fills the body */
     overflow: hidden; /* Prevent container scroll */
@@ -141,28 +141,28 @@ label { display: block; margin-bottom: 5px; color: var(--text-color); font-size:
 
 /* --- Ajuste quando a Top Bar está ativa --- */
 #screens-container.with-top-bar {
-    height: calc(100% - var(--top-bar-height)); /* <<< CORE FIX: Size container below top bar */
-    margin-top: var(--top-bar-height); /* <<< CORE FIX: Push container down */
+    height: calc(100% - var(--top-bar-height));
+    margin-top: var(--top-bar-height);
 }
+
 
 /* --- Estilo das Telas (Screens) --- */
 .screen {
     position: absolute;
-    top: 0; /* Positioned relative to #screens-container */
+    top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* <<< CORE FIX: Fill the #screens-container */
+    height: 100%; /* Screen still fills its container */
     padding: 20px;
-    /* REMOVED min-height: 1200px; */
-    background-color: var(--background-color); /* Base background */
+    background-color: var(--background-color);
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
     z-index: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Allow internal scrolling if content overflows */
-    overflow-x: hidden;
+    /* REMOVE overflow-y: auto; Let specific layouts handle internal scroll */
+    overflow: hidden; /* Generally hide overflow at screen level */
 }
 .screen.active {
     opacity: 1;
@@ -172,10 +172,7 @@ label { display: block; margin-bottom: 5px; color: var(--text-color); font-size:
 }
 
 /* Adjust padding when top bar is active (applied within the screen) */
-#screens-container.with-top-bar .screen {
-     /* Padding was moved inside the screen */
-     /* No height/max-height override needed here now */
-}
+
 
 
 /* --- Top Bar --- */
@@ -305,33 +302,33 @@ label { display: block; margin-bottom: 5px; color: var(--text-color); font-size:
 .player-area.opponent { flex-direction: row-reverse; flex-basis: 40%; } /* Adjusted basis */
 .player-area.local-player { flex-direction: row; flex-basis: 40%; /* height: 200px; */ } /* Adjusted basis, removed fixed height */
 .center-area { background-color: rgba(0,0,0, 0.5); /* Slightly more opaque */ border-radius: 5px; padding: 5px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; flex-basis: 20%; min-height: 100px; /* Increased min-height */ }
-.player-info { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; /* Align top */ gap: 5px; flex-basis: 100px; /* Reduced basis */ flex-shrink: 0; padding: 5px; border-radius: 5px; background-color: var(--zone-background); text-align: center; }
-.player-avatar img { width: 60px; /* Smaller avatar */ height: 60px; border-radius: 50%; border: 2px solid var(--primary-color); object-fit: cover; box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); margin-bottom: 5px; /* Removed fixed positioning */ }
-.player-stats { font-size: 0.9em; /* Slightly smaller */ width: 100%; /* Take full width of info area */ }
+.player-info { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; /* Align top */ gap: 5px; flex-basis: 260px; /* Reduced basis */ flex-shrink: 0; padding: 5px; border-radius: 5px; background-color: var(--zone-background); text-align: center; }
+.player-avatar img { width: 88px; /* Smaller avatar */ height: 88px; border-radius: 50%; border: 2px solid var(--primary-color); object-fit: cover; box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); margin-bottom: 5px; margin-top: 27px;/* Removed fixed positioning */ }
+.player-stats { font-size: 0.9em; /* Slightly smaller */ width: 200px; position: absolute; /* Take full width of info area */ }
 .player-stats span { display: block; font-weight: bold; margin-bottom: 3px; color: var(--primary-color); font-size: 1em; }
-.resource { display: inline-block; margin: 1px 3px; font-weight: bold; background-color: rgba(0, 0, 0, 0.6); padding: 2px 6px; border-radius: 8px; font-size: 0.85em; white-space: nowrap; }
-.resource.life { color: #e74c3c; }
-.resource.mana { color: #3498db; }
+.resource { display: inline-block; margin: 1px 3px; font-weight: bold; background-color: rgba(0, 0, 0, 0.6); padding: 2px 6px; border-radius: 8px; font-size: 1.1em; white-space: nowrap; }
+.resource.life { color: #e74c3c; position: absolute; margin-left: -122px; margin-top: -20px;}
+.resource.mana { color: #3498db; position: absolute; margin-left: 95px; margin-top: -20px;}
 .hand { flex: 1; display: flex; align-items: center; /* Center vertically */ justify-content: center; /* Center horizontally */ min-height: 70px; background: none; padding: 5px; position: relative; }
-#opponent-hand { justify-content: center; background-color: var(--zone-background); border-radius: 4px; padding: 5px;}
+#opponent-hand { justify-content: center; background-color: var(--zone-background); border-radius: 4px; padding: 5px; width: 397px; height: 308px;}
 .opponent-hand-area > span { position: absolute; top: 2px; left: 50%; transform: translateX(-50%); font-size: 0.8em; color: var(--text-color-subtle); background-color: rgba(0,0,0,0.7); padding: 1px 5px; border-radius: 3px; z-index: 1;}
 .opponent-hand-display { display: flex; justify-content: center; gap: -20px; /* Overlap */ padding-top: 15px; /* Space below count */}
 .opponent-hand-display .card-back { width: 50px; height: 70px; background-color: var(--secondary-color); border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 1px 1px 3px rgba(0,0,0,0.4); display: inline-block; position: relative;}
 .opponent-hand-display .card-back:not(:first-child) { margin-left: -35px; }
 .card-zone { display: flex; flex-wrap: wrap; gap: 8px; /* Smaller gap */ padding: 8px; border-radius: 6px; background-color: var(--zone-background); min-height: calc(var(--card-height-battle) + 16px); align-content: flex-start; align-items: flex-start; }
 .battlefield { flex: 3; }
-.player-area.local-player .hand { /* Removed fixed min-height */ justify-content: center; background-color: var(--zone-background); border-radius: 4px; padding: 5px;}
-.player-zones { position: absolute; bottom: 10px; /* Adjusted position */ display: flex; flex-direction: column; /* Stack vertically */ gap: 8px; }
+.player-area.local-player .hand { /* Removed fixed min-height */ justify-content: center; background-color: var(--zone-background); border-radius: 4px; padding: 10px;}
+.player-zones { position: absolute; bottom: 10px; /* Adjusted position */ display: flex; flex-direction: row; /* Stack vertically */ gap: 8px; }
 .player-area.opponent .player-zones { right: 10px; }
 .player-area.local-player .player-zones { right: 10px; }
-.deck-zone, .graveyard-zone { position: relative; width: 70px; /* Smaller zones */ height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; /* Center vertically */ border: 1px solid #555; background-color: rgba(0, 0, 0, 0.4); border-radius: 4px; padding: 2px; overflow: hidden; cursor: pointer; transition: border-color 0.2s ease, transform 0.2s ease; }
+.deck-zone, .graveyard-zone { position: relative; width: 120px; /* Smaller zones */ height: 184px; display: flex; flex-direction: column; align-items: center; justify-content: center; /* Center vertically */ border: 1px solid #555; background-color: rgba(0, 0, 0, 0.4); border-radius: 4px; padding: 2px; overflow: hidden; cursor: pointer; transition: border-color 0.2s ease, transform 0.2s ease; }
 .deck-zone::before, .graveyard-zone::before { content: ''; position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px; border: 1px solid rgba(255,255,255,0.1); border-radius: 3px; opacity: 0.7; }
 .deck-zone span, .graveyard-zone span { font-size: 0.65em; color: #ccc; text-align: center; line-height: 1; width: 100%; position: absolute; bottom: 1px; left: 0; z-index: 2; background: rgba(0,0,0,0.6); padding: 1px 0; }
 .deck-zone:hover, .graveyard-zone:hover { border-color: var(--primary-color); transform: scale(1.05); }
 .zone-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; border-radius: 3px; }
 .deck-count, .graveyard-count { position: absolute; top: 3px; right: 3px; background-color: rgba(0, 0, 0, 0.75); color: white; border-radius: 50%; width: 18px; /* Smaller count */ height: 18px; display: flex; justify-content: center; align-items: center; font-size: 0.7em; font-weight: bold; z-index: 3; border: 1px solid #aaa; }
 .graveyard-image.is-placeholder { object-fit: contain; background-color: #2a2a2a; padding: 5px;}
-.game-log-container { width: 95%; max-height: 80px; /* Reduced height */ overflow-y: auto; background-color: rgba(0,0,0, 0.6); border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 5px; flex-grow: 1; }
+.game-log-container { width: 100%; max-height: 80px; /* Reduced height */ overflow-y: auto; background-color: rgba(0,0,0, 0.6); border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 5px; flex-grow: 1; }
 .game-log { list-style: none; padding: 5px 8px; font-size: 0.8em; } /* Smaller font */
 .game-log li { padding: 2px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); line-height: 1.3; }
 .game-log li:last-child { border-bottom: none; }
@@ -451,7 +448,7 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 
 /* --- Outros Estilos Específicos --- */
 /* (Options, Connect, Login, Create Account, Shake, Drag Removal styles remain largely the same) */
-.options-layout { align-items: center; padding-top: 30px; }
+.options-layout { align-items: center; padding-top: 30px;  background: url('../assets/images/ui/options_background.jpg') no-repeat center center; background-size: cover; justify-content: center; align-items: center; text-align: center; padding: 20px; }
 .options-container { max-width: 600px; width: 95%; overflow-y: auto; padding: 20px; background: var(--panel-background); border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-color); }
 .options-group { border: 1px solid var(--border-color); border-radius: 5px; padding: 15px 20px; margin-bottom: 20px; }
 .options-group legend { padding: 0 10px; font-weight: bold; color: var(--primary-color); font-size: 1.1em; }
@@ -495,14 +492,58 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 .form-shake { animation: shake 0.5s ease-in-out 1; }
 .card-list.drag-removal { border: 2px solid var(--error-color, red) !important; background-color: rgba(255, 0, 0, 0.1) !important; }
 
+
+#home-screen { background: url('../assets/images/ui/home_background.jpg') no-repeat center center; background-size: cover; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+
 /*-----------------------------*/
 /* 7. Home Screen (News Feed)  */
 /*-----------------------------*/
-/* (Home Screen styles remain largely the same) */
-.home-layout { display: flex; flex-direction: column; align-items: center; padding: 20px; padding-bottom: 80px; box-sizing: border-box; position: relative; height: 100%; /* Use container height */ overflow: hidden; }
-.home-layout h2 { margin-bottom: 20px; color: var(--title-color); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); flex-shrink: 0; }
-.home-content-area { width: 95%; max-width: 900px; flex-grow: 1; /* Takes remaining height */ position: relative; background-color: rgba(0, 0, 0, 0.35); border-radius: 8px; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); overflow: hidden; margin-bottom: 10px; /* Space above play button */}
-.news-feed { padding: 15px; height: 100%; overflow-y: auto; }
+
+.home-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    /* Remove padding-bottom here, handle spacing with content/button */
+    box-sizing: border-box;
+    position: relative;
+    height: 100%; /* Layout takes full screen height */
+    overflow: hidden; /* Prevent layout itself from scrolling */
+}
+
+.home-layout h2 {
+    margin-bottom: 20px;
+    color: var(--title-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0; /* Don't let title shrink */
+}
+
+.home-content-area {
+    width: 95%;
+    max-width: 900px;
+    /* REMOVE flex-grow: 1; */
+    /* ADD max-height calculation */
+    max-height: calc(100% - 130px); /* Adjust 130px based on h2 height + desired bottom margin + button height */
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* Important to contain children */
+    margin-bottom: 80px; /* <<< ADD Space for the absolute positioned button */
+    display: flex; /* Use flex to manage internal feed/detail visibility easily */
+}
+
+/* Feed de Notícias */
+.news-feed {
+    padding: 15px 15px 0 15px;
+    width: 100%; /* Take full width of parent */
+    height: auto; /* Size based on content */
+    overflow-y: auto; /* Scroll IF content exceeds parent's max-height */
+    background: var(--panel-background);
+    display: block; /* Default visible state */
+}
+
+/* --- Styles for .news-item, .news-image-summary etc. remain the same --- */
 .news-item { background-color: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color-light); border-radius: 6px; margin-bottom: 15px; padding: 10px 15px; display: flex; gap: 15px; cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; }
 .news-item:hover { background-color: rgba(255, 255, 255, 0.15); transform: translateY(-2px); border-color: var(--accent-color); }
 .news-image-summary { width: 100px; height: 60px; object-fit: cover; border-radius: 4px; align-self: center; flex-shrink: 0; }
@@ -512,35 +553,92 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 .news-date { font-size: 0.8em; color: var(--text-color-subtle); white-space: nowrap; }
 .news-category { font-weight: bold; margin-left: 5px; color: var(--accent-color); }
 .news-summary { font-size: 0.9em; margin: 0; color: var(--text-color-secondary); line-height: 1.4; }
-.news-detail-view { padding: 20px; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
-.button-back { align-self: flex-start; margin-bottom: 15px; background: var(--button-secondary-bg); border: 1px solid var(--border-color); padding: 5px 10px; font-size: 0.9em; flex-shrink: 0; }
+
+
+/* Detalhe da Notícia */
+.news-detail-view {
+    padding: 20px;
+    width: 100%; /* Take full width */
+    /* REMOVE height: 100%; */
+    max-height: 900px; /* <<< USER REQUESTED MAX HEIGHT */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: var(--panel-background);
+    /* display: none; is handled by JS */
+}
+
+.button-back {
+    align-self: flex-start;
+    margin-bottom: 15px;
+    background: var(--button-secondary-bg);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    font-size: 0.9em;
+    flex-shrink: 0;
+}
 .button-back:hover { background: var(--button-secondary-hover-bg); }
-#news-detail-title { text-align: center; margin-bottom: 15px; color: var(--title-color); flex-shrink: 0; }
-.news-image-detail { max-width: 80%; max-height: 200px; /* Reduced max height */ object-fit: contain; display: block; margin: 0 auto 15px auto; border-radius: 5px; flex-shrink: 0; }
-.news-content-detail { flex-grow: 1; overflow-y: auto; line-height: 1.6; color: var(--text-color); padding-right: 10px; }
+
+#news-detail-title {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--title-color);
+    flex-shrink: 0;
+}
+
+.news-image-detail {
+    max-width: 80%;
+    max-height: 200px; /* Keep reduced max height */
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 15px auto;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+.news-content-detail {
+    flex-grow: 1; /* Takes remaining space within the max-height */
+    overflow-y: auto; /* Allows THIS part to scroll */
+    line-height: 1.6;
+    color: var(--text-color);
+    padding-right: 10px;
+}
+
+/* --- Styles for p, ul, li, strong, em within .news-content-detail remain the same --- */
 .news-content-detail p { margin-bottom: 1em; }
 .news-content-detail ul { list-style: disc; margin-left: 25px; margin-bottom: 1em;}
 .news-content-detail li { margin-bottom: 0.5em; }
 .news-content-detail strong { color: var(--accent-color-light); }
 .news-content-detail em { color: var(--text-color-secondary); }
-.button-play { position: absolute; bottom: 15px; right: 15px; padding: 10px 20px; font-size: 1.1em; font-weight: bold; background-color: var(--button-play-bg); color: var(--button-play-text); border: 1px solid var(--button-play-border); border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); z-index: 10; }
+
+
+/* Botão Jogar */
+.button-play {
+    position: absolute;
+    bottom: 20px; /* Keep fixed at bottom */
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: var(--button-play-bg);
+    color: var(--button-play-text);
+    border: 1px solid var(--button-play-border);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
 .button-play:hover { background-color: var(--button-play-hover-bg); transform: scale(1.03); }
 .button-play:active { transform: scale(0.98); }
+
+/* Placeholders e Erros */
+/* --- Styles remain the same --- */
 .placeholder-message { text-align: center; color: var(--text-color-subtle); padding: 20px; font-style: italic; }
 .error-message { text-align: center; color: var(--error-color); padding: 20px; font-weight: bold; }
 
-/* --- Screen Transition Classes (Add if not in animations.css) --- */
-.screen-fade-out {
-    opacity: 0 !important;
-    transition: opacity 0.3s ease-in-out;
-}
-.screen-prepare-fade-in {
-    opacity: 0 !important; /* Start invisible */
-    visibility: visible !important; /* But technically visible for transition */
-    z-index: 9; /* Below current active during fade out */
-}
-.screen-fade-in {
-    opacity: 1 !important;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 10; /* Ensure it's on top */
-}
+/* --- Screen Transition Classes --- */
+/* --- Styles remain the same --- */
+.screen-fade-out { opacity: 0 !important; transition: opacity 0.3s ease-in-out; }
+.screen-prepare-fade-in { opacity: 0 !important; visibility: visible !important; z-index: 9; }
+.screen-fade-in { opacity: 1 !important; transition: opacity 0.3s ease-in-out; z-index: 10; }
