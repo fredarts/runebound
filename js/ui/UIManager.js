@@ -1,12 +1,13 @@
-// js/ui/UIManager.js - Refatorado (Esqueleto)
+// js/ui/UIManager.js
 
-// Importar os novos módulos
-import ProfileScreenUI from './screens/ProfileScreenUI.js'; // CORRIGIDO
-import DeckBuilderUI from './screens/DeckBuilderUI.js';   // CORRIGIDO
-import BattleScreenUI from './screens/BattleScreenUI.js'; // CORRIGIDO
-import OptionsUI from './screens/OptionsUI.js';         // CORRIGIDO
-import CardRenderer from './helpers/CardRenderer.js'; // OK
-import ZoomHandler from './helpers/ZoomHandler.js';   // OK
+// Importar os módulos de UI específicos e helpers
+import ProfileScreenUI from './screens/ProfileScreenUI.js';
+import DeckBuilderUI from './screens/DeckBuilderUI.js';
+import BattleScreenUI from './screens/BattleScreenUI.js';
+import OptionsUI from './screens/OptionsUI.js';
+import HomeScreenUI from './screens/HomeScreenUI.js'; // <<<=== Importado
+import CardRenderer from './helpers/CardRenderer.js';
+import ZoomHandler from './helpers/ZoomHandler.js';
 
 export default class UIManager {
     // --- Core References ---
@@ -21,6 +22,7 @@ export default class UIManager {
     #deckBuilderUI;
     #battleUI;
     #optionsUI;
+    #homeUI; // <<<=== Adicionado
     #cardRenderer;
     #zoomHandler;
 
@@ -33,10 +35,11 @@ export default class UIManager {
         this.#cardRenderer = new CardRenderer();
         this.#zoomHandler = new ZoomHandler(this.#cardDatabase); // Passa dependência
 
-        // Instanciar módulos de UI específicos, injetando dependências
-        // (Certifique-se de que as classes que você está instanciando
-        // são as importadas corretamente acima)
-        this.#optionsUI = new OptionsUI(); // Pode não precisar de nada
+        // --- Instanciar HomeScreenUI ---
+        this.#homeUI = new HomeScreenUI(this.#screenManager, this); // <<<=== Instanciado
+
+        // Instanciar outros módulos de UI específicos
+        this.#optionsUI = new OptionsUI();
         this.#profileUI = new ProfileScreenUI(
             this.#screenManager,
             this.#accountManager,
@@ -54,7 +57,7 @@ export default class UIManager {
         );
         this.#battleUI = new BattleScreenUI(
              this.#screenManager,
-             this.#accountManager, // <--- Adicionei accountManager aqui, pois BattleScreenUI o usa
+             this.#accountManager, // Passa accountManager para BattleScreenUI
              this.#cardDatabase,
              this.#cardRenderer,
              this.#zoomHandler
@@ -77,11 +80,12 @@ export default class UIManager {
         this.#battleUI.setLocalPlayer(playerId);
     }
 
-    // --- Top Bar Control --- (Pode permanecer aqui)
+    // --- Top Bar Control ---
     showTopBar(userData) {
         const $topBar = $('#top-bar');
         if (userData) {
             $topBar.find('#top-bar-username').text(userData.username);
+            // TODO: Update top bar avatar if needed based on userData.avatar
             $topBar.addClass('active'); // Make it visible
             console.log("UIManager: Top Bar shown for", userData.username);
         } else {
@@ -95,19 +99,28 @@ export default class UIManager {
 
 
     // --- Delegação de Renderização ---
+
+    /** Renderiza a tela inicial (notícias). É async devido ao carregamento de dados. */
+    async renderHomeScreen() { // <<<=== Adicionado método (async)
+        console.log("UI Coordinator: Delegating home screen rendering.");
+        await this.#homeUI.render(); // Chama o método render do módulo específico (usa await)
+    }
+
     renderProfileScreen() {
         console.log("UI Coordinator: Delegating profile screen rendering.");
         this.#profileUI.render(); // Chama o método render do módulo específico
-        // ProfileUI.bindEvents() deve ser chamado dentro do seu próprio render ou construtor
     }
+
     renderDeckBuilderScreen(deckIdToEdit = null) {
         console.log("UI Coordinator: Delegating deck builder rendering.");
         this.#deckBuilderUI.render(deckIdToEdit);
     }
+
     renderOptionsScreen() {
          console.log("UI Coordinator: Delegating options screen rendering.");
          this.#optionsUI.render();
     }
+
     renderInitialGameState() {
         console.log("UI Coordinator: Delegating initial game state rendering.");
          if (!this.#gameInstance || !this.#localPlayerId) {
@@ -115,44 +128,87 @@ export default class UIManager {
              return;
          }
         this.#battleUI.renderInitialState(); // BattleUI agora lida com isso
-        // Os bindings de jogo e UI são feitos dentro do BattleScreenUI
     }
 
     // --- Bindings Globais/Top Bar ---
     _bindPermanentUIActions() {
-        // Vincula apenas ações que são realmente globais ou da Top Bar
-        // Exemplo: Botões da Top Bar que NAVEGAM entre telas principais
-         $('#top-bar-btn-profile').off('click').on('click', () => {
-            if(this.#screenManager.getActiveScreenId() !== 'profile-screen'){
-                this.renderProfileScreen(); // Delega renderização
-                this.#screenManager.showScreen('profile-screen');
+        console.log("UI Coordinator: Binding permanent UI actions (Top Bar, global)...");
+
+        // --- Adicionar Binding para o botão Home ---
+         $('#top-bar-btn-home').off('click').on('click', async () => { // <<<=== Adicionado (async)
+            const currentScreen = this.#screenManager.getActiveScreenId();
+            console.log(`Top Bar: Home button clicked. Current screen: ${currentScreen}`);
+            if(currentScreen !== 'home-screen'){
+                console.log("UI Coordinator: Navigating to Home Screen...");
+                // Idealmente, mostrar um indicador de carregamento rápido aqui se o render demorar
+                await this.renderHomeScreen(); // Delega renderização (usa await)
+                this.#screenManager.showScreen('home-screen');
+                console.log("UI Coordinator: Home Screen shown.");
+            } else {
+                 console.log("UI Coordinator: Already on Home Screen.");
             }
          });
+         // --- Fim da adição ---
+
+         $('#top-bar-btn-profile').off('click').on('click', () => {
+            const currentScreen = this.#screenManager.getActiveScreenId();
+            console.log(`Top Bar: Profile button clicked. Current screen: ${currentScreen}`);
+            if(currentScreen !== 'profile-screen'){
+                 console.log("UI Coordinator: Navigating to Profile Screen...");
+                this.renderProfileScreen(); // Delega renderização
+                this.#screenManager.showScreen('profile-screen');
+                 console.log("UI Coordinator: Profile Screen shown.");
+            } else {
+                 console.log("UI Coordinator: Already on Profile Screen.");
+            }
+         });
+
          $('#top-bar-btn-connect').off('click').on('click', () => {
-              // Renderização da tela Connect é feita pelo template
-              $('#connect-message').text(''); // Resetar estado se necessário
-              this.#screenManager.showScreen('connect-screen');
+            const currentScreen = this.#screenManager.getActiveScreenId();
+             console.log(`Top Bar: Connect button clicked. Current screen: ${currentScreen}`);
+             if(currentScreen !== 'connect-screen') {
+                 console.log("UI Coordinator: Navigating to Connect Screen...");
+                 // Renderização da tela Connect é feita pelo template, mas resetamos estado
+                 $('#connect-message').text('');
+                 $('#server-status-section, #join-game-section').hide();
+                 this.#screenManager.showScreen('connect-screen');
+                  console.log("UI Coordinator: Connect Screen shown.");
+             } else {
+                  console.log("UI Coordinator: Already on Connect Screen.");
+             }
          });
+
          $('#top-bar-btn-options').off('click').on('click', () => {
-              this.renderOptionsScreen(); // Delega renderização
-              this.#screenManager.showScreen('options-screen');
+            const currentScreen = this.#screenManager.getActiveScreenId();
+             console.log(`Top Bar: Options button clicked. Current screen: ${currentScreen}`);
+             if(currentScreen !== 'options-screen') {
+                 console.log("UI Coordinator: Navigating to Options Screen...");
+                 this.renderOptionsScreen(); // Delega renderização
+                 this.#screenManager.showScreen('options-screen');
+                 console.log("UI Coordinator: Options Screen shown.");
+             } else {
+                 console.log("UI Coordinator: Already on Options Screen.");
+             }
          });
+
          $('#top-bar-btn-logout').off('click').on('click', () => {
+             console.log("Top Bar: Logout button clicked.");
              this.#accountManager.logout();
              this.hideTopBar();
              $('#screens-container').removeClass('with-top-bar');
-             this.#screenManager.showScreen('title-screen');
+             this.#screenManager.showScreen('title-screen'); // Sempre volta para a Title ao deslogar
+              console.log("UI Coordinator: Logged out, showing Title Screen.");
          });
 
-         // Talvez o listener global de ESC para fechar overlays fique aqui
+         // Listener global de ESC para fechar overlays
          $(document).off('keydown.uimclose').on('keydown.uimclose', (e) => {
              if (e.key === "Escape") {
-                 this.#zoomHandler?.closeZoom(); // Delega ao zoom handler
-                 // Fechar outros modais/popups se houver
+                 // Fecha o zoom independentemente da tela ativa
+                 this.#zoomHandler?.closeZoom();
+                 // TODO: Adicionar lógica para fechar outros modais/popups se houver
+                 // Ex: if ($('#modal-exemplo').is(':visible')) { /* fecha modal */ }
              }
          });
     }
-
-    // Métodos específicos de cada tela foram MOVIDOS para seus respectivos módulos
 
 } // End class UIManager (Coordinator)

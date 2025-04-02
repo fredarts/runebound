@@ -29,7 +29,7 @@ export function generateCreateAccountScreenHTML() {
                 </div>
             </form>
             <p id="create-account-message" class="message"></p>
-            <p class="disclaimer">Lembrete: Este é um protótipo. Senhas são salvas localmente de forma insegura.</p>
+            
         </div>
     `;
 }
