@@ -18,6 +18,10 @@ export function generateTopBarHTML() {
                 <!-- Nome do usuário vem ANTES dos botões na direita -->
                 <span id="top-bar-username">Carregando...</span>
 
+                <button id="top-bar-btn-home" title="Início / Notícias">
+                     <span role="img" aria-label="Início">🏠</span>
+                </button>
+
                 <button id="top-bar-btn-profile" title="Perfil / Coleção">
                     <span role="img" aria-label="Perfil">👤</span>
                 </button>

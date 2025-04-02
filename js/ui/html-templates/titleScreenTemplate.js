@@ -7,7 +7,7 @@
  */
 export function generateTitleScreenHTML() {
     return `
-        <div id="title-screen" class="screen active">
+        <div id="title-screen" class="screen">
             <!-- Título Principal -->
             
 
