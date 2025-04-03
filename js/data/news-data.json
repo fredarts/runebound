@@ -1,6 +1,6 @@
 [
     {
-      "id": "news_003",
+      "id": "news_004",
       "date": "2023-10-28",
       "category": "Evento",
       "title": "Torneio Semanal de Outono!",
@@ -9,14 +9,23 @@
       "content": "<p>As folhas caem, mas a competição esquenta! Participe do nosso <strong>Torneio Semanal de Outono</strong> e mostre suas habilidades.</p><p><strong>Data:</strong> Toda sexta-feira de Novembro, a partir das 19:00 GMT-3.</p><p><strong>Formato:</strong> Standard, Suíço 5 rodadas + Top 8.</p><p><strong>Prêmios:</strong> Gemas, Pacotes da nova coleção e um título exclusivo no jogo!</p><p><em>Inscrições limitadas. Garanta sua vaga!</em></p>"
     },
     {
-      "id": "news_002",
+      "id": "news_003",
       "date": "2023-10-26",
       "category": "Nova Coleção",
       "title": "Pacote 'Sombras Ancestrais' Disponível!",
       "summary": "Desvende segredos antigos com a nova coleção 'Sombras Ancestrais'. Novas criaturas mortas-vivas e runas sombrias aguardam!",
-      "image": "assets/images/news/pack_sombras.png",
+      "image": "assets/images/news/booster_news.png",
       "content": "<p>A escuridão se aprofunda em Terrinoth! A nova coleção <strong>Sombras Ancestrais</strong> chegou à loja.</p><ul><li>Descubra 5 novas criaturas do tipo Morto-vivo com habilidades únicas.</li><li>Domine 3 Runebindings poderosas focadas em controle e debuffs.</li><li>Encontre 2 Instants devastadores para surpreender seus oponentes.</li></ul><p>Adquira seus pacotes na loja hoje mesmo e fortaleça seu arsenal!</p>"
     },
+    {
+        "id": "news_002",
+        "date": "2023-10-26",
+        "category": "Nova Coleção",
+        "title": "Pacote 'Sombras Ancestrais' Disponível!",
+        "summary": "Desvende segredos antigos com a nova coleção 'Sombras Ancestrais'. Novas criaturas mortas-vivas e runas sombrias aguardam!",
+        "image": "assets/images/news/pack_sombras.png",
+        "content": "<p>A escuridão se aprofunda em Terrinoth! A nova coleção <strong>Sombras Ancestrais</strong> chegou à loja.</p><ul><li>Descubra 5 novas criaturas do tipo Morto-vivo com habilidades únicas.</li><li>Domine 3 Runebindings poderosas focadas em controle e debuffs.</li><li>Encontre 2 Instants devastadores para surpreender seus oponentes.</li></ul><p>Adquira seus pacotes na loja hoje mesmo e fortaleça seu arsenal!</p>"
+      },
     {
       "id": "news_001",
       "date": "2023-10-25",

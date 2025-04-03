@@ -25,6 +25,11 @@ export function generateTopBarHTML() {
                 <button id="top-bar-btn-profile" title="Perfil / Coleção">
                     <span role="img" aria-label="Perfil">👤</span>
                 </button>
+                   <!-- NOVO BOTÃO DE DECKS -->
+                <button id="top-bar-btn-decks" title="Decks / Coleção">
+                    <span role="img" aria-label="Decks">📚</span>
+                </button>
+                <!-- FIM NOVO BOTÃO -->
                 <button id="top-bar-btn-connect" title="Conectar / Jogar Online">
                      <span role="img" aria-label="Jogar">⚔️</span>
                 </button>
