@@ -1,4 +1,4 @@
-// js/main.js - ATUALIZADO (v2.4 - Splash Fix)
+// js/main.js - ATUALIZADO (v2.5 - AudioManager + Splash Fix)
 
 // --- Imports ---
 // Core Modules
@@ -6,6 +6,7 @@ import Game from './core/Game.js';
 import UIManager from './ui/UIManager.js';
 import ScreenManager from './ui/ScreenManager.js';
 import AccountManager from './account/AccountManager.js';
+import AudioManager from './audio/AudioManager.js'; // <<<=== Importado AudioManager
 import { loadCardDefinitions } from './utils.js';
 
 // --- HTML Template Imports ---
@@ -14,13 +15,13 @@ import { generateTitleScreenHTML } from './ui/html-templates/titleScreenTemplate
 import { generateLoginScreenHTML } from './ui/html-templates/loginScreenTemplate.js';
 import { generateCreateAccountScreenHTML } from './ui/html-templates/createAccountScreenTemplate.js';
 import { generateHomeScreenHTML } from './ui/html-templates/homeScreenTemplate.js';
-import { generateProfileScreenHTML } from './ui/html-templates/profileScreenTemplate.js';       // Importa o template do perfil (simplificado)
-import { generateDeckManagementScreenHTML } from './ui/html-templates/deckManagementScreenTemplate.js'; // Importa template da nova Tela de Decks
+import { generateProfileScreenHTML } from './ui/html-templates/profileScreenTemplate.js';
+import { generateDeckManagementScreenHTML } from './ui/html-templates/deckManagementScreenTemplate.js';
 import { generateConnectScreenHTML } from './ui/html-templates/connectScreenTemplate.js';
-import { generateDeckBuilderScreenHTML } from './ui/html-templates/deckBuilderScreenTemplate.js'; // Importa o template do construtor (com botão Voltar atualizado)
+import { generateDeckBuilderScreenHTML } from './ui/html-templates/deckBuilderScreenTemplate.js';
 import { generateOptionsScreenHTML } from './ui/html-templates/optionsScreenTemplate.js';
 import { generateBattleScreenHTML } from './ui/html-templates/battleScreenTemplate.js';
-import { generateTopBarHTML } from './ui/html-templates/topBarTemplate.js';                   // Importa a top bar (com novo botão)
+import { generateTopBarHTML } from './ui/html-templates/topBarTemplate.js';
 
 
 // --- Document Ready ---
@@ -67,10 +68,9 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
          console.error("MAIN: Critical error during HTML generation from templates:", htmlGenError);
          // Tenta mostrar erro na splash screen ou no container principal
          const $splash = $('#splash-screen');
-         // Verifica se a splash existe E está ativa (ou se é a única coisa na tela)
          if ($splash.length && ($splash.hasClass('active') || $screensContainer.children().length <= 1)) {
              $splash.addClass('active').html(`<p style="color:red; font-weight:bold;">Erro Crítico na Geração da UI: ${htmlGenError.message}. Recarregue.</p>`);
-             $('.screen').not($splash).removeClass('active'); // Garante que só a splash (com erro) esteja ativa
+             $('.screen').not($splash).removeClass('active');
          } else {
              $screensContainer.html(`<p style="color:red; font-weight:bold;">Erro Crítico na Geração da UI: ${htmlGenError.message}. Recarregue.</p>`);
          }
@@ -87,10 +87,9 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
         if (!cardDatabase) {
             // Trata erro crítico se as cartas não puderem ser carregadas
             const $splashError = $('#splash-screen');
-            // Verifica se a splash existe E está ativa (ou se é a única coisa na tela)
              if ($splashError.length && ($splashError.hasClass('active') || $screensContainer.children().length <= 1)) {
                  $splashError.text('Erro Crítico: Falha ao carregar cartas. Recarregue.').css('color', 'salmon');
-                 $('.screen').not($splashError).removeClass('active'); // Garante que só a splash (com erro) esteja ativa
+                 $('.screen').not($splashError).removeClass('active');
              } else {
                  console.error("CRITICAL: Failed to load card definitions AND splash screen not found/active!");
                  $screensContainer.html('<p style="color:red; font-weight:bold;">Erro Crítico: Falha ao carregar cartas.</p>');
@@ -102,55 +101,63 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
         // Inicializa os gerenciadores APÓS o HTML ser gerado
         const screenManager = new ScreenManager();
         const accountManager = new AccountManager();
-        // UIManager agora instancia todas as sub-UIs (Home, Profile, DeckManagement, DeckBuilder, Options, Battle)
-        const uiManager = new UIManager(screenManager, accountManager, cardDatabase);
+        const audioManager = new AudioManager(); // <<<=== Instancia AudioManager
+        // UIManager agora recebe AudioManager
+        const uiManager = new UIManager(screenManager, accountManager, cardDatabase, audioManager); // <<<=== Passado para UIManager
 
         // --- Initial Screen & Splash Transition ---
         console.log("MAIN: Showing splash screen...");
-        // A splash screen já começa com 'active' no template
-        setTimeout(() => $('#splash-screen').addClass('loading'), 50); // Adiciona classe para efeito visual se houver
+        setTimeout(() => $('#splash-screen').addClass('loading'), 50);
 
         console.log("MAIN: Setting timeout for screen transition (3000ms)...");
-        // --- CORREÇÃO SPLASH SCREEN APLICADA AQUI ---
-        setTimeout(async () => { // Callback após o delay (async para renderHomeScreen)
+        setTimeout(async () => {
             console.log("MAIN: Timeout finished. Checking login state...");
-            const $splashScreen = $('#splash-screen'); // Cache splash screen selector
+            const $splashScreen = $('#splash-screen');
+            let initialScreenId = 'title-screen'; // Tela padrão se não logado
 
             try {
-                const currentUser = accountManager.getCurrentUser(); // Verifica se há usuário logado
+                const currentUser = accountManager.getCurrentUser();
                 if (currentUser) {
                     // --- Logged In Flow ---
                     console.log(`MAIN: User '${currentUser.username}' found. Showing Top Bar and Home Screen.`);
-                    uiManager.showTopBar(currentUser);          // Mostra a Top Bar com dados do usuário
-                    $('#screens-container').addClass('with-top-bar'); // Adiciona classe para ajustar layout
+                    uiManager.showTopBar(currentUser);
+                    $('#screens-container').addClass('with-top-bar');
 
-                    // Remova 'active' da splash ANTES de mostrar a próxima
+                    // Remove 'active' da splash ANTES de mostrar a próxima
                     if ($splashScreen.hasClass('active')) {
-                        $splashScreen.removeClass('active loading'); // Remove active e loading
+                        $splashScreen.removeClass('active loading');
                         console.log("MAIN: Splash screen deactivated for logged-in flow.");
                     }
 
-                    await uiManager.renderHomeScreen();         // Renderiza a Home Screen (async)
-                    screenManager.showScreen('home-screen');    // Mostra a Home Screen
+                    await uiManager.renderHomeScreen();
+                    screenManager.showScreen('home-screen');
+                    initialScreenId = 'home-screen'; // Atualiza tela inicial para tocar BGM correta
 
                 } else {
                     // --- Logged Out Flow ---
                     console.log("MAIN: No user found. Showing title-screen.");
-                    uiManager.hideTopBar();                     // Esconde a Top Bar
-                    $('#screens-container').removeClass('with-top-bar'); // Remove classe de ajuste
+                    uiManager.hideTopBar();
+                    $('#screens-container').removeClass('with-top-bar');
 
-                    // Remova 'active' da splash ANTES de mostrar a próxima
+                    // Remove 'active' da splash ANTES de mostrar a próxima
                     if ($splashScreen.hasClass('active')) {
-                        $splashScreen.removeClass('active loading'); // Remove active e loading
+                        $splashScreen.removeClass('active loading');
                         console.log("MAIN: Splash screen deactivated for logged-out flow.");
                     }
 
-                    screenManager.showScreen('title-screen');   // Mostra a Tela de Título
+                    screenManager.showScreen('title-screen');
+                    initialScreenId = 'title-screen'; // Confirma tela inicial para tocar BGM
                 }
+
+                // <<<=== Tocar BGM inicial AQUI ===>>>
+                console.log(`MAIN: Playing initial BGM for screen: ${initialScreenId}`);
+                audioManager.playBGM(initialScreenId);
+                // <<<==============================>>>
+
                 console.log("MAIN: Initial screen setup complete.");
             } catch (error) {
                 console.error("MAIN: Error inside setTimeout callback:", error);
-                // Fallback em caso de erro na verificação/renderização inicial
+                // Fallback
                 console.log("MAIN: Fallback - Showing title-screen due to error.");
                  uiManager.hideTopBar();
                  $('#screens-container').removeClass('with-top-bar');
@@ -162,148 +169,186 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                  }
 
                 screenManager.showScreen('title-screen');
+                // Tocar BGM da title screen no fallback
+                audioManager.playBGM('title-screen');
             }
-        }, 3000); // Delay de 3 segundos para a splash screen
-        // --- FIM DA CORREÇÃO SPLASH SCREEN ---
+        }, 3000); // Delay
 
 
         // --- Global UI Bindings ---
+        // Adiciona listeners de áudio aos botões da Title Screen
+        const addTitleAudioListeners = ($element, sfxClick = 'buttonClick', sfxHover = 'buttonHover') => {
+            $element.off('click.titleaudio').on('click.titleaudio', () => audioManager?.playSFX(sfxClick));
+            $element.off('mouseenter.titleaudio').on('mouseenter.titleaudio', () => audioManager?.playSFX(sfxHover));
+        };
+
         // Ações da Tela de Título
-        $('#btn-goto-login').on('click', () => screenManager.showScreen('login-screen'));
-        $('#btn-goto-create-account').on('click', () => screenManager.showScreen('create-account-screen'));
-        // Ícone de Opções na Title Screen (leva para Options e renderiza)
-        $('#btn-goto-options-icon').on('click', () => {
+        const $btnLogin = $('#btn-goto-login');
+        $btnLogin.on('click', () => screenManager.showScreen('login-screen'));
+        addTitleAudioListeners($btnLogin);
+
+        const $btnCreate = $('#btn-goto-create-account');
+        $btnCreate.on('click', () => screenManager.showScreen('create-account-screen'));
+        addTitleAudioListeners($btnCreate);
+
+        const $btnOptionsIcon = $('#btn-goto-options-icon');
+        $btnOptionsIcon.on('click', () => {
              uiManager.renderOptionsScreen();
              screenManager.showScreen('options-screen');
+             audioManager.playBGM('options-screen'); // Toca BGM ao ir para opções
         });
+        addTitleAudioListeners($btnOptionsIcon);
 
         // Botões "Voltar" das telas de Login/Criar Conta
-        $('#btn-create-back-to-title, #btn-login-back-to-title').on('click', () => {
-            $('#create-account-message, #login-message').text(''); // Limpa mensagens de erro/sucesso
+        const $btnBackToTitle = $('#btn-create-back-to-title, #btn-login-back-to-title');
+        $btnBackToTitle.on('click', () => {
+            $('#create-account-message, #login-message').text('');
             screenManager.showScreen('title-screen');
+            audioManager.playBGM('title-screen'); // Toca BGM ao voltar
         });
+        $btnBackToTitle.each((i, btn) => addTitleAudioListeners($(btn)));
+
 
         // Submissão do Formulário de Criar Conta
         $('#create-account-form').on('submit', (event) => {
             event.preventDefault();
+            audioManager.playSFX('buttonClick'); // Som de clique no submit
             const $form = $(event.currentTarget);
             const u = $('#create-username').val().trim();
             const p = $('#create-password').val();
             const $m = $('#create-account-message');
-            const r = accountManager.createAccount(u, p); // Chama AccountManager
+            const r = accountManager.createAccount(u, p);
             $m.text(r.message).css('color', r.success ? 'lightgreen' : 'salmon');
 
             if (r.success) {
-                $form[0].reset(); // Limpa o formulário
-                setTimeout(() => { // Pequeno delay antes de ir para Login
+                $form[0].reset();
+                setTimeout(() => {
                     if (screenManager.getActiveScreenId() === 'create-account-screen') {
-                        screenManager.showScreen('login-screen'); // Vai para Login após sucesso
-                        $m.text(''); // Limpa mensagem de sucesso
+                        screenManager.showScreen('login-screen');
+                        $m.text('');
                     }
                  }, 2000);
             } else {
-                // Efeito de "shake" no formulário em caso de erro
+                // Efeito de "shake"
                 const $container = $form.closest('.form-container');
                 if ($container.length) {
                     $container.addClass('form-shake');
                     setTimeout(() => $container.removeClass('form-shake'), 600);
                 }
+                audioManager.playSFX('createAccountError'); // <<<=== Toca SFX de erro
             }
         });
+        // Adiciona hover aos botões do form
+        $('#create-account-form button').each((i, btn) => addTitleAudioListeners($(btn)));
+
 
         // Submissão do Formulário de Login
-        $('#login-form').on('submit', async (event) => { // async para renderHomeScreen
+        $('#login-form').on('submit', async (event) => {
             event.preventDefault();
+            audioManager.playSFX('buttonClick'); // Som de clique no submit
             const $form = $(event.currentTarget);
             const u = $('#login-username').val().trim();
             const p = $('#login-password').val();
             const $m = $('#login-message');
-            const r = accountManager.login(u, p); // Chama AccountManager
+            const r = accountManager.login(u, p);
             $m.text(r.message).css('color', r.success ? 'lightgreen' : 'salmon');
 
             if (r.success) {
-                $form[0].reset(); // Limpa o formulário
+                $form[0].reset();
                 // --- Login Success Flow ---
-                uiManager.showTopBar(r.user);                  // Mostra Top Bar
-                $('#screens-container').addClass('with-top-bar'); // Ajusta layout
-                await uiManager.renderHomeScreen();             // Renderiza Home (async)
-                screenManager.showScreen('home-screen');        // Mostra Home
+                uiManager.showTopBar(r.user);
+                $('#screens-container').addClass('with-top-bar');
+                await uiManager.renderHomeScreen();
+                screenManager.showScreen('home-screen');
+                audioManager.playBGM('home-screen'); // Toca BGM da Home após login
                 // --- Fim Login Success Flow ---
             } else {
-                // Efeito de "shake" no formulário em caso de erro
+                // Efeito de "shake"
                 const $container = $form.closest('.form-container');
                 if ($container.length) {
                     $container.addClass('form-shake');
                     setTimeout(() => $container.removeClass('form-shake'), 600);
                 }
+                audioManager.playSFX('loginError'); // <<<=== Toca SFX de erro
             }
         });
+         // Adiciona hover aos botões do form
+         $('#login-form button').each((i, btn) => addTitleAudioListeners($(btn)));
+
 
         // --- Top Bar Navigation ---
-        // A navegação principal (Home, Perfil, Decks, Conectar, Opções, Logout)
-        // é agora tratada dentro de UIManager._bindPermanentUIActions()
+        // Tratada em UIManager._bindPermanentUIActions, que agora toca BGM/SFX
 
         // --- Other Screen Back Buttons ---
-         // Botão Voltar da tela de Opções (volta para a tela anterior, com fallback Home)
-         $('#btn-options-back-to-main').on('click', () => screenManager.goBack('home-screen'));
-
-         // --- ATUALIZADO: Botão Voltar do Deck Builder ---
-         // Agora leva para a Tela de Gerenciamento de Decks
-         $('#btn-deck-builder-back').on('click', () => {
-             console.log("MAIN: Deck Builder back button clicked, going to Deck Management.");
-             // A UI de Deck Management deve ser renderizada pelo UIManager ao navegar para ela
-             uiManager.renderDeckManagementScreen(); // Garante que está atualizada
-             screenManager.showScreen('deck-management-screen');
+         const $btnOptionsBack = $('#btn-options-back-to-main');
+         $btnOptionsBack.on('click', () => {
+              screenManager.goBack('home-screen');
+              // AudioManager tocará a BGM correta baseado na tela que for mostrada
+              // É mais seguro deixar o handler de navegação (UIManager) controlar a BGM
          });
-         // -------------------------------------------
+         addTitleAudioListeners($btnOptionsBack); // Adiciona sons básicos
 
-         // Botão Voltar da tela Connect (leva para Home)
-         $('#btn-connect-back-to-main').on('click', () => screenManager.showScreen('home-screen'));
+         const $btnDeckBuilderBack = $('#btn-deck-builder-back');
+         $btnDeckBuilderBack.on('click', () => {
+             console.log("MAIN: Deck Builder back button clicked, going to Deck Management.");
+             uiManager.renderDeckManagementScreen();
+             screenManager.showScreen('deck-management-screen');
+             audioManager.playBGM('deck-management-screen'); // Toca BGM dos decks
+         });
+         addTitleAudioListeners($btnDeckBuilderBack);
 
-        // Ações do Perfil (Seleção de Avatar) são tratadas internamente por ProfileScreenUI.
-        // Ações do Gerenciamento de Decks (Editar, Deletar, Criar) são tratadas por DeckManagementScreenUI.
-        // Ações do Construtor de Decks (Salvar, Limpar) são tratadas por DeckBuilderUI.
+         const $btnConnectBack = $('#btn-connect-back-to-main');
+         $btnConnectBack.on('click', () => {
+              screenManager.showScreen('home-screen');
+              audioManager.playBGM('home-screen'); // Toca BGM da Home
+         });
+         addTitleAudioListeners($btnConnectBack);
 
-        // Botão Salvar Opções (delegado para OptionsUI via UIManager)
-        $('#btn-save-options').on('click', () => uiManager.saveOptions()); // Assumindo que UIManager tem um método saveOptions que chama OptionsUI
+
+        // Botão Salvar Opções
+         const $btnSaveOptions = $('#btn-save-options');
+         $btnSaveOptions.on('click', () => {
+             uiManager.saveOptions(); // UIManager agora chama save e atualiza audioManager
+             // O som de clique é adicionado abaixo
+         });
+         addTitleAudioListeners($btnSaveOptions); // Adiciona som básico
+
 
         // --- Game Initialization Logic & Connect Screen Bindings ---
-        let gameInstance = null; // Armazena a instância do jogo atual
+        let gameInstance = null;
 
         /** Função para inicializar e começar uma nova partida (Simulada/Local) */
         function initializeAndStartGame(localPlayerDeckId, opponentUsername = "Opponent_AI", opponentDeckId = 'default_deck_1') {
              console.log("MAIN: Initializing game...");
              const currentUser = accountManager.getCurrentUser();
-             if (!currentUser) {
-                 console.error("MAIN: No user logged in. Redirecting to login.");
-                 screenManager.showScreen('login-screen');
-                 return;
-             }
+             if (!currentUser) { /* ... (erro login) ... */ return; }
 
-             const localDecks = accountManager.loadDecks(); // Carrega decks do usuário logado
-             const localDeck = localDecks?.[localPlayerDeckId]; // Pega o deck selecionado
+             const localDecks = accountManager.loadDecks();
+             const localDeck = localDecks?.[localPlayerDeckId];
 
-             // Valida o deck local
-             if (!localDeck?.cards || localDeck.cards.length < 30 || localDeck.cards.length > 40) { // Verifica tamanho do deck
+             // Valida deck local
+             if (!localDeck?.cards || localDeck.cards.length < 30 || localDeck.cards.length > 40) {
                  console.error(`MAIN: Local deck '${localDeck?.name || localPlayerDeckId}' is invalid (needs 30-40 cards). Found: ${localDeck?.cards?.length}`);
                  $('#connect-message').text(`Erro: Deck '${localDeck?.name || localPlayerDeckId}' inválido (precisa de 30-40 cartas).`).css('color', 'salmon');
-                 return; // Impede início do jogo
+                 audioManager.playSFX('genericError'); // Som de erro genérico
+                 return;
              }
              const localPlayerDeckIds = localDeck.cards;
              console.log(`MAIN: Local Deck '${localDeck.name}' (${localPlayerDeckIds.length} cards) found.`);
 
              // Simulação/Fallback de Deck do Oponente
-             let opponentDeckIds = accountManager.getUserData("Opponent_AI")?.decks?.[opponentDeckId]?.cards; // Tenta carregar um deck AI (se existisse)
-             if (!opponentDeckIds || opponentDeckIds.length < 30) { // Valida deck oponente (mínimo 30)
+             let opponentDeckIds = accountManager.getUserData("Opponent_AI")?.decks?.[opponentDeckId]?.cards;
+             if (!opponentDeckIds || opponentDeckIds.length < 30) {
                  console.warn(`MAIN: Opponent deck '${opponentDeckId}' invalid or not found, using fallback.`);
                  const allCardIds = Object.keys(cardDatabase);
                  if (allCardIds.length >= 30) {
-                     opponentDeckIds = allCardIds.sort(() => 0.5 - Math.random()).slice(0, 30); // Pega 30 cartas aleatórias
+                     opponentDeckIds = allCardIds.sort(() => 0.5 - Math.random()).slice(0, 30);
                      console.log(`MAIN: Using fallback opponent deck with 30 random cards.`);
                  } else {
                      console.error("MAIN: Cannot create fallback opponent deck! Insufficient card definitions.");
                      $('#connect-message').text('Erro Crítico: Definições de cartas insuficientes para o oponente.').css('color', 'salmon');
-                     return; // Impede início
+                     audioManager.playSFX('genericError');
+                     return;
                  }
              } else {
                  console.log(`MAIN: Using opponent deck '${opponentDeckId}'.`);
@@ -312,77 +357,89 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
 
              // Inicia a instância do Jogo
              try {
-                 gameInstance = new Game(cardDatabase); // Cria nova instância
-                 const player1 = gameInstance.addPlayer(currentUser.username, localPlayerDeckIds); // Adiciona jogador local
-                 const player2 = gameInstance.addPlayer(opponentUsername, opponentDeckIds);      // Adiciona oponente (AI)
+                 gameInstance = new Game(cardDatabase);
+                 const player1 = gameInstance.addPlayer(currentUser.username, localPlayerDeckIds);
+                 const player2 = gameInstance.addPlayer(opponentUsername, opponentDeckIds);
 
-                 if (!player1 || !player2) { // Verifica se os jogadores foram adicionados com sucesso
+                 if (!player1 || !player2) {
                       throw new Error("Falha ao adicionar jogadores. Verifique os decks e logs.");
                  }
 
-                 uiManager.setGameInstance(gameInstance); // Informa UIManager sobre o jogo
-                 uiManager.setLocalPlayer(player1.id);     // Informa UIManager quem é o jogador local
+                 uiManager.setGameInstance(gameInstance);
+                 uiManager.setLocalPlayer(player1.id);
 
-                 if (gameInstance.setupGame()) {        // Prepara o jogo (embaralhar, etc.)
-                     gameInstance.startGame();           // Inicia o jogo (compra mãos, começa turno)
-                     uiManager.renderInitialGameState(); // UIManager manda renderizar o tabuleiro
+                 if (gameInstance.setupGame()) {
+                     gameInstance.startGame();
+                     uiManager.renderInitialGameState();
                      console.log("MAIN: Game started successfully!");
-                     $('#connect-message').text('');     // Limpa mensagens da tela Connect
-                     screenManager.showScreen('battle-screen'); // Vai para a tela de Batalha
+                     $('#connect-message').text('');
+                     screenManager.showScreen('battle-screen');
+                     audioManager.playBGM('battle-screen'); // <<<=== Toca BGM da Batalha
                  } else {
                      throw new Error("Falha na configuração inicial do jogo.");
                  }
              } catch (error) {
                  console.error("MAIN: Error during game initialization:", error);
                  $('#connect-message').text(`Erro ao iniciar: ${error.message}`).css('color', 'salmon');
-                 gameInstance = null; // Limpa instância em caso de erro
-                 // Mantém na tela de conexão para ver o erro
+                 audioManager.playSFX('genericError'); // Som de erro
+                 gameInstance = null;
              }
         } // Fim de initializeAndStartGame
 
         // Botões da Tela Connect (Simulando Início de Jogo)
-        $('#btn-create-server').on('click', () => {
+         const $btnCreateServer = $('#btn-create-server');
+         $btnCreateServer.on('click', () => {
             $('#join-game-section').hide(); $('#server-status-section').show(); $('#server-ip-code').text('SIMULANDO...'); $('#connect-message').text('Simulando... Iniciando Jogo Solo.');
             const decks = accountManager.loadDecks();
-            // Encontra o primeiro deck válido do usuário (30-40 cartas)
             const firstValidDeckId = decks ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 40) : null;
             if (!firstValidDeckId) {
                  $('#connect-message').text('Erro: Nenhum deck válido (30-40 cartas). Crie/Edite nos Decks.').css('color', 'salmon');
                  $('#server-status-section').hide();
+                 audioManager.playSFX('genericError');
                  return;
             }
-            setTimeout(() => initializeAndStartGame(firstValidDeckId), 500); // Inicia com o deck válido
+            setTimeout(() => initializeAndStartGame(firstValidDeckId), 500);
         });
-        $('#btn-show-join-options').on('click', () => {
+         addTitleAudioListeners($btnCreateServer); // Adiciona sons básicos
+
+         const $btnShowJoin = $('#btn-show-join-options');
+         $btnShowJoin.on('click', () => {
              $('#server-status-section').hide();
              $('#join-game-section').show();
              $('#connect-message').text('');
-        });
-        $('#btn-connect-to-server').on('click', () => {
+         });
+         addTitleAudioListeners($btnShowJoin);
+
+         const $btnConnectServer = $('#btn-connect-to-server');
+         $btnConnectServer.on('click', () => {
             const code = $('#opponent-ip').val().trim();
             $('#connect-message').text(`Simulando conexão com ${code || 'host'}... Iniciando Jogo Solo.`);
             const decks = accountManager.loadDecks();
-            // Encontra o primeiro deck válido do usuário (30-40 cartas)
             const firstValidDeckId = decks ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 40) : null;
              if (!firstValidDeckId) {
                  $('#connect-message').text('Erro: Nenhum deck válido (30-40 cartas). Crie/Edite nos Decks.').css('color', 'salmon');
+                 audioManager.playSFX('genericError');
                  return;
              }
-            setTimeout(() => initializeAndStartGame(firstValidDeckId), 500); // Inicia com o deck válido
+            setTimeout(() => initializeAndStartGame(firstValidDeckId), 500);
         });
-        $('#btn-cancel-hosting').on('click', () => {
+         addTitleAudioListeners($btnConnectServer);
+
+        const $btnCancelHost = $('#btn-cancel-hosting');
+        $btnCancelHost.on('click', () => {
              $('#server-status-section').hide();
              $('#connect-message').text('Criação cancelada.');
-        });
+         });
+         addTitleAudioListeners($btnCancelHost);
+
 
         // --- Final Log ---
-        console.log("Runebound Clash UI Ready (v2.4 - Splash Fix).");
+        console.log("Runebound Clash UI Ready (v2.5 - AudioManager).");
 
     } catch (initError) {
         console.error("MAIN: Critical initialization error:", initError);
          // Mostra erro crítico na splash screen ou no container
          const $splashSevereError = $('#splash-screen');
-         // Verifica se a splash existe E está ativa (ou se é a única coisa na tela)
          if ($splashSevereError.length && ($splashSevereError.hasClass('active') || $screensContainer.children().length <= 1)) {
               $splashSevereError.text(`Erro Crítico: ${initError.message}. Recarregue.`).css('color', 'red');
               $('.screen').removeClass('active');
