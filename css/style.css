@@ -58,6 +58,8 @@ body {
     color: var(--text-color);
     position: relative; /* Needed for absolute positioning of screens */
     line-height: 1.4;
+    cursor: url('../assets/images/ui/cursor.png'), auto;
+      
 }
 
 h1, h2, h3 {
@@ -363,7 +365,7 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 
 /* --- Layout Profile --- */
 /* (Profile styles remain largely the same, check for height/overflow issues if needed) */
-.profile-layout { padding: 20px; display: flex; flex-direction: column; height: 100%; }
+#profile-screen { padding: 20px; display: flex; flex-direction: column; height: 100%; background: url('../assets/images/ui/profile_background.jpg') no-repeat center center;}
 .profile-layout h2 { flex-shrink: 0; }
 .profile-main-area { display: flex; gap: 20px; flex-grow: 1; margin-top: 20px; overflow: hidden; } /* Overflow hidden here */
 .profile-left-column, .profile-right-column { flex: 1; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; /* These scroll */ padding-right: 10px; }
@@ -642,3 +644,183 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 .screen-fade-out { opacity: 0 !important; transition: opacity 0.3s ease-in-out; }
 .screen-prepare-fade-in { opacity: 0 !important; visibility: visible !important; z-index: 9; }
 .screen-fade-in { opacity: 1 !important; transition: opacity 0.3s ease-in-out; z-index: 10; }
+
+
+
+
+/* Layout Geral da Tela de Gerenciamento de Decks (Ex: 2 Colunas) */
+.deck-management-layout {
+    display: flex;
+    flex-direction: column; /* Título em cima, conteúdo embaixo */
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: var(--screen-bg-color, #282c34); /* Cor de fundo padrão */
+    background-image: url('../assets/images/ui/deck_background.jpg'); /* Ou outra imagem de fundo */
+    background-size: cover;
+    background-position: center;
+}
+
+.deck-management-layout h2 {
+    text-align: center;
+    margin-bottom: 60px;
+    color: var(--header-color, #d9dce2);
+    margin-top: 60px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    font-size: 36px;
+    
+}
+
+/* Área principal com as colunas */
+.deck-management-main-area {
+    display: flex;
+    
+    gap: 20px; /* Espaço entre as colunas */
+    overflow: hidden; /* Previne overflow das colunas */
+    background: rgba(0, 0, 0, 0.3); /* Fundo semi-transparente opcional */
+    padding: 15px 15px 0 15px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Coluna Esquerda (Decks) */
+.deck-management-left-column {
+    flex: 1; /* Ocupa metade do espaço (ou ajuste conforme necessário, ex: flex: 0 0 40%;) */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Para a lista de decks rolar */
+}
+
+/* Coluna Direita (Coleção) */
+.deck-management-right-column {
+    flex: 1; /* Ocupa a outra metade */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Para a coleção rolar */
+}
+
+/* Reutiliza estilos de seção do perfil (se aplicável) */
+.deck-management-layout .profile-section {
+    background-color: rgba(30, 33, 40, 0.8); /* Fundo da seção */
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px; /* Espaço entre seções */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.deck-management-layout .profile-section h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--accent-color, #61dafb);
+    border-bottom: 1px solid var(--border-color, #444);
+    padding-bottom: 5px;
+}
+
+/* Lista de Decks */
+#deck-management-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Permite que a lista ocupe espaço e role */
+    overflow-y: auto; /* Habilita rolagem vertical */
+    border: 1px solid var(--border-color, #444);
+    border-radius: 4px;
+    background-color: rgba(10, 10, 10, 0.3);
+}
+/* Estilo de item de deck (reutilizado de profile) */
+#deck-management-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-color-light, #555);
+    color: var(--text-color-light, #ddd);
+    transition: background-color 0.2s ease;
+}
+#deck-management-list li:last-child {
+    border-bottom: none;
+}
+#deck-management-list li:hover {
+    background-color: rgba(70, 70, 80, 0.5);
+}
+#deck-management-list .deck-name {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+#deck-management-list .deck-invalid {
+    color: var(--invalid-color, salmon);
+    font-style: italic;
+}
+#deck-management-list .deck-valid {
+   /* Pode ter um estilo sutil, ex: color: lightgreen; */
+}
+#deck-management-list .deck-buttons button {
+    background: none;
+    border: none;
+    color: var(--icon-button-color, #aaa);
+    cursor: pointer;
+    font-size: 1.1em;
+    padding: 2px 5px;
+    margin-left: 5px;
+    transition: color 0.2s ease;
+}
+#deck-management-list .deck-buttons button:hover {
+    color: var(--accent-color, #61dafb);
+}
+
+/* Botão Criar Novo Deck */
+#btn-create-new-deck {
+    margin-top: 15px; /* Espaço acima do botão */
+    /* Reutilize .button-primary ou defina estilos aqui */
+}
+
+/* Coleção e Filtros */
+.deck-management-layout .collection-filters {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha se não couber */
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.deck-management-layout .collection-filters input,
+.deck-management-layout .collection-filters select {
+    padding: 5px 8px;
+    background-color: var(--input-bg-color, #3a3f4b);
+    color: var(--input-text-color, #eee);
+    border: 1px solid var(--border-color, #444);
+    border-radius: 4px;
+    flex-grow: 1; /* Tenta dividir espaço */
+    min-width: 100px; /* Largura mínima */
+}
+/* Placeholder para filtros */
+.deck-management-layout .collection-filters input::placeholder {
+    color: #888;
+}
+
+/* Grid da Coleção (Reutiliza .card-grid) */
+#deck-management-collection {
+    /* display: grid; (Definido em .card-grid) */
+    /* grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); (Definido em .card-grid) */
+    /* gap: 10px; (Definido em .card-grid) */
+    flex-grow: 1; /* Ocupa espaço restante */
+    overflow-y: auto;
+    padding: 5px; /* Pequeno padding interno */
+    border: 1px solid var(--border-color, #444);
+    border-radius: 4px;
+    background-color: rgba(10, 10, 10, 0.3);
+}
+
+/* Mensagem de feedback */
+#deck-mgmt-message {
+    min-height: 1.2em; /* Evita que layout pule quando mensagem aparece/some */
+    text-align: center;
+}
+
+/* Zoom Overlay (se for específico, senão usar o global) */
+#deck-management-zoom-overlay {
+    /* Estilos idênticos aos outros image-zoom-overlay */
+}
+#deck-management-zoomed-image {
+    /* Estilos idênticos às outras zoomed-image */
+}

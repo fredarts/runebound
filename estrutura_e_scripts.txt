@@ -40,11 +40,15 @@ runebound_dccg/
         objects/
             00/
                 d56d7158bdefb196e5bfd9c750a2d6b6c43cf8
+            01/
+                2a0ea8642716e1a3273da68e90adaacb9ba16c
             02/
                 03c26eb576253bed5a397f7998ccb22bab6805
             05/
                 b7cc3e8513e6031222432ed1f3afb0bbaff21f
                 c72ced70d301770803c7a0d6f3b2e08391c8b0
+            06/
+                20be43ec9872f1adaa326046ea588e5b46927b
             08/
                 9928c461c10e03a3e12275391639dd43562be6
             0a/
@@ -61,10 +65,12 @@ runebound_dccg/
                 35489a3ad90fb79ddc75dcbb770fc391dc2577
                 685dd3e7b02399b4ba6c1f8e4fbab8dca55bf6
             11/
+                b3f2809f0de7af905452b1c9c142769153d903
                 b481f5fd6cd59c836b7697e933f253683c8ff3
             12/
                 329d7bf1479fd0ecaadfc06bbd2b15add733c1
             14/
+                50f687f488d94e56723f704236fc06cc43638d
                 f00ebdd3e3f0f36c5f9aed570355081fdee97a
             15/
                 8966491f9c9f6fa8a7458039d1f9d83b9c2971
@@ -78,17 +84,24 @@ runebound_dccg/
                 8d269f50f1392686255cd0286f3868a84b85d6
                 c8610e80d8516a98db89726564e92a31918847
                 dbcb278e310ed4a7270164056ed44c12c027ba
+            1f/
+                19eee40d5f24ff75b6325fc5e24d1cdad55b8d
             20/
+                24ca2e0087857f115f138bf0f5a5772b9f7e25
                 44e5c4d02e09643e58de8294867e0cb363d3a3
             23/
                 f7f4e99f3c642c6a4ca2c7dcbe75b4f1c7a4e2
             25/
                 6dcfb604f3a3a4848307d741c97025c1dd19f3
+                7f8a57e5becf724d6117f944f32dfd2c537eb6
                 a71707f2caf99d5fec3942c6a8eabf01bf6fe7
             26/
                 faaf98cb7fa0b67f6c21ec05e66a1a0d58f6df
+            27/
+                8aa8b6e069c248a9fa8e862160df3522f72490
             28/
                 490804951ca2379eef543e09d33774aaf7c03d
+                b11c8ff878a49ac376ae37bf90fbdd0867f9fd
             2b/
                 d1a8c4d27e698f1d4a7fb0ccf740ccba9e0bb0
             2d/
@@ -112,10 +125,13 @@ runebound_dccg/
                 ca4f42939b8b55b41f474b00f80a2ac4b12e19
             3f/
                 3f2cf88bb0f031b4467df6e8eb2cf28ef2c0b2
+            40/
+                ce9e3e92d7ec70bf4a4bcf1e226a6f8e68455e
             41/
                 91e9c28efc857d9e38282504a6883b783f1edb
             42/
                 5ea9a9d53773298b442e11509a2d57a741b2e1
+                eb763e0ece38b1215f8be9c3bde1120443530a
             45/
                 ef01722ac6703062a7dec7409a89cd9658dde0
             48/
@@ -129,12 +145,17 @@ runebound_dccg/
             4e/
                 03021c64e6a581cf69c58efbbb6aaf5ecd9150
                 34de3366d221cfca740f1eec1f60e6f57aafdd
+                7dbfd6d82b7bf554606cf3153f359bb90a7130
             50/
                 900869b9694bdb03dea6a4ad2a0fc34236eda9
+            55/
+                4d3f52ed1364084a75c59908138ae3759e5390
             58/
                 7c65dee4dae69dfc89a4bf8d2b1f154c20c0f4
             59/
                 af3be4ce712fa53f0cd23536da909a926781cb
+            5c/
+                d40444b54c0d25450446c984e05b013abcaf9e
             5d/
                 53c1d45811ce68b7f636847b24c265edac4aa9
                 6c9de058820d614c54e95f89b6a5ef5bfa838c
@@ -151,12 +172,21 @@ runebound_dccg/
                 f4d920201442a6a49ad86bfe5194f55e2ffab2
             63/
                 4e69da777824f8651e8b89c37d484690a1a5a9
+                dfadf8ca1ae154f6a7c2a93eb0a1727cb16ae8
             64/
                 6d3b814bfed4830e6f517f74dcac49c206788f
+            65/
+                a11b673be700f92321f1d6a5eb882f649df6c4
+            66/
+                97e6f137fcc3f95cc987e8cc903ac765af1219
             68/
                 d37e178889acbb8090173d119b562bd6f8f6b6
             6c/
+                3544130b3e70f5236e347a6d44cd9f18c7436d
                 d073f322848b3e06d6f3710f6218e541f8815e
+                f4667045caefa0c04b05ff25ff55feee6ddbed
+            6e/
+                fb3708f02457891a132b614ecb8f942c473916
             6f/
                 b4c96ab0cfb834b1509791cf3d5771efdd5ec2
             70/
@@ -165,17 +195,25 @@ runebound_dccg/
                 f890df21d31da4c543d034dbc246d8195002c4
             75/
                 3ee19d72990b6575e562ba0c645c9853a5e124
+                98bf9648f2ab234d41ff951afc3ab234e079ba
                 e33cb3eb771900de8d9566499e83acb69bde0b
             77/
+                0ea89a137c7f3ea9924df2dc39d49be9e8149e
+                bfa9950891ecd1422495b0663d58c36f9e5b9b
                 eff917ea2bc2cb514aafef15cd3b42b562fe84
+            78/
+                88adfc21ff849793f7fceb30745b8a277b0dcc
             79/
                 f3abfd2fdd7ecb2dcac777212f1ebfd2a458b0
             7a/
                 fa18feb94cc97978c939b7af2532770793a086
+            7b/
+                56ddcbc3680cf906dd187fccbd4ea7b68c8652
             7d/
                 2dd0f6ddeaa800bd7dbf6738bbdc7a662660d6
                 374a426b785d0ec47b935603faa6c1b7393720
                 707687dfdbaa902e1fc28938073412e74f8632
+                c75e6f22c2bd759820d87365887d193e6945fe
             7f/
                 5558172f2953e481884f0366005967f445004b
             80/
@@ -193,6 +231,7 @@ runebound_dccg/
                 53465ea535f135ad16ed75ace76db63c810f8e
             8d/
                 32b33dcdfb3d1b463f4b090f8f6ae3ae673999
+                50b713b9cfd8c08800bf7bce63cce012c05d54
                 6c4892cb5afbf6a1e9df3c831c6c4dd2d572c8
             8e/
                 2fd03b4c9f45d1352e6c3cf94dc4cf985d5cd9
@@ -201,11 +240,13 @@ runebound_dccg/
             92/
                 6fd1beea74c37c037f7c04552be91d4658e291
                 99b2bd3e709bf810b3577082843929da659f87
+                eaf69a137ab8ea93f671733673fbeb649db39f
             93/
                 1060547b6b731a92efe25ba6d93b96261f3503
             95/
                 01a8884ca2ef9b2bf2b1a7c8318f9917f8705c
                 3c43e78acdfbabe411bbc21b0f85b86e0cc14b
+                55d238e4f00b22e2645832e479e6901a9ffafc
             96/
                 4d2ef9cb4ad995abdb5e5c6d1a2040a380199f
             97/
@@ -213,10 +254,13 @@ runebound_dccg/
             98/
                 883b0cb7e91d28b034fc6526491f07a587f17c
                 e9b8cceab5b9ce5b556b2ba4183eb8d409ff71
+            9a/
+                196c3d4c697833458c8421c2e11193fb5cb6e4
             9b/
                 810333862d281f78afdc06c0611ad3c5218cd1
                 ebae9186dfceb7c526ab83addbaf0c26e6ebfe
             9c/
+                0281da34c6b9a37cf736d893d75ed837001b09
                 6df79146c9d497ead103fb9027f7499ef6e816
             a2/
                 2a812df8a9a85a97c0a641ef6697667f44edad
@@ -225,10 +269,14 @@ runebound_dccg/
                 a0b5c3514231b4dba53c70200af5814dba26dc
             a5/
                 7085d27ab3da7b5245c2eac210a4d0f96c610f
+            a9/
+                f3c2239a72b76d46dad78b2bbd573957a3cfae
             ab/
                 929ede334e40f15cf6e8ffa7db830904deafa7
             ac/
                 620d6b8316f0f1798c861c07e896fddeca1fd0
+            ad/
+                0e50a5cf308d3694dda2b80d294471363d8c9d
             af/
                 a3e18d5a2c8c65227ecb73e63cad1a87ec69f3
             b0/
@@ -248,6 +296,8 @@ runebound_dccg/
                 7db54e3474e18ff3d92dc2408127b2b6e5531e
             bb/
                 ce376d51b3a67fae3c59e0f9d097ec50083022
+            bf/
+                7dadb4310ac5b8a34280a8d0dfd390dbd38ec0
             c0/
                 207c9d78d9e24e6748e1fb69f69cb102f8de29
             c1/
@@ -255,8 +305,12 @@ runebound_dccg/
                 cd2c8855df81df9f834b417e3dd5e7ff39bff3
             c4/
                 a52ef327332de6c060d591e21e0c33ca86558a
+            c6/
+                4f20c3d71e7f5be3d6beafcd44c0942ee95b60
             c8/
                 0cf582d03d9b7a7c955395c2167fd57efa3ea9
+            c9/
+                c985606f301bf7a1f431490eb6eac9e5637336
             ca/
                 1819f68eedbf5ad6af5bb6f19f48afae379837
                 270bdea2536df5c7532c0eaaba741067e10a83
@@ -267,12 +321,17 @@ runebound_dccg/
             cd/
                 201dfd41304ad1cd335a50bf0786ec9d75cf64
                 699b089645c967198742c6c7d4e74d67abf37e
+            ce/
+                6db42359cd9f05cb6336a5fb584f414604d0a2
+                b9e7831cad9ca380d0b776787d8c2a8bd08576
             d1/
                 12defc5f664db2e88e34d83db4f5580fb552b8
                 287ab8825496d0678994eb009df60136051e84
             d2/
+                410b2d71512bca8448471068644e388635e3f2
                 f1be81e8649f0751ff7363d180cd3516e29589
             d5/
+                2a294795ee55c02eda0d1bd159f17f482fe38b
                 8c8de5c4d3b66d4561428436f33242325d1209
                 970c1a8fda3a5e045c87a306b02d63c313cbf6
             d7/
@@ -285,6 +344,7 @@ runebound_dccg/
                 8700f6d35deaa6abb61515a6caf920178cb4e2
             dc/
                 2f3f356258eb4185fd056b0fba5a216b1c3c08
+                3965d7ed8231c9b570092a102e4e98c10d7048
                 b4c419ce0c4b6e477f8b1cd12059a7622d4295
             dd/
                 d53bb57185d659577bca1af380664bc68f6337
@@ -296,10 +356,13 @@ runebound_dccg/
                 9b4dd7e973491dec9542df96a4d23daef3777a
             e4/
                 63e7687eb61b4cf5938bc29b8b1de58198d1b3
+                d955c0bc16d32e0ae9ccd1a85255155ae4afff
             e6/
                 9de29bb2d1d6434b8b29ae775ad8c2e48c5391
             ea/
                 282ff4d9b37b7f089aa8edefeb711b44cd4e9e
+            ec/
+                e76b35b8836cf1420019856aa139cb3f6764d8
             ed/
                 dba2a3acca50f0519331eb2a3e6606fbf336c6
             f0/
@@ -311,7 +374,10 @@ runebound_dccg/
                 55da995f26f0c12507152359dcb4eb0e9c80bd
             f7/
                 bb2af30778f669d161d743db1a1c803f356d60
+                cbf83ad6da952d8481ff6a5de72e9127cd1f47
                 de9117bfaf1038ed8a1920b2d497b56e010ac2
+            fb/
+                14ac1839cb832dbe6018146e7f6996ad365601
             info/
             pack/
         refs/
@@ -366,6 +432,9 @@ runebound_dccg/
                 favicon-16x16.png
                 favicon-32x32.png
                 favicon.ico
+            news/
+                pack_sombras.png
+                tournament_banner.png
             printscreens/
                 01.png
                 02.png
@@ -380,11 +449,13 @@ runebound_dccg/
                 connect_background.jpg
                 create_account_background.jpg
                 graveyard.png
+                home_background.jpg
                 host.png
                 join.png
                 login_background.jpg
                 logo_placeholder.png
                 logo_small_placeholder.png
+                options_background.jpg
                 placeholder.txt
                 runebound_logo.png
                 SplashCreenLogo.png
@@ -414,6 +485,7 @@ runebound_dccg/
             TurnManager.js
         data/
             card-definitions.json
+            news-data.json
         network/
             NetworkManager.js
         ui/
@@ -428,6 +500,8 @@ runebound_dccg/
                 connectScreenTemplate.js
                 createAccountScreenTemplate.js
                 deckBuilderScreenTemplate.js
+                deckManagementScreenTemplate.js
+                homeScreenTemplate.js
                 loginScreenTemplate.js
                 optionsScreenTemplate.js
                 profileScreenTemplate.js
@@ -437,6 +511,8 @@ runebound_dccg/
             screens/
                 BattleScreenUI.js
                 DeckBuilderUI.js
+                DeckManagementScreenUI.js
+                HomeScreenUI.js
                 OptionsUI.js
                 ProfileScreenUI.js
 
@@ -448,7 +524,7 @@ runebound_dccg/
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\main.js ---
-// js/main.js
+// js/main.js - ATUALIZADO
 
 // --- Imports ---
 // Core Modules
@@ -463,308 +539,346 @@ import { generateSplashScreenHTML } from './ui/html-templates/splashScreenTempla
 import { generateTitleScreenHTML } from './ui/html-templates/titleScreenTemplate.js';
 import { generateLoginScreenHTML } from './ui/html-templates/loginScreenTemplate.js';
 import { generateCreateAccountScreenHTML } from './ui/html-templates/createAccountScreenTemplate.js';
-import { generateProfileScreenHTML } from './ui/html-templates/profileScreenTemplate.js';
+import { generateHomeScreenHTML } from './ui/html-templates/homeScreenTemplate.js';
+import { generateProfileScreenHTML } from './ui/html-templates/profileScreenTemplate.js';       // Importa o template do perfil (simplificado)
+import { generateDeckManagementScreenHTML } from './ui/html-templates/deckManagementScreenTemplate.js'; // <<<=== Importado (Nova Tela)
 import { generateConnectScreenHTML } from './ui/html-templates/connectScreenTemplate.js';
-import { generateDeckBuilderScreenHTML } from './ui/html-templates/deckBuilderScreenTemplate.js';
+import { generateDeckBuilderScreenHTML } from './ui/html-templates/deckBuilderScreenTemplate.js'; // Importa o template do construtor (com botão Voltar atualizado)
 import { generateOptionsScreenHTML } from './ui/html-templates/optionsScreenTemplate.js';
 import { generateBattleScreenHTML } from './ui/html-templates/battleScreenTemplate.js';
-import { generateTopBarHTML } from './ui/html-templates/topBarTemplate.js';
-// Add any other screen templates you create here
+import { generateTopBarHTML } from './ui/html-templates/topBarTemplate.js';                   // Importa a top bar (com novo botão)
+
 
 // --- Document Ready ---
-$(document).ready(() => {
+$(document).ready(async () => { // Marcado como async para permitir awaits internos
     console.log("Runebound Clash - Initializing (Dynamic HTML)...");
 
     // --- STEP 1: Build HTML Structure Dynamically ---
     console.log("MAIN: Generating HTML structure...");
-    const $screensContainer = $('#screens-container');
-    const $body = $('body');
+    const $screensContainer = $('#screens-container'); // Container principal das telas
+    const $body = $('body');                           // Body para adicionar a Top Bar
 
-    // CRITICAL CHECK: Ensure the main container exists in index.html
+    // Verificação crítica: garante que o container existe
     if (!$screensContainer.length) {
         console.error("CRITICAL ERROR: #screens-container div not found in index.html! Cannot generate UI.");
-        // Display a visible error message if the container is missing
-        $body.empty().css({ // Clear body and add error
+        $body.empty().css({
             'background-color': '#333', 'color': 'red', 'display': 'flex',
             'justify-content': 'center', 'align-items': 'center', 'height': '100vh',
             'font-size': '1.5em', 'padding': '20px', 'text-align': 'center'
-        }).html('<h1>Erro Crítico</h1><p>A estrutura base do HTML (index.html) parece estar faltando o elemento <code><div id="screens-container"></code>. A aplicação não pode iniciar.</p>');
-        return; // Stop execution
+        }).html('<h1>Erro Crítico</h1><p>A estrutura base do HTML (index.html) parece estar faltando o elemento <code><div id="screens-container"></div></code>. A aplicação não pode iniciar.</p>');
+        return; // Para a execução
     }
 
     try {
-        // Generate and Append/Prepend HTML content
-        // Clear any static placeholder content first
-        $screensContainer.empty()
-            .append(generateSplashScreenHTML())          // Splash Screen FIRST
-            .append(generateTitleScreenHTML())
-            .append(generateLoginScreenHTML())
-            .append(generateCreateAccountScreenHTML())
-            .append(generateProfileScreenHTML())
-            .append(generateConnectScreenHTML())
-            .append(generateDeckBuilderScreenHTML())
-            .append(generateOptionsScreenHTML())
-            .append(generateBattleScreenHTML());
-            // .append(generateOtherScreenHTML()); // Add other screens as needed
+        // Gera e anexa o HTML de cada tela ao container
+        $screensContainer.empty() // Limpa qualquer conteúdo estático
+            .append(generateSplashScreenHTML())          // Splash Screen PRIMEIRO
+            .append(generateTitleScreenHTML())           // Tela de Título
+            .append(generateLoginScreenHTML())           // Tela de Login
+            .append(generateCreateAccountScreenHTML())   // Tela de Criar Conta
+            .append(generateHomeScreenHTML())            // Tela Inicial (Notícias)
+            .append(generateProfileScreenHTML())         // Tela de Perfil (Simplificada)
+            .append(generateDeckManagementScreenHTML()) // <<<=== Adicionada Nova Tela de Decks/Coleção
+            .append(generateConnectScreenHTML())         // Tela de Conexão
+            .append(generateDeckBuilderScreenHTML())     // Tela do Construtor de Decks
+            .append(generateOptionsScreenHTML())         // Tela de Opções
+            .append(generateBattleScreenHTML());         // Tela de Batalha
 
-        // Prepend Top Bar (it sits above the screen container)
+        // Adiciona a Top Bar no início do body, fora do container de telas
         $body.prepend(generateTopBarHTML());
 
         console.log("MAIN: HTML Structure dynamically generated.");
 
     } catch (htmlGenError) {
          console.error("MAIN: Critical error during HTML generation from templates:", htmlGenError);
-         // Try to show error on splash screen if it exists, otherwise fallback
+         // Tenta mostrar erro na splash screen ou no container principal
          const $splash = $('#splash-screen');
-         if ($splash.length) {
+         if ($splash.length && $splash.hasClass('active')) {
              $splash.addClass('active').html(`<p style="color:red; font-weight:bold;">Erro Crítico na Geração da UI: ${htmlGenError.message}. Recarregue.</p>`);
-             $('.screen').not($splash).removeClass('active'); // Hide others
+             $('.screen').not($splash).removeClass('active');
          } else {
              $screensContainer.html(`<p style="color:red; font-weight:bold;">Erro Crítico na Geração da UI: ${htmlGenError.message}. Recarregue.</p>`);
          }
-         return; // Stop further execution
+         return; // Para a execução
     }
     // --- END STEP 1 ---
 
 
-    // --- STEP 2: Initialize Modules and Logic (Mostly unchanged from original) ---
+    // --- STEP 2: Initialize Modules and Logic ---
     console.log("MAIN: Initializing modules and binding events...");
-    try { // Wrap main initialization in a try...catch
+    try { // Envolve a inicialização principal em try...catch
         // --- Module Initialization ---
-        const cardDatabase = loadCardDefinitions();
+        const cardDatabase = loadCardDefinitions(); // Carrega definições de cartas
         if (!cardDatabase) {
-            // Ensure splash exists before trying to modify it
+            // Trata erro crítico se as cartas não puderem ser carregadas
             const $splashError = $('#splash-screen');
-             if ($splashError.length) {
+             if ($splashError.length && $splashError.hasClass('active')) {
                  $splashError.text('Erro Crítico: Falha ao carregar cartas. Recarregue.').css('color', 'salmon');
-                 $('.screen').removeClass('active'); $splashError.addClass('active');
              } else {
-                 console.error("CRITICAL: Failed to load card definitions AND splash screen not found!");
+                 console.error("CRITICAL: Failed to load card definitions AND splash screen not found/active!");
                  $screensContainer.html('<p style="color:red; font-weight:bold;">Erro Crítico: Falha ao carregar cartas.</p>');
              }
             console.error("CRITICAL: Failed to load card definitions!");
-            return; // Stop further execution
+            return; // Para a execução
         }
 
-        // Initialize managers AFTER HTML is generated
-        const screenManager = new ScreenManager(); // Uses default transition duration
+        // Inicializa os gerenciadores APÓS o HTML ser gerado
+        const screenManager = new ScreenManager();
         const accountManager = new AccountManager();
-        const uiManager = new UIManager(screenManager, accountManager, cardDatabase); // UIManager now works with generated HTML
+        // UIManager agora instancia todas as sub-UIs (Home, Profile, DeckManagement, DeckBuilder, Options, Battle)
+        const uiManager = new UIManager(screenManager, accountManager, cardDatabase);
 
         // --- Initial Screen & Splash Transition ---
         console.log("MAIN: Showing splash screen...");
-        // ScreenManager needs the #splash-screen div to exist, which it does now.
-        screenManager.showScreen('splash-screen'); // Show splash initially
-        // Add 'loading' class shortly after to trigger progress bar animation
-        setTimeout(() => $('#splash-screen').addClass('loading'), 50); // Pequeno delay para garantir renderização inicial
+        // A splash screen já começa com 'active' no template
+        setTimeout(() => $('#splash-screen').addClass('loading'), 50); // Adiciona classe para efeito visual se houver
 
         console.log("MAIN: Setting timeout for screen transition (3000ms)...");
-        setTimeout(() => {
+        setTimeout(async () => { // Callback após o delay (async para renderHomeScreen)
             console.log("MAIN: Timeout finished. Checking login state...");
             try {
-                const currentUser = accountManager.getCurrentUser();
+                const currentUser = accountManager.getCurrentUser(); // Verifica se há usuário logado
                 if (currentUser) {
                     // --- Logged In Flow ---
-                    console.log(`MAIN: User '${currentUser.username}' found. Showing Top Bar and Profile.`);
-                    uiManager.showTopBar(currentUser); // Show the top bar
-                    $('#screens-container').addClass('with-top-bar'); // Add padding for top bar
-                    uiManager.renderProfileScreen(); // Render profile content (finds generated elements)
-                    screenManager.showScreen('profile-screen'); // Show profile screen initially
+                    console.log(`MAIN: User '${currentUser.username}' found. Showing Top Bar and Home Screen.`);
+                    uiManager.showTopBar(currentUser);          // Mostra a Top Bar com dados do usuário
+                    $('#screens-container').addClass('with-top-bar'); // Adiciona classe para ajustar layout
+                    await uiManager.renderHomeScreen();         // Renderiza a Home Screen (async)
+                    screenManager.showScreen('home-screen');    // Mostra a Home Screen
                 } else {
                     // --- Logged Out Flow ---
                     console.log("MAIN: No user found. Showing title-screen.");
-                    uiManager.hideTopBar(); // Ensure top bar is hidden
-                    $('#screens-container').removeClass('with-top-bar');
-                    screenManager.showScreen('title-screen'); // Go to Title Screen
+                    uiManager.hideTopBar();                     // Esconde a Top Bar
+                    $('#screens-container').removeClass('with-top-bar'); // Remove classe de ajuste
+                    screenManager.showScreen('title-screen');   // Mostra a Tela de Título
                 }
                 console.log("MAIN: Initial screen setup complete.");
             } catch (error) {
                 console.error("MAIN: Error inside setTimeout callback:", error);
+                // Fallback em caso de erro na verificação/renderização inicial
                 console.log("MAIN: Fallback - Showing title-screen due to error.");
-                 uiManager.hideTopBar(); // Ensure top bar is hidden on error too
+                 uiManager.hideTopBar();
                  $('#screens-container').removeClass('with-top-bar');
                 screenManager.showScreen('title-screen');
             }
-        }, 3000); // 3-second delay
+        }, 3000); // Delay de 3 segundos para a splash screen
 
         // --- Global UI Bindings ---
-        // IMPORTANT: These bindings are attached AFTER the HTML is generated,
-        // so jQuery can find the elements by their IDs.
-
-        // Title Screen Actions
+        // Ações da Tela de Título
         $('#btn-goto-login').on('click', () => screenManager.showScreen('login-screen'));
         $('#btn-goto-create-account').on('click', () => screenManager.showScreen('create-account-screen'));
-        $('#btn-goto-options-icon').on('click', () => { uiManager.renderOptionsScreen(); screenManager.showScreen('options-screen'); }); // Options from Title
+        // Ícone de Opções na Title Screen (leva para Options e renderiza)
+        $('#btn-goto-options-icon').on('click', () => {
+             uiManager.renderOptionsScreen();
+             screenManager.showScreen('options-screen');
+        });
 
-        // Back to Title from Login/Create
-        $('#btn-create-back-to-title, #btn-login-back-to-title').on('click', () => { $('#create-account-message, #login-message').text(''); screenManager.showScreen('title-screen'); });
+        // Botões "Voltar" das telas de Login/Criar Conta
+        $('#btn-create-back-to-title, #btn-login-back-to-title').on('click', () => {
+            $('#create-account-message, #login-message').text(''); // Limpa mensagens de erro/sucesso
+            screenManager.showScreen('title-screen');
+        });
 
-        // Create Account Form Submit
+        // Submissão do Formulário de Criar Conta
         $('#create-account-form').on('submit', (event) => {
             event.preventDefault();
-            const $form = $(event.currentTarget); // Referência ao formulário
-            const u = $('#create-username').val().trim(), p = $('#create-password').val(), $m = $('#create-account-message');
-            const r = accountManager.createAccount(u, p);
+            const $form = $(event.currentTarget);
+            const u = $('#create-username').val().trim();
+            const p = $('#create-password').val();
+            const $m = $('#create-account-message');
+            const r = accountManager.createAccount(u, p); // Chama AccountManager
             $m.text(r.message).css('color', r.success ? 'lightgreen' : 'salmon');
 
             if (r.success) {
-                $form[0].reset();
-                setTimeout(() => {
+                $form[0].reset(); // Limpa o formulário
+                setTimeout(() => { // Pequeno delay antes de ir para Login
                     if (screenManager.getActiveScreenId() === 'create-account-screen') {
-                        screenManager.showScreen('login-screen');
-                        $m.text('');
+                        screenManager.showScreen('login-screen'); // Vai para Login após sucesso
+                        $m.text(''); // Limpa mensagem de sucesso
                     }
                  }, 2000);
             } else {
-                // ---> ADICIONAR SHAKE NO ERRO <---
-                const $container = $form.closest('.form-container'); // Acha o container
+                // Efeito de "shake" no formulário em caso de erro
+                const $container = $form.closest('.form-container');
                 if ($container.length) {
-                    $container.addClass('form-shake'); // Adiciona a classe
-                    // Remove a classe após a animação terminar (0.5s + margem)
-                    setTimeout(() => {
-                        $container.removeClass('form-shake');
-                    }, 600); // Duração um pouco maior que a animação CSS
+                    $container.addClass('form-shake');
+                    setTimeout(() => $container.removeClass('form-shake'), 600);
                 }
-                // ---> FIM SHAKE <---
             }
         });
 
-        // Login Form Submit
-        $('#login-form').on('submit', (event) => {
+        // Submissão do Formulário de Login
+        $('#login-form').on('submit', async (event) => { // async para renderHomeScreen
             event.preventDefault();
-            const $form = $(event.currentTarget); // Referência ao formulário
-            const u = $('#login-username').val().trim(), p = $('#login-password').val(), $m = $('#login-message');
-            const r = accountManager.login(u, p);
+            const $form = $(event.currentTarget);
+            const u = $('#login-username').val().trim();
+            const p = $('#login-password').val();
+            const $m = $('#login-message');
+            const r = accountManager.login(u, p); // Chama AccountManager
             $m.text(r.message).css('color', r.success ? 'lightgreen' : 'salmon');
 
             if (r.success) {
-                $form[0].reset();
+                $form[0].reset(); // Limpa o formulário
                 // --- Login Success Flow ---
-                uiManager.showTopBar(r.user);
-                $('#screens-container').addClass('with-top-bar');
-                uiManager.renderProfileScreen();
-                screenManager.showScreen('profile-screen');
+                uiManager.showTopBar(r.user);                  // Mostra Top Bar
+                $('#screens-container').addClass('with-top-bar'); // Ajusta layout
+                await uiManager.renderHomeScreen();             // Renderiza Home (async)
+                screenManager.showScreen('home-screen');        // Mostra Home
+                // --- Fim Login Success Flow ---
             } else {
-                // ---> ADICIONAR SHAKE NO ERRO <---
-                const $container = $form.closest('.form-container'); // Acha o container
+                // Efeito de "shake" no formulário em caso de erro
+                const $container = $form.closest('.form-container');
                 if ($container.length) {
-                    $container.addClass('form-shake'); // Adiciona a classe
-                    // Remove a classe após a animação terminar (0.5s + margem)
-                    setTimeout(() => {
-                        $container.removeClass('form-shake');
-                    }, 600); // Duração um pouco maior que a animação CSS
+                    $container.addClass('form-shake');
+                    setTimeout(() => $container.removeClass('form-shake'), 600);
                 }
-                 // ---> FIM SHAKE <---
             }
         });
 
-
         // --- Top Bar Navigation ---
-        $('#top-bar-btn-profile').on('click', () => {
-            if(screenManager.getActiveScreenId() !== 'profile-screen'){ uiManager.renderProfileScreen(); screenManager.showScreen('profile-screen'); }
-        });
-        $('#top-bar-btn-connect').on('click', () => {
-             $('#connect-message').text(''); screenManager.showScreen('connect-screen');
-             // Reset connect screen UI state if needed
-             $('#server-status-section, #join-game-section').hide();
-        });
-         $('#top-bar-btn-options').on('click', () => { // Options icon in top bar
-            uiManager.renderOptionsScreen(); screenManager.showScreen('options-screen');
-        });
-        $('#top-bar-btn-logout').on('click', () => {
-            accountManager.logout();
-            uiManager.hideTopBar(); // Hide top bar
-            $('#screens-container').removeClass('with-top-bar'); // Remove padding
-            screenManager.showScreen('title-screen'); // Go to title
-        });
+        // A navegação principal (Home, Perfil, Decks, Conectar, Opções, Logout)
+        // é agora tratada dentro de UIManager._bindPermanentUIActions()
 
-        // --- Other Screen Bindings ---
-        // Back Buttons (Use goBack or specific navigation)
-         $('#btn-options-back-to-main').on('click', () => screenManager.goBack('profile-screen')); // Go back or to profile
-         $('#btn-deck-builder-back').on('click', () => screenManager.showScreen('profile-screen')); // Always back to profile from DB
-         $('#btn-connect-back-to-main').on('click', () => screenManager.showScreen('profile-screen')); // Back to profile from connect
+        // --- Other Screen Back Buttons ---
+         // Botão Voltar da tela de Opções (volta para a tela anterior, com fallback Home)
+         $('#btn-options-back-to-main').on('click', () => screenManager.goBack('home-screen'));
 
-        // Profile Actions (UIManager handles internal bindings like avatar/deck clicks)
-        // $('#btn-goto-deck-builder-new') click might be handled inside UIManager._bindProfileInteractions
+         // --- ATUALIZADO: Botão Voltar do Deck Builder ---
+         // Agora leva para a Tela de Gerenciamento de Decks
+         $('#btn-deck-builder-back').on('click', () => {
+             console.log("MAIN: Deck Builder back button clicked, going to Deck Management.");
+             // A UI de Deck Management deve ser renderizada pelo UIManager ao navegar para ela
+             uiManager.renderDeckManagementScreen(); // Garante que está atualizada
+             screenManager.showScreen('deck-management-screen');
+         });
+         // -------------------------------------------
 
-        // Options Save
-        $('#btn-save-options').on('click', () => uiManager.saveOptions()); // UIManager handles this
+         // Botão Voltar da tela Connect (leva para Home)
+         $('#btn-connect-back-to-main').on('click', () => screenManager.showScreen('home-screen'));
+
+        // Ações do Perfil (Seleção de Avatar) são tratadas internamente por ProfileScreenUI.
+        // Ações do Gerenciamento de Decks (Editar, Deletar, Criar) são tratadas por DeckManagementScreenUI.
+        // Ações do Construtor de Decks (Salvar, Limpar) são tratadas por DeckBuilderUI.
+
+        // Botão Salvar Opções (delegado para OptionsUI via UIManager)
+        $('#btn-save-options').on('click', () => uiManager.saveOptions()); // Assumindo que UIManager tem um método saveOptions que chama OptionsUI
 
         // --- Game Initialization Logic & Connect Screen Bindings ---
-        let gameInstance = null;
+        let gameInstance = null; // Armazena a instância do jogo atual
 
-        /** Function to set up and start a new game instance (Unchanged) */
+        /** Função para inicializar e começar uma nova partida (Simulada/Local) */
         function initializeAndStartGame(localPlayerDeckId, opponentUsername = "Opponent_AI", opponentDeckId = 'default_deck_1') {
              console.log("MAIN: Initializing game...");
-             const currentUser = accountManager.getCurrentUser(); if (!currentUser) { console.error("MAIN: No user logged in."); screenManager.showScreen('login-screen'); return; }
-             const localDecks = accountManager.loadDecks(); const localDeck = localDecks?.[localPlayerDeckId];
-             if (!localDeck?.cards || localDeck.cards.length < 30) { console.error(`MAIN: Local deck '${localDeck?.name || localPlayerDeckId}' invalid.`); $('#connect-message').text(`Erro: Deck '${localDeck?.name || localPlayerDeckId}' inválido.`).css('color', 'salmon'); return; }
-             const localPlayerDeckIds = localDeck.cards; console.log(`MAIN: Local Deck '${localDeck.name}' (${localPlayerDeckIds.length} cards) found.`);
-             // Opponent Deck Sim/Fallback (Unchanged)
-             let defaultOpponentDeckIds = accountManager.getUserData(currentUser.username)?.decks?.[opponentDeckId]?.cards;
-             if (!defaultOpponentDeckIds || defaultOpponentDeckIds.length < 30) { console.warn(`MAIN: Opponent deck fallback.`); const allCardIds = Object.keys(cardDatabase); if (allCardIds.length >= 30) { defaultOpponentDeckIds = allCardIds.slice(0, 30); console.log(`MAIN: Using fallback opponent deck.`); } else { console.error("MAIN: Cannot create fallback opponent deck!"); $('#connect-message').text('Erro: Definições insuficientes.').css('color', 'salmon'); return; } } else { console.log(`MAIN: Using opponent deck '${opponentDeckId}'.`); }
+             const currentUser = accountManager.getCurrentUser();
+             if (!currentUser) { /* ... (tratamento de erro - redireciona login) ... */ return; }
+
+             const localDecks = accountManager.loadDecks(); // Carrega decks do usuário logado
+             const localDeck = localDecks?.[localPlayerDeckId]; // Pega o deck selecionado
+
+             // Valida o deck local
+             if (!localDeck?.cards || localDeck.cards.length < 30 || localDeck.cards.length > 40) { // <<<=== Verifica tamanho do deck
+                 console.error(`MAIN: Local deck '${localDeck?.name || localPlayerDeckId}' is invalid (needs 30-40 cards). Found: ${localDeck?.cards?.length}`);
+                 $('#connect-message').text(`Erro: Deck '${localDeck?.name || localPlayerDeckId}' inválido (precisa de 30-40 cartas).`).css('color', 'salmon');
+                 return; // Impede início do jogo
+             }
+             const localPlayerDeckIds = localDeck.cards;
+             console.log(`MAIN: Local Deck '${localDeck.name}' (${localPlayerDeckIds.length} cards) found.`);
+
+             // Simulação/Fallback de Deck do Oponente
+             let opponentDeckIds = accountManager.getUserData("Opponent_AI")?.decks?.[opponentDeckId]?.cards; // Tenta carregar um deck AI (se existisse)
+             if (!opponentDeckIds || opponentDeckIds.length < 30) {
+                 console.warn(`MAIN: Opponent deck '${opponentDeckId}' invalid or not found, using fallback.`);
+                 const allCardIds = Object.keys(cardDatabase);
+                 if (allCardIds.length >= 30) {
+                     opponentDeckIds = allCardIds.sort(() => 0.5 - Math.random()).slice(0, 30); // Pega 30 cartas aleatórias
+                     console.log(`MAIN: Using fallback opponent deck with 30 random cards.`);
+                 } else {
+                     console.error("MAIN: Cannot create fallback opponent deck! Insufficient card definitions.");
+                     $('#connect-message').text('Erro Crítico: Definições de cartas insuficientes para o oponente.').css('color', 'salmon');
+                     return; // Impede início
+                 }
+             } else {
+                 console.log(`MAIN: Using opponent deck '${opponentDeckId}'.`);
+             }
              console.log(`MAIN: Preparing ${currentUser.username} vs ${opponentUsername}`);
 
+             // Inicia a instância do Jogo
              try {
-                 gameInstance = new Game(cardDatabase);
-                 const player1 = gameInstance.addPlayer(currentUser.username, localPlayerDeckIds);
-                 const player2 = gameInstance.addPlayer(opponentUsername, defaultOpponentDeckIds);
-                 if (!player1 || !player2) throw new Error("Falha ao adicionar jogadores.");
+                 gameInstance = new Game(cardDatabase); // Cria nova instância
+                 const player1 = gameInstance.addPlayer(currentUser.username, localPlayerDeckIds); // Adiciona jogador local
+                 const player2 = gameInstance.addPlayer(opponentUsername, opponentDeckIds);      // Adiciona oponente (AI)
 
-                 uiManager.setGameInstance(gameInstance); // Link game to UI
-                 uiManager.setLocalPlayer(player1.id);     // Tell UI who we are
+                 if (!player1 || !player2) { // Verifica se os jogadores foram adicionados com sucesso
+                      throw new Error("Falha ao adicionar jogadores. Verifique os decks e logs.");
+                 }
 
-                 if (gameInstance.setupGame()) {
-                     gameInstance.startGame();
-                     uiManager.renderInitialGameState(); // UI draws the board
-                     // uiManager.bindGameActions(); // UIManager should handle its internal game bindings
-                     console.log("MAIN: Game started successfully!"); $('#connect-message').text('');
-                     screenManager.showScreen('battle-screen'); // Explicitly show battle screen
+                 uiManager.setGameInstance(gameInstance); // Informa UIManager sobre o jogo
+                 uiManager.setLocalPlayer(player1.id);     // Informa UIManager quem é o jogador local
+
+                 if (gameInstance.setupGame()) {        // Prepara o jogo (embaralhar, etc.)
+                     gameInstance.startGame();           // Inicia o jogo (compra mãos, começa turno)
+                     uiManager.renderInitialGameState(); // UIManager manda renderizar o tabuleiro
+                     console.log("MAIN: Game started successfully!");
+                     $('#connect-message').text('');     // Limpa mensagens da tela Connect
+                     screenManager.showScreen('battle-screen'); // Vai para a tela de Batalha
                  } else {
-                     throw new Error("Game setup failed.");
+                     throw new Error("Falha na configuração inicial do jogo.");
                  }
              } catch (error) {
                  console.error("MAIN: Error during game initialization:", error);
-                 $('#connect-message').text(`Erro ao iniciar: ${error.message}`).css('color', 'salmon'); gameInstance = null;
-                 setTimeout(() => {
-                     // Check if still on connect screen before navigating away
-                     if (screenManager.getActiveScreenId() === 'connect-screen') {
-                         screenManager.showScreen('profile-screen');
-                     }
-                  }, 3000); // Back to profile on error
+                 $('#connect-message').text(`Erro ao iniciar: ${error.message}`).css('color', 'salmon');
+                 gameInstance = null; // Limpa instância em caso de erro
+                 // Mantém na tela de conexão para ver o erro
              }
-        }
+        } // Fim de initializeAndStartGame
 
-
-        // Connect Screen Buttons (Simulated Game Start)
+        // Botões da Tela Connect (Simulando Início de Jogo)
         $('#btn-create-server').on('click', () => {
             $('#join-game-section').hide(); $('#server-status-section').show(); $('#server-ip-code').text('SIMULANDO...'); $('#connect-message').text('Simulando... Iniciando Jogo Solo.');
-            const decks = accountManager.loadDecks(); const firstDeckId = decks ? Object.keys(decks)[0] : null;
-            if (!firstDeckId || !decks[firstDeckId] || decks[firstDeckId].cards?.length < 30) { $('#connect-message').text('Erro: Nenhum deck válido (mín 30). Crie/Edite no Perfil.').css('color', 'salmon'); $('#server-status-section').hide(); return; }
-            setTimeout(() => initializeAndStartGame(firstDeckId), 1000); // Pass deck ID
+            const decks = accountManager.loadDecks();
+            // Encontra o primeiro deck válido do usuário
+            const firstValidDeckId = decks ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 40) : null;
+            if (!firstValidDeckId) {
+                 $('#connect-message').text('Erro: Nenhum deck válido (30-40 cartas). Crie/Edite nos Decks.').css('color', 'salmon');
+                 $('#server-status-section').hide();
+                 return;
+            }
+            setTimeout(() => initializeAndStartGame(firstValidDeckId), 500); // Inicia com o deck válido
         });
-        $('#btn-show-join-options').on('click', () => { $('#server-status-section').hide(); $('#join-game-section').show(); $('#connect-message').text(''); });
+        $('#btn-show-join-options').on('click', () => {
+             $('#server-status-section').hide();
+             $('#join-game-section').show();
+             $('#connect-message').text('');
+        });
         $('#btn-connect-to-server').on('click', () => {
-            const code = $('#opponent-ip').val().trim(); $('#connect-message').text(`Simulando conexão com ${code || 'host'}... Iniciando Jogo Solo.`);
-            const decks = accountManager.loadDecks(); const firstDeckId = decks ? Object.keys(decks)[0] : null;
-            if (!firstDeckId || !decks[firstDeckId] || decks[firstDeckId].cards?.length < 30) { $('#connect-message').text('Erro: Nenhum deck válido (mín 30). Crie/Edite no Perfil.').css('color', 'salmon'); return; }
-            setTimeout(() => initializeAndStartGame(firstDeckId), 1000); // Pass deck ID
+            const code = $('#opponent-ip').val().trim();
+            $('#connect-message').text(`Simulando conexão com ${code || 'host'}... Iniciando Jogo Solo.`);
+            const decks = accountManager.loadDecks();
+            // Encontra o primeiro deck válido do usuário
+            const firstValidDeckId = decks ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 40) : null;
+             if (!firstValidDeckId) {
+                 $('#connect-message').text('Erro: Nenhum deck válido (30-40 cartas). Crie/Edite nos Decks.').css('color', 'salmon');
+                 return;
+             }
+            setTimeout(() => initializeAndStartGame(firstValidDeckId), 500); // Inicia com o deck válido
         });
-        $('#btn-cancel-hosting').on('click', () => { $('#server-status-section').hide(); $('#connect-message').text('Criação cancelada.'); });
+        $('#btn-cancel-hosting').on('click', () => {
+             $('#server-status-section').hide();
+             $('#connect-message').text('Criação cancelada.');
+        });
 
         // --- Final Log ---
-        console.log("Runebound Clash UI Ready (v2.1 - Shake Feedback).");
+        console.log("Runebound Clash UI Ready (v2.3 - Deck Mgmt Screen).");
 
     } catch (initError) {
         console.error("MAIN: Critical initialization error:", initError);
-        // Try to display the error on the splash screen if possible
+         // Mostra erro crítico na splash screen ou no container
          const $splashSevereError = $('#splash-screen');
-         if ($splashSevereError.length) {
+         if ($splashSevereError.length && $splashSevereError.hasClass('active')) {
               $splashSevereError.text(`Erro Crítico: ${initError.message}. Recarregue.`).css('color', 'red');
               $('.screen').removeClass('active');
               $splashSevereError.addClass('active');
          } else {
-            // Fallback if splash itself wasn't even generated
             $screensContainer.html(`<p style="color:red; font-weight:bold;">Erro Crítico de Inicialização: ${initError.message}. Recarregue.</p>`);
          }
     }
@@ -2776,162 +2890,264 @@ export default class ScreenManager {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\UIManager.js ---
-// js/ui/UIManager.js - Refatorado (Esqueleto)
+// js/ui/UIManager.js - ATUALIZADO
 
-// Importar os novos módulos
-import ProfileScreenUI from './screens/ProfileScreenUI.js'; // CORRIGIDO
-import DeckBuilderUI from './screens/DeckBuilderUI.js';   // CORRIGIDO
-import BattleScreenUI from './screens/BattleScreenUI.js'; // CORRIGIDO
-import OptionsUI from './screens/OptionsUI.js';         // CORRIGIDO
-import CardRenderer from './helpers/CardRenderer.js'; // OK
-import ZoomHandler from './helpers/ZoomHandler.js';   // OK
+// Importar os módulos de UI específicos e helpers
+import ProfileScreenUI from './screens/ProfileScreenUI.js';       // Tela de Perfil (Simplificada)
+import DeckBuilderUI from './screens/DeckBuilderUI.js';         // Construtor de Decks
+import BattleScreenUI from './screens/BattleScreenUI.js';        // Tela de Batalha
+import OptionsUI from './screens/OptionsUI.js';             // Tela de Opções
+import HomeScreenUI from './screens/HomeScreenUI.js';          // Tela Inicial (Notícias)
+import DeckManagementScreenUI from './screens/DeckManagementScreenUI.js'; // <<<=== Importado (Nova Tela)
+import CardRenderer from './helpers/CardRenderer.js';       // Helper para renderizar cartas
+import ZoomHandler from './helpers/ZoomHandler.js';        // Helper para zoom de cartas
 
 export default class UIManager {
     // --- Core References ---
     #screenManager;
     #accountManager;
     #cardDatabase;
-    #gameInstance = null;
-    #localPlayerId = null;
+    #gameInstance = null; // Instância do jogo atual (se houver)
+    #localPlayerId = null; // ID do jogador local na partida atual
 
     // --- UI Module Instances ---
     #profileUI;
     #deckBuilderUI;
     #battleUI;
     #optionsUI;
+    #homeUI;
+    #deckManagementUI; // <<<=== Adicionado: Instância da UI de Gerenciamento de Decks
     #cardRenderer;
     #zoomHandler;
 
     constructor(screenManager, accountManager, cardDatabase) {
+        // Armazena as dependências principais
         this.#screenManager = screenManager;
         this.#accountManager = accountManager;
         this.#cardDatabase = cardDatabase;
 
-        // Instanciar helpers primeiro se outros dependerem deles
+        // Instancia helpers que podem ser usados por outras UIs
         this.#cardRenderer = new CardRenderer();
-        this.#zoomHandler = new ZoomHandler(this.#cardDatabase); // Passa dependência
+        this.#zoomHandler = new ZoomHandler(this.#cardDatabase); // Passa a base de dados para o zoom
 
-        // Instanciar módulos de UI específicos, injetando dependências
-        // (Certifique-se de que as classes que você está instanciando
-        // são as importadas corretamente acima)
-        this.#optionsUI = new OptionsUI(); // Pode não precisar de nada
+        // --- Instancia os módulos de UI específicos ---
+        // Cada módulo recebe as dependências de que precisa
+
+        this.#homeUI = new HomeScreenUI(this.#screenManager, this); // 'this' passa o próprio UIManager
+
+        this.#optionsUI = new OptionsUI(); // OptionsUI gerencia suas próprias dependências internas ou localStorage
+
+        // ProfileUI agora é simplificado (sem decks/coleção)
         this.#profileUI = new ProfileScreenUI(
-            this.#screenManager,
-            this.#accountManager,
-            this.#cardDatabase,
-            this.#cardRenderer,
-            this.#zoomHandler,
-            this // Passa o próprio UIManager se precisar chamar renderDeckBuilderScreen
+            this.#screenManager, this.#accountManager, this.#cardDatabase,
+            this.#cardRenderer, this.#zoomHandler, this // Passa refs e UIManager
         );
-        this.#deckBuilderUI = new DeckBuilderUI(
-            this.#screenManager,
-            this.#accountManager,
-            this.#cardDatabase,
-            this.#cardRenderer,
-            this.#zoomHandler
-        );
-        this.#battleUI = new BattleScreenUI(
-             this.#screenManager,
-             this.#accountManager, // <--- Adicionei accountManager aqui, pois BattleScreenUI o usa
-             this.#cardDatabase,
-             this.#cardRenderer,
-             this.#zoomHandler
-         );
 
-        this._bindPermanentUIActions(); // Bind global/top bar actions
+        // --- Instancia a nova DeckManagementScreenUI --- <<<=== Adicionado
+        this.#deckManagementUI = new DeckManagementScreenUI(
+            this.#screenManager, this.#accountManager, this.#cardDatabase,
+            this.#cardRenderer, this.#zoomHandler, this // Passa refs e UIManager
+        );
+        // ----------------------------------------------
+
+        // DeckBuilderUI permanece, mas agora é acessado a partir da DeckManagementScreen
+        this.#deckBuilderUI = new DeckBuilderUI(
+            this.#screenManager, this.#accountManager, this.#cardDatabase,
+            this.#cardRenderer, this.#zoomHandler // Não precisa do UIManager aqui
+        );
+
+        // BattleScreenUI
+        this.#battleUI = new BattleScreenUI(
+             this.#screenManager, this.#accountManager, // Passa accountManager (ex: para avatar)
+             this.#cardDatabase, this.#cardRenderer, this.#zoomHandler
+         );
+        // ----------------------------------------------
+
+        // Vincula ações permanentes (como botões da Top Bar)
+        this._bindPermanentUIActions();
         console.log("UIManager (Coordinator) inicializado.");
     }
 
-    // --- Setup ---
+    // --- Setup para o Jogo ---
     setGameInstance(gameInstance) {
         this.#gameInstance = gameInstance;
         console.log("UI Coordinator: Game instance set.");
-        // Passar a instância para os módulos que precisam dela
+        // Informa a UI de Batalha sobre a instância do jogo
         this.#battleUI.setGameInstance(gameInstance);
     }
     setLocalPlayer(playerId) {
         this.#localPlayerId = playerId;
         console.log(`UI Coordinator: Local player set: ${playerId}`);
+        // Informa a UI de Batalha quem é o jogador local
         this.#battleUI.setLocalPlayer(playerId);
     }
 
-    // --- Top Bar Control --- (Pode permanecer aqui)
+    // --- Controle da Barra Superior (Top Bar) ---
     showTopBar(userData) {
         const $topBar = $('#top-bar');
         if (userData) {
             $topBar.find('#top-bar-username').text(userData.username);
-            $topBar.addClass('active'); // Make it visible
+            // TODO: Atualizar o avatar na top bar usando userData.avatar
+            // Ex: $topBar.find('#top-bar-avatar-img').attr('src', `assets/images/avatars/${userData.avatar}`);
+            $topBar.addClass('active'); // Torna a barra visível
             console.log("UIManager: Top Bar shown for", userData.username);
         } else {
             console.warn("UIManager: showTopBar called without user data.");
         }
     }
     hideTopBar() {
-        $('#top-bar').removeClass('active');
+        $('#top-bar').removeClass('active'); // Esconde a barra
         console.log("UIManager: Top Bar hidden.");
     }
 
 
-    // --- Delegação de Renderização ---
+    // --- Delegação de Renderização para Módulos Específicos ---
+
+    /** Renderiza a tela inicial (notícias). É async devido ao carregamento de dados. */
+    async renderHomeScreen() {
+        console.log("UI Coordinator: Delegating home screen rendering.");
+        await this.#homeUI.render(); // Chama o método render do módulo específico (usa await)
+    }
+
+    /** Renderiza a tela de perfil (agora simplificada). */
     renderProfileScreen() {
         console.log("UI Coordinator: Delegating profile screen rendering.");
-        this.#profileUI.render(); // Chama o método render do módulo específico
-        // ProfileUI.bindEvents() deve ser chamado dentro do seu próprio render ou construtor
+        this.#profileUI.render(); // Chama o método render do ProfileScreenUI simplificado
     }
+
+    /** Renderiza a nova tela de gerenciamento de decks e coleção. */
+    renderDeckManagementScreen() { // <<<=== NOVO MÉTODO
+        console.log("UI Coordinator: Delegating deck management screen rendering.");
+        this.#deckManagementUI.render(); // Chama o método render do novo módulo DeckManagementScreenUI
+    }
+
+    /** Prepara e renderiza a tela do construtor de decks (para criar ou editar). */
     renderDeckBuilderScreen(deckIdToEdit = null) {
         console.log("UI Coordinator: Delegating deck builder rendering.");
-        this.#deckBuilderUI.render(deckIdToEdit);
+        this.#deckBuilderUI.render(deckIdToEdit); // Chama o método render do DeckBuilderUI
     }
+
+    /** Renderiza a tela de opções. */
     renderOptionsScreen() {
          console.log("UI Coordinator: Delegating options screen rendering.");
-         this.#optionsUI.render();
+         this.#optionsUI.render(); // Chama o método render do OptionsUI
     }
+
+    /** Renderiza o estado inicial do tabuleiro de batalha. */
     renderInitialGameState() {
         console.log("UI Coordinator: Delegating initial game state rendering.");
          if (!this.#gameInstance || !this.#localPlayerId) {
              console.error("UI Coordinator: Cannot render game state - game/player not set.");
+             // Talvez redirecionar para uma tela segura?
+             // this.#screenManager.showScreen('home-screen');
              return;
          }
-        this.#battleUI.renderInitialState(); // BattleUI agora lida com isso
-        // Os bindings de jogo e UI são feitos dentro do BattleScreenUI
+        // Delega para BattleScreenUI renderizar o tabuleiro inicial
+        this.#battleUI.renderInitialState();
     }
 
-    // --- Bindings Globais/Top Bar ---
+    // --- Bindings Globais e da Top Bar ---
     _bindPermanentUIActions() {
-        // Vincula apenas ações que são realmente globais ou da Top Bar
-        // Exemplo: Botões da Top Bar que NAVEGAM entre telas principais
-         $('#top-bar-btn-profile').off('click').on('click', () => {
-            if(this.#screenManager.getActiveScreenId() !== 'profile-screen'){
-                this.renderProfileScreen(); // Delega renderização
-                this.#screenManager.showScreen('profile-screen');
+        console.log("UI Coordinator: Binding permanent UI actions (Top Bar, global)...");
+
+         // Botão Home
+         $('#top-bar-btn-home').off('click').on('click', async () => {
+            const currentScreen = this.#screenManager.getActiveScreenId();
+            console.log(`Top Bar: Home button clicked. Current screen: ${currentScreen}`);
+            if(currentScreen !== 'home-screen'){
+                console.log("UI Coordinator: Navigating to Home Screen...");
+                await this.renderHomeScreen(); // Delega renderização (usa await)
+                this.#screenManager.showScreen('home-screen');
+                console.log("UI Coordinator: Home Screen shown.");
+            } else {
+                 console.log("UI Coordinator: Already on Home Screen.");
             }
          });
-         $('#top-bar-btn-connect').off('click').on('click', () => {
-              // Renderização da tela Connect é feita pelo template
-              $('#connect-message').text(''); // Resetar estado se necessário
-              this.#screenManager.showScreen('connect-screen');
-         });
-         $('#top-bar-btn-options').off('click').on('click', () => {
-              this.renderOptionsScreen(); // Delega renderização
-              this.#screenManager.showScreen('options-screen');
-         });
-         $('#top-bar-btn-logout').off('click').on('click', () => {
-             this.#accountManager.logout();
-             this.hideTopBar();
-             $('#screens-container').removeClass('with-top-bar');
-             this.#screenManager.showScreen('title-screen');
+
+         // Botão Perfil
+         $('#top-bar-btn-profile').off('click').on('click', () => {
+            const currentScreen = this.#screenManager.getActiveScreenId();
+            console.log(`Top Bar: Profile button clicked. Current screen: ${currentScreen}`);
+            if(currentScreen !== 'profile-screen'){
+                 console.log("UI Coordinator: Navigating to Profile Screen...");
+                this.renderProfileScreen(); // Delega renderização (tela simplificada)
+                this.#screenManager.showScreen('profile-screen');
+                 console.log("UI Coordinator: Profile Screen shown.");
+            } else {
+                 console.log("UI Coordinator: Already on Profile Screen.");
+            }
          });
 
-         // Talvez o listener global de ESC para fechar overlays fique aqui
+         // --- Binding para o botão Decks --- <<<=== ATUALIZADO
+         $('#top-bar-btn-decks').off('click').on('click', () => {
+            const currentScreen = this.#screenManager.getActiveScreenId();
+            console.log(`Top Bar: Decks button clicked. Current screen: ${currentScreen}`);
+            if (currentScreen !== 'deck-management-screen') { // Verifica se já está na tela
+                 console.log("UI Coordinator: Navigating to Deck Management Screen...");
+                 this.renderDeckManagementScreen(); // Delega renderização da nova tela
+                 this.#screenManager.showScreen('deck-management-screen'); // Mostra a nova tela
+                 console.log("UI Coordinator: Deck Management Screen shown.");
+             } else {
+                  console.log("UI Coordinator: Already on Deck Management Screen.");
+             }
+         });
+         // --------------------------------
+
+         // Botão Conectar
+         $('#top-bar-btn-connect').off('click').on('click', () => {
+            const currentScreen = this.#screenManager.getActiveScreenId();
+             console.log(`Top Bar: Connect button clicked. Current screen: ${currentScreen}`);
+             if(currentScreen !== 'connect-screen') {
+                 console.log("UI Coordinator: Navigating to Connect Screen...");
+                 // Renderização da tela Connect é feita pelo template, mas resetamos estado
+                 $('#connect-message').text('');
+                 $('#server-status-section, #join-game-section').hide();
+                 this.#screenManager.showScreen('connect-screen');
+                  console.log("UI Coordinator: Connect Screen shown.");
+             } else {
+                  console.log("UI Coordinator: Already on Connect Screen.");
+             }
+         });
+
+         // Botão Opções
+         $('#top-bar-btn-options').off('click').on('click', () => {
+            const currentScreen = this.#screenManager.getActiveScreenId();
+             console.log(`Top Bar: Options button clicked. Current screen: ${currentScreen}`);
+             if(currentScreen !== 'options-screen') {
+                 console.log("UI Coordinator: Navigating to Options Screen...");
+                 this.renderOptionsScreen(); // Delega renderização
+                 this.#screenManager.showScreen('options-screen');
+                 console.log("UI Coordinator: Options Screen shown.");
+             } else {
+                 console.log("UI Coordinator: Already on Options Screen.");
+             }
+         });
+
+         // Botão Logout
+         $('#top-bar-btn-logout').off('click').on('click', () => {
+             console.log("Top Bar: Logout button clicked.");
+             this.#accountManager.logout();
+             this.hideTopBar();
+             $('#screens-container').removeClass('with-top-bar'); // Remove padding/margin se houver
+             this.#screenManager.showScreen('title-screen'); // Sempre volta para a Title ao deslogar
+              console.log("UI Coordinator: Logged out, showing Title Screen.");
+         });
+
+         // Listener global de ESC para fechar overlays (principalmente o zoom)
          $(document).off('keydown.uimclose').on('keydown.uimclose', (e) => {
              if (e.key === "Escape") {
-                 this.#zoomHandler?.closeZoom(); // Delega ao zoom handler
-                 // Fechar outros modais/popups se houver
+                 // Fecha o zoom independentemente da tela ativa
+                 this.#zoomHandler?.closeZoom();
+                 // Adicionar lógica para fechar outros modais/popups se houver
              }
          });
     }
 
-    // Métodos específicos de cada tela foram MOVIDOS para seus respectivos módulos
+    // --- Métodos Públicos Adicionais (Exemplo) ---
+    // (Poderia ter métodos para mostrar notificações globais, etc.)
+    // updateTopBarAvatar(avatarFilename) {
+    //     $('#top-bar-avatar-img').attr('src', `assets/images/avatars/${avatarFilename}`);
+    // }
 
 } // End class UIManager (Coordinator)
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\UIManager.js ---
@@ -3396,7 +3612,7 @@ export function generateCreateAccountScreenHTML() {
                 </div>
             </form>
             <p id="create-account-message" class="message"></p>
-            <p class="disclaimer">Lembrete: Este é um protótipo. Senhas são salvas localmente de forma insegura.</p>
+            
         </div>
     `;
 }
@@ -3404,14 +3620,15 @@ export function generateCreateAccountScreenHTML() {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\deckBuilderScreenTemplate.js ---
-// js/ui/html-templates/deckBuilderScreenTemplate.js
+// js/ui/html-templates/deckBuilderScreenTemplate.js - ATUALIZADO
 
 /**
  * Gera a string HTML para a Tela do Construtor de Decks.
+ * ATUALIZADO: Texto do botão Voltar para refletir a navegação para a tela de gerenciamento.
  * Requer a biblioteca SortableJS para a funcionalidade de arrastar e soltar.
  * @returns {string} HTML da tela do construtor de decks.
  */
-export function generateDeckBuilderScreenHTML() {
+export function generateDeckBuilderScreenHTML() { // <<<--- Certifique-se que 'export' está aqui
     return `
         <div id="deck-builder-screen" class="screen deck-builder-layout">
             <h2 id="deck-builder-title">Construtor de Decks</h2>
@@ -3423,13 +3640,14 @@ export function generateDeckBuilderScreenHTML() {
                     <input type="text" id="db-deck-name" placeholder="Meu Novo Deck" maxlength="30">
                 </div>
                 <div class="deck-info">
-                     <span id="db-deck-count">0</span>/40 cartas
-                     <span id="db-deck-validity">(Inválido)</span>
+                     <span id="db-deck-count">0</span>/40 cartas <!-- Contador principal na barra -->
+                     <span id="db-deck-validity">(Inválido)</span> <!-- Status de validade -->
                 </div>
                 <div class="deck-actions">
                     <button id="btn-save-deck" disabled>Salvar Deck</button>
                     <button id="btn-clear-deck">Limpar Deck</button>
-                    <button id="btn-deck-builder-back">Voltar ao Perfil</button>
+                    <!-- Texto do botão atualizado para refletir o destino -->
+                    <button id="btn-deck-builder-back">Voltar aos Decks</button> <!-- ID permanece o mesmo, texto mudou -->
                 </div>
             </div>
             <p id="deck-builder-message" class="message"></p> <!-- Mensagens de feedback -->
@@ -3450,7 +3668,7 @@ export function generateDeckBuilderScreenHTML() {
                         </select>
                         <select id="db-filter-cost">
                             <option value="">Custo</option>
-                            <!-- Opções de custo podem ser preenchidas dinamicamente ou ter valores fixos -->
+                            <!-- Opções de custo preenchidas dinamicamente ou ter valores fixos -->
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -3458,11 +3676,11 @@ export function generateDeckBuilderScreenHTML() {
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
-                            <option value="7">7+</option> <!-- Ou tratar 7+ no JS -->
+                            <option value="7">7+</option>
                         </select>
                         <select id="db-filter-tribe">
                             <option value="">Tribo</option>
-                            <!-- Preencher com tribos existentes -->
+                            <!-- Opções de tribo preenchidas dinamicamente ou ter valores fixos -->
                             <option value="Elf">Elfo</option>
                             <option value="Dwarf">Anão</option>
                             <option value="Beast">Besta</option>
@@ -3483,6 +3701,7 @@ export function generateDeckBuilderScreenHTML() {
 
                 <!-- Painel Direito: Deck Atual Sendo Construído -->
                 <div class="deck-builder-panel deck-panel">
+                     <!-- Contador secundário dentro do painel -->
                     <h3>Deck Atual (<span id="db-deck-count-display">0</span>/40)</h3>
                     <p class="subtle-text">Arraste cartas aqui ou para fora.</p>
                      <div id="db-current-deck" class="card-list scrollable-list">
@@ -3492,7 +3711,7 @@ export function generateDeckBuilderScreenHTML() {
                 </div>
 
             </div>
-             <!-- Overlay para Zoom da Imagem (pode ser o mesmo do perfil ou específico) -->
+             <!-- Overlay para Zoom da Imagem (específico ou global) -->
              <div id="deckbuilder-image-zoom-overlay" class="image-zoom-overlay">
                  <img id="deckbuilder-zoomed-image" src="" alt="Zoomed Card">
              </div>
@@ -3500,6 +3719,119 @@ export function generateDeckBuilderScreenHTML() {
     `;
 }
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\deckBuilderScreenTemplate.js ---
+
+
+--- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\deckManagementScreenTemplate.js ---
+// js/ui/html-templates/deckManagementScreenTemplate.js
+
+/**
+ * Gera a string HTML para a Tela de Gerenciamento de Decks e Coleção.
+ * @returns {string} HTML da tela.
+ */
+export function generateDeckManagementScreenHTML() { 
+
+    return `
+        <div id="deck-management-screen" class="screen deck-management-layout">
+            <h2>Gerenciar Decks e Coleção</h2>
+
+            <div class="deck-management-main-area">
+
+                <!-- Coluna Esquerda: Decks -->
+                <div class="deck-management-left-column">
+                    <div class="profile-section profile-decks">
+                        <h3>Meus Decks</h3>
+                         <ul id="deck-management-list" class="scrollable-list deck-list-profile">
+                             <li>(Carregando decks...)</li>
+                         </ul>
+                         <button id="btn-create-new-deck" class="button-primary">Criar Novo Deck</button>
+                         <p id="deck-mgmt-message" class="message" style="margin-top: 10px;"></p>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Coleção -->
+                <div class="deck-management-right-column">
+                     <div class="profile-section profile-collection">
+                        <h3>Coleção (<span id="deck-mgmt-collection-count">0</span> cartas)</h3>
+
+                        <!-- Filtros da Coleção -->
+                        <div class="filters collection-filters">
+                            <input type="text" id="deck-mgmt-filter-name" placeholder="Filtrar por nome...">
+                            <select id="deck-mgmt-filter-type">
+                                <option value="">Tipo</option>
+                                <option value="Creature">Criatura</option>
+                                <option value="Runebinding">Runebinding</option>
+                                <option value="Instant">Instantânea</option>
+                            </select>
+                            <select id="deck-mgmt-filter-cost">
+                                <option value="">Custo</option>
+                                <!-- Opções preenchidas dinamicamente -->
+                            </select>
+                            <select id="deck-mgmt-filter-tribe">
+                                <option value="">Tribo</option>
+                                <!-- Opções preenchidas dinamicamente -->
+                            </select>
+                        </div>
+
+                        <p class="subtle-text">Clique com o botão direito do mouse para ampliar a carta</p>
+                        <div id="deck-management-collection" class="card-grid scrollable-list">
+                            <p>(Carregando coleção...)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Overlay para Zoom da Imagem -->
+             <div id="deck-management-zoom-overlay" class="image-zoom-overlay">
+                 <img id="deck-management-zoomed-image" src="" alt="Zoomed Card">
+             </div>
+
+        </div>
+    `;
+}
+--- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\deckManagementScreenTemplate.js ---
+
+
+--- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\homeScreenTemplate.js ---
+// js/ui/html-templates/homeScreenTemplate.js
+
+/**
+ * Gera a string HTML para a Tela Inicial (Mural de Notícias).
+ * @returns {string} HTML da tela inicial.
+ */
+export function generateHomeScreenHTML() {
+    return `
+        <div id="home-screen" class="screen home-layout">
+            <h2>Notícias e Novidades</h2>
+
+            <!-- Área Principal: Feed ou Detalhe -->
+            <div class="home-content-area">
+
+                <!-- Feed de Notícias (inicialmente visível) -->
+                <div id="news-feed-container" class="scrollable-list news-feed">
+                    <p class="placeholder-message">Carregando notícias...</p>
+                    <!-- Notícias serão inseridas aqui pelo JS -->
+                </div>
+
+                <!-- Detalhe da Notícia (inicialmente escondido) -->
+                <div id="news-detail-container" class="news-detail-view" style="display: none;">
+                    <button id="btn-back-to-news-feed" class="button-back">< Voltar</button>
+                    <h3 id="news-detail-title">Título da Notícia</h3>
+                    <img id="news-detail-image" src="" alt="Imagem da Notícia" style="display: none;" class="news-image-detail"/>
+                    <div id="news-detail-content" class="news-content-detail scrollable-list">
+                        <p>Conteúdo completo da notícia...</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Botão Jogar -->
+            <button id="btn-goto-connect-from-home" class="button-play" title="Encontrar Partida">
+                 <span role="img" aria-label="Jogar">⚔️</span> Jogar
+            </button>
+        </div>
+    `;
+}
+--- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\homeScreenTemplate.js ---
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\loginScreenTemplate.js ---
@@ -3546,6 +3878,7 @@ export function generateLoginScreenHTML() {
 export function generateOptionsScreenHTML() {
     return `
         <div id="options-screen" class="screen options-layout">
+        
             <h2>Opções do Jogo</h2>
 
             <div class="options-container scrollable-list">
@@ -3626,10 +3959,10 @@ export function generateOptionsScreenHTML() {
 
 /**
  * Gera a string HTML para a Tela de Perfil do Jogador.
+ * ATUALIZADO: Removeu seção de decks e coleção.
  * @returns {string} HTML da tela de perfil.
  */
 export function generateProfileScreenHTML() {
-    // Inclui placeholders para os avatares baseados na sua estrutura de arquivos
     const avatarPath = 'assets/images/avatars/';
     const availableAvatars = ['default.png', 'avatar1.png', 'avatar2.png', 'avatar3.png']; // Adicione mais se tiver
 
@@ -3642,67 +3975,41 @@ export function generateProfileScreenHTML() {
     `).join('');
 
     return `
-        <div id="profile-screen" class="screen profile-layout">
+        <div id="profile-screen" class="screen profile-layout-single-column"> <!-- Ajuste o layout CSS -->
             <h2>Perfil do Jogador</h2>
 
             <div class="profile-main-area">
-                <div class="profile-left-column">
-                    <!-- Informações Básicas -->
-                    <div class="profile-section profile-info">
-                        <h3>Informações</h3>
-                        <p>Nome: <strong id="profile-username">(Carregando...)</strong></p>
-                        <p>Rank: <span id="profile-rank">N/A</span></p>
-                        <p>Vitórias/Derrotas: <span id="profile-wins">0</span> / <span id="profile-losses">0</span></p>
-                    </div>
+                <!-- Conteúdo fica em uma única coluna agora -->
+                <div class="profile-section profile-info">
+                    <h3>Informações</h3>
+                    <p>Nome: <strong id="profile-username">(Carregando...)</strong></p>
+                    <p>Rank: <span id="profile-rank">N/A</span></p>
+                    <p>Vitórias/Derrotas: <span id="profile-wins">0</span> / <span id="profile-losses">0</span></p>
+                </div>
 
-                    <!-- Seleção de Avatar -->
-                    <div class="profile-section profile-avatar-section">
-                        <h3>Avatar</h3>
-                        <div class="profile-avatar-display">
-                            <img id="profile-avatar-img" src="${avatarPath}default.png" alt="Avatar do Jogador">
-                        </div>
-                        <div id="profile-avatar-choices" class="avatar-choices-container">
-                            ${avatarChoicesHTML}
-                        </div>
+                <div class="profile-section profile-avatar-section">
+                    <h3>Avatar</h3>
+                    <div class="profile-avatar-display">
+                        <img id="profile-avatar-img" src="${avatarPath}default.png" alt="Avatar do Jogador">
                     </div>
-
-                    <!-- Histórico de Partidas -->
-                    <div class="profile-section profile-history">
-                         <h3>Histórico de Partidas (Últimas 10)</h3>
-                         <ul id="profile-match-history">
-                             <li>(Nenhum histórico ainda)</li>
-                             <!-- O histórico será preenchido pelo UIManager -->
-                         </ul>
+                    <div id="profile-avatar-choices" class="avatar-choices-container">
+                        ${avatarChoicesHTML}
                     </div>
                 </div>
 
-                <div class="profile-right-column">
-                     <!-- Coleção de Cartas -->
-                    <div class="profile-section profile-collection">
-                        <h3>Coleção (<span id="profile-card-count">0</span> cartas)</h3>
-                        <p class="subtle-text">Clique com o botão direito do mouse para ampliar a carta</p>
-                        <div id="profile-unlocked-cards" class="card-grid scrollable-list">
-                            <p>(Carregando coleção...)</p>
-                            <!-- Mini-cards são renderizados aqui pelo UIManager -->
-                        </div>
-                    </div>
-
-                    <!-- Lista de Decks -->
-                    <div class="profile-section profile-decks">
-                        <h3>Meus Decks</h3>
-                         <ul id="profile-deck-list" class="scrollable-list deck-list-profile">
-                             <li>(Carregando decks...)</li>
-                             <!-- Decks são renderizados aqui pelo UIManager -->
-                         </ul>
-                         <button id="btn-goto-deck-builder-new" class="button-primary">Gerenciar Decks</button>
-                    </div>
+                <div class="profile-section profile-history">
+                     <h3>Histórico de Partidas (Últimas 10)</h3>
+                     <ul id="profile-match-history" class="scrollable-list">
+                         <li>(Nenhum histórico ainda)</li>
+                         <!-- O histórico será preenchido -->
+                     </ul>
                 </div>
+                <!-- Seção de Decks e Coleção REMOVIDA -->
+
             </div>
 
-             <!-- Overlay para Zoom da Imagem (pode ser global se preferir) -->
-             <div id="image-zoom-overlay" class="image-zoom-overlay">
-                 <img id="zoomed-image" src="" alt="Zoomed Card">
-             </div>
+             <!-- Overlay de Zoom não é mais necessário aqui se a coleção foi movida -->
+             <!-- <div id="image-zoom-overlay" class="image-zoom-overlay"> ... </div> -->
         </div>
     `;
 }
@@ -3741,7 +4048,7 @@ export function generateSplashScreenHTML() {
  */
 export function generateTitleScreenHTML() {
     return `
-        <div id="title-screen" class="screen active">
+        <div id="title-screen" class="screen">
             <!-- Título Principal -->
             
 
@@ -3786,9 +4093,18 @@ export function generateTopBarHTML() {
                 <!-- Nome do usuário vem ANTES dos botões na direita -->
                 <span id="top-bar-username">Carregando...</span>
 
+                <button id="top-bar-btn-home" title="Início / Notícias">
+                     <span role="img" aria-label="Início">🏠</span>
+                </button>
+
                 <button id="top-bar-btn-profile" title="Perfil / Coleção">
                     <span role="img" aria-label="Perfil">👤</span>
                 </button>
+                   <!-- NOVO BOTÃO DE DECKS -->
+                <button id="top-bar-btn-decks" title="Decks / Coleção">
+                    <span role="img" aria-label="Decks">📚</span>
+                </button>
+                <!-- FIM NOVO BOTÃO -->
                 <button id="top-bar-btn-connect" title="Conectar / Jogar Online">
                      <span role="img" aria-label="Jogar">⚔️</span>
                 </button>
@@ -4840,6 +5156,426 @@ export default class DeckBuilderUI {
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\DeckBuilderUI.js ---
 
 
+--- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\DeckManagementScreenUI.js ---
+// js/ui/screens/DeckManagementScreenUI.js
+
+import CardRenderer from '../helpers/CardRenderer.js';
+import ZoomHandler from '../helpers/ZoomHandler.js';
+
+export default class DeckManagementScreenUI {
+    #screenManager;
+    #accountManager;
+    #cardDatabase;
+    #cardRenderer;
+    #zoomHandler;
+    #uiManager; // Para navegação
+
+    // --- Elementos da UI ---
+    #screenElement;
+    #deckListElement;
+    #collectionElement;
+    #collectionCountSpan;
+    #messageParagraph;
+    #filterNameInput;
+    #filterTypeSelect;
+    #filterCostSelect;
+    #filterTribeSelect;
+
+    constructor(screenManager, accountManager, cardDatabase, cardRenderer, zoomHandler, uiManager) {
+        this.#screenManager = screenManager;
+        this.#accountManager = accountManager;
+        this.#cardDatabase = cardDatabase;
+        this.#cardRenderer = cardRenderer;
+        this.#zoomHandler = zoomHandler;
+        this.#uiManager = uiManager;
+
+        this._cacheSelectors();
+        if (!this.#screenElement || !this.#screenElement.length) {
+            console.error("DeckManagementScreenUI Error: Element #deck-management-screen not found!");
+            return;
+        }
+        this._bindEvents();
+        console.log("DeckManagementScreenUI initialized.");
+    }
+
+    _cacheSelectors() {
+        this.#screenElement = $('#deck-management-screen');
+        this.#deckListElement = this.#screenElement.find('#deck-management-list');
+        this.#collectionElement = this.#screenElement.find('#deck-management-collection');
+        this.#collectionCountSpan = this.#screenElement.find('#deck-mgmt-collection-count');
+        this.#messageParagraph = this.#screenElement.find('#deck-mgmt-message');
+        // Filtros
+        this.#filterNameInput = this.#screenElement.find('#deck-mgmt-filter-name');
+        this.#filterTypeSelect = this.#screenElement.find('#deck-mgmt-filter-type');
+        this.#filterCostSelect = this.#screenElement.find('#deck-mgmt-filter-cost');
+        this.#filterTribeSelect = this.#screenElement.find('#deck-mgmt-filter-tribe');
+    }
+
+    _bindEvents() {
+        console.log("DeckManagementScreenUI: Binding events...");
+
+        // Botões na lista de decks (delegação)
+        this.#deckListElement.on('click', '.btn-edit-deck', this._handleEditDeck.bind(this));
+        this.#deckListElement.on('click', '.btn-delete-deck', this._handleDeleteDeck.bind(this));
+
+        // Botão Criar Novo Deck
+        this.#screenElement.on('click', '#btn-create-new-deck', this._handleCreateNewDeck.bind(this));
+
+        // Filtros
+        this.#screenElement.on('input', '#deck-mgmt-filter-name', this._handleFilterChange.bind(this));
+        this.#screenElement.on('change', '#deck-mgmt-filter-type, #deck-mgmt-filter-cost, #deck-mgmt-filter-tribe', this._handleFilterChange.bind(this));
+
+        // Zoom na Coleção (delegação ao ZoomHandler)
+        this.#collectionElement.on('contextmenu', '.mini-card', (event) => {
+            this.#zoomHandler.handleZoomClick(event);
+        });
+        this.#collectionElement.on('contextmenu', '.mini-card', (e) => e.preventDefault()); // Prevenir menu contexto
+
+        // Fechar Zoom Overlay específico (se houver um específico)
+        $('#deck-management-zoom-overlay').off('click.deckmgmtzoom').on('click.deckmgmtzoom', (event) => {
+            if (event.target === event.currentTarget) {
+                this.#zoomHandler.closeZoom();
+            }
+        });
+
+        // Botão Voltar (se existir um no template)
+        // this.#screenElement.on('click', '#btn-deck-mgmt-back', () => {
+        //     this.#screenManager.showScreen('home-screen'); // Ou onde quer que ele volte
+        // });
+    }
+
+    /** Renderiza a tela buscando dados atuais */
+    render() {
+        console.log("DeckManagementScreenUI: Rendering...");
+        this.#messageParagraph.text(''); // Limpa mensagens
+        const currentUser = this.#accountManager.getCurrentUser();
+        if (!currentUser) {
+            console.warn("DeckManagementScreenUI: No user logged in.");
+            this.#screenManager.showScreen('login-screen');
+            return;
+        }
+
+        const collection = currentUser.collection || [];
+        const decks = currentUser.decks || {};
+
+        this._populateFilters(collection);
+        this._renderDeckList(decks);
+        this._renderCollection(collection); // Aplica filtros automaticamente
+    }
+
+    // --- Handlers de Eventos ---
+
+    _handleCreateNewDeck() {
+        console.log("DeckManagementScreenUI: Create new deck requested.");
+        this.#uiManager.renderDeckBuilderScreen(); // Chama UIManager para preparar o DeckBuilder sem ID
+        this.#screenManager.showScreen('deck-builder-screen');
+    }
+
+    _handleEditDeck(event) {
+        const deckId = $(event.currentTarget).closest('li').data('deck-id');
+        if (deckId) {
+            console.log(`DeckManagementScreenUI: Edit deck requested: ${deckId}`);
+            this.#uiManager.renderDeckBuilderScreen(deckId); // Chama UIManager para preparar o DeckBuilder com ID
+            this.#screenManager.showScreen('deck-builder-screen');
+        }
+    }
+
+    _handleDeleteDeck(event) {
+        const $li = $(event.currentTarget).closest('li');
+        const deckId = $li.data('deck-id');
+        const deckName = $li.find('.deck-name').text().replace(/\(\d+\s*cartas?\)$/, '').trim(); // Extrai nome
+        if (deckId && confirm(`Tem certeza que deseja excluir o deck "${deckName}"?`)) {
+            const result = this.#accountManager.deleteDeck(deckId);
+            if (result.success) {
+                console.log(`DeckManagementScreenUI: Deck ${deckId} deleted.`);
+                this._showMessage(`Deck "${deckName}" excluído.`, 'success');
+                this.render(); // Re-renderiza a lista de decks
+            } else {
+                this._showMessage(`Erro ao excluir deck: ${result.message}`, 'error');
+                console.error(`Error deleting deck: ${result.message}`);
+            }
+        }
+    }
+
+     _handleFilterChange() {
+        this._renderCollection(this.#accountManager.getCollection() || []);
+    }
+
+    // --- Métodos de Renderização ---
+
+    _renderDeckList(decks) {
+        this.#deckListElement.empty();
+        const deckIds = Object.keys(decks || {});
+        if (!deckIds.length) {
+            this.#deckListElement.append('<li>(Nenhum deck criado)</li>');
+            return;
+        }
+        deckIds.forEach(id => {
+            const deck = decks[id];
+            if (deck) {
+                 const cardCount = deck.cards?.length || 0;
+                 const isValid = cardCount >= 30 && cardCount <= 40;
+                 const validityClass = isValid ? 'deck-valid' : 'deck-invalid';
+                 const validityText = isValid ? '' : ` (Inválido: ${cardCount})`; // Texto opcional de invalidade
+
+                this.#deckListElement.append(`
+                    <li data-deck-id="${id}">
+                        <span class="deck-name ${validityClass}">${deck.name} (${cardCount} cartas)${validityText}</span>
+                        <span class="deck-buttons">
+                            <button class="btn-edit-deck" title="Editar Deck ${deck.name}">✏️</button>
+                            <button class="btn-delete-deck" title="Excluir Deck ${deck.name}">🗑️</button>
+                        </span>
+                    </li>`);
+            }
+        });
+        console.log(`DeckManagementScreenUI: Rendered ${deckIds.length} decks.`);
+    }
+
+    _populateFilters(collectionIds) {
+        // Reusa a lógica de _populateFilters do DeckBuilderUI (pode ser extraída para um helper)
+        this.#filterCostSelect.children('option:not(:first-child)').remove();
+        this.#filterTribeSelect.children('option:not(:first-child)').remove();
+        const costs = new Set(), tribes = new Set();
+        collectionIds.forEach(id => {
+             const cd = this.#cardDatabase[id];
+             if(cd) {
+                 costs.add(cd.cost >= 7 ? '7+' : cd.cost.toString());
+                 if (cd.tribe && cd.tribe !== 'None') tribes.add(cd.tribe);
+             }
+        });
+        // Adiciona opção para 'None' se não houver já
+        if (!tribes.has('None')) tribes.add('None');
+
+        [...costs].sort((a, b) => (a === '7+' ? Infinity : parseInt(a)) - (b === '7+' ? Infinity : parseInt(b)))
+                  .forEach(c => this.#filterCostSelect.append(`<option value="${c}">${c}</option>`));
+        [...tribes].sort()
+                   .forEach(t => this.#filterTribeSelect.append(`<option value="${t}">${t === 'None' ? 'Sem Tribo' : t}</option>`));
+    }
+
+    _renderCollection(collectionIds) {
+        this.#collectionElement.empty();
+        this.#collectionCountSpan.text(collectionIds?.length || 0);
+
+        if (!Array.isArray(collectionIds) || collectionIds.length === 0) {
+            this.#collectionElement.append('<p class="placeholder-message">(Nenhuma carta na coleção)</p>');
+            return;
+        }
+
+        const filterName = this.#filterNameInput.val().toLowerCase();
+        const filterType = this.#filterTypeSelect.val();
+        const filterCost = this.#filterCostSelect.val();
+        const filterTribe = this.#filterTribeSelect.val();
+        let cardsRendered = 0;
+
+        collectionIds.forEach(id => {
+            const cardDef = this.#cardDatabase[id];
+            if (cardDef) {
+                // Aplicar filtros
+                if (filterName && !cardDef.name.toLowerCase().includes(filterName)) return;
+                if (filterType && cardDef.type !== filterType) return;
+                if (filterCost) {
+                    if (filterCost === '7+' && cardDef.cost < 7) return;
+                    if (filterCost !== '7+' && cardDef.cost.toString() !== filterCost) return;
+                }
+                 // Ajuste para filtro de Tribo "None"
+                 const cardTribe = cardDef.tribe || 'None';
+                 if (filterTribe && cardTribe !== filterTribe) return;
+
+                const $miniCard = this.#cardRenderer.renderMiniCard(cardDef, 'collection');
+                if ($miniCard) {
+                    this.#collectionElement.append($miniCard);
+                    cardsRendered++;
+                }
+            } else {
+                console.warn(`DeckManagementScreenUI: Card ID '${id}' in collection not found in database.`);
+            }
+        });
+
+         if (cardsRendered === 0 && collectionIds.length > 0) {
+            this.#collectionElement.append('<p class="placeholder-message">(Nenhuma carta corresponde aos filtros)</p>');
+        }
+
+        console.log(`DeckManagementScreenUI: Rendered ${cardsRendered} collection cards.`);
+    }
+
+     _showMessage(text, type = 'info', duration = 3000) {
+        const colorVar = type === 'success' ? '--success-color' : type === 'error' ? '--error-color' : '--info-color';
+        this.#messageParagraph.text(text).css('color', `var(${colorVar}, #ccc)`); // Fallback color
+        if (duration > 0) {
+            setTimeout(() => {
+                if (this.#messageParagraph.text() === text) { // Only clear if message is still the same
+                    this.#messageParagraph.text('');
+                }
+            }, duration);
+        }
+    }
+}
+--- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\DeckManagementScreenUI.js ---
+
+
+--- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\HomeScreenUI.js ---
+// js/ui/screens/HomeScreenUI.js
+
+export default class HomeScreenUI {
+    #screenManager;
+    #uiManager; // Para possível comunicação futura, não estritamente necessário aqui
+
+    #homeScreenElement;
+    #newsFeedContainer;
+    #newsDetailContainer;
+    #newsDetailTitle;
+    #newsDetailImage;
+    #newsDetailContent;
+    #btnBackToFeed;
+    #btnGotoConnect;
+
+    #newsData = []; // Armazena as notícias carregadas
+
+    constructor(screenManager, uiManager) {
+        this.#screenManager = screenManager;
+        this.#uiManager = uiManager;
+
+        this._cacheSelectors();
+        if (!this.#homeScreenElement || !this.#homeScreenElement.length) {
+            console.error("HomeScreenUI Error: Element #home-screen not found!");
+            return;
+        }
+
+        this._bindEvents();
+        console.log("HomeScreenUI initialized.");
+    }
+
+    _cacheSelectors() {
+        this.#homeScreenElement = $('#home-screen');
+        this.#newsFeedContainer = this.#homeScreenElement.find('#news-feed-container');
+        this.#newsDetailContainer = this.#homeScreenElement.find('#news-detail-container');
+        this.#newsDetailTitle = this.#homeScreenElement.find('#news-detail-title');
+        this.#newsDetailImage = this.#homeScreenElement.find('#news-detail-image');
+        this.#newsDetailContent = this.#homeScreenElement.find('#news-detail-content');
+        this.#btnBackToFeed = this.#homeScreenElement.find('#btn-back-to-news-feed');
+        this.#btnGotoConnect = this.#homeScreenElement.find('#btn-goto-connect-from-home');
+    }
+
+    _bindEvents() {
+        // Clicar num item do feed
+        this.#newsFeedContainer.on('click', '.news-item', (event) => {
+            const newsId = $(event.currentTarget).data('news-id');
+            if (newsId) {
+                this._showNewsDetail(newsId);
+            }
+        });
+
+        // Clicar no botão Voltar do detalhe
+        this.#btnBackToFeed.on('click', () => {
+            this._showNewsFeed();
+        });
+
+        // Clicar no botão Jogar
+        this.#btnGotoConnect.on('click', () => {
+            // Navega para a tela de conexão (UIManager pode ter método para resetar estado dela)
+             $('#connect-message').text(''); // Reset connect screen UI state if needed
+             $('#server-status-section, #join-game-section').hide();
+            this.#screenManager.showScreen('connect-screen');
+        });
+    }
+
+    /** Renderiza a tela inicial, buscando e mostrando o feed */
+    async render() {
+        console.log("HomeScreenUI: Rendering...");
+        await this._loadNewsData(); // Carrega os dados antes de mostrar
+        this._renderNewsFeed();
+        this._showNewsFeed(); // Garante que o feed está visível
+    }
+
+    /** Carrega os dados das notícias do JSON */
+    async _loadNewsData() {
+        // Idealmente, use fetch. Se fetch não for uma opção fácil agora,
+        // você pode importar diretamente se transformar o JSON num módulo JS.
+        try {
+            // Usando Fetch (preferível)
+            const response = await fetch('js/data/news-data.json'); // Caminho relativo ao index.html
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            this.#newsData = await response.json();
+            // Ordena por data, mais recente primeiro
+            this.#newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            console.log("HomeScreenUI: News data loaded successfully:", this.#newsData.length, "items");
+
+        } catch (error) {
+            console.error("HomeScreenUI: Failed to load news data:", error);
+            this.#newsData = []; // Define como vazio em caso de erro
+            this.#newsFeedContainer.html('<p class="error-message">Não foi possível carregar as notícias.</p>');
+        }
+    }
+
+    /** Popula o container do feed com os itens de notícia */
+    _renderNewsFeed() {
+        this.#newsFeedContainer.empty(); // Limpa antes de adicionar
+        if (this.#newsData.length === 0) {
+            this.#newsFeedContainer.html('<p class="placeholder-message">Nenhuma notícia disponível no momento.</p>');
+            return;
+        }
+
+        this.#newsData.forEach(item => {
+            const itemHtml = this._renderNewsItemSummaryHTML(item);
+            this.#newsFeedContainer.append(itemHtml);
+        });
+    }
+
+    /** Gera o HTML para um item resumido no feed */
+    _renderNewsItemSummaryHTML(item) {
+        const formattedDate = new Date(item.date).toLocaleDateString('pt-BR', { year: 'numeric', month: 'short', day: 'numeric' });
+        const imageHtml = item.image ? `<img src="${item.image}" alt="" class="news-image-summary">` : '';
+        const categoryHtml = item.category ? `<span class="news-category">[${item.category}]</span>` : '';
+
+        return `
+            <div class="news-item" data-news-id="${item.id}">
+                ${imageHtml}
+                <div class="news-item-content">
+                    <div class="news-item-header">
+                        <h4 class="news-title-summary">${item.title}</h4>
+                        <span class="news-date">${formattedDate} ${categoryHtml}</span>
+                    </div>
+                    <p class="news-summary">${item.summary}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    /** Mostra a visualização detalhada de uma notícia */
+    _showNewsDetail(newsId) {
+        const item = this.#newsData.find(n => n.id === newsId);
+        if (!item) {
+            console.error(`HomeScreenUI: News item with ID ${newsId} not found.`);
+            return;
+        }
+
+        this.#newsDetailTitle.text(item.title);
+        this.#newsDetailContent.html(item.content); // Usa .html() para renderizar o HTML do conteúdo
+
+        if (item.image) {
+            this.#newsDetailImage.attr('src', item.image).attr('alt', item.title).show();
+        } else {
+            this.#newsDetailImage.hide();
+        }
+
+        this.#newsFeedContainer.hide();
+        this.#newsDetailContainer.show();
+        this.#newsDetailContainer.scrollTop(0); // Scroll to top
+        console.log(`HomeScreenUI: Showing detail for news ID ${newsId}`);
+    }
+
+    /** Mostra o feed de notícias, escondendo o detalhe */
+    _showNewsFeed() {
+        this.#newsDetailContainer.hide();
+        this.#newsFeedContainer.show();
+        console.log("HomeScreenUI: Showing news feed.");
+    }
+}
+--- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\HomeScreenUI.js ---
+
+
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\OptionsUI.js ---
 // js/ui/screens/OptionsUI.js
 
@@ -5032,100 +5768,74 @@ export default class OptionsUI {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\ProfileScreenUI.js ---
-// js/ui/screens/ProfileScreenUI.js
+// js/ui/screens/ProfileScreenUI.js - ATUALIZADO
 
-// Assume que CardRenderer e ZoomHandler são importados
 import CardRenderer from '../helpers/CardRenderer.js';
 import ZoomHandler from '../helpers/ZoomHandler.js';
 
 export default class ProfileScreenUI {
     #screenManager;
     #accountManager;
-    #cardDatabase;
-    #cardRenderer;
-    #zoomHandler;
-    #uiManager; // Referência ao UIManager central (para chamar renderDeckBuilder)
+    #cardDatabase; // Ainda pode ser útil para algo no futuro? Mantém por enquanto.
+    #cardRenderer; // Não mais necessário aqui
+    #zoomHandler;   // Não mais necessário aqui
+    #uiManager;     // Mantém para navegação futura, se necessário
 
     #profileScreenElement; // Cache do elemento da tela
+
+    // --- Selectors Removidos ---
+    // #profileCardCount;
+    // #profileUnlockedCards;
+    // #profileDeckList;
 
     constructor(screenManager, accountManager, cardDatabase, cardRenderer, zoomHandler, uiManager) {
         this.#screenManager = screenManager;
         this.#accountManager = accountManager;
         this.#cardDatabase = cardDatabase;
-        this.#cardRenderer = cardRenderer; // Recebe a instância do renderer
-        this.#zoomHandler = zoomHandler;   // Recebe a instância do zoom handler
-        this.#uiManager = uiManager;       // Recebe a instância do UIManager
+        this.#cardRenderer = cardRenderer; // Recebe, mas não usa mais diretamente
+        this.#zoomHandler = zoomHandler;   // Recebe, mas não usa mais diretamente
+        this.#uiManager = uiManager;
 
-        this.#profileScreenElement = $('#profile-screen'); // Cacheia o seletor da tela
+        this.#profileScreenElement = $('#profile-screen');
         if (!this.#profileScreenElement.length) {
             console.error("ProfileScreenUI Error: Element #profile-screen not found!");
-            return; // Evita erros se o elemento não existir
+            return;
         }
-        this._bindEvents(); // Vincula eventos uma vez na inicialização
-        console.log("ProfileScreenUI initialized.");
+        this._bindEvents();
+        console.log("ProfileScreenUI initialized (Simplified).");
     }
 
-    /** Renderiza/Atualiza todo o conteúdo da tela de perfil */
     render() {
-        console.log("ProfileScreenUI: Rendering...");
+        console.log("ProfileScreenUI: Rendering (Simplified)...");
         const currentUser = this.#accountManager.getCurrentUser();
         if (!currentUser) {
             console.warn("ProfileScreenUI: Cannot render - user not logged in.");
-            this.#screenManager.showScreen('login-screen'); // Redireciona se não logado
+            this.#screenManager.showScreen('login-screen');
             return;
         }
-
-        const collection = currentUser.collection || [];
-        const decks = currentUser.decks || {};
 
         this._renderUserInfo(currentUser);
         this._renderAvatarSection(currentUser.avatar);
         this._renderMatchHistory(currentUser.matchHistory || []);
-        this._renderCollection(collection);
-        this._renderDeckList(decks);
+        // Chamadas para _renderCollection e _renderDeckList REMOVIDAS
 
-        console.log("ProfileScreenUI: Render complete.");
+        console.log("ProfileScreenUI: Render complete (Simplified).");
     }
 
-    /** Vincula eventos específicos da tela de perfil usando delegação */
     _bindEvents() {
-        console.log("ProfileScreenUI: Binding events...");
+        console.log("ProfileScreenUI: Binding events (Simplified)...");
 
         // Seleção de Avatar
         this.#profileScreenElement.on('click', '.avatar-choice', (event) => {
             this._handleAvatarClick(event);
         });
 
-        // Zoom na Coleção (delegando ao ZoomHandler)
-        this.#profileScreenElement.on('contextmenu', '#profile-unlocked-cards .mini-card', (event) => {
-             this.#zoomHandler.handleZoomClick(event); // Passa o evento para o handler
-        });
-        // Prevenir menu de contexto default nos cards
-        this.#profileScreenElement.on('contextmenu', '#profile-unlocked-cards .mini-card', (e) => e.preventDefault());
+        // Bindings para zoom, editar/deletar deck REMOVIDOS
 
-
-        // Botões de Deck
-        this.#profileScreenElement.on('click', '#profile-deck-list .btn-edit-deck', (event) => {
-            this._handleEditDeck(event);
-        });
-        this.#profileScreenElement.on('click', '#profile-deck-list .btn-delete-deck', (event) => {
-            this._handleDeleteDeck(event);
-        });
-        this.#profileScreenElement.on('click', '#btn-goto-deck-builder-new', () => {
-            this._handleManageDecks();
-        });
-
-        // Fechar Zoom Overlay específico do Perfil
-        // É importante usar .off().on() se _bindEvents puder ser chamado múltiplas vezes
-        $('#image-zoom-overlay').off('click.profilezoom').on('click.profilezoom', (event) => {
-            if (event.target === event.currentTarget) {
-                this.#zoomHandler.closeZoom(); // Usa o método do handler para fechar
-            }
-        });
+        // Zoom overlay binding REMOVIDO (agora na DeckManagementScreenUI ou global)
     }
 
-    // --- Handlers de Eventos Internos ---
-
+    // --- Handlers ---
     _handleAvatarClick(event) {
         const avatarFilename = $(event.currentTarget).data('avatar');
         if (avatarFilename && this.#accountManager.saveAvatarChoice(avatarFilename)) {
@@ -5133,45 +5843,13 @@ export default class ProfileScreenUI {
             this.#profileScreenElement.find('.avatar-choice').removeClass('selected-avatar');
             $(event.currentTarget).addClass('selected-avatar');
             console.log("ProfileScreenUI: Avatar updated.");
-            // Atualiza avatar na top bar também, se necessário (via UIManager?)
-            // this.#uiManager.updateTopBarAvatar(avatarFilename); // Exemplo
+            // TODO: Atualizar top bar avatar via UIManager
+             // this.#uiManager.updateTopBarAvatar(avatarFilename);
         }
     }
-
-    _handleEditDeck(event) {
-        const deckId = $(event.currentTarget).closest('li').data('deck-id');
-        if (deckId) {
-            console.log(`ProfileScreenUI: Edit deck requested: ${deckId}`);
-            // Chama o método do UIManager central para renderizar a tela correta
-            this.#uiManager.renderDeckBuilderScreen(deckId);
-            this.#screenManager.showScreen('deck-builder-screen');
-        }
-    }
-
-    _handleDeleteDeck(event) {
-        const $li = $(event.currentTarget).closest('li');
-        const deckId = $li.data('deck-id');
-        const deckName = $li.find('.deck-name').text().replace(/\(\d+\s*cartas?\)$/, '').trim();
-        if (deckId && confirm(`Tem certeza que deseja excluir o deck "${deckName}"?`)) {
-            const result = this.#accountManager.deleteDeck(deckId);
-            if (result.success) {
-                console.log(`ProfileScreenUI: Deck ${deckId} deleted.`);
-                this.render(); // Re-renderiza a tela de perfil para atualizar a lista
-            } else {
-                alert(`Erro ao excluir deck: ${result.message}`);
-            }
-        }
-    }
-
-    _handleManageDecks() {
-        console.log("ProfileScreenUI: Navigating to new deck creation.");
-        // Chama o método do UIManager central para renderizar a tela correta sem ID
-        this.#uiManager.renderDeckBuilderScreen();
-        this.#screenManager.showScreen('deck-builder-screen');
-    }
+    // Handlers _handleEditDeck, _handleDeleteDeck, _handleManageDecks REMOVIDOS
 
     // --- Métodos de Renderização Privados ---
-
     _renderUserInfo(currentUser) {
         $('#profile-username').text(currentUser.username);
         $('#profile-rank').text(currentUser.rank || 'N/A');
@@ -5184,7 +5862,6 @@ export default class ProfileScreenUI {
         $('#profile-avatar-img').attr('src', `assets/images/avatars/${avatarFile}`).attr('alt', `Avatar: ${avatarFile}`);
         this.#profileScreenElement.find('.avatar-choice').removeClass('selected-avatar');
         this.#profileScreenElement.find(`.avatar-choice[data-avatar="${avatarFile}"]`).addClass('selected-avatar');
-        // O HTML dos choices já é gerado no template, só precisamos marcar o selecionado.
     }
 
     _renderMatchHistory(history) {
@@ -5197,55 +5874,10 @@ export default class ProfileScreenUI {
              const dateStr = new Date(match.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour:'2-digit', minute: '2-digit'});
              const resultClass = match.result === 'win' ? 'history-win' : match.result === 'loss' ? 'history-loss' : 'history-draw';
              const resultText = match.result === 'win' ? 'Vitória' : match.result === 'loss' ? 'Derrota' : 'Empate';
-             // Adapte a exibição conforme os dados que você salva em matchData
              $list.append(`<li class="${resultClass}">${dateStr} - ${resultText} vs ${match.opponent || 'Oponente'}</li>`);
         });
     }
 
-    _renderCollection(collectionIds) {
-        const $container = $('#profile-unlocked-cards').empty();
-        $('#profile-card-count').text(collectionIds?.length || 0);
-        if (!Array.isArray(collectionIds) || collectionIds.length === 0) {
-            $container.append('<p class="placeholder-message">(Nenhuma carta na coleção)</p>');
-            return;
-        }
-        let cardsRendered = 0;
-        collectionIds.forEach(id => {
-            const cardDef = this.#cardDatabase[id];
-            if (cardDef) {
-                const $miniCard = this.#cardRenderer.renderMiniCard(cardDef, 'collection'); // Usa o helper
-                if ($miniCard) {
-                    $container.append($miniCard);
-                    cardsRendered++;
-                }
-            } else {
-                console.warn(`ProfileScreenUI: Card ID '${id}' missing from database.`);
-            }
-        });
-        console.log(`ProfileScreenUI: Rendered ${cardsRendered} collection cards.`);
-    }
-
-    _renderDeckList(decks) {
-        const $list = $('#profile-deck-list').empty();
-        const deckIds = Object.keys(decks || {});
-        if (!deckIds.length) {
-            $list.append('<li>(Nenhum deck criado)</li>');
-            return;
-        }
-        deckIds.forEach(id => {
-            const deck = decks[id];
-            if (deck) {
-                $list.append(`
-                    <li data-deck-id="${id}">
-                        <span class="deck-name">${deck.name} (${deck.cards?.length || 0} cartas)</span>
-                        <span class="deck-buttons">
-                            <button class="btn-edit-deck" title="Editar Deck">✏️</button>
-                            <button class="btn-delete-deck" title="Excluir Deck">🗑️</button>
-                        </span>
-                    </li>`);
-            }
-        });
-        console.log(`ProfileScreenUI: Rendered ${deckIds.length} decks.`);
-    }
+    // Métodos _renderCollection, _renderDeckList REMOVIDOS
 }
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\ProfileScreenUI.js ---

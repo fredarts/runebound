@@ -1,11 +1,12 @@
-// js/ui/html-templates/deckBuilderScreenTemplate.js
+// js/ui/html-templates/deckBuilderScreenTemplate.js - ATUALIZADO
 
 /**
  * Gera a string HTML para a Tela do Construtor de Decks.
+ * ATUALIZADO: Texto do botão Voltar para refletir a navegação para a tela de gerenciamento.
  * Requer a biblioteca SortableJS para a funcionalidade de arrastar e soltar.
  * @returns {string} HTML da tela do construtor de decks.
  */
-export function generateDeckBuilderScreenHTML() {
+export function generateDeckBuilderScreenHTML() { // <<<--- Certifique-se que 'export' está aqui
     return `
         <div id="deck-builder-screen" class="screen deck-builder-layout">
             <h2 id="deck-builder-title">Construtor de Decks</h2>
@@ -17,13 +18,14 @@ export function generateDeckBuilderScreenHTML() {
                     <input type="text" id="db-deck-name" placeholder="Meu Novo Deck" maxlength="30">
                 </div>
                 <div class="deck-info">
-                     <span id="db-deck-count">0</span>/40 cartas
-                     <span id="db-deck-validity">(Inválido)</span>
+                     <span id="db-deck-count">0</span>/40 cartas <!-- Contador principal na barra -->
+                     <span id="db-deck-validity">(Inválido)</span> <!-- Status de validade -->
                 </div>
                 <div class="deck-actions">
                     <button id="btn-save-deck" disabled>Salvar Deck</button>
                     <button id="btn-clear-deck">Limpar Deck</button>
-                    <button id="btn-deck-builder-back">Voltar ao Perfil</button>
+                    <!-- Texto do botão atualizado para refletir o destino -->
+                    <button id="btn-deck-builder-back">Voltar aos Decks</button> <!-- ID permanece o mesmo, texto mudou -->
                 </div>
             </div>
             <p id="deck-builder-message" class="message"></p> <!-- Mensagens de feedback -->
@@ -44,7 +46,7 @@ export function generateDeckBuilderScreenHTML() {
                         </select>
                         <select id="db-filter-cost">
                             <option value="">Custo</option>
-                            <!-- Opções de custo podem ser preenchidas dinamicamente ou ter valores fixos -->
+                            <!-- Opções de custo preenchidas dinamicamente ou ter valores fixos -->
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -52,11 +54,11 @@ export function generateDeckBuilderScreenHTML() {
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
-                            <option value="7">7+</option> <!-- Ou tratar 7+ no JS -->
+                            <option value="7">7+</option>
                         </select>
                         <select id="db-filter-tribe">
                             <option value="">Tribo</option>
-                            <!-- Preencher com tribos existentes -->
+                            <!-- Opções de tribo preenchidas dinamicamente ou ter valores fixos -->
                             <option value="Elf">Elfo</option>
                             <option value="Dwarf">Anão</option>
                             <option value="Beast">Besta</option>
@@ -77,6 +79,7 @@ export function generateDeckBuilderScreenHTML() {
 
                 <!-- Painel Direito: Deck Atual Sendo Construído -->
                 <div class="deck-builder-panel deck-panel">
+                     <!-- Contador secundário dentro do painel -->
                     <h3>Deck Atual (<span id="db-deck-count-display">0</span>/40)</h3>
                     <p class="subtle-text">Arraste cartas aqui ou para fora.</p>
                      <div id="db-current-deck" class="card-list scrollable-list">
@@ -86,7 +89,7 @@ export function generateDeckBuilderScreenHTML() {
                 </div>
 
             </div>
-             <!-- Overlay para Zoom da Imagem (pode ser o mesmo do perfil ou específico) -->
+             <!-- Overlay para Zoom da Imagem (específico ou global) -->
              <div id="deckbuilder-image-zoom-overlay" class="image-zoom-overlay">
                  <img id="deckbuilder-zoomed-image" src="" alt="Zoomed Card">
              </div>
