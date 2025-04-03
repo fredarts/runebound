@@ -451,7 +451,7 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 /* --- Outros Estilos Específicos --- */
 /* (Options, Connect, Login, Create Account, Shake, Drag Removal styles remain largely the same) */
 .options-layout { align-items: center; padding-top: 30px;  background: url('../assets/images/ui/options_background.jpg') no-repeat center center; background-size: cover; justify-content: center; align-items: center; text-align: center; padding: 20px; }
-.options-container { max-width: 600px; width: 95%; overflow-y: auto; padding: 20px; background: var(--panel-background); border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+.options-container { max-width: 600px; width: 95%; overflow-y: auto; padding: 20px; background: var(--panel-background); border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-color); overflow: hidden; }
 .options-group { border: 1px solid var(--border-color); border-radius: 5px; padding: 15px 20px; margin-bottom: 20px; }
 .options-group legend { padding: 0 10px; font-weight: bold; color: var(--primary-color); font-size: 1.1em; }
 .option-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px; flex-wrap: wrap; /* Allow wrap */}
@@ -822,5 +822,5 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
     /* Estilos idênticos aos outros image-zoom-overlay */
 }
 #deck-management-zoomed-image {
-    /* Estilos idênticos às outras zoomed-image */
+    width: 460px;
 }
