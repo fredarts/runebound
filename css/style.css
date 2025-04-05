@@ -210,13 +210,14 @@ label { display: block; margin-bottom: 5px; color: var(--text-color); font-size:
 
 /* --- Title Screen Layout --- */
 #title-screen {
-    background: url('../assets/images/ui/title_background.jpg') no-repeat center center;
+    
     background-size: cover;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding-bottom: 5vh;
-    /* REMOVED max-height: 1100px; */
+   
+    position: relative;
+ 
 }
 
 #title-screen h1 {
@@ -501,17 +502,7 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 /* 7. Home Screen (News Feed)  */
 /*-----------------------------*/
 
-.home-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    /* Remove padding-bottom here, handle spacing with content/button */
-    box-sizing: border-box;
-    position: relative;
-    height: 100%; /* Layout takes full screen height */
-    overflow: hidden; /* Prevent layout itself from scrolling */
-}
+
 
 .home-layout h2 {
     margin-bottom: 20px;
@@ -824,3 +815,137 @@ body.dragging-from-deck .deck-panel .card-list { background-color: rgba(255, 0, 
 #deck-management-zoomed-image {
     width: 460px;
 }
+
+
+
+#titlescreen-banner {
+    /* Coloca o banner no fundo, cobrindo toda a área */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Essencial para Ken Burns funcionar corretamente */
+    /* Define uma ordem de empilhamento baixa (ficará atrás) */
+    z-index: 0;
+    background-color: #000; /* Fundo enquanto a imagem carrega */
+}
+
+.banner-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 2s ease-in-out; /* Ajuste a duração conforme necessário */
+
+    /* Propriedades Ken Burns (já devem existir no seu CSS) */
+    animation-duration: 7s; /* Exemplo */
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-name: none;
+}
+
+.banner-image.active {
+    opacity: 1;
+    z-index: 1; /* Imagem ativa fica sobre a que está saindo */
+}
+.banner-image.exiting {
+    z-index: 0; /* Imagem saindo fica atrás */
+}
+
+/* --- ESTA É A PARTE CRÍTICA --- */
+/* Aplica a animação específica SOMENTE quando .active e .kenburns-X estão presentes */
+.banner-image.kenburns-1 {
+    animation-name: kenburns-1-kf;
+}
+.banner-image.kenburns-2 {
+    animation-name: kenburns-2-kf;
+}
+.banner-image.kenburns-3 {
+    animation-name: kenburns-3-kf;
+}
+.banner-image.kenburns-4 {
+    animation-name: kenburns-4-kf;
+}
+
+/* Keyframes de Exemplo (você precisa definir estes) */
+@keyframes kenburns-1-kf {
+    0% { transform: scale(1.0) translate(0, 0); } /* Inicia com escala normal */
+    100% { transform: scale(1.15) translate(-3%, 2%); } /* Termina com zoom e leve pan */
+}
+
+@keyframes kenburns-2-kf {
+    0% { transform: scale(1.0) translate(0, 0); }
+    100% { transform: scale(1.1) translate(2%, -1%); } /* Outra variação */
+}
+
+@keyframes kenburns-3-kf {
+    0% { transform: scale(1.1) translate(1%, 1%); } /* Começa com zoom */
+    100% { transform: scale(1.0) translate(0, 0); } /* Termina com zoom out */
+}
+
+ @keyframes kenburns-4-kf {
+    0% { transform: scale(1.0) translate(0, 0); }
+    100% { transform: scale(1.05) translate(0%, 3%); } /* Movimento vertical lento */
+}
+
+/* (Opcional) Classe para a imagem que está saindo (fade out) */
+.banner-image.exiting {
+    z-index: 0; /* Garante que fique abaixo da nova imagem */
+}
+
+.titlescreen-content {
+    /* Posiciona o conteúdo para que z-index funcione */
+    position: relative; /* Ou absolute, se precisar de posicionamento preciso */
+    /* Define uma ordem de empilhamento ALTA (ficará na frente) */
+    z-index: 1; /* Qualquer valor maior que o z-index do banner */
+
+    /* Estilos adicionais para centralizar ou posicionar o conteúdo */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center;   /* Centraliza horizontalmente */
+    padding: 20px; /* Adiciona algum espaçamento */
+    box-sizing: border-box;
+
+    /* Garante que os elementos dentro sejam clicáveis */
+    pointer-events: none; /* O container em si não captura cliques */
+}
+
+/* Garante que a logo e os botões DENTRO do content sejam clicáveis */
+.titlescreen-content .title-logo,
+.titlescreen-content .title-menu,
+.titlescreen-content .title-menu button {
+    pointer-events: auto; /* Permite cliques nesses elementos */
+}
+
+.title-logo img {
+    max-width: 80%; /* Exemplo */
+    height: auto;
+    margin-bottom: 30px; /* Espaço entre logo e menu */
+}
+
+.title-menu button {
+    /* Seus estilos de botão aqui */
+    margin: 10px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    /* ... outros estilos ... */
+}
+
+#title-screen::after {
+    content: ""; 
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Garante que cliques passem por cima */
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.9) 100%); } 

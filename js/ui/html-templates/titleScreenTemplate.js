@@ -1,30 +1,33 @@
-// js/ui/html-templates/titleScreenTemplate.js - ATUALIZADO
+// titleScreenTemplate.js
+// Template para a tela de título, retornando a estrutura HTML completa da tela.
 
-/**
- * Gera a string HTML para a Tela de Título.
- * Inclui logo acima dos botões.
- * @returns {string} HTML da tela de título.
- */
+class TitlescreenTemplate {
+    static getHtml() {
+        // Conteúdo específico da tela de título (logo, botões, etc.)
+        const titleScreenContent = `
+            <div class="title-logo">
+                <img src="assets/images/ui/runebound_logo.png" alt="Logo do Jogo">
+            </div>
+            <nav class="title-menu">
+                <button data-action="login">Logar</button>
+                <button data-action="create-account">Criar Conta</button>
+                <button data-action="settings">Opções</button>
+            </nav>
+        `;
+        
+        // Estrutura completa da tela de título com um wrapper que possui o ID "title-screen" e a classe "screen"
+        return `
+            <div id="title-screen" class="screen">
+                <div id="titlescreen-banner"></div>
+                <div class="titlescreen-content">
+                    ${titleScreenContent}
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Exporta uma função que gera o HTML da tela de título para manter a consistência com os demais templates
 export function generateTitleScreenHTML() {
-    return `
-        <div id="title-screen" class="screen">
-            <!-- Título Principal -->
-            
-
-            <!-- Logo Adicionado -->
-            <img class="title-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
-
-            <!-- Menu de Botões -->
-            <div class="title-menu">
-                <button id="btn-goto-login">Login</button>
-                <button id="btn-goto-create-account">Criar Conta</button>
-                <button id="btn-goto-options-icon" class="icon-button" title="Opções">⚙️</button>
-            </div>
-
-            <!-- Você pode adicionar mais elementos aqui, como links para créditos, patch notes, etc. -->
-            <div class="title-footer">
-                <a href="#">Créditos</a> | <a href="#">Versão 0.1.0</a>
-            </div>
-        </div>
-    `;
+    return TitlescreenTemplate.getHtml();
 }

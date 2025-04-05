@@ -75,6 +75,8 @@ runebound_dccg/
                 f00ebdd3e3f0f36c5f9aed570355081fdee97a
             15/
                 8966491f9c9f6fa8a7458039d1f9d83b9c2971
+            16/
+                7ccaa27cbdee7efe1d9d364520b410e047f398
             19/
                 3fc5865060ebc9bfe5face7c14da42a55eb5f3
                 b5c824cb13578818a401e96d95a4ba8d4f6d31
@@ -83,6 +85,7 @@ runebound_dccg/
                 bb755a146c59a2faa5d5386ccce2cd0501dbdd
             1d/
                 8d269f50f1392686255cd0286f3868a84b85d6
+                908cba73c856206875a34da88799a153ccb262
                 c8610e80d8516a98db89726564e92a31918847
                 dbcb278e310ed4a7270164056ed44c12c027ba
             1f/
@@ -92,6 +95,9 @@ runebound_dccg/
                 44e5c4d02e09643e58de8294867e0cb363d3a3
             23/
                 f7f4e99f3c642c6a4ca2c7dcbe75b4f1c7a4e2
+            24/
+                296755992dc8d347e994d33fd6a42be044c68b
+                57050d28c861db487e9be7d1fb10a6e5f16841
             25/
                 6dcfb604f3a3a4848307d741c97025c1dd19f3
                 7f8a57e5becf724d6117f944f32dfd2c537eb6
@@ -100,8 +106,10 @@ runebound_dccg/
                 faaf98cb7fa0b67f6c21ec05e66a1a0d58f6df
             27/
                 8aa8b6e069c248a9fa8e862160df3522f72490
+                edc0fb4a748f6d741d7cb2f8b774e5847cbed4
             28/
                 490804951ca2379eef543e09d33774aaf7c03d
+                4beac420cca60c09b07753c8657a0430084eff
                 b11c8ff878a49ac376ae37bf90fbdd0867f9fd
             2b/
                 d1a8c4d27e698f1d4a7fb0ccf740ccba9e0bb0
@@ -120,6 +128,7 @@ runebound_dccg/
                 553de290aa47b662bd10bc4c0465e49417871b
                 85f327eec533ce89a7c0f9d99f3fa55b13bfc1
             34/
+                0bef84aeef3fb6c1c96225d6e3fba348487736
                 acf84b943010640f4727f2a296a120a4e8a23d
                 cf0b22f1773b5abb5aec08c14d3a505c16820a
             35/
@@ -164,6 +173,8 @@ runebound_dccg/
                 7c65dee4dae69dfc89a4bf8d2b1f154c20c0f4
             59/
                 af3be4ce712fa53f0cd23536da909a926781cb
+            5b/
+                38c1b696eab9a40db026eda95e93fa4385222f
             5c/
                 d40444b54c0d25450446c984e05b013abcaf9e
             5d/
@@ -174,12 +185,14 @@ runebound_dccg/
                 f8838fb273643ec4e2ad31dbe5ce43c0d14a4d
                 fd3035ffc1581b030b233d5771b411f26743a6
             60/
+                0ab3d2675dc1ae9bda5a1ff25bac3e8c68c9b7
                 48c42317e6688acaec5ad95956fa9a35f9151e
             61/
                 93ec381ed83aa0a2fb1814abd822b13ff9a5e6
                 e3a853918d99c47e7f4e9f9f1d42500eec2d37
             62/
                 1f4ded3fad645c84a3322a673d969a65618b58
+                d06da50190659541ca9cf023d8dc987a68f3dc
                 f4d920201442a6a49ad86bfe5194f55e2ffab2
             63/
                 4e69da777824f8651e8b89c37d484690a1a5a9
@@ -193,6 +206,7 @@ runebound_dccg/
             68/
                 d37e178889acbb8090173d119b562bd6f8f6b6
             6c/
+                09c3bc85dfdb9783055b4f95a15bf3e80af893
                 3544130b3e70f5236e347a6d44cd9f18c7436d
                 d073f322848b3e06d6f3710f6218e541f8815e
                 f4667045caefa0c04b05ff25ff55feee6ddbed
@@ -206,10 +220,18 @@ runebound_dccg/
                 f890df21d31da4c543d034dbc246d8195002c4
             71/
                 583ac0a9815a0816414460f4527d6ae94cb15b
+                5b0de67d07e7e5c0d45653f639e2627ad60980
+            72/
+                800901ec5745e778976fd3784bf9abc1f5d265
+                8c3690664d7002df5999cf1845514938227e2a
+            73/
+                6431cf39916d519af8c3bb4f49bc66fc8e2312
             75/
                 3ee19d72990b6575e562ba0c645c9853a5e124
                 98bf9648f2ab234d41ff951afc3ab234e079ba
                 e33cb3eb771900de8d9566499e83acb69bde0b
+            76/
+                7a6c10fd134f61eae691b1ce91c6719c7ffd2a
             77/
                 0ea89a137c7f3ea9924df2dc39d49be9e8149e
                 bfa9950891ecd1422495b0663d58c36f9e5b9b
@@ -217,6 +239,7 @@ runebound_dccg/
             78/
                 88adfc21ff849793f7fceb30745b8a277b0dcc
             79/
+                e87d9e66ac984ed81ff1a08ea97042473a5634
                 f3abfd2fdd7ecb2dcac777212f1ebfd2a458b0
             7a/
                 fa18feb94cc97978c939b7af2532770793a086
@@ -241,6 +264,7 @@ runebound_dccg/
                 73cbeb90528ff0407e7f6293e6a81024e52092
             85/
                 9696149e3f86700fc43c2dcc6b4ae6eb2c0556
+                9e5a1548df35d0c18eea7260fd49e23fe61898
             86/
                 bd23671daa59a2a4ad0716a8aa430afbdf3797
                 dd7796e77990867efd177b297fe16144e51bc5
@@ -262,6 +286,7 @@ runebound_dccg/
                 eaf69a137ab8ea93f671733673fbeb649db39f
             93/
                 1060547b6b731a92efe25ba6d93b96261f3503
+                bedbedea57fc137e1c6b38fca12e4c85ccb23f
             95/
                 01a8884ca2ef9b2bf2b1a7c8318f9917f8705c
                 3c43e78acdfbabe411bbc21b0f85b86e0cc14b
@@ -272,10 +297,12 @@ runebound_dccg/
                 c950bc7b01e6feb3a66f09580d3e70b61fafdf
             98/
                 883b0cb7e91d28b034fc6526491f07a587f17c
+                9b6112dd9d9bed4ef04b34490d72ad4646fa11
                 e9b8cceab5b9ce5b556b2ba4183eb8d409ff71
             9a/
                 196c3d4c697833458c8421c2e11193fb5cb6e4
             9b/
+                5fb1229bc3d9a6dff1869a2a56c762f99d71be
                 810333862d281f78afdc06c0611ad3c5218cd1
                 ebae9186dfceb7c526ab83addbaf0c26e6ebfe
             9c/
@@ -283,6 +310,7 @@ runebound_dccg/
                 6df79146c9d497ead103fb9027f7499ef6e816
             a0/
                 6a35a49b58d7a516d22637da1b1db7d6cfa4bc
+                6ec2bba86780f44de5bb5aac99e4ece26dd087
             a2/
                 2a812df8a9a85a97c0a641ef6697667f44edad
                 fc75f836c7bdd29ccef66dd97ea11d9043bd38
@@ -315,6 +343,8 @@ runebound_dccg/
             b7/
                 1d4d5bd986cbb8371ec53d432f181858c64448
                 7886e2dc67991f6bb96626a82b276c8d1163b0
+            b8/
+                c1ca7b27edb849c725f84268d2b7e5e6347c27
             b9/
                 730865f80944017c2239aaf3651086849b11e4
                 7db54e3474e18ff3d92dc2408127b2b6e5531e
@@ -330,11 +360,13 @@ runebound_dccg/
                 b6a3cf069a9d2fbc751546ae36ae38bb775ad9
                 cd2c8855df81df9f834b417e3dd5e7ff39bff3
             c4/
+                8aa0bcde4364aecb47c2402ac1dcdba40b2aa8
                 a52ef327332de6c060d591e21e0c33ca86558a
             c6/
                 4f20c3d71e7f5be3d6beafcd44c0942ee95b60
             c8/
                 0cf582d03d9b7a7c955395c2167fd57efa3ea9
+                c5e2d12a47e182f0616eeb39ce744eef0bd908
             c9/
                 c985606f301bf7a1f431490eb6eac9e5637336
             ca/
@@ -346,6 +378,7 @@ runebound_dccg/
                 c976ec0968176400b42254eb9899da907dcf3c
             cd/
                 201dfd41304ad1cd335a50bf0786ec9d75cf64
+                223c527d712a6e42fe586415fac84ce2f0f4ba
                 699b089645c967198742c6c7d4e74d67abf37e
             ce/
                 6db42359cd9f05cb6336a5fb584f414604d0a2
@@ -354,6 +387,7 @@ runebound_dccg/
                 12defc5f664db2e88e34d83db4f5580fb552b8
                 287ab8825496d0678994eb009df60136051e84
                 684ee06e4d1c467a6c9c80fc9ebc88aabd249c
+                f9d26d3fc9db40e800a610f1006d493a6c9f77
             d2/
                 410b2d71512bca8448471068644e388635e3f2
                 f1be81e8649f0751ff7363d180cd3516e29589
@@ -370,6 +404,7 @@ runebound_dccg/
                 d9a24f376419e76229ba42ce10153c646264e6
             da/
                 41442fffd6c2daff3dac068cec33b29cb58de8
+                5885559f67d8495a3441a83f6bc327d4127ad0
                 8700f6d35deaa6abb61515a6caf920178cb4e2
             dc/
                 2f3f356258eb4185fd056b0fba5a216b1c3c08
@@ -379,6 +414,7 @@ runebound_dccg/
                 d53bb57185d659577bca1af380664bc68f6337
                 ea6ae40ff0f92e2eec955b46e2a70a5bbc8dd6
             de/
+                4f665bb558fb3c560d4406f060b72043241d42
                 99a67b77189d8d5003572afbf297e3c7b1762d
             e0/
                 f24c0d705f0bfd3401560340d6717cd113a3bb
@@ -386,6 +422,7 @@ runebound_dccg/
                 24a2ea54d5bc14bec2e519907e51e5e921d922
                 37e34038a7b9650cf0f4dbde8be2054bd85796
             e3/
+                5b62d55c8cbdeb59ae17e7a318ab11f5c65e36
                 9b4dd7e973491dec9542df96a4d23daef3777a
             e4/
                 63e7687eb61b4cf5938bc29b8b1de58198d1b3
@@ -398,6 +435,8 @@ runebound_dccg/
                 e76b35b8836cf1420019856aa139cb3f6764d8
             ed/
                 dba2a3acca50f0519331eb2a3e6606fbf336c6
+            ee/
+                06afe51f615edaa0b38614e1abfbe2941ac333
             f0/
                 c7b9d7cd5b86fff6c71b981fd84d056a681e8c
                 d9e15ef31dbd764e8bc113106fdcdb452d374a
@@ -410,11 +449,15 @@ runebound_dccg/
                 bb2af30778f669d161d743db1a1c803f356d60
                 cbf83ad6da952d8481ff6a5de72e9127cd1f47
                 de9117bfaf1038ed8a1920b2d497b56e010ac2
+            f9/
+                b500ce88d2980386d3efd159daa65cb6ab04b2
             fa/
                 de3c3478167b9f06062f40736cee1112c13561
             fb/
                 14ac1839cb832dbe6018146e7f6996ad365601
                 393e0f6933894680d97eaa425932235b425943
+            fc/
+                aa43be6fdf355c793eae0473a9a87b5fdd803e
             fe/
                 0b667362b519a676db6cbf262e84f1df537b57
             ff/
@@ -448,6 +491,19 @@ runebound_dccg/
                 avatar2.png
                 avatar3.png
                 default.png
+            backgrounds/
+                bg1.jpg
+                bg10.jpg
+                bg11.jpg
+                bg12.jpg
+                bg2.jpg
+                bg3.jpg
+                bg4.jpg
+                bg5.jpg
+                bg6.jpg
+                bg7.jpg
+                bg8.jpg
+                bg9.jpg
             cards/
                 arcane_familiar.png
                 bounce.png
@@ -573,6 +629,7 @@ runebound_dccg/
                 HomeScreenUI.js
                 OptionsUI.js
                 ProfileScreenUI.js
+                titlescreenUi.js
 
 ### CONTEÚDO DOS SCRIPTS ###
 
@@ -582,7 +639,7 @@ runebound_dccg/
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\main.js ---
-// js/main.js - ATUALIZADO (v2.5 - AudioManager + Splash Fix)
+// js/main.js - ATUALIZADO (v2.7 - UIManager Navigation Integration)
 
 // --- Imports ---
 // Core Modules
@@ -590,7 +647,7 @@ import Game from './core/Game.js';
 import UIManager from './ui/UIManager.js';
 import ScreenManager from './ui/ScreenManager.js';
 import AccountManager from './account/AccountManager.js';
-import AudioManager from './audio/AudioManager.js'; // <<<=== Importado AudioManager
+import AudioManager from './audio/AudioManager.js';
 import { loadCardDefinitions } from './utils.js';
 
 // --- HTML Template Imports ---
@@ -617,7 +674,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
     const $screensContainer = $('#screens-container'); // Container principal das telas
     const $body = $('body');                           // Body para adicionar a Top Bar
 
-    // Verificação crítica: garante que o container existe
     if (!$screensContainer.length) {
         console.error("CRITICAL ERROR: #screens-container div not found in index.html! Cannot generate UI.");
         $body.empty().css({
@@ -625,32 +681,29 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             'justify-content': 'center', 'align-items': 'center', 'height': '100vh',
             'font-size': '1.5em', 'padding': '20px', 'text-align': 'center'
         }).html('<h1>Erro Crítico</h1><p>A estrutura base do HTML (index.html) parece estar faltando o elemento <code><div id="screens-container"></div></code>. A aplicação não pode iniciar.</p>');
-        return; // Para a execução
+        return;
     }
 
     try {
-        // Gera e anexa o HTML de cada tela ao container
-        $screensContainer.empty() // Limpa qualquer conteúdo estático
-            .append(generateSplashScreenHTML())          // Splash Screen PRIMEIRO
-            .append(generateTitleScreenHTML())           // Tela de Título
-            .append(generateLoginScreenHTML())           // Tela de Login
-            .append(generateCreateAccountScreenHTML())   // Tela de Criar Conta
-            .append(generateHomeScreenHTML())            // Tela Inicial (Notícias)
-            .append(generateProfileScreenHTML())         // Tela de Perfil (Simplificada)
-            .append(generateDeckManagementScreenHTML()) // Adiciona Nova Tela de Decks/Coleção
-            .append(generateConnectScreenHTML())         // Tela de Conexão
-            .append(generateDeckBuilderScreenHTML())     // Tela do Construtor de Decks
-            .append(generateOptionsScreenHTML())         // Tela de Opções
-            .append(generateBattleScreenHTML());         // Tela de Batalha
+        $screensContainer.empty()
+            .append(generateSplashScreenHTML())
+            .append(generateTitleScreenHTML())
+            .append(generateLoginScreenHTML())
+            .append(generateCreateAccountScreenHTML())
+            .append(generateHomeScreenHTML())
+            .append(generateProfileScreenHTML())
+            .append(generateDeckManagementScreenHTML())
+            .append(generateConnectScreenHTML())
+            .append(generateDeckBuilderScreenHTML())
+            .append(generateOptionsScreenHTML())
+            .append(generateBattleScreenHTML());
 
-        // Adiciona a Top Bar no início do body, fora do container de telas
         $body.prepend(generateTopBarHTML());
 
         console.log("MAIN: HTML Structure dynamically generated.");
 
     } catch (htmlGenError) {
          console.error("MAIN: Critical error during HTML generation from templates:", htmlGenError);
-         // Tenta mostrar erro na splash screen ou no container principal
          const $splash = $('#splash-screen');
          if ($splash.length && ($splash.hasClass('active') || $screensContainer.children().length <= 1)) {
              $splash.addClass('active').html(`<p style="color:red; font-weight:bold;">Erro Crítico na Geração da UI: ${htmlGenError.message}. Recarregue.</p>`);
@@ -658,18 +711,17 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
          } else {
              $screensContainer.html(`<p style="color:red; font-weight:bold;">Erro Crítico na Geração da UI: ${htmlGenError.message}. Recarregue.</p>`);
          }
-         return; // Para a execução
+         return;
     }
     // --- END STEP 1 ---
 
 
     // --- STEP 2: Initialize Modules and Logic ---
     console.log("MAIN: Initializing modules and binding events...");
-    try { // Envolve a inicialização principal em try...catch
+    try {
         // --- Module Initialization ---
-        const cardDatabase = loadCardDefinitions(); // Carrega definições de cartas
+        const cardDatabase = loadCardDefinitions();
         if (!cardDatabase) {
-            // Trata erro crítico se as cartas não puderem ser carregadas
             const $splashError = $('#splash-screen');
              if ($splashError.length && ($splashError.hasClass('active') || $screensContainer.children().length <= 1)) {
                  $splashError.text('Erro Crítico: Falha ao carregar cartas. Recarregue.').css('color', 'salmon');
@@ -679,66 +731,53 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                  $screensContainer.html('<p style="color:red; font-weight:bold;">Erro Crítico: Falha ao carregar cartas.</p>');
              }
             console.error("CRITICAL: Failed to load card definitions!");
-            return; // Para a execução
+            return;
         }
 
-        // Inicializa os gerenciadores APÓS o HTML ser gerado
-        const screenManager = new ScreenManager();
+        const screenManager = new ScreenManager(); // ScreenManager ainda é usado pelo UIManager
         const accountManager = new AccountManager();
-        const audioManager = new AudioManager(); // <<<=== Instancia AudioManager
-        // UIManager agora recebe AudioManager
-        const uiManager = new UIManager(screenManager, accountManager, cardDatabase, audioManager); // <<<=== Passado para UIManager
+        const audioManager = new AudioManager();
+        // UIManager agora recebe AudioManager e gerencia a navegação principal
+        const uiManager = new UIManager(screenManager, accountManager, cardDatabase, audioManager);
 
         // --- Initial Screen & Splash Transition ---
         console.log("MAIN: Showing splash screen...");
-        setTimeout(() => $('#splash-screen').addClass('loading'), 50);
+        // Mostra Splash imediatamente (assumindo que CSS a torna visível por padrão ou com classe 'active')
+        // $('#splash-screen').addClass('active'); // Garante que está ativa
+        setTimeout(() => $('#splash-screen').addClass('loading'), 50); // Inicia animação de loading
 
         console.log("MAIN: Setting timeout for screen transition (3000ms)...");
         setTimeout(async () => {
             console.log("MAIN: Timeout finished. Checking login state...");
             const $splashScreen = $('#splash-screen');
-            let initialScreenId = 'title-screen'; // Tela padrão se não logado
 
             try {
                 const currentUser = accountManager.getCurrentUser();
+
+                // Desativa splash ANTES de navegar para a próxima tela
+                 if ($splashScreen.hasClass('active')) {
+                     $splashScreen.removeClass('active loading');
+                     console.log("MAIN: Splash screen deactivated.");
+                 }
+
                 if (currentUser) {
                     // --- Logged In Flow ---
-                    console.log(`MAIN: User '${currentUser.username}' found. Showing Top Bar and Home Screen.`);
-                    uiManager.showTopBar(currentUser);
-                    $('#screens-container').addClass('with-top-bar');
-
-                    // Remove 'active' da splash ANTES de mostrar a próxima
-                    if ($splashScreen.hasClass('active')) {
-                        $splashScreen.removeClass('active loading');
-                        console.log("MAIN: Splash screen deactivated for logged-in flow.");
-                    }
-
-                    await uiManager.renderHomeScreen();
-                    screenManager.showScreen('home-screen');
-                    initialScreenId = 'home-screen'; // Atualiza tela inicial para tocar BGM correta
+                    console.log(`MAIN: User '${currentUser.username}' found. Preparing Home Screen.`);
+                    uiManager.showTopBar(currentUser); // Mostra a barra superior
+                    $('#screens-container').addClass('with-top-bar'); // Ajusta layout
+                    await uiManager.navigateTo('home-screen'); // <<< USA NAVIGATE TO
+                    // navigateTo agora lida com render, showScreen e playBGM internamente
 
                 } else {
                     // --- Logged Out Flow ---
-                    console.log("MAIN: No user found. Showing title-screen.");
-                    uiManager.hideTopBar();
-                    $('#screens-container').removeClass('with-top-bar');
-
-                    // Remove 'active' da splash ANTES de mostrar a próxima
-                    if ($splashScreen.hasClass('active')) {
-                        $splashScreen.removeClass('active loading');
-                        console.log("MAIN: Splash screen deactivated for logged-out flow.");
-                    }
-
-                    screenManager.showScreen('title-screen');
-                    initialScreenId = 'title-screen'; // Confirma tela inicial para tocar BGM
+                    console.log("MAIN: No user found. Preparing Title Screen.");
+                    uiManager.hideTopBar(); // Esconde a barra superior
+                    $('#screens-container').removeClass('with-top-bar'); // Ajusta layout
+                    uiManager.navigateTo('title-screen'); // <<< USA NAVIGATE TO
+                     // navigateTo agora lida com render/init, showScreen e playBGM
                 }
 
-                // <<<=== Tocar BGM inicial AQUI ===>>>
-                console.log(`MAIN: Playing initial BGM for screen: ${initialScreenId}`);
-                audioManager.playBGM(initialScreenId);
-                // <<<==============================>>>
-
-                console.log("MAIN: Initial screen setup complete.");
+                console.log("MAIN: Initial screen setup complete via navigateTo.");
             } catch (error) {
                 console.error("MAIN: Error inside setTimeout callback:", error);
                 // Fallback
@@ -746,57 +785,41 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                  uiManager.hideTopBar();
                  $('#screens-container').removeClass('with-top-bar');
 
-                 // Garante que splash saia no fallback também
                  if ($splashScreen.hasClass('active')) {
                     $splashScreen.removeClass('active loading');
                     console.log("MAIN: Splash screen deactivated on error fallback.");
                  }
-
-                screenManager.showScreen('title-screen');
-                // Tocar BGM da title screen no fallback
-                audioManager.playBGM('title-screen');
+                // Usa navigateTo para garantir consistência no fallback também
+                uiManager.navigateTo('title-screen');
             }
         }, 3000); // Delay
 
 
         // --- Global UI Bindings ---
-        // Adiciona listeners de áudio aos botões da Title Screen
-        const addTitleAudioListeners = ($element, sfxClick = 'buttonClick', sfxHover = 'buttonHover') => {
-            $element.off('click.titleaudio').on('click.titleaudio', () => audioManager?.playSFX(sfxClick));
-            $element.off('mouseenter.titleaudio').on('mouseenter.titleaudio', () => audioManager?.playSFX(sfxHover));
+        // Helper para adicionar sons de UI (mantido para botões que não navegam via UIManager ou precisam de hover)
+        const addAudioListeners = ($element, sfxClick = 'buttonClick', sfxHover = 'buttonHover') => {
+            $element.off('click.uisfx mouseenter.uisfx'); // Usa namespace para evitar conflito
+            $element.on('click.uisfx', () => audioManager?.playSFX(sfxClick));
+            $element.on('mouseenter.uisfx', () => audioManager?.playSFX(sfxHover));
         };
 
-        // Ações da Tela de Título
-        const $btnLogin = $('#btn-goto-login');
-        $btnLogin.on('click', () => screenManager.showScreen('login-screen'));
-        addTitleAudioListeners($btnLogin);
+       
 
-        const $btnCreate = $('#btn-goto-create-account');
-        $btnCreate.on('click', () => screenManager.showScreen('create-account-screen'));
-        addTitleAudioListeners($btnCreate);
 
-        const $btnOptionsIcon = $('#btn-goto-options-icon');
-        $btnOptionsIcon.on('click', () => {
-             uiManager.renderOptionsScreen();
-             screenManager.showScreen('options-screen');
-             audioManager.playBGM('options-screen'); // Toca BGM ao ir para opções
-        });
-        addTitleAudioListeners($btnOptionsIcon);
-
-        // Botões "Voltar" das telas de Login/Criar Conta
+        // --- Botões "Voltar" das telas de Login/Criar Conta ---
+        // ATUALIZADO: Usa uiManager.navigateTo
         const $btnBackToTitle = $('#btn-create-back-to-title, #btn-login-back-to-title');
         $btnBackToTitle.on('click', () => {
-            $('#create-account-message, #login-message').text('');
-            screenManager.showScreen('title-screen');
-            audioManager.playBGM('title-screen'); // Toca BGM ao voltar
+            $('#create-account-message, #login-message').text(''); // Limpa mensagens
+            uiManager.navigateTo('title-screen');
         });
-        $btnBackToTitle.each((i, btn) => addTitleAudioListeners($(btn)));
+        $btnBackToTitle.each((i, btn) => addAudioListeners($(btn))); // Mantém sons de UI
 
 
-        // Submissão do Formulário de Criar Conta
+        // --- Submissão do Formulário de Criar Conta ---
         $('#create-account-form').on('submit', (event) => {
             event.preventDefault();
-            audioManager.playSFX('buttonClick'); // Som de clique no submit
+            audioManager.playSFX('buttonClick'); // Som explícito no submit
             const $form = $(event.currentTarget);
             const u = $('#create-username').val().trim();
             const p = $('#create-password').val();
@@ -807,29 +830,27 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             if (r.success) {
                 $form[0].reset();
                 setTimeout(() => {
+                    // Verifica se ainda está na tela antes de navegar
                     if (screenManager.getActiveScreenId() === 'create-account-screen') {
-                        screenManager.showScreen('login-screen');
-                        $m.text('');
+                        uiManager.navigateTo('login-screen'); // <<< USA NAVIGATE TO
                     }
                  }, 2000);
             } else {
-                // Efeito de "shake"
                 const $container = $form.closest('.form-container');
                 if ($container.length) {
                     $container.addClass('form-shake');
                     setTimeout(() => $container.removeClass('form-shake'), 600);
                 }
-                audioManager.playSFX('createAccountError'); // <<<=== Toca SFX de erro
+                audioManager.playSFX('createAccountError');
             }
         });
-        // Adiciona hover aos botões do form
-        $('#create-account-form button').each((i, btn) => addTitleAudioListeners($(btn)));
+        $('#create-account-form button').each((i, btn) => addAudioListeners($(btn))); // Adiciona sons
 
 
-        // Submissão do Formulário de Login
-        $('#login-form').on('submit', async (event) => {
+        // --- Submissão do Formulário de Login ---
+        $('#login-form').on('submit', async (event) => { // Login é async por causa do navigateTo
             event.preventDefault();
-            audioManager.playSFX('buttonClick'); // Som de clique no submit
+            audioManager.playSFX('buttonClick'); // Som explícito no submit
             const $form = $(event.currentTarget);
             const u = $('#login-username').val().trim();
             const p = $('#login-password').val();
@@ -840,87 +861,80 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             if (r.success) {
                 $form[0].reset();
                 // --- Login Success Flow ---
-                uiManager.showTopBar(r.user);
-                $('#screens-container').addClass('with-top-bar');
-                await uiManager.renderHomeScreen();
-                screenManager.showScreen('home-screen');
-                audioManager.playBGM('home-screen'); // Toca BGM da Home após login
+                uiManager.showTopBar(r.user); // Configura Top Bar
+                $('#screens-container').addClass('with-top-bar'); // Ajusta Layout
+                await uiManager.navigateTo('home-screen'); // <<< USA NAVIGATE TO
                 // --- Fim Login Success Flow ---
             } else {
-                // Efeito de "shake"
                 const $container = $form.closest('.form-container');
                 if ($container.length) {
                     $container.addClass('form-shake');
                     setTimeout(() => $container.removeClass('form-shake'), 600);
                 }
-                audioManager.playSFX('loginError'); // <<<=== Toca SFX de erro
+                audioManager.playSFX('loginError');
             }
         });
-         // Adiciona hover aos botões do form
-         $('#login-form button').each((i, btn) => addTitleAudioListeners($(btn)));
+         $('#login-form button').each((i, btn) => addAudioListeners($(btn))); // Adiciona sons
 
 
         // --- Top Bar Navigation ---
-        // Tratada em UIManager._bindPermanentUIActions, que agora toca BGM/SFX
+        // É tratada em UIManager._bindPermanentUIActions, que agora usa navigateTo.
 
         // --- Other Screen Back Buttons ---
+        // ATUALIZADO: Usa uiManager.navigateTo
          const $btnOptionsBack = $('#btn-options-back-to-main');
          $btnOptionsBack.on('click', () => {
-              screenManager.goBack('home-screen');
-              // AudioManager tocará a BGM correta baseado na tela que for mostrada
-              // É mais seguro deixar o handler de navegação (UIManager) controlar a BGM
+              uiManager.navigateTo('home-screen'); // Volta para Home (ajuste se necessário)
          });
-         addTitleAudioListeners($btnOptionsBack); // Adiciona sons básicos
+         addAudioListeners($btnOptionsBack); // Adiciona sons
 
          const $btnDeckBuilderBack = $('#btn-deck-builder-back');
          $btnDeckBuilderBack.on('click', () => {
-             console.log("MAIN: Deck Builder back button clicked, going to Deck Management.");
-             uiManager.renderDeckManagementScreen();
-             screenManager.showScreen('deck-management-screen');
-             audioManager.playBGM('deck-management-screen'); // Toca BGM dos decks
+             console.log("MAIN: Deck Builder back button clicked.");
+             uiManager.navigateTo('deck-management-screen'); // Volta para Gerenciamento
          });
-         addTitleAudioListeners($btnDeckBuilderBack);
+         addAudioListeners($btnDeckBuilderBack); // Adiciona sons
 
          const $btnConnectBack = $('#btn-connect-back-to-main');
          $btnConnectBack.on('click', () => {
-              screenManager.showScreen('home-screen');
-              audioManager.playBGM('home-screen'); // Toca BGM da Home
+              uiManager.navigateTo('home-screen'); // Volta para Home
          });
-         addTitleAudioListeners($btnConnectBack);
+         addAudioListeners($btnConnectBack); // Adiciona sons
 
 
-        // Botão Salvar Opções
+        // --- Botão Salvar Opções ---
          const $btnSaveOptions = $('#btn-save-options');
          $btnSaveOptions.on('click', () => {
-             uiManager.saveOptions(); // UIManager agora chama save e atualiza audioManager
-             // O som de clique é adicionado abaixo
+             uiManager.saveOptions(); // Delega para UIManager (que chama OptionsUI)
          });
-         addTitleAudioListeners($btnSaveOptions); // Adiciona som básico
+         addAudioListeners($btnSaveOptions); // Adiciona som básico
 
 
         // --- Game Initialization Logic & Connect Screen Bindings ---
         let gameInstance = null;
 
-        /** Função para inicializar e começar uma nova partida (Simulada/Local) */
+        // Função mantida como estava, pois a inicialização do jogo é complexa
         function initializeAndStartGame(localPlayerDeckId, opponentUsername = "Opponent_AI", opponentDeckId = 'default_deck_1') {
              console.log("MAIN: Initializing game...");
              const currentUser = accountManager.getCurrentUser();
-             if (!currentUser) { /* ... (erro login) ... */ return; }
+             if (!currentUser) {
+                 $('#connect-message').text('Erro: Usuário não logado.').css('color', 'salmon');
+                 audioManager.playSFX('genericError');
+                 return;
+             }
 
              const localDecks = accountManager.loadDecks();
              const localDeck = localDecks?.[localPlayerDeckId];
 
-             // Valida deck local
              if (!localDeck?.cards || localDeck.cards.length < 30 || localDeck.cards.length > 40) {
                  console.error(`MAIN: Local deck '${localDeck?.name || localPlayerDeckId}' is invalid (needs 30-40 cards). Found: ${localDeck?.cards?.length}`);
                  $('#connect-message').text(`Erro: Deck '${localDeck?.name || localPlayerDeckId}' inválido (precisa de 30-40 cartas).`).css('color', 'salmon');
-                 audioManager.playSFX('genericError'); // Som de erro genérico
+                 audioManager.playSFX('genericError');
                  return;
              }
              const localPlayerDeckIds = localDeck.cards;
              console.log(`MAIN: Local Deck '${localDeck.name}' (${localPlayerDeckIds.length} cards) found.`);
 
-             // Simulação/Fallback de Deck do Oponente
              let opponentDeckIds = accountManager.getUserData("Opponent_AI")?.decks?.[opponentDeckId]?.cards;
              if (!opponentDeckIds || opponentDeckIds.length < 30) {
                  console.warn(`MAIN: Opponent deck '${opponentDeckId}' invalid or not found, using fallback.`);
@@ -939,38 +953,40 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
              }
              console.log(`MAIN: Preparing ${currentUser.username} vs ${opponentUsername}`);
 
-             // Inicia a instância do Jogo
              try {
                  gameInstance = new Game(cardDatabase);
                  const player1 = gameInstance.addPlayer(currentUser.username, localPlayerDeckIds);
                  const player2 = gameInstance.addPlayer(opponentUsername, opponentDeckIds);
 
-                 if (!player1 || !player2) {
-                      throw new Error("Falha ao adicionar jogadores. Verifique os decks e logs.");
-                 }
+                 if (!player1 || !player2) { throw new Error("Falha ao adicionar jogadores."); }
 
                  uiManager.setGameInstance(gameInstance);
                  uiManager.setLocalPlayer(player1.id);
 
                  if (gameInstance.setupGame()) {
                      gameInstance.startGame();
-                     uiManager.renderInitialGameState();
-                     console.log("MAIN: Game started successfully!");
-                     $('#connect-message').text('');
-                     screenManager.showScreen('battle-screen');
-                     audioManager.playBGM('battle-screen'); // <<<=== Toca BGM da Batalha
+                     // --- ATENÇÃO: Transição para Battle Screen ---
+                     // Mantendo a lógica original aqui, pois UIManager.navigateTo('battle-screen')
+                     // foi desencorajado para a configuração inicial do jogo.
+                     uiManager.renderInitialGameState(); // Renderiza o estado inicial da UI de batalha
+                     console.log("MAIN: Game started successfully! Showing Battle Screen.");
+                     $('#connect-message').text(''); // Limpa mensagens da tela de conexão
+                     screenManager.showScreen('battle-screen'); // Mostra a tela de batalha
+                     audioManager.playBGM('battle-screen'); // Toca a BGM da batalha
+                     // --- Fim da Transição ---
                  } else {
                      throw new Error("Falha na configuração inicial do jogo.");
                  }
              } catch (error) {
                  console.error("MAIN: Error during game initialization:", error);
                  $('#connect-message').text(`Erro ao iniciar: ${error.message}`).css('color', 'salmon');
-                 audioManager.playSFX('genericError'); // Som de erro
+                 audioManager.playSFX('genericError');
                  gameInstance = null;
              }
         } // Fim de initializeAndStartGame
 
-        // Botões da Tela Connect (Simulando Início de Jogo)
+        // --- Botões da Tela Connect ---
+        // Mantidos como estavam, chamando initializeAndStartGame
          const $btnCreateServer = $('#btn-create-server');
          $btnCreateServer.on('click', () => {
             $('#join-game-section').hide(); $('#server-status-section').show(); $('#server-ip-code').text('SIMULANDO...'); $('#connect-message').text('Simulando... Iniciando Jogo Solo.');
@@ -984,7 +1000,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             }
             setTimeout(() => initializeAndStartGame(firstValidDeckId), 500);
         });
-         addTitleAudioListeners($btnCreateServer); // Adiciona sons básicos
+         addAudioListeners($btnCreateServer);
 
          const $btnShowJoin = $('#btn-show-join-options');
          $btnShowJoin.on('click', () => {
@@ -992,7 +1008,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
              $('#join-game-section').show();
              $('#connect-message').text('');
          });
-         addTitleAudioListeners($btnShowJoin);
+         addAudioListeners($btnShowJoin);
 
          const $btnConnectServer = $('#btn-connect-to-server');
          $btnConnectServer.on('click', () => {
@@ -1007,22 +1023,21 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
              }
             setTimeout(() => initializeAndStartGame(firstValidDeckId), 500);
         });
-         addTitleAudioListeners($btnConnectServer);
+         addAudioListeners($btnConnectServer);
 
         const $btnCancelHost = $('#btn-cancel-hosting');
         $btnCancelHost.on('click', () => {
              $('#server-status-section').hide();
              $('#connect-message').text('Criação cancelada.');
          });
-         addTitleAudioListeners($btnCancelHost);
+         addAudioListeners($btnCancelHost);
 
 
         // --- Final Log ---
-        console.log("Runebound Clash UI Ready (v2.5 - AudioManager).");
+        console.log("Runebound Clash UI Ready (v2.7 - UIManager Navigation).");
 
     } catch (initError) {
         console.error("MAIN: Critical initialization error:", initError);
-         // Mostra erro crítico na splash screen ou no container
          const $splashSevereError = $('#splash-screen');
          if ($splashSevereError.length && ($splashSevereError.hasClass('active') || $screensContainer.children().length <= 1)) {
               $splashSevereError.text(`Erro Crítico: ${initError.message}. Recarregue.`).css('color', 'red');
@@ -1401,7 +1416,7 @@ export default class AccountManager {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\audio\AudioManager.js ---
-// js/audio/AudioManager.js - ATUALIZADO
+// js/audio/AudioManager.js - ATUALIZADO (v2.6 - Volume Sliders Fix)
 
 const DEFAULT_BGM_VOLUME = 0.6;
 const DEFAULT_SFX_VOLUME = 0.8;
@@ -1416,18 +1431,18 @@ export default class AudioManager {
     #currentBgmSrc = null;
     #targetBgmVolume = DEFAULT_BGM_VOLUME;
     #sfxVolume = DEFAULT_SFX_VOLUME;
-    #isMusicMuted = false; // <<<=== Mute separado para BGM
-    #isSfxMuted = false;   // <<<=== Mute separado para SFX
+    #isMusicMuted = false;
+    #isSfxMuted = false;
     #fadeInterval = null;
 
     #bgmTracks = { // Definir os caminhos corretos
         'title-screen': 'assets/audio/bgm_title.mp3',
-        'home-screen': 'assets/audio/bgm_title.mp3', // <<< MUDADO - Usar BGM diferente para Home
+        'home-screen': 'assets/audio/bgm_title.mp3',
         'profile-screen': 'assets/audio/bgm_profile.mp3',
         'deck-management-screen': 'assets/audio/bgm_builder.mp3',
         'deck-builder-screen': 'assets/audio/bgm_builder.mp3',
         'connect-screen': 'assets/audio/bgm_title.mp3',
-        'options-screen': 'assets/audio/bgm_title.mp3', // <<< MUDADO - Usar BGM diferente para Options
+        'options-screen': 'assets/audio/bgm_title.mp3',
         'battle-screen': 'assets/audio/bgm_battle.mp3',
     };
 
@@ -1438,21 +1453,22 @@ export default class AudioManager {
         'createAccountError': 'assets/audio/sfx_error.mp3',
         'cardDraw': 'assets/audio/sfx_card_draw.mp3',
         'cardDiscard': 'assets/audio/sfx_card_discard.mp3',
-        'playCreature': 'assets/audio/sfx_play_creature.mp3',
-        'playInstant': 'assets/audio/sfx_play_instant.wav',
-        'playRunebinding': 'assets/audio/sfx_play_runebinding.mp3',
+        'playCreature': 'assets/audio/sfx_play_creature.mp3', // Precisa existir esse arquivo
+        'playInstant': 'assets/audio/sfx_play_instant.wav', // Precisa existir esse arquivo
+        'playRunebinding': 'assets/audio/sfx_play_runebinding.mp3', // Precisa existir esse arquivo
         'gameOverWin': 'assets/audio/sfx_game_over_win.mp3',
-        'gameOverLose': 'assets/audio/sfx_game_over_lose.mp3',
+        'gameOverLose': 'assets/audio/sfx_game_over_lose.mp3', // Precisa existir esse arquivo
         'genericError': 'assets/audio/sfx_error.mp3',
-        'deckSave': 'assets/audio/sfx_deck_save.mp3', // Exemplo, pode querer um som específico
+        'deckSave': 'assets/audio/sfx_deck_save.mp3',
+        // Adicione outros SFX conforme necessário
     };
 
     constructor() {
         console.log("AudioManager: Initializing...");
         this._createAudioElements();
-        this._loadSettings();
-        this._applySfxVolume(); // Aplicar volume SFX inicial
-        // BGM volume é aplicado durante fade in/out ou updateSettings
+        this._loadSettings(); // Carrega volume E mute state
+        this._applySfxVolume(); // Aplica volume SFX inicial (considerando mute)
+        this._applyBgmVolume(); // Aplica volume BGM inicial (considerando mute)
         console.log(`AudioManager: Initialized (Target BGM Vol: ${this.#targetBgmVolume}, SFX Vol: ${this.#sfxVolume}, Music Muted: ${this.#isMusicMuted}, SFX Muted: ${this.#isSfxMuted})`);
     }
 
@@ -1469,10 +1485,11 @@ export default class AudioManager {
             const storedOptions = localStorage.getItem('runebound_clash_options');
             if (storedOptions) {
                 const options = JSON.parse(storedOptions);
+                // Usa ?? para garantir que pega o valor mesmo se for 0, diferente de ||
                 this.#targetBgmVolume = (options.musicVolume ?? DEFAULT_BGM_VOLUME * 100) / 100;
                 this.#sfxVolume = (options.sfxVolume ?? DEFAULT_SFX_VOLUME * 100) / 100;
-                this.#isMusicMuted = options.isMusicMuted ?? false; // <<<=== Carrega estado mute BGM
-                this.#isSfxMuted = options.isSfxMuted ?? false;     // <<<=== Carrega estado mute SFX
+                this.#isMusicMuted = options.isMusicMuted ?? false;
+                this.#isSfxMuted = options.isSfxMuted ?? false;
                 console.log("AudioManager: Loaded settings from localStorage.");
             } else {
                 console.log("AudioManager: No saved settings found, using defaults.");
@@ -1493,30 +1510,38 @@ export default class AudioManager {
         this.#sfxVolume = Math.max(0, Math.min(1, this.#sfxVolume));
     }
 
-     _applySfxVolume() {
-        const effectiveSfxVolume = this.#isSfxMuted ? 0 : this.#sfxVolume; // <<<=== Verifica mute SFX
+    _applySfxVolume() {
+        const effectiveSfxVolume = this.#isSfxMuted ? 0 : this.#sfxVolume;
         this.#sfxPool.forEach(sfx => {
             sfx.volume = effectiveSfxVolume;
         });
+         //console.log(`AudioManager: SFX Volume applied: ${effectiveSfxVolume} (Muted: ${this.#isSfxMuted})`);
     }
 
-     _applyBgmVolume() {
-         const effectiveBgmVolume = this.#isMusicMuted ? 0 : this.#targetBgmVolume; // <<<=== Verifica mute BGM
-         // Aplica diretamente se não estiver em fade, senão o fade controlará
-         if (!this.#fadeInterval && !this.#bgmAudio.paused) {
-             this.#bgmAudio.volume = effectiveBgmVolume;
-         }
-         // Se estiver mutado e tocando, pausa a música
-         if(this.#isMusicMuted && !this.#bgmAudio.paused) {
-            this.#bgmAudio.pause(); // Pausa se mutar
-         } else if (!this.#isMusicMuted && this.#bgmAudio.paused && this.#currentBgmSrc) {
-            // Se desmutar e tinha uma música definida, tenta retomar (pode precisar de interação)
+    _applyBgmVolume() {
+        const effectiveBgmVolume = this.#isMusicMuted ? 0 : this.#targetBgmVolume;
+        // Aplica diretamente se não estiver em fade, senão o fade controlará
+        if (!this.#fadeInterval && !this.#bgmAudio.paused) {
+            this.#bgmAudio.volume = effectiveBgmVolume;
+        }
+         //console.log(`AudioManager: BGM Volume target: ${this.#targetBgmVolume}, effective: ${effectiveBgmVolume} (Muted: ${this.#isMusicMuted})`);
+
+        // Pausa se mutar e estiver tocando
+        if(this.#isMusicMuted && !this.#bgmAudio.paused) {
+            console.log("AudioManager: Muting BGM, pausing track.");
+            this.#bgmAudio.pause();
+        }
+        // Se desmutar e tinha uma música definida E estava pausada por causa do mute, tenta retomar
+        else if (!this.#isMusicMuted && this.#bgmAudio.paused && this.#currentBgmSrc) {
+             // Verifica se a pausa foi devido ao mute (pode ser complexo saber com certeza)
+             // Tentativa simples: se desmutou e estava pausado com src, tenta tocar
+            console.log("AudioManager: Unmuting BGM, attempting to resume track.");
             this._fadeInBGM(this.#currentBgmSrc); // Retoma com fade
-         }
+        }
     }
 
     updateSettings() {
-        console.log("AudioManager: Updating settings...");
+        console.log("AudioManager: Updating settings from storage...");
         this._loadSettings(); // Recarrega tudo, incluindo mute states
         this._applySfxVolume(); // Aplica volume SFX (considerando mute)
         this._applyBgmVolume(); // Aplica volume BGM (considerando mute e estado atual)
@@ -1525,21 +1550,24 @@ export default class AudioManager {
 
     playBGM(screenId) {
         const newTrackSrc = this.#bgmTracks[screenId];
-        // Se mutado, não toca nova BGM, mas para a anterior se estiver tocando
-        if (this.#isMusicMuted) {
-             console.log("AudioManager: Music is muted, stopping current BGM if playing.");
-             this.stopBGM();
-             this.#currentBgmSrc = newTrackSrc; // Guarda a faixa que *deveria* tocar
-             return;
-        }
 
         if (!newTrackSrc) {
             console.warn(`AudioManager: No BGM track for screen '${screenId}'. Stopping.`);
             this.stopBGM();
             return;
         }
+
+         // Se mutado, apenas guarda a faixa e para a atual
+         if (this.#isMusicMuted) {
+              console.log(`AudioManager: Music is muted. Setting desired track to ${newTrackSrc} and stopping current.`);
+              this.stopBGM(); // Para a música atual (com fade out)
+              this.#currentBgmSrc = newTrackSrc; // Guarda qual deveria tocar
+              return;
+         }
+
+        // Se não está mutado
         if (this.#currentBgmSrc === newTrackSrc && !this.#bgmAudio.paused) {
-            return; // Já está tocando
+            return; // Já está tocando a correta
         }
 
         console.log(`AudioManager: Changing BGM to track for '${screenId}': ${newTrackSrc}`);
@@ -1554,21 +1582,23 @@ export default class AudioManager {
         if (!this.#bgmAudio.paused) {
             console.log("AudioManager: Stopping BGM...");
             this._fadeOutBGM(() => {
-                this.#currentBgmSrc = null;
-                 console.log("AudioManager: BGM stopped.");
+                this.#currentBgmSrc = null; // Limpa a faixa atual SÓ depois do fade out
+                console.log("AudioManager: BGM stopped and track cleared.");
             });
         } else {
+            // Se já estiver pausada, apenas limpa a referência
              this.#currentBgmSrc = null;
+             console.log("AudioManager: BGM already stopped, clearing track reference.");
         }
     }
 
     _fadeOutBGM(onCompleteCallback) {
         if (this.#fadeInterval) clearInterval(this.#fadeInterval);
         if (this.#bgmAudio.paused || this.#bgmAudio.volume <= 0.01) {
-             this.#bgmAudio.pause();
-             this.#bgmAudio.volume = 0; // Zera o volume ao pausar
-             if (onCompleteCallback) onCompleteCallback();
-             return;
+            this.#bgmAudio.pause();
+            this.#bgmAudio.volume = 0;
+            if (onCompleteCallback) onCompleteCallback();
+            return;
         }
         const startVolume = this.#bgmAudio.volume;
         const steps = FADE_DURATION_MS / FADE_INTERVAL_MS;
@@ -1583,47 +1613,56 @@ export default class AudioManager {
                 console.log("AudioManager: Fade out complete.");
                 if (onCompleteCallback) onCompleteCallback();
             }
-            this.#bgmAudio.volume = newVolume; // Volume real é zero se mutado
+            this.#bgmAudio.volume = newVolume;
         }, FADE_INTERVAL_MS);
     }
 
-     _fadeInBGM(src) {
-         if (this.#fadeInterval) clearInterval(this.#fadeInterval);
-         // Não inicia se a música estiver mutada
-         if (this.#isMusicMuted) {
-             console.log("AudioManager: Music muted, fade in skipped.");
-             this.#currentBgmSrc = src; // Guarda a música que deveria tocar
-             return;
-         }
+    _fadeInBGM(src) {
+        if (this.#fadeInterval) clearInterval(this.#fadeInterval);
+        // Não inicia se a música estiver mutada
+        if (this.#isMusicMuted) {
+            console.log("AudioManager: Music muted, fade in skipped.");
+            this.#currentBgmSrc = src; // Guarda a música que deveria tocar
+            return;
+        }
 
-         this.#bgmAudio.src = src;
-         this.#currentBgmSrc = src;
-         this.#bgmAudio.volume = 0;
+        this.#bgmAudio.src = src;
+        this.#currentBgmSrc = src;
+        this.#bgmAudio.volume = 0; // Começa com volume 0
 
-         this.#bgmAudio.play().then(() => {
-            console.log("AudioManager: BGM playback started for fade in.");
-             const targetVol = this.#targetBgmVolume; // Usa o volume alvo (não mutado)
-             if (targetVol <= 0) return;
-             const steps = FADE_DURATION_MS / FADE_INTERVAL_MS;
-             const increment = targetVol / steps;
-             this.#fadeInterval = setInterval(() => {
-                 let newVolume = this.#bgmAudio.volume + increment;
-                 if (newVolume >= targetVol) {
-                     newVolume = targetVol;
-                     clearInterval(this.#fadeInterval);
-                     this.#fadeInterval = null;
-                     console.log("AudioManager: Fade in complete.");
-                 }
-                 this.#bgmAudio.volume = newVolume;
-             }, FADE_INTERVAL_MS);
-         }).catch(error => {
-             console.error("AudioManager: BGM play failed:", error);
-             this.#currentBgmSrc = null;
-         });
-     }
+        // Define o volume alvo baseado no estado NÃO mutado
+        const targetVol = this.#targetBgmVolume; // Usa o volume alvo (não mutado)
+        if (targetVol <= 0) {
+            // Se o volume alvo é 0, não faz fade, só define e toca (mas vai ser inaudível)
+            this.#bgmAudio.volume = 0;
+             this.#bgmAudio.play().catch(e => console.error("AudioManager BGM play failed:", e));
+            return;
+        }
+
+        this.#bgmAudio.play().then(() => {
+            console.log(`AudioManager: BGM playback started for fade in to ${targetVol}.`);
+            const steps = FADE_DURATION_MS / FADE_INTERVAL_MS;
+            const increment = targetVol / steps;
+            this.#fadeInterval = setInterval(() => {
+                let newVolume = this.#bgmAudio.volume + increment;
+                if (newVolume >= targetVol) {
+                    newVolume = targetVol;
+                    clearInterval(this.#fadeInterval);
+                    this.#fadeInterval = null;
+                    console.log("AudioManager: Fade in complete.");
+                }
+                 // Garante que o volume real aplicado respeite o mute
+                 this.#bgmAudio.volume = this.#isMusicMuted ? 0 : newVolume;
+            }, FADE_INTERVAL_MS);
+        }).catch(error => {
+            console.error("AudioManager: BGM play failed:", error);
+             // Se falhar ao tocar, limpa a faixa atual para evitar estado inconsistente
+            this.#currentBgmSrc = null;
+        });
+    }
 
     playSFX(sfxName) {
-        if (this.#isSfxMuted) return; // <<<=== Verifica mute SFX
+        if (this.#isSfxMuted) return; // Sai se SFX estiver mutado
 
         const trackSrc = this.#sfxTracks[sfxName];
         if (!trackSrc) {
@@ -1632,10 +1671,13 @@ export default class AudioManager {
         }
         try {
             const sfxPlayer = this._getAvailableSfxPlayer();
-            sfxPlayer.volume = this.#sfxVolume; // Aplica volume SFX (já considera mute no getter/setter implícito)
+             // Define o volume ANTES de tocar, baseado no estado não-mutado
+            sfxPlayer.volume = this.#sfxVolume;
             sfxPlayer.src = trackSrc;
             sfxPlayer.play().catch(error => {
-                 console.log(`AudioManager: SFX play error for ${sfxName}: ${error.message}`);
+                 // Erros de play podem acontecer (ex: interação do usuário necessária)
+                 // Não loga como erro grave, apenas aviso
+                 console.log(`AudioManager: SFX play warning for ${sfxName}: ${error.message}`);
             });
         } catch (error) {
             console.error(`AudioManager: Error preparing SFX '${sfxName}':`, error);
@@ -1648,23 +1690,47 @@ export default class AudioManager {
         return player;
     }
 
-    // <<<=== Métodos separados para mute ===>>>
     setMusicMuted(muted) {
         if (this.#isMusicMuted === muted) return;
         this.#isMusicMuted = muted;
         console.log(`AudioManager: Music Muted set to ${muted}`);
-        this._applyBgmVolume(); // Aplica imediatamente (pausa ou retoma se necessário)
+        this._applyBgmVolume(); // Aplica imediatamente (pausa/retoma BGM se necessário)
     }
 
     setSfxMuted(muted) {
         if (this.#isSfxMuted === muted) return;
         this.#isSfxMuted = muted;
         console.log(`AudioManager: SFX Muted set to ${muted}`);
-        this._applySfxVolume(); // Aplica imediatamente
+        this._applySfxVolume(); // Aplica imediatamente (afeta futuros SFX)
     }
-    // <<<===================================>>>
 
-}
+    // --- NOVOS MÉTODOS PARA VOLUME ---
+    /**
+     * Define o volume alvo da música (0.0 a 1.0) e aplica imediatamente se não mutado.
+     * @param {number} volume - Volume entre 0.0 e 1.0.
+     */
+    setMusicVolume(volume) {
+         const clampedVolume = Math.max(0, Math.min(1, volume));
+         if (this.#targetBgmVolume === clampedVolume) return; // Sem mudança
+         this.#targetBgmVolume = clampedVolume;
+         console.log(`AudioManager: Target Music Volume set to ${clampedVolume}`);
+         this._applyBgmVolume(); // Aplica o novo volume (se não mutado)
+    }
+
+    /**
+     * Define o volume dos efeitos sonoros (0.0 a 1.0) e aplica imediatamente.
+     * @param {number} volume - Volume entre 0.0 e 1.0.
+     */
+    setSfxVolume(volume) {
+         const clampedVolume = Math.max(0, Math.min(1, volume));
+         if (this.#sfxVolume === clampedVolume) return; // Sem mudança
+         this.#sfxVolume = clampedVolume;
+         console.log(`AudioManager: SFX Volume set to ${clampedVolume}`);
+         this._applySfxVolume(); // Aplica aos players SFX (se não mutado)
+    }
+    // --- FIM DOS NOVOS MÉTODOS ---
+
+} // Fim da classe AudioManager
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\audio\AudioManager.js ---
 
 
@@ -3308,25 +3374,26 @@ export default class ScreenManager {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\UIManager.js ---
-// js/ui/UIManager.js - ATUALIZADO (v2.5 - AudioManager Integration)
+// js/ui/UIManager.js - ATUALIZADO (v2.7 - Titlescreen Banner Integration)
 
 // Importar os módulos de UI específicos e helpers
-import ProfileScreenUI from './screens/ProfileScreenUI.js';       // Tela de Perfil (Simplificada)
-import DeckBuilderUI from './screens/DeckBuilderUI.js';         // Construtor de Decks
-import BattleScreenUI from './screens/BattleScreenUI.js';        // Tela de Batalha
-import OptionsUI from './screens/OptionsUI.js';             // Tela de Opções
-import HomeScreenUI from './screens/HomeScreenUI.js';          // Tela Inicial (Notícias)
-import DeckManagementScreenUI from './screens/DeckManagementScreenUI.js'; // Nova Tela de Decks
-import CardRenderer from './helpers/CardRenderer.js';       // Helper para renderizar cartas
-import ZoomHandler from './helpers/ZoomHandler.js';        // Helper para zoom de cartas
-// AudioManager não precisa ser importado aqui, ele é injetado
+import ProfileScreenUI from './screens/ProfileScreenUI.js';
+import DeckBuilderUI from './screens/DeckBuilderUI.js';
+import BattleScreenUI from './screens/BattleScreenUI.js';
+import OptionsUI from './screens/OptionsUI.js';
+import HomeScreenUI from './screens/HomeScreenUI.js';
+import DeckManagementScreenUI from './screens/DeckManagementScreenUI.js';
+import TitlescreenUi from './screens/titlescreenUi.js'; // <<< NOVO: Importa a UI da tela de título
+import CardRenderer from './helpers/CardRenderer.js';
+import ZoomHandler from './helpers/ZoomHandler.js';
+// AudioManager é injetado, não importado aqui diretamente
 
 export default class UIManager {
     // --- Core References ---
     #screenManager;
     #accountManager;
     #cardDatabase;
-    #audioManager;     // <<<=== Referência para o AudioManager
+    #audioManager;     // Referência para o AudioManager
     #gameInstance = null; // Instância do jogo atual (se houver)
     #localPlayerId = null; // ID do jogador local na partida atual
 
@@ -3337,45 +3404,48 @@ export default class UIManager {
     #optionsUI;
     #homeUI;
     #deckManagementUI;
+    #titlescreenUI; // <<< NOVO: Instância da UI da tela de título
     #cardRenderer;
     #zoomHandler;
 
-    constructor(screenManager, accountManager, cardDatabase, audioManager) { // <<<=== Parâmetro audioManager adicionado
+    #activeScreenUI = null; // <<< NOVO: Referência para a UI ativa (para destroy)
+
+    constructor(screenManager, accountManager, cardDatabase, audioManager) {
         // Armazena as dependências principais
         this.#screenManager = screenManager;
         this.#accountManager = accountManager;
         this.#cardDatabase = cardDatabase;
-        this.#audioManager = audioManager; // <<<=== Armazena a instância do AudioManager
+        this.#audioManager = audioManager; // Armazena a instância do AudioManager
 
         // Instancia helpers
         this.#cardRenderer = new CardRenderer();
-        this.#zoomHandler = new ZoomHandler(this.#cardDatabase);
+        this.#zoomHandler = new ZoomHandler(this.#cardDatabase); // ZoomHandler precisa do cardDatabase
 
         // --- Instancia os módulos de UI específicos ---
-        this.#homeUI = new HomeScreenUI(this.#screenManager, this);
-        // Passa AudioManager para OptionsUI
-        this.#optionsUI = new OptionsUI(this.#audioManager); // <<<=== Passa AudioManager para OptionsUI
+        // Passa AudioManager para os módulos que precisam dele agora
+        this.#titlescreenUI = new TitlescreenUi(this.#screenManager, this, this.#audioManager); // <<< NOVO: Instancia TitlescreenUi
+        this.#homeUI = new HomeScreenUI(this.#screenManager, this, this.#audioManager);
+        this.#optionsUI = new OptionsUI(this.#audioManager);
         this.#profileUI = new ProfileScreenUI(
             this.#screenManager, this.#accountManager, this.#cardDatabase,
             this.#cardRenderer, this.#zoomHandler, this
         );
         this.#deckManagementUI = new DeckManagementScreenUI(
             this.#screenManager, this.#accountManager, this.#cardDatabase,
-            this.#cardRenderer, this.#zoomHandler, this
+            this.#cardRenderer, this.#zoomHandler, this, this.#audioManager
         );
         this.#deckBuilderUI = new DeckBuilderUI(
             this.#screenManager, this.#accountManager, this.#cardDatabase,
-            this.#cardRenderer, this.#zoomHandler
+            this.#cardRenderer, this.#zoomHandler, this.#audioManager
         );
-        // Passa AudioManager para BattleScreenUI
         this.#battleUI = new BattleScreenUI(
              this.#screenManager, this.#accountManager, this.#cardDatabase,
-             this.#cardRenderer, this.#zoomHandler, this.#audioManager // Passado para BattleUI
-         );
+             this.#cardRenderer, this.#zoomHandler, this.#audioManager
+        );
 
         // Vincula ações permanentes (Top Bar)
         this._bindPermanentUIActions();
-        console.log("UIManager (Coordinator) inicializado com AudioManager.");
+        console.log("UIManager (Coordinator) inicializado com AudioManager injetado e TitlescreenUI.");
     }
 
     // --- Setup para o Jogo ---
@@ -3395,13 +3465,16 @@ export default class UIManager {
         const $topBar = $('#top-bar');
         if (userData) {
             $topBar.find('#top-bar-username').text(userData.username);
-            // TODO: Atualizar o avatar na top bar se o elemento existir
-            // const avatarFile = userData.avatar || 'default.png';
-            // $topBar.find('#top-bar-avatar-img').attr('src', `assets/images/avatars/${avatarFile}`);
+            const avatarFile = userData.avatar || 'default.png';
+            const $avatarImg = $topBar.find('.top-bar-avatar img');
+            if($avatarImg.length) {
+                $avatarImg.attr('src', `assets/images/avatars/${avatarFile}`);
+            }
             $topBar.addClass('active');
             console.log("UIManager: Top Bar shown for", userData.username);
         } else {
             console.warn("UIManager: showTopBar called without user data.");
+            $topBar.removeClass('active');
         }
     }
     hideTopBar() {
@@ -3409,167 +3482,343 @@ export default class UIManager {
         console.log("UIManager: Top Bar hidden.");
     }
 
-    // --- Delegação de Renderização ---
-    async renderHomeScreen() {
-        console.log("UI Coordinator: Delegating home screen rendering.");
-        await this.#homeUI.render();
-    }
-    renderProfileScreen() {
-        console.log("UI Coordinator: Delegating profile screen rendering.");
-        this.#profileUI.render();
-    }
-    renderDeckManagementScreen() {
-        console.log("UI Coordinator: Delegating deck management screen rendering.");
-        this.#deckManagementUI.render();
-    }
-    renderDeckBuilderScreen(deckIdToEdit = null) {
-        console.log("UI Coordinator: Delegating deck builder rendering.");
-        this.#deckBuilderUI.render(deckIdToEdit);
-    }
-    renderOptionsScreen() {
-         console.log("UI Coordinator: Delegating options screen rendering.");
-         this.#optionsUI.render();
-    }
-    renderInitialGameState() {
-        console.log("UI Coordinator: Delegating initial game state rendering.");
-         if (!this.#gameInstance || !this.#localPlayerId) {
-             console.error("UI Coordinator: Cannot render game state - game/player not set.");
+    // --- Delegação de Renderização e Inicialização ---
+    // Estes métodos agora chamam a limpeza da UI anterior,
+    // renderizam/inicializam a nova UI e atualizam a UI ativa.
+
+    async renderTitlescreen() { // <<< NOVO: Método para renderizar/iniciar a tela de título
+        const screenId = 'title-screen';
+        const $screenElement = $(`#${screenId}`);
+        if ($screenElement.length === 0) {
+             console.error(`UIManager: Elemento #${screenId} não encontrado.`);
              return;
-         }
-        this.#battleUI.renderInitialState();
-    }
-
-    // --- Método para Salvar Opções (Chamado por main.js ou outro lugar) ---
-    // Este método coordena o salvamento das opções e a atualização do AudioManager
-    saveOptions() {
-        // Verifica se a instância de OptionsUI existe e tem o método _saveOptions
-        if (this.#optionsUI && typeof this.#optionsUI._saveOptions === 'function') {
-             // Pede para OptionsUI salvar as opções lidas da UI no localStorage
-             this.#optionsUI._saveOptions();
-
-             // Informa o AudioManager para recarregar as configurações do localStorage
-             if (this.#audioManager) {
-                this.#audioManager.updateSettings();
-                console.log("UIManager: Delegated options save and updated AudioManager settings.");
-             } else {
-                 console.warn("UIManager: AudioManager instance not available to update settings.");
+        }
+        this.#cleanupActiveUI(this.#titlescreenUI); // Limpa a UI anterior
+        console.log("UI Coordinator: Initializing Titlescreen UI.");
+        if (this.#titlescreenUI && typeof this.#titlescreenUI.init === 'function') {
+             try {
+                 this.#titlescreenUI.init($screenElement[0]); // Chama init da Titlescreen UI
+                 this.#activeScreenUI = this.#titlescreenUI; // Define como ativa
+             } catch(error) {
+                 console.error("UIManager: Erro ao inicializar TitlescreenUI", error);
              }
         } else {
-            console.warn("UIManager: OptionsUI instance or _saveOptions method not found. Cannot save options.");
+             console.warn("UIManager: TitlescreenUI ou seu método init não encontrado.");
         }
+    }
+
+    async renderHomeScreen() {
+        const screenId = 'home-screen';
+        this.#cleanupActiveUI(this.#homeUI);
+        console.log("UI Coordinator: Delegating home screen rendering.");
+        try {
+            await this.#homeUI.render();
+            // Assumindo que homeUI não tem um 'init' separado ou é chamado dentro de render()
+            this.#activeScreenUI = this.#homeUI;
+        } catch (error) {
+            console.error("UIManager: Erro ao renderizar HomeScreenUI", error);
+        }
+    }
+    renderProfileScreen() {
+        const screenId = 'profile-screen';
+        const $screenElement = $(`#${screenId}`);
+         if ($screenElement.length === 0) return;
+        this.#cleanupActiveUI(this.#profileUI);
+        console.log("UI Coordinator: Delegating profile screen rendering.");
+         if (this.#profileUI && typeof this.#profileUI.render === 'function') {
+             try {
+                 this.#profileUI.render(); // ProfileUI lida com sua própria inicialização dentro de render
+                 this.#activeScreenUI = this.#profileUI;
+             } catch(error) {
+                 console.error("UIManager: Erro ao renderizar ProfileScreenUI", error);
+             }
+         }
+    }
+    renderDeckManagementScreen() {
+        const screenId = 'deck-management-screen';
+        const $screenElement = $(`#${screenId}`);
+         if ($screenElement.length === 0) return;
+        this.#cleanupActiveUI(this.#deckManagementUI);
+        console.log("UI Coordinator: Delegating deck management screen rendering.");
+         if (this.#deckManagementUI && typeof this.#deckManagementUI.render === 'function') {
+             try {
+                 this.#deckManagementUI.render();
+                 this.#activeScreenUI = this.#deckManagementUI;
+             } catch(error) {
+                 console.error("UIManager: Erro ao renderizar DeckManagementScreenUI", error);
+             }
+         }
+    }
+    renderDeckBuilderScreen(deckIdToEdit = null) {
+         const screenId = 'deck-builder-screen';
+         const $screenElement = $(`#${screenId}`);
+         if ($screenElement.length === 0) return;
+        this.#cleanupActiveUI(this.#deckBuilderUI);
+        console.log("UI Coordinator: Delegating deck builder rendering.");
+         if (this.#deckBuilderUI && typeof this.#deckBuilderUI.render === 'function') {
+             try {
+                 this.#deckBuilderUI.render(deckIdToEdit);
+                 this.#activeScreenUI = this.#deckBuilderUI;
+             } catch(error) {
+                 console.error("UIManager: Erro ao renderizar DeckBuilderUI", error);
+             }
+         }
+    }
+    renderOptionsScreen() {
+        const screenId = 'options-screen';
+        const $screenElement = $(`#${screenId}`);
+        if ($screenElement.length === 0) return;
+       this.#cleanupActiveUI(this.#optionsUI);
+       console.log("UI Coordinator: Delegating options screen rendering.");
+        if (this.#optionsUI && typeof this.#optionsUI.render === 'function') {
+            try {
+                this.#optionsUI.render(); // OptionsUI carrega os valores atuais ao renderizar
+                this.#activeScreenUI = this.#optionsUI;
+            } catch(error) {
+                console.error("UIManager: Erro ao renderizar OptionsUI", error);
+            }
+        }
+    }
+    renderInitialGameState() {
+        const screenId = 'battle-screen';
+        this.#cleanupActiveUI(this.#battleUI);
+        console.log("UI Coordinator: Delegating initial game state rendering.");
+        if (!this.#gameInstance || !this.#localPlayerId) {
+           console.error("UI Coordinator: Cannot render game state - game/player not set.");
+           this.navigateTo('home-screen'); // Usa navigateTo para fallback seguro
+           return;
+        }
+         if (this.#battleUI && typeof this.#battleUI.renderInitialState === 'function') {
+             try {
+                 this.#battleUI.renderInitialState();
+                 this.#activeScreenUI = this.#battleUI;
+             } catch(error) {
+                 console.error("UIManager: Erro ao renderizar BattleScreenUI initial state", error);
+             }
+         }
+    }
+
+    // --- Helper para Limpar a UI Ativa ---
+    #cleanupActiveUI(newUi = null) {
+        if (this.#activeScreenUI && this.#activeScreenUI !== newUi) {
+            if (typeof this.#activeScreenUI.destroy === 'function') {
+                console.log(`UIManager: Destroying previous UI: ${this.#activeScreenUI.constructor.name}`);
+                try {
+                    this.#activeScreenUI.destroy();
+                } catch (error) {
+                    console.error(`UIManager: Error destroying ${this.#activeScreenUI.constructor.name}`, error);
+                }
+            } else {
+                 console.log(`UIManager: Previous UI ${this.#activeScreenUI.constructor.name} has no destroy method.`);
+            }
+        }
+        this.#activeScreenUI = null; // Limpa a referência antiga
+    }
+
+      // --- NOVO: Render methods for simple screens (optional, mainly for cleanup) ---
+      async renderLoginScreen() {
+        this.#cleanupActiveUI(); // Clean up previous UI (e.g., Title Screen UI)
+        this.#activeScreenUI = null; // No dedicated UI class instance for this simple screen
+        // Reset form state (optional but good practice)
+        $('#login-form')[0]?.reset(); // Use optional chaining in case form doesn't exist yet
+        $('#login-message').text('');
+        console.log("UIManager: Prepared Login Screen state.");
+        // No complex rendering logic needed here, HTML is static/generated once
+    }
+
+    async renderCreateAccountScreen() {
+        this.#cleanupActiveUI(); // Clean up previous UI
+        this.#activeScreenUI = null; // No dedicated UI class instance
+        // Reset form state
+        $('#create-account-form')[0]?.reset();
+        $('#create-account-message').text('');
+        console.log("UIManager: Prepared Create Account Screen state.");
+        // No complex rendering logic needed here
+    }
+
+
+     // --- Método Centralizado de Navegação ---
+    /**
+     * Navega para uma nova tela, lidando com renderização, exibição e BGM.
+     * @param {string} screenId - O ID da tela de destino (ex: 'home-screen').
+     * @param {...any} args - Argumentos adicionais para passar ao método de renderização (ex: deckId).
+     */
+    async navigateTo(screenId, ...args) {
+        console.log(`UIManager: Navigating to '${screenId}'...`);
+
+        // Mapeia screenId para o método de renderização correspondente
+        let renderPromise = null;
+        switch (screenId) {
+            case 'title-screen':
+                renderPromise = this.renderTitlescreen(...args);
+                break;
+            // ---> ADICIONADO CASES ABAIXO <---
+            case 'login-screen':
+                renderPromise = this.renderLoginScreen(...args); // Chama a função de preparação
+                break;
+            case 'create-account-screen':
+                renderPromise = this.renderCreateAccountScreen(...args); // Chama a função de preparação
+                break;
+             // ---> FIM DAS ADIÇÕES <---
+            case 'home-screen':
+                renderPromise = this.renderHomeScreen(...args);
+                break;
+            case 'profile-screen':
+                renderPromise = this.renderProfileScreen(...args);
+                break;
+            case 'deck-management-screen':
+                renderPromise = this.renderDeckManagementScreen(...args);
+                break;
+            case 'deck-builder-screen':
+                renderPromise = this.renderDeckBuilderScreen(...args);
+                break;
+            case 'options-screen':
+                renderPromise = this.renderOptionsScreen(...args);
+                break;
+             case 'connect-screen': // Assumindo que connect-screen não tem UI complexa gerenciada aqui
+                 this.#cleanupActiveUI(); // Limpa qualquer UI anterior
+                 this.#activeScreenUI = null; // Define nenhuma UI ativa
+                 // Resetar estado da tela de conexão diretamente se não houver classe UI
+                 $('#connect-message').text('');
+                 $('#server-status-section, #join-game-section').hide();
+                 $('#opponent-ip').val('');
+                 console.log("UIManager: Resetting Connect Screen state.");
+                 renderPromise = Promise.resolve(); // Promessa resolvida para consistência
+                break;
+             case 'battle-screen': // A renderização inicial da batalha é separada
+                 console.warn("UIManager: Use 'renderInitialGameState' for battle screen setup, not navigateTo.");
+                 // Poderia chamar renderInitialGameState aqui, mas é mais claro separar
+                 renderPromise = Promise.resolve(); // Não faz nada aqui, renderInitialGameState cuida
+                 break;
+            default:
+                console.error(`UIManager: Unknown screenId for navigation: ${screenId}`);
+                // Se chegar aqui, garante que renderPromise é algo awaitable para evitar erro
+                renderPromise = Promise.reject(new Error(`Unknown screenId: ${screenId}`));
+                // return; // REMOVIDO return aqui para permitir que o catch funcione
+        }
+
+        try {
+             // Espera a renderização/inicialização terminar (se for async)
+            await renderPromise; // Aguarda a promessa, incluindo as novas
+
+            // Mostra a tela usando o screenManager (SÓ SE A PROMESSA RESOLVEU)
+            console.log(`UIManager: Requesting ScreenManager to show '${screenId}'.`);
+            this.#screenManager.showScreen(screenId);
+
+            // Toca a música de fundo associada (se houver)
+             // O screenId geralmente corresponde ao nome da BGM
+             // Toca BGM DEPOIS de mostrar a tela
+            this.#audioManager?.playBGM(screenId);
+
+            console.log(`UIManager: Navigation to '${screenId}' complete.`);
+
+        } catch (error) {
+             // Captura erros da promessa (incluindo o reject do default case)
+             console.error(`UIManager: Failed navigation to '${screenId}':`, error);
+             // Talvez navegar para uma tela de erro ou voltar para home?
+             // this.navigateTo('home-screen'); // Evita loop infinito se home falhar
+        }
+    }
+
+
+    // --- Método para Salvar Opções ---
+    saveOptions() {
+         // A lógica de salvar opções agora está encapsulada em OptionsUI._saveOptions
+         // e é chamada pelo próprio botão de salvar dentro de OptionsUI.
+         // Esta função aqui pode ser desnecessária a menos que haja outra forma de salvar.
+         console.warn("UIManager: saveOptions() called, but saving should be handled within OptionsUI now.");
+         // Se ainda precisar forçar:
+         // if (this.#optionsUI && typeof this.#optionsUI._saveOptions === 'function') {
+         //     this.#optionsUI._saveOptions();
+         // }
     }
 
     // --- Bindings Globais e da Top Bar ---
     _bindPermanentUIActions() {
         console.log("UI Coordinator: Binding permanent UI actions (Top Bar, global)...");
-        const self = this; // Armazena 'this' (UIManager) para usar dentro dos listeners
+        const self = this; // Armazena 'this' (UIManager)
 
-        // --- Helper para adicionar listeners de áudio aos botões da Top Bar ---
-        const addTopBarAudioListeners = ($element, sfxClick = 'buttonClick', sfxHover = 'buttonHover') => {
-            // Remove listeners antigos para evitar duplicação se _bind for chamado novamente
-            $element.off('click.tbaudio').on('click.tbaudio', () => {
-                // Toca SFX no clique (Verifica se audioManager existe)
-                self.#audioManager?.playSFX(sfxClick);
-            });
-            $element.off('mouseenter.tbaudio').on('mouseenter.tbaudio', () => {
-                // Toca SFX no hover (Verifica se audioManager existe)
+        // Helper Function - NOW ONLY ADDS HOVER SOUND
+        const addTopBarHoverAudio = ($element, sfxHover = 'buttonHover') => {
+            $element.off('mouseenter.tbaudio'); // Clear only hover listener
+            $element.on('mouseenter.tbaudio', () => {
                 self.#audioManager?.playSFX(sfxHover);
             });
         };
 
+         // --- ATUALIZADO: Usa self.navigateTo para todas as navegações da Top Bar ---
+
          // Botão Home
          const $btnHome = $('#top-bar-btn-home');
-         $btnHome.on('click', async () => { // Ação de clique principal (navegação)
-            const currentScreen = self.#screenManager.getActiveScreenId();
-            if(currentScreen !== 'home-screen'){
-                console.log("UI Coordinator: Navigating to Home Screen...");
-                await self.renderHomeScreen();
-                self.#screenManager.showScreen('home-screen');
-                self.#audioManager?.playBGM('home-screen'); // <<<=== Toca BGM da Home
-                console.log("UI Coordinator: Home Screen shown.");
-            }
+         $btnHome.off('click.uimanager').on('click.uimanager', () => { // Use namespace .uimanager
+             self.#audioManager?.playSFX('buttonClick'); // Play sound INSIDE handler
+             if (self.#screenManager.getActiveScreenId() !== 'home-screen') {
+                 self.navigateTo('home-screen');
+             }
          });
-         addTopBarAudioListeners($btnHome); // Adiciona sons de clique/hover ao botão
-
+         addTopBarHoverAudio($btnHome); // Add hover sound
+ 
          // Botão Perfil
          const $btnProfile = $('#top-bar-btn-profile');
-         $btnProfile.on('click', () => {
-            const currentScreen = self.#screenManager.getActiveScreenId();
-            if(currentScreen !== 'profile-screen'){
-                 console.log("UI Coordinator: Navigating to Profile Screen...");
-                self.renderProfileScreen();
-                self.#screenManager.showScreen('profile-screen');
-                self.#audioManager?.playBGM('profile-screen'); // <<<=== Toca BGM do Perfil
-                 console.log("UI Coordinator: Profile Screen shown.");
-            }
-         });
-         addTopBarAudioListeners($btnProfile);
-
-         // Botão Decks
-         const $btnDecks = $('#top-bar-btn-decks');
-         $btnDecks.on('click', () => {
-            const currentScreen = self.#screenManager.getActiveScreenId();
-            if (currentScreen !== 'deck-management-screen') {
-                 console.log("UI Coordinator: Navigating to Deck Management Screen...");
-                 self.renderDeckManagementScreen();
-                 self.#screenManager.showScreen('deck-management-screen');
-                 self.#audioManager?.playBGM('deck-management-screen'); // <<<=== Toca BGM dos Decks
-                 console.log("UI Coordinator: Deck Management Screen shown.");
+         $btnProfile.off('click.uimanager').on('click.uimanager', () => {
+             self.#audioManager?.playSFX('buttonClick');
+             if (self.#screenManager.getActiveScreenId() !== 'profile-screen') {
+                 self.navigateTo('profile-screen');
              }
          });
-         addTopBarAudioListeners($btnDecks);
-
+         addTopBarHoverAudio($btnProfile);
+ 
+            const $btnDecks = $('#top-bar-btn-decks');
+         $btnDecks.off('click.uimanager').on('click.uimanager', () => {
+             console.log("!!! DEBUG: #top-bar-btn-decks CLICKED !!!"); // Add this
+             self.#audioManager?.playSFX('buttonClick');
+             if (self.#screenManager.getActiveScreenId() !== 'deck-management-screen') {
+                 self.navigateTo('deck-management-screen');
+             }
+         });
+         addTopBarHoverAudio($btnDecks);
+ 
          // Botão Conectar
          const $btnConnect = $('#top-bar-btn-connect');
-         $btnConnect.on('click', () => {
-            const currentScreen = self.#screenManager.getActiveScreenId();
-             if(currentScreen !== 'connect-screen') {
-                 console.log("UI Coordinator: Navigating to Connect Screen...");
-                 $('#connect-message').text(''); // Limpa UI da tela connect
-                 $('#server-status-section, #join-game-section').hide();
-                 self.#screenManager.showScreen('connect-screen');
-                 self.#audioManager?.playBGM('connect-screen'); // <<<=== Toca BGM de Conectar
-                  console.log("UI Coordinator: Connect Screen shown.");
+         $btnConnect.off('click.uimanager').on('click.uimanager', () => {
+             self.#audioManager?.playSFX('buttonClick');
+             if (self.#screenManager.getActiveScreenId() !== 'connect-screen') {
+                 self.navigateTo('connect-screen');
              }
          });
-         addTopBarAudioListeners($btnConnect);
-
+         addTopBarHoverAudio($btnConnect);
+ 
          // Botão Opções
          const $btnOptions = $('#top-bar-btn-options');
-         $btnOptions.on('click', () => {
-            const currentScreen = self.#screenManager.getActiveScreenId();
-             if(currentScreen !== 'options-screen') {
-                 console.log("UI Coordinator: Navigating to Options Screen...");
-                 self.renderOptionsScreen(); // Renderiza opções (carrega valores atuais)
-                 self.#screenManager.showScreen('options-screen');
-                 self.#audioManager?.playBGM('options-screen'); // <<<=== Toca BGM de Opções
-                 console.log("UI Coordinator: Options Screen shown.");
+         $btnOptions.off('click.uimanager').on('click.uimanager', () => {
+             self.#audioManager?.playSFX('buttonClick');
+             if (self.#screenManager.getActiveScreenId() !== 'options-screen') {
+                 self.navigateTo('options-screen');
              }
          });
-         addTopBarAudioListeners($btnOptions);
-
+         addTopBarHoverAudio($btnOptions);
+ 
          // Botão Logout
          const $btnLogout = $('#top-bar-btn-logout');
-         $btnLogout.on('click', () => { // Ação de clique principal (logout)
+         $btnLogout.off('click.uimanager').on('click.uimanager', () => {
              console.log("Top Bar: Logout button clicked.");
-             self.#audioManager?.stopBGM(); // Para a música atual antes de deslogar
+             self.#audioManager?.playSFX('buttonClick'); // Play click sound
+             self.#audioManager?.stopBGM(); // Stop music before navigating
              self.#accountManager.logout();
              self.hideTopBar();
              $('#screens-container').removeClass('with-top-bar');
-             self.#screenManager.showScreen('title-screen');
-             self.#audioManager?.playBGM('title-screen'); // <<<=== Toca BGM da Title após logout
-              console.log("UI Coordinator: Logged out, showing Title Screen.");
-             // O som de clique já é adicionado por addTopBarAudioListeners
+             self.navigateTo('title-screen');
+             console.log("UI Coordinator: Logged out, navigating to Title Screen.");
          });
-         addTopBarAudioListeners($btnLogout); // Adiciona sons de clique/hover
-
-         // Listener global de ESC para fechar overlays (zoom)
+         addTopBarHoverAudio($btnLogout); // Add hover sound only
+ 
+         // Listener global de ESC (mantido)
          $(document).off('keydown.uimclose').on('keydown.uimclose', (e) => {
              if (e.key === "Escape") {
-                 self.#zoomHandler?.closeZoom();
+                 // Deixar ZoomHandler tratar o fechamento do zoom.
              }
          });
-    }
+     }
 
 } // End class UIManager (Coordinator)
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\UIManager.js ---
@@ -4271,18 +4520,19 @@ export function generateHomeScreenHTML() {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\loginScreenTemplate.js ---
-// js/ui/html-templates/loginScreenTemplate.js
+// js/ui/html-templates/loginScreenTemplate.js - CORRIGIDO
 
 /**
  * Gera a string HTML para a Tela de Login.
  * @returns {string} HTML da tela de login.
  */
+// ---> ADICIONADO 'export' <---
 export function generateLoginScreenHTML() {
     return `
         <div id="login-screen" class="screen">
             <img class="login-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
             <h2>LOGIN</h2>
-            
+
             <form id="login-form" class="form-container">
                 <div class="form-group">
                     <label for="login-username">Nome de Usuário:</label>
@@ -4485,36 +4735,40 @@ export function generateSplashScreenHTML() {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\titleScreenTemplate.js ---
-// js/ui/html-templates/titleScreenTemplate.js - ATUALIZADO
+// titleScreenTemplate.js
+// Template para a tela de título, retornando a estrutura HTML completa da tela.
 
-/**
- * Gera a string HTML para a Tela de Título.
- * Inclui logo acima dos botões.
- * @returns {string} HTML da tela de título.
- */
-export function generateTitleScreenHTML() {
-    return `
-        <div id="title-screen" class="screen">
-            <!-- Título Principal -->
-            
-
-            <!-- Logo Adicionado -->
-            <img class="title-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
-
-            <!-- Menu de Botões -->
-            <div class="title-menu">
-                <button id="btn-goto-login">Login</button>
-                <button id="btn-goto-create-account">Criar Conta</button>
-                <button id="btn-goto-options-icon" class="icon-button" title="Opções">⚙️</button>
+class TitlescreenTemplate {
+    static getHtml() {
+        // Conteúdo específico da tela de título (logo, botões, etc.)
+        const titleScreenContent = `
+            <div class="title-logo">
+                <img src="assets/images/ui/runebound_logo.png" alt="Logo do Jogo">
             </div>
-
-            <!-- Você pode adicionar mais elementos aqui, como links para créditos, patch notes, etc. -->
-            <div class="title-footer">
-                <a href="#">Créditos</a> | <a href="#">Versão 0.1.0</a>
+            <nav class="title-menu">
+                <button data-action="login">Logar</button>
+                <button data-action="create-account">Criar Conta</button>
+                <button data-action="settings">Opções</button>
+            </nav>
+        `;
+        
+        // Estrutura completa da tela de título com um wrapper que possui o ID "title-screen" e a classe "screen"
+        return `
+            <div id="title-screen" class="screen">
+                <div id="titlescreen-banner"></div>
+                <div class="titlescreen-content">
+                    ${titleScreenContent}
+                </div>
             </div>
-        </div>
-    `;
+        `;
+    }
 }
+
+// Exporta uma função que gera o HTML da tela de título para manter a consistência com os demais templates
+export function generateTitleScreenHTML() {
+    return TitlescreenTemplate.getHtml();
+}
+
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\html-templates\titleScreenTemplate.js ---
 
 
@@ -5442,20 +5696,22 @@ export default class DeckBuilderUI {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\DeckManagementScreenUI.js ---
-// js/ui/screens/DeckManagementScreenUI.js
+// js/ui/screens/DeckManagementScreenUI.js - ATUALIZADO (v2.6 Audio Fix)
 
 import CardRenderer from '../helpers/CardRenderer.js';
 import ZoomHandler from '../helpers/ZoomHandler.js';
 
 export default class DeckManagementScreenUI {
+    // --- Core References ---
     #screenManager;
     #accountManager;
     #cardDatabase;
     #cardRenderer;
     #zoomHandler;
     #uiManager; // Para navegação
+    #audioManager; // Para tocar sons
 
-    // --- Elementos da UI ---
+    // --- Elementos da UI (Cache) ---
     #screenElement;
     #deckListElement;
     #collectionElement;
@@ -5465,14 +5721,16 @@ export default class DeckManagementScreenUI {
     #filterTypeSelect;
     #filterCostSelect;
     #filterTribeSelect;
+    #btnCreateNewDeck; // Cache do botão
 
-    constructor(screenManager, accountManager, cardDatabase, cardRenderer, zoomHandler, uiManager) {
+    constructor(screenManager, accountManager, cardDatabase, cardRenderer, zoomHandler, uiManager, audioManager) {
         this.#screenManager = screenManager;
         this.#accountManager = accountManager;
         this.#cardDatabase = cardDatabase;
         this.#cardRenderer = cardRenderer;
         this.#zoomHandler = zoomHandler;
         this.#uiManager = uiManager;
+        this.#audioManager = audioManager; // Armazena AudioManager
 
         this._cacheSelectors();
         if (!this.#screenElement || !this.#screenElement.length) {
@@ -5494,95 +5752,140 @@ export default class DeckManagementScreenUI {
         this.#filterTypeSelect = this.#screenElement.find('#deck-mgmt-filter-type');
         this.#filterCostSelect = this.#screenElement.find('#deck-mgmt-filter-cost');
         this.#filterTribeSelect = this.#screenElement.find('#deck-mgmt-filter-tribe');
+        // Botão
+        this.#btnCreateNewDeck = this.#screenElement.find('#btn-create-new-deck');
     }
 
     _bindEvents() {
         console.log("DeckManagementScreenUI: Binding events...");
+        const self = this; // Para usar em callbacks
 
-        // Botões na lista de decks (delegação)
-        this.#deckListElement.on('click', '.btn-edit-deck', this._handleEditDeck.bind(this));
-        this.#deckListElement.on('click', '.btn-delete-deck', this._handleDeleteDeck.bind(this));
+        // Helper para áudio (opcional, mas limpo)
+        const addAudio = ($el, click = 'buttonClick', hover = 'buttonHover') => {
+            $el.off('click.dmsaudio mouseenter.dmsaudio'); // Limpa listeners antigos
+            $el.on('click.dmsaudio', () => this.#audioManager?.playSFX(click));
+            $el.on('mouseenter.dmsaudio', () => this.#audioManager?.playSFX(hover));
+        };
+
+        // Hover para os itens da lista de deck (com botões)
+        this.#deckListElement.off('mouseenter', 'li').on('mouseenter', 'li', (event) => {
+            if($(event.currentTarget).find('button').length > 0) {
+                this.#audioManager?.playSFX('buttonHover');
+            }
+        });
+
+        // Botões na lista de decks (delegação de eventos)
+        this.#deckListElement.off('click', '.btn-edit-deck').on('click', '.btn-edit-deck', (event) => {
+            this.#audioManager?.playSFX('buttonClick'); // Som de clique
+            this._handleEditDeck(event);
+        });
+        this.#deckListElement.off('click', '.btn-delete-deck').on('click', '.btn-delete-deck', (event) => {
+            this.#audioManager?.playSFX('buttonClick'); // Som de clique
+            this._handleDeleteDeck(event);
+        });
 
         // Botão Criar Novo Deck
-        this.#screenElement.on('click', '#btn-create-new-deck', this._handleCreateNewDeck.bind(this));
+        this.#btnCreateNewDeck.off('click').on('click', this._handleCreateNewDeck.bind(this));
+        addAudio(this.#btnCreateNewDeck); // Adiciona sons de clique/hover
 
-        // Filtros
-        this.#screenElement.on('input', '#deck-mgmt-filter-name', this._handleFilterChange.bind(this));
-        this.#screenElement.on('change', '#deck-mgmt-filter-type, #deck-mgmt-filter-cost, #deck-mgmt-filter-tribe', this._handleFilterChange.bind(this));
+        // Filtros da Coleção
+        this.#screenElement.off('input.dmsfilter change.dmsfilter')
+            .on('input.dmsfilter', '#deck-mgmt-filter-name', this._handleFilterChange.bind(this))
+            .on('change.dmsfilter', '#deck-mgmt-filter-type, #deck-mgmt-filter-cost, #deck-mgmt-filter-tribe', this._handleFilterChange.bind(this));
+        // Opcional: Adicionar som sutil ao filtro mudar (pode ser irritante)
+        // this.#screenElement.find('#deck-mgmt-filter-type, #deck-mgmt-filter-cost, #deck-mgmt-filter-tribe')
+        //     .on('change.dmsfilter', () => this.#audioManager?.playSFX('filterChangeSound')); // Precisa definir 'filterChangeSound'
 
-        // Zoom na Coleção (delegação ao ZoomHandler)
-        this.#collectionElement.on('contextmenu', '.mini-card', (event) => {
-            this.#zoomHandler.handleZoomClick(event);
+        // Zoom na Coleção (usando o ZoomHandler)
+        this.#collectionElement.off('contextmenu', '.mini-card').on('contextmenu', '.mini-card', (event) => {
+            event.preventDefault(); // Prevenir menu de contexto padrão
+            // Som para zoom? Talvez não seja necessário ou usar um som específico
+            // self.#audioManager?.playSFX('zoomCard');
+            this.#zoomHandler.handleZoomClick(event); // Delega ao ZoomHandler
         });
-        this.#collectionElement.on('contextmenu', '.mini-card', (e) => e.preventDefault()); // Prevenir menu contexto
 
-        // Fechar Zoom Overlay específico (se houver um específico)
+        // Fechar Zoom Overlay Específico
         $('#deck-management-zoom-overlay').off('click.deckmgmtzoom').on('click.deckmgmtzoom', (event) => {
-            if (event.target === event.currentTarget) {
+            if (event.target === event.currentTarget) { // Só fecha se clicar no fundo escuro
                 this.#zoomHandler.closeZoom();
             }
         });
 
-        // Botão Voltar (se existir um no template)
-        // this.#screenElement.on('click', '#btn-deck-mgmt-back', () => {
-        //     this.#screenManager.showScreen('home-screen'); // Ou onde quer que ele volte
-        // });
+        // Botão Voltar (se houver um específico para esta tela, adicione aqui)
+        // Exemplo: $('#btn-deck-mgmt-back').on('click', () => this.#screenManager.showScreen('home-screen'));
     }
 
     /** Renderiza a tela buscando dados atuais */
     render() {
         console.log("DeckManagementScreenUI: Rendering...");
-        this.#messageParagraph.text(''); // Limpa mensagens
+        this.#messageParagraph.text(''); // Limpa mensagens anteriores
         const currentUser = this.#accountManager.getCurrentUser();
         if (!currentUser) {
             console.warn("DeckManagementScreenUI: No user logged in.");
-            this.#screenManager.showScreen('login-screen');
+            this.#screenManager.showScreen('login-screen'); // Redireciona para login
             return;
         }
 
-        const collection = currentUser.collection || [];
-        const decks = currentUser.decks || {};
+        const collection = this.#accountManager.getCollection() || []; // Garante que é um array
+        const decks = this.#accountManager.loadDecks() || {}; // Garante que é um objeto
 
         this._populateFilters(collection);
         this._renderDeckList(decks);
-        this._renderCollection(collection); // Aplica filtros automaticamente
+        this._renderCollection(collection); // Renderiza coleção aplicando filtros
     }
 
     // --- Handlers de Eventos ---
 
     _handleCreateNewDeck() {
         console.log("DeckManagementScreenUI: Create new deck requested.");
-        this.#uiManager.renderDeckBuilderScreen(); // Chama UIManager para preparar o DeckBuilder sem ID
-        this.#screenManager.showScreen('deck-builder-screen');
+        // O som de clique já é tocado pelo listener do botão
+
+        this.#uiManager.renderDeckBuilderScreen(); // Chama UIManager para preparar o DeckBuilder (sem ID)
+        this.#screenManager.showScreen('deck-builder-screen'); // Mostra a tela do builder
+        this.#audioManager?.playBGM('deck-builder-screen'); // Toca BGM do builder
     }
 
     _handleEditDeck(event) {
         const deckId = $(event.currentTarget).closest('li').data('deck-id');
         if (deckId) {
             console.log(`DeckManagementScreenUI: Edit deck requested: ${deckId}`);
+             // O som de clique já é tocado pelo listener do botão
+
             this.#uiManager.renderDeckBuilderScreen(deckId); // Chama UIManager para preparar o DeckBuilder com ID
-            this.#screenManager.showScreen('deck-builder-screen');
+            this.#screenManager.showScreen('deck-builder-screen'); // Mostra a tela do builder
+            this.#audioManager?.playBGM('deck-builder-screen'); // Toca BGM do builder
         }
     }
 
     _handleDeleteDeck(event) {
         const $li = $(event.currentTarget).closest('li');
         const deckId = $li.data('deck-id');
-        const deckName = $li.find('.deck-name').text().replace(/\(\d+\s*cartas?\)$/, '').trim(); // Extrai nome
+        const deckName = $li.find('.deck-name').text().split('(')[0].trim(); // Extrai nome
+
         if (deckId && confirm(`Tem certeza que deseja excluir o deck "${deckName}"?`)) {
+             // O som de clique já é tocado pelo listener do botão
+
             const result = this.#accountManager.deleteDeck(deckId);
             if (result.success) {
                 console.log(`DeckManagementScreenUI: Deck ${deckId} deleted.`);
                 this._showMessage(`Deck "${deckName}" excluído.`, 'success');
-                this.render(); // Re-renderiza a lista de decks
+                // Opcional: Tocar som de sucesso
+                // this.#audioManager?.playSFX('actionSuccess');
+                this.render(); // Re-renderiza a lista de decks e coleção
             } else {
                 this._showMessage(`Erro ao excluir deck: ${result.message}`, 'error');
                 console.error(`Error deleting deck: ${result.message}`);
+                // Som de erro já é tocado por _showMessage
             }
+        } else {
+             // Toca som de cancelamento/erro se não confirmar
+             if (!deckId) console.error("DeckManagementScreenUI: Delete failed, no deckId found.");
+             // this.#audioManager?.playSFX('actionCancel'); // Opcional
         }
     }
 
-     _handleFilterChange() {
+    _handleFilterChange() {
+        // O som de mudança de filtro é opcional, pode ser adicionado no bindEvents
         this._renderCollection(this.#accountManager.getCollection() || []);
     }
 
@@ -5591,10 +5894,12 @@ export default class DeckManagementScreenUI {
     _renderDeckList(decks) {
         this.#deckListElement.empty();
         const deckIds = Object.keys(decks || {});
+
         if (!deckIds.length) {
             this.#deckListElement.append('<li>(Nenhum deck criado)</li>');
             return;
         }
+
         deckIds.forEach(id => {
             const deck = decks[id];
             if (deck) {
@@ -5617,55 +5922,69 @@ export default class DeckManagementScreenUI {
     }
 
     _populateFilters(collectionIds) {
-        // Reusa a lógica de _populateFilters do DeckBuilderUI (pode ser extraída para um helper)
+        // Limpa opções existentes (exceto a primeira "Todos")
         this.#filterCostSelect.children('option:not(:first-child)').remove();
         this.#filterTribeSelect.children('option:not(:first-child)').remove();
-        const costs = new Set(), tribes = new Set();
-        collectionIds.forEach(id => {
+
+        const costs = new Set();
+        const tribes = new Set();
+
+        (collectionIds || []).forEach(id => {
              const cd = this.#cardDatabase[id];
              if(cd) {
-                 costs.add(cd.cost >= 7 ? '7+' : cd.cost.toString());
-                 if (cd.tribe && cd.tribe !== 'None') tribes.add(cd.tribe);
+                 const costVal = cd.cost >= 7 ? '7+' : (cd.cost ?? 0).toString();
+                 costs.add(costVal);
+                 tribes.add(cd.tribe || 'None'); // Inclui 'None' para cartas sem tribo
              }
         });
-        // Adiciona opção para 'None' se não houver já
-        if (!tribes.has('None')) tribes.add('None');
 
-        [...costs].sort((a, b) => (a === '7+' ? Infinity : parseInt(a)) - (b === '7+' ? Infinity : parseInt(b)))
-                  .forEach(c => this.#filterCostSelect.append(`<option value="${c}">${c}</option>`));
-        [...tribes].sort()
-                   .forEach(t => this.#filterTribeSelect.append(`<option value="${t}">${t === 'None' ? 'Sem Tribo' : t}</option>`));
+        // Ordena e adiciona custos
+        [...costs].sort((a, b) => {
+            const valA = a === '7+' ? Infinity : parseInt(a);
+            const valB = b === '7+' ? Infinity : parseInt(b);
+            return valA - valB;
+        }).forEach(c => this.#filterCostSelect.append(`<option value="${c}">${c}</option>`));
+
+        // Ordena e adiciona tribos
+        [...tribes].sort((a, b) => {
+             // Coloca 'None' no final ou começo, se desejado
+             if (a === 'None') return 1;
+             if (b === 'None') return -1;
+             return a.localeCompare(b);
+        }).forEach(t => this.#filterTribeSelect.append(`<option value="${t}">${t === 'None' ? 'Sem Tribo' : t}</option>`));
     }
 
     _renderCollection(collectionIds) {
         this.#collectionElement.empty();
-        this.#collectionCountSpan.text(collectionIds?.length || 0);
+        const safeCollectionIds = collectionIds || []; // Garante que é um array
+        this.#collectionCountSpan.text(safeCollectionIds.length);
 
-        if (!Array.isArray(collectionIds) || collectionIds.length === 0) {
+        if (safeCollectionIds.length === 0) {
             this.#collectionElement.append('<p class="placeholder-message">(Nenhuma carta na coleção)</p>');
             return;
         }
 
+        // Pega valores dos filtros
         const filterName = this.#filterNameInput.val().toLowerCase();
         const filterType = this.#filterTypeSelect.val();
         const filterCost = this.#filterCostSelect.val();
         const filterTribe = this.#filterTribeSelect.val();
         let cardsRendered = 0;
 
-        collectionIds.forEach(id => {
+        safeCollectionIds.forEach(id => {
             const cardDef = this.#cardDatabase[id];
             if (cardDef) {
-                // Aplicar filtros
+                // Aplica filtros
                 if (filterName && !cardDef.name.toLowerCase().includes(filterName)) return;
                 if (filterType && cardDef.type !== filterType) return;
                 if (filterCost) {
-                    if (filterCost === '7+' && cardDef.cost < 7) return;
-                    if (filterCost !== '7+' && cardDef.cost.toString() !== filterCost) return;
+                    const cardCostStr = cardDef.cost >= 7 ? '7+' : (cardDef.cost ?? 0).toString();
+                    if (cardCostStr !== filterCost) return;
                 }
-                 // Ajuste para filtro de Tribo "None"
-                 const cardTribe = cardDef.tribe || 'None';
-                 if (filterTribe && cardTribe !== filterTribe) return;
+                const cardTribe = cardDef.tribe || 'None'; // Considera 'None' se não tiver tribo
+                if (filterTribe && cardTribe !== filterTribe) return;
 
+                // Renderiza a carta se passou pelos filtros
                 const $miniCard = this.#cardRenderer.renderMiniCard(cardDef, 'collection');
                 if ($miniCard) {
                     this.#collectionElement.append($miniCard);
@@ -5676,22 +5995,31 @@ export default class DeckManagementScreenUI {
             }
         });
 
-         if (cardsRendered === 0 && collectionIds.length > 0) {
+         // Mensagem se nenhum card correspondeu aos filtros
+         if (cardsRendered === 0 && safeCollectionIds.length > 0) {
             this.#collectionElement.append('<p class="placeholder-message">(Nenhuma carta corresponde aos filtros)</p>');
         }
 
         console.log(`DeckManagementScreenUI: Rendered ${cardsRendered} collection cards.`);
     }
 
-     _showMessage(text, type = 'info', duration = 3000) {
+    _showMessage(text, type = 'info', duration = 3000) {
         const colorVar = type === 'success' ? '--success-color' : type === 'error' ? '--error-color' : '--info-color';
         this.#messageParagraph.text(text).css('color', `var(${colorVar}, #ccc)`); // Fallback color
+
         if (duration > 0) {
+            // Limpa a mensagem após a duração
             setTimeout(() => {
-                if (this.#messageParagraph.text() === text) { // Only clear if message is still the same
+                // Verifica se a mensagem ainda é a mesma antes de limpar
+                if (this.#messageParagraph.text() === text) {
                     this.#messageParagraph.text('');
                 }
             }, duration);
+        }
+
+        // Toca som de erro, se for uma mensagem de erro
+        if(type === 'error') {
+            this.#audioManager?.playSFX('genericError');
         }
     }
 }
@@ -5699,12 +6027,14 @@ export default class DeckManagementScreenUI {
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\HomeScreenUI.js ---
-// js/ui/screens/HomeScreenUI.js
+// js/ui/screens/HomeScreenUI.js - ATUALIZADO (v2.6 Audio Fix + Back Button Debug)
 
 export default class HomeScreenUI {
     #screenManager;
-    #uiManager; // Para possível comunicação futura, não estritamente necessário aqui
+    #uiManager; // Reference to UIManager (optional, for more complex interactions)
+    #audioManager; // Reference to AudioManager for sound effects
 
+    // UI Element Caching
     #homeScreenElement;
     #newsFeedContainer;
     #newsDetailContainer;
@@ -5712,24 +6042,26 @@ export default class HomeScreenUI {
     #newsDetailImage;
     #newsDetailContent;
     #btnBackToFeed;
-    #btnGotoConnect;
+    #btnGotoConnect; // Button to navigate to the connect/play screen
 
-    #newsData = []; // Armazena as notícias carregadas
+    #newsData = []; // Stores loaded news data
 
-    constructor(screenManager, uiManager) {
+    constructor(screenManager, uiManager, audioManager) { // Receives AudioManager
         this.#screenManager = screenManager;
         this.#uiManager = uiManager;
+        this.#audioManager = audioManager; // Stores AudioManager reference
 
         this._cacheSelectors();
         if (!this.#homeScreenElement || !this.#homeScreenElement.length) {
             console.error("HomeScreenUI Error: Element #home-screen not found!");
-            return;
+            return; // Prevent initialization if the screen element is missing
         }
 
-        this._bindEvents();
-        console.log("HomeScreenUI initialized.");
+        this._bindEvents(); // Bind event listeners once
+        console.log("HomeScreenUI initialized with AudioManager.");
     }
 
+    /** Caches jQuery selectors for UI elements */
     _cacheSelectors() {
         this.#homeScreenElement = $('#home-screen');
         this.#newsFeedContainer = this.#homeScreenElement.find('#news-feed-container');
@@ -5739,130 +6071,214 @@ export default class HomeScreenUI {
         this.#newsDetailContent = this.#homeScreenElement.find('#news-detail-content');
         this.#btnBackToFeed = this.#homeScreenElement.find('#btn-back-to-news-feed');
         this.#btnGotoConnect = this.#homeScreenElement.find('#btn-goto-connect-from-home');
+        console.log("HomeScreenUI: Selectors cached.");
+         // Verify selectors
+         if (!this.#btnBackToFeed.length) {
+             console.warn("HomeScreenUI Cache Warning: #btn-back-to-news-feed not found!");
+         }
+         if (!this.#newsFeedContainer.length) {
+              console.warn("HomeScreenUI Cache Warning: #news-feed-container not found!");
+         }
+          if (!this.#newsDetailContainer.length) {
+              console.warn("HomeScreenUI Cache Warning: #news-detail-container not found!");
+          }
     }
 
+    /** Binds event listeners for the home screen */
     _bindEvents() {
-        // Clicar num item do feed
-        this.#newsFeedContainer.on('click', '.news-item', (event) => {
+        console.log("HomeScreenUI: Binding events...");
+        const self = this; // Reference 'this' for use inside handlers
+
+        // Helper function to add audio listeners
+        const addAudio = ($el, clickSfx = 'buttonClick', hoverSfx = 'buttonHover') => {
+            $el.off('click.hsaudio mouseenter.hsaudio'); // Remove previous listeners
+            $el.on('click.hsaudio', () => self.#audioManager?.playSFX(clickSfx));
+            $el.on('mouseenter.hsaudio', () => self.#audioManager?.playSFX(hoverSfx));
+        };
+
+        // --- Event Bindings ---
+
+        // Clicking on a news item in the feed
+        this.#newsFeedContainer.off('click', '.news-item').on('click', '.news-item', (event) => {
             const newsId = $(event.currentTarget).data('news-id');
+            // Play click sound BEFORE potentially navigating away or changing view
+            self.#audioManager?.playSFX('buttonClick');
             if (newsId) {
-                this._showNewsDetail(newsId);
+                console.log(`HomeScreenUI: News item clicked, ID: ${newsId}`);
+                self._showNewsDetail(newsId);
+            } else {
+                console.warn("HomeScreenUI: Clicked news item missing data-news-id.");
             }
         });
 
-        // Clicar no botão Voltar do detalhe
-        this.#btnBackToFeed.on('click', () => {
-            this._showNewsFeed();
+        // Hovering over a news item
+        this.#newsFeedContainer.off('mouseenter', '.news-item').on('mouseenter', '.news-item', () => {
+            self.#audioManager?.playSFX('buttonHover');
         });
 
-        // Clicar no botão Jogar
-        this.#btnGotoConnect.on('click', () => {
-            // Navega para a tela de conexão (UIManager pode ter método para resetar estado dela)
-             $('#connect-message').text(''); // Reset connect screen UI state if needed
-             $('#server-status-section, #join-game-section').hide();
-            this.#screenManager.showScreen('connect-screen');
+        // Clicking the "Back to Feed" button from the detail view
+        this.#btnBackToFeed.off('click').on('click', () => {
+            console.log("HomeScreenUI: 'Back to Feed' button clicked."); // Debug log
+            // Click sound is handled by addAudio below
+            self._showNewsFeed();
         });
+        addAudio(this.#btnBackToFeed); // Add click/hover sounds
+
+        // Clicking the "Play" (Go to Connect) button
+        this.#btnGotoConnect.off('click').on('click', () => {
+            console.log("HomeScreenUI: 'Go to Connect' button clicked.");
+            // Click sound is handled by addAudio below
+            // Reset connect screen state (optional but good practice)
+            $('#connect-message').text('');
+            $('#server-status-section, #join-game-section').hide();
+            $('#opponent-ip').val('');
+            // Navigate using ScreenManager
+            self.#screenManager.showScreen('connect-screen');
+            // Play BGM for the connect screen (UIManager/main.js might also handle this)
+            self.#audioManager?.playBGM('connect-screen');
+        });
+        addAudio(this.#btnGotoConnect); // Add click/hover sounds
+
+        console.log("HomeScreenUI: Events bound.");
     }
 
-    /** Renderiza a tela inicial, buscando e mostrando o feed */
+    /**
+     * Renders the home screen by loading news data and displaying the feed.
+     * This is the main entry point when navigating TO the home screen.
+     */
     async render() {
         console.log("HomeScreenUI: Rendering...");
-        await this._loadNewsData(); // Carrega os dados antes de mostrar
-        this._renderNewsFeed();
-        this._showNewsFeed(); // Garante que o feed está visível
+        // Show a loading indicator while fetching data
+        this.#newsFeedContainer.html('<p class="placeholder-message">Carregando notícias...</p>');
+        this.#newsDetailContainer.hide(); // Ensure detail view is hidden initially
+        this.#newsFeedContainer.show();   // Ensure feed container is visible initially
+
+        await this._loadNewsData(); // Load or reload news data
+        this._renderNewsFeed();     // Populate the feed container
+        // No need to call _showNewsFeed() here as the initial state is set above
+        console.log("HomeScreenUI: Render complete.");
     }
 
-    /** Carrega os dados das notícias do JSON */
+    /** Fetches and stores news data from the JSON file */
     async _loadNewsData() {
-        // Idealmente, use fetch. Se fetch não for uma opção fácil agora,
-        // você pode importar diretamente se transformar o JSON num módulo JS.
         try {
-            // Usando Fetch (preferível)
-            const response = await fetch('js/data/news-data.json'); // Caminho relativo ao index.html
+            // Using Fetch API to get the JSON data
+            const response = await fetch('js/data/news-data.json'); // Path relative to index.html
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                // Throw an error if the response status is not OK (e.g., 404 Not Found)
+                throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
             }
-            this.#newsData = await response.json();
-            // Ordena por data, mais recente primeiro
-            this.#newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const data = await response.json();
+            // Sort news data by date, most recent first
+            this.#newsData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
             console.log("HomeScreenUI: News data loaded successfully:", this.#newsData.length, "items");
 
         } catch (error) {
-            console.error("HomeScreenUI: Failed to load news data:", error);
-            this.#newsData = []; // Define como vazio em caso de erro
-            this.#newsFeedContainer.html('<p class="error-message">Não foi possível carregar as notícias.</p>');
+            console.error("HomeScreenUI: Failed to load or parse news data:", error);
+            this.#newsData = []; // Reset data on error
+            // Display error message in the feed container
+            this.#newsFeedContainer.html('<p class="error-message">Não foi possível carregar as notícias. Verifique a conexão ou o arquivo news-data.json.</p>');
         }
     }
 
-    /** Popula o container do feed com os itens de notícia */
+    /** Populates the news feed container with summary items */
     _renderNewsFeed() {
-        this.#newsFeedContainer.empty(); // Limpa antes de adicionar
-        if (this.#newsData.length === 0) {
-            this.#newsFeedContainer.html('<p class="placeholder-message">Nenhuma notícia disponível no momento.</p>');
+        this.#newsFeedContainer.empty(); // Clear previous items
+
+        if (!this.#newsData || this.#newsData.length === 0) {
+            // Display message if no news data is available after loading attempt
+            if (this.#newsFeedContainer.find('.error-message').length === 0) { // Avoid overwriting load error
+                 this.#newsFeedContainer.html('<p class="placeholder-message">Nenhuma notícia disponível no momento.</p>');
+            }
             return;
         }
 
+        // Create and append HTML for each news item
         this.#newsData.forEach(item => {
-            const itemHtml = this._renderNewsItemSummaryHTML(item);
+            const itemHtml = this._createNewsItemSummaryHTML(item);
             this.#newsFeedContainer.append(itemHtml);
         });
+        console.log("HomeScreenUI: News feed populated.");
     }
 
-    /** Gera o HTML para um item resumido no feed */
-    _renderNewsItemSummaryHTML(item) {
-        const formattedDate = new Date(item.date).toLocaleDateString('pt-BR', { year: 'numeric', month: 'short', day: 'numeric' });
+    /** Generates the HTML string for a single news item summary */
+    _createNewsItemSummaryHTML(item) {
+        // Format the date nicely
+        const formattedDate = new Date(item.date).toLocaleDateString('pt-BR', {
+            year: 'numeric', month: 'short', day: 'numeric'
+        });
+        // Conditionally include image and category
         const imageHtml = item.image ? `<img src="${item.image}" alt="" class="news-image-summary">` : '';
         const categoryHtml = item.category ? `<span class="news-category">[${item.category}]</span>` : '';
 
+        // Return the HTML structure for the feed item
         return `
             <div class="news-item" data-news-id="${item.id}">
                 ${imageHtml}
                 <div class="news-item-content">
                     <div class="news-item-header">
-                        <h4 class="news-title-summary">${item.title}</h4>
+                        <h4 class="news-title-summary">${item.title || 'Sem Título'}</h4>
                         <span class="news-date">${formattedDate} ${categoryHtml}</span>
                     </div>
-                    <p class="news-summary">${item.summary}</p>
+                    <p class="news-summary">${item.summary || ''}</p>
                 </div>
             </div>
         `;
     }
 
-    /** Mostra a visualização detalhada de uma notícia */
+    /** Displays the detailed view for a specific news item */
     _showNewsDetail(newsId) {
+        // Find the news item by its ID
         const item = this.#newsData.find(n => n.id === newsId);
         if (!item) {
-            console.error(`HomeScreenUI: News item with ID ${newsId} not found.`);
+            console.error(`HomeScreenUI: News item with ID ${newsId} not found in loaded data.`);
+            this._showMessage("Erro: Notícia não encontrada.", "error"); // Show error to user
             return;
         }
 
-        this.#newsDetailTitle.text(item.title);
-        this.#newsDetailContent.html(item.content); // Usa .html() para renderizar o HTML do conteúdo
+        console.log(`HomeScreenUI: Showing detail for news ID ${newsId} - "${item.title}"`);
 
+        // Populate the detail view elements
+        this.#newsDetailTitle.text(item.title);
+        this.#newsDetailContent.html(item.content); // Use .html() to render potential HTML in content
+
+        // Handle the image display
         if (item.image) {
             this.#newsDetailImage.attr('src', item.image).attr('alt', item.title).show();
         } else {
-            this.#newsDetailImage.hide();
+            this.#newsDetailImage.hide().attr('src',''); // Hide and clear src if no image
         }
 
+        // Switch visibility: hide feed, show detail
         this.#newsFeedContainer.hide();
         this.#newsDetailContainer.show();
-        this.#newsDetailContainer.scrollTop(0); // Scroll to top
-        console.log(`HomeScreenUI: Showing detail for news ID ${newsId}`);
+        this.#newsDetailContainer.scrollTop(0); // Scroll detail view to top
     }
 
-    /** Mostra o feed de notícias, escondendo o detalhe */
+    /** Hides the detail view and shows the news feed */
     _showNewsFeed() {
+        console.log("HomeScreenUI: Switching view to news feed.");
         this.#newsDetailContainer.hide();
         this.#newsFeedContainer.show();
-        console.log("HomeScreenUI: Showing news feed.");
     }
-}
+
+     /** Helper to display temporary messages (optional) */
+    _showMessage(text, type = 'info', duration = 3000) {
+        // Could add a dedicated message area to the home screen template
+        // Or use a more global notification system if available
+        console.log(`HomeScreenUI [${type}]: ${text}`);
+        // Example: Alert fallback
+        // if (type === 'error') {
+        //     alert(`Erro: ${text}`);
+        // }
+    }
+
+} // End class HomeScreenUI
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\HomeScreenUI.js ---
 
 
 --- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\OptionsUI.js ---
-// js/ui/screens/OptionsUI.js - ATUALIZADO
+// js/ui/screens/OptionsUI.js - ATUALIZADO (v2.6 - Volume Sliders Fix)
 
 export default class OptionsUI {
     #audioManager; // <<<=== Referência para AudioManager
@@ -5871,10 +6287,10 @@ export default class OptionsUI {
     #optionsScreenElement;
     #musicVolumeSlider;
     #musicVolumeValueSpan;
-    #musicMuteCheckbox; // <<<=== Novo
+    #musicMuteCheckbox;
     #sfxVolumeSlider;
     #sfxVolumeValueSpan;
-    #sfxMuteCheckbox;   // <<<=== Novo
+    #sfxMuteCheckbox;
     #graphicsQualitySelect;
     #cardAnimationsCheckbox;
     #languageSelect;
@@ -5885,10 +6301,10 @@ export default class OptionsUI {
 
     // --- Estado Interno ---
     #options = { // Default options
-        musicVolume: 60, // Ajustado default
-        sfxVolume: 80,   // Ajustado default
-        isMusicMuted: false, // <<<=== Novo default
-        isSfxMuted: false,   // <<<=== Novo default
+        musicVolume: 60,
+        sfxVolume: 80,
+        isMusicMuted: false,
+        isSfxMuted: false,
         graphicsQuality: 'medium',
         cardAnimations: true,
         language: 'pt-BR',
@@ -5904,19 +6320,20 @@ export default class OptionsUI {
             console.error("OptionsUI Error: #options-screen element not found!");
             return;
         }
-        this._loadOptions();
-        this._bindEvents();
+        this._loadOptions(); // Carrega opções salvas
+        this._bindEvents();  // Vincula eventos
         console.log("OptionsUI initialized.");
+        // Não chama render() aqui, UIManager chama quando a tela é mostrada
     }
 
     _cacheSelectors() {
         this.#optionsScreenElement = $('#options-screen');
         this.#musicVolumeSlider = this.#optionsScreenElement.find('#opt-music-volume');
         this.#musicVolumeValueSpan = this.#musicVolumeSlider.siblings('.volume-value');
-        this.#musicMuteCheckbox = this.#optionsScreenElement.find('#opt-mute-music'); // <<<=== Cache Mute Music
+        this.#musicMuteCheckbox = this.#optionsScreenElement.find('#opt-mute-music');
         this.#sfxVolumeSlider = this.#optionsScreenElement.find('#opt-sfx-volume');
         this.#sfxVolumeValueSpan = this.#sfxVolumeSlider.siblings('.volume-value');
-        this.#sfxMuteCheckbox = this.#optionsScreenElement.find('#opt-mute-sfx');     // <<<=== Cache Mute SFX
+        this.#sfxMuteCheckbox = this.#optionsScreenElement.find('#opt-mute-sfx');
         this.#graphicsQualitySelect = this.#optionsScreenElement.find('#opt-graphics-quality');
         this.#cardAnimationsCheckbox = this.#optionsScreenElement.find('#opt-card-animations');
         this.#languageSelect = this.#optionsScreenElement.find('#opt-language');
@@ -5930,16 +6347,20 @@ export default class OptionsUI {
         console.log("OptionsUI: Rendering options screen controls.");
         if (!this.#optionsScreenElement.length) return;
 
-        // Define valores dos controles
+        // Recarrega as opções mais recentes antes de renderizar os controles
+        // Isso garante que se o usuário saiu e voltou, os valores corretos são mostrados
+        this._loadOptions();
+
+        // Define valores dos controles com base nas opções carregadas/padrão
         this.#musicVolumeSlider.val(this.#options.musicVolume);
         this.#musicVolumeValueSpan.text(`${this.#options.musicVolume}%`);
-        this.#musicMuteCheckbox.prop('checked', this.#options.isMusicMuted); // <<<=== Define Mute Music Checkbox
-        this.#musicVolumeSlider.prop('disabled', this.#options.isMusicMuted); // <<<=== Desabilita slider se mutado
+        this.#musicMuteCheckbox.prop('checked', this.#options.isMusicMuted);
+        this.#musicVolumeSlider.prop('disabled', this.#options.isMusicMuted);
 
         this.#sfxVolumeSlider.val(this.#options.sfxVolume);
         this.#sfxVolumeValueSpan.text(`${this.#options.sfxVolume}%`);
-        this.#sfxMuteCheckbox.prop('checked', this.#options.isSfxMuted);     // <<<=== Define Mute SFX Checkbox
-        this.#sfxVolumeSlider.prop('disabled', this.#options.isSfxMuted);     // <<<=== Desabilita slider se mutado
+        this.#sfxMuteCheckbox.prop('checked', this.#options.isSfxMuted);
+        this.#sfxVolumeSlider.prop('disabled', this.#options.isSfxMuted);
 
         this.#graphicsQualitySelect.val(this.#options.graphicsQuality);
         this.#cardAnimationsCheckbox.prop('checked', this.#options.cardAnimations);
@@ -5947,43 +6368,56 @@ export default class OptionsUI {
         this.#textSizeSelect.val(this.#options.textSize);
         this.#highContrastCheckbox.prop('checked', this.#options.highContrast);
 
-        this._applyVisualOptions();
-        this.#saveMessageParagraph.text('');
+        this._applyVisualOptions(); // Aplica opções que afetam a aparência imediatamente
+        this.#saveMessageParagraph.text(''); // Limpa mensagem de salvar
     }
 
     _bindEvents() {
         console.log("OptionsUI: Binding events...");
+        const self = this; // Para usar dentro dos handlers
 
-        // Sliders de Volume (APENAS atualiza o span de valor no input)
-        this.#musicVolumeSlider.on('input', () => {
-            this.#musicVolumeValueSpan.text(`${this.#musicVolumeSlider.val()}%`);
-            // Não chama AudioManager aqui, só no save ou ao desmutar
+        // --- Sliders de Volume (ATUALIZADO) ---
+        this.#musicVolumeSlider.off('input.options').on('input.options', function() {
+            const volumeValue = parseInt($(this).val(), 10);
+            self.#musicVolumeValueSpan.text(`${volumeValue}%`);
+            // Chama o AudioManager para definir o volume imediatamente (0.0 a 1.0)
+            self.#audioManager?.setMusicVolume(volumeValue / 100);
         });
-        this.#sfxVolumeSlider.on('input', () => {
-            this.#sfxVolumeValueSpan.text(`${this.#sfxVolumeSlider.val()}%`);
-            // Não chama AudioManager aqui
+        this.#sfxVolumeSlider.off('input.options').on('input.options', function() {
+            const volumeValue = parseInt($(this).val(), 10);
+            self.#sfxVolumeValueSpan.text(`${volumeValue}%`);
+             // Chama o AudioManager para definir o volume imediatamente (0.0 a 1.0)
+            self.#audioManager?.setSfxVolume(volumeValue / 100);
         });
+        // --- FIM DA ATUALIZAÇÃO DOS SLIDERS ---
 
-        // --- Checkboxes de Mute ---
-        this.#musicMuteCheckbox.on('change', (event) => {
+        // Checkboxes de Mute (já estavam corretos, chamando AudioManager imediatamente)
+        this.#musicMuteCheckbox.off('change.options').on('change.options', (event) => {
             const isMuted = $(event.currentTarget).is(':checked');
-            this.#musicVolumeSlider.prop('disabled', isMuted); // Desabilita/habilita slider
-            this.#audioManager?.setMusicMuted(isMuted); // <<<=== Informa AudioManager IMEDIATAMENTE
-            this.#audioManager?.playSFX('buttonClick'); // Som ao clicar no checkbox
+            this.#musicVolumeSlider.prop('disabled', isMuted);
+            this.#audioManager?.setMusicMuted(isMuted);
+            this.#audioManager?.playSFX('buttonClick');
         });
-        this.#sfxMuteCheckbox.on('change', (event) => {
+        this.#sfxMuteCheckbox.off('change.options').on('change.options', (event) => {
             const isMuted = $(event.currentTarget).is(':checked');
-            this.#sfxVolumeSlider.prop('disabled', isMuted);   // Desabilita/habilita slider
-            this.#audioManager?.setSfxMuted(isMuted);     // <<<=== Informa AudioManager IMEDIATAMENTE
-            this.#audioManager?.playSFX('buttonClick'); // Som ao clicar no checkbox
+            this.#sfxVolumeSlider.prop('disabled', isMuted);
+            this.#audioManager?.setSfxMuted(isMuted);
+            this.#audioManager?.playSFX('buttonClick');
         });
-        // -------------------------
 
-        // Botão Salvar
-        this.#saveButton.on('click', this._saveOptions.bind(this));
+        // Botão Salvar (continua chamando _saveOptions que salva e chama updateSettings)
+        this.#saveButton.off('click.options').on('click.options', this._saveOptions.bind(this));
 
-        // Outros controles (alto contraste, tamanho texto) - podem ter listeners 'change' se quiserem aplicar na hora
-        // ...
+        // Listeners para aplicar opções visuais imediatamente (exemplo: alto contraste)
+        this.#highContrastCheckbox.off('change.options').on('change.options', (event) => {
+             $('body').toggleClass('contrast-high', $(event.currentTarget).is(':checked'));
+             this.#audioManager?.playSFX('buttonClick'); // Som ao marcar/desmarcar
+        });
+        this.#textSizeSelect.off('change.options').on('change.options', (event) => {
+             const newSize = $(event.currentTarget).val();
+             $('body').removeClass('text-small text-normal text-large').addClass(`text-${newSize}`);
+             this.#audioManager?.playSFX('buttonClick'); // Som ao mudar seleção
+        });
     }
 
     _loadOptions() {
@@ -5991,29 +6425,35 @@ export default class OptionsUI {
             const storedOptions = localStorage.getItem(this.#OPTIONS_STORAGE_KEY);
             if (storedOptions) {
                 const loaded = JSON.parse(storedOptions);
-                // Mescla para garantir todas as chaves, incluindo as novas de mute
+                // Mescla para garantir todas as chaves e valores default
                 this.#options = { ...this.#options, ...loaded };
-                 // Certifica que os valores de mute são booleanos
-                 this.#options.isMusicMuted = !!this.#options.isMusicMuted;
-                 this.#options.isSfxMuted = !!this.#options.isSfxMuted;
+                 // Garante booleanos para mute
+                this.#options.isMusicMuted = !!this.#options.isMusicMuted;
+                this.#options.isSfxMuted = !!this.#options.isSfxMuted;
                 console.log("OptionsUI: Options loaded from localStorage:", this.#options);
             } else {
                 console.log("OptionsUI: No saved options found, using defaults.");
             }
         } catch (e) {
             console.error("OptionsUI: Error loading options from localStorage:", e);
+            // Resetar para defaults em caso de erro de parse
+            // this.#options = { ...DEFAULT_OPTIONS }; // Defina DEFAULT_OPTIONS se necessário
         }
         // Aplica estado inicial carregado ao AudioManager (importante!)
+        // Não chama updateSettings aqui, pois ele recarregaria do localStorage de novo.
+        // Apenas define o estado inicial mutado/desmutado. O volume será setado no render()
         this.#audioManager?.setMusicMuted(this.#options.isMusicMuted);
         this.#audioManager?.setSfxMuted(this.#options.isSfxMuted);
     }
 
+    // Este método é chamado pelo UIManager ou pelo botão Salvar internamente
     _saveOptions() {
+        console.log("OptionsUI: Attempting to save options...");
         // Lê os valores atuais dos controles da UI
         this.#options.musicVolume = parseInt(this.#musicVolumeSlider.val(), 10);
         this.#options.sfxVolume = parseInt(this.#sfxVolumeSlider.val(), 10);
-        this.#options.isMusicMuted = this.#musicMuteCheckbox.is(':checked'); // <<<=== Lê estado Mute Music
-        this.#options.isSfxMuted = this.#sfxMuteCheckbox.is(':checked');   // <<<=== Lê estado Mute SFX
+        this.#options.isMusicMuted = this.#musicMuteCheckbox.is(':checked');
+        this.#options.isSfxMuted = this.#sfxMuteCheckbox.is(':checked');
         this.#options.graphicsQuality = this.#graphicsQualitySelect.val();
         this.#options.cardAnimations = this.#cardAnimationsCheckbox.is(':checked');
         this.#options.language = this.#languageSelect.val();
@@ -6024,13 +6464,14 @@ export default class OptionsUI {
             localStorage.setItem(this.#OPTIONS_STORAGE_KEY, JSON.stringify(this.#options));
             console.log("OptionsUI: Options saved to localStorage:", this.#options);
             this._showMessage('Opções salvas com sucesso!', 'success');
-            this._applyVisualOptions(); // Aplica opções visuais
+            this._applyVisualOptions(); // Aplica opções visuais salvas
 
             // Informa o AudioManager para recarregar TODAS as configurações salvas
-            // Isso inclui os volumes E os estados de mute recém-salvos
-            this.#audioManager?.updateSettings(); // <<<=== Chama updateSettings
-             // Toca SFX de salvar
-             this.#audioManager?.playSFX('deckSave'); // Usando 'deckSave' como exemplo
+            // Isso garante que o AudioManager esteja sincronizado com o localStorage
+            this.#audioManager?.updateSettings(); // <<<=== Chama updateSettings para garantir sincronia total
+
+            // Toca SFX de salvar (som de clique já foi tocado ao clicar no botão)
+            // this.#audioManager?.playSFX('deckSave'); // Opcional, pode ser redundante
 
         } catch (e) {
             console.error("OptionsUI: Error saving options to localStorage:", e);
@@ -6040,14 +6481,14 @@ export default class OptionsUI {
     }
 
     _applyVisualOptions() {
-        console.log("OptionsUI: Applying visual options...");
+        // console.log("OptionsUI: Applying visual options...");
         // Aplica tamanho de texto e contraste
         $('body')
             .removeClass('text-small text-normal text-large contrast-high')
             .addClass(`text-${this.#options.textSize || 'normal'}`)
             .toggleClass('contrast-high', this.#options.highContrast);
 
-        // Aplica estado desabilitado aos sliders baseado no mute (redundante com render, mas garante)
+        // Aplica estado desabilitado aos sliders baseado no mute
         this.#musicVolumeSlider.prop('disabled', this.#options.isMusicMuted);
         this.#sfxVolumeSlider.prop('disabled', this.#options.isSfxMuted);
 
@@ -6057,8 +6498,8 @@ export default class OptionsUI {
     }
 
     _showMessage(text, type = 'info', duration = 3000) {
-        const colorVar = type === 'success' ? '--success-color' : type === 'error' ? '--error-color' : '--info-color'; // Adicionado --info-color
-        this.#saveMessageParagraph.text(text).css('color', `var(${colorVar}, #ccc)`); // Fallback
+        const colorVar = type === 'success' ? '--success-color' : type === 'error' ? '--error-color' : '--info-color';
+        this.#saveMessageParagraph.text(text).css('color', `var(${colorVar}, #ccc)`);
         if (duration > 0) {
             setTimeout(() => {
                 if (this.#saveMessageParagraph.text() === text) {
@@ -6186,3 +6627,240 @@ export default class ProfileScreenUI {
     // Métodos _renderCollection, _renderDeckList REMOVIDOS
 }
 --- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\ProfileScreenUI.js ---
+
+
+--- INÍCIO DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\titlescreenUi.js ---
+// js/ui/screens/titlescreenUi.js - COMPLETO E ATUALIZADO
+
+export default class TitlescreenUi {
+    // --- Referências ---
+    #bannerElement = null; // Elemento DOM que contém o banner
+    #uiManager = null; // Referência ao UIManager para navegação
+    #audioManager = null; // Referência ao AudioManager para sons
+
+    // --- Configuração do Banner ---
+    #imageUrls = [ // <<< CONFIGURE SUAS IMAGENS DE FUNDO AQUI >>>
+        'assets/images/backgrounds/bg1.jpg',
+        'assets/images/backgrounds/bg2.jpg',
+        'assets/images/backgrounds/bg3.jpg',
+        'assets/images/backgrounds/bg4.jpg',
+        'assets/images/backgrounds/bg5.jpg',
+        'assets/images/backgrounds/bg6.jpg',
+        // Adicione mais URLs conforme necessário
+    ];
+    #imageDisplayTime = 3000; // Tempo de exibição de cada imagem (ms) - Ex: 3 segundos
+    #kenBurnsClasses = ['kenburns-1', 'kenburns-2', 'kenburns-3', 'kenburns-4']; // Nomes das classes de animação CSS
+
+    // --- Estado Interno ---
+    #currentImageIndex = 0; // Índice da imagem atual na lista #imageUrls
+    #intervalId = null;    // ID do timer do setInterval para o ciclo de imagens
+    #imageElements = [];   // Array para guardar as 2 divs usadas para o crossfade
+
+    /**
+     * Construtor da classe TitlescreenUi.
+     * @param {object} screenManager - Instância do ScreenManager.
+     * @param {object} uiManager - Instância do UIManager.
+     * @param {object} audioManager - Instância do AudioManager.
+     */
+    constructor(screenManager, uiManager, audioManager) {
+        this.screenManager = screenManager; // Pode ser útil para referência futura
+        this.uiManager = uiManager;
+        this.audioManager = audioManager; // Armazena AudioManager
+        console.log("TitlescreenUi: Instance created.");
+    }
+
+    /**
+     * Inicializa o banner e vincula ações da tela de título.
+     * Chamado quando a tela de título se torna ativa.
+     * @param {HTMLElement} screenElement - O elemento DOM da tela de título (#title-screen).
+     */
+    init(screenElement) {
+        console.log("TitlescreenUi: Initializing...");
+        this.#bannerElement = screenElement?.querySelector('#titlescreen-banner'); // Adiciona verificação
+
+        if (!this.#bannerElement) {
+            console.error("TitlescreenUi Error: Banner element #titlescreen-banner not found!");
+            // Não inicializa o banner se o elemento não for encontrado
+        } else if (this.#imageUrls.length === 0) {
+            console.warn("TitlescreenUi: No image URLs provided for the banner.");
+            this.#bannerElement.style.backgroundColor = '#111'; // Fundo fallback
+        } else {
+            // Configura os elementos de imagem para crossfade e inicia o ciclo
+            this.#setupBannerElements();
+            this.#startBannerCycle();
+        }
+
+        // Vincula ações específicas desta tela
+        if (screenElement) { // Garante que screenElement existe antes de tentar vincular
+            this.#bindTitleScreenActions(screenElement);
+            console.log("TitlescreenUi: Initialized and actions bound.");
+        } else {
+            console.error("TitlescreenUi Error: screenElement is null or undefined in init. Cannot bind actions.");
+        }
+    }
+
+    /**
+     * Limpa os recursos do banner (timer, elementos DOM) e desvincula eventos.
+     * Chamado quando a tela de título é desativada ou destruída.
+     */
+    destroy() {
+        console.log("TitlescreenUi: Destroying...");
+        // Para o ciclo de imagens
+        if (this.#intervalId) {
+            clearInterval(this.#intervalId);
+            this.#intervalId = null;
+        }
+        // Remove os elementos de imagem criados
+        if (this.#bannerElement) {
+            this.#imageElements.forEach(div => div.remove()); // Remove do DOM
+        }
+        // Limpa o array e reseta o índice
+        this.#imageElements = [];
+        this.#currentImageIndex = 0;
+
+        // Remove listeners específicos desta tela
+        // Encontra o elemento da tela antes de tentar remover listeners
+        const $screen = $(this.#bannerElement?.closest('#title-screen'));
+        if ($screen?.length) {
+            $screen.find('.title-menu').off('click.titlescreen');
+            $screen.find('.title-menu button').off('mouseenter.titlescreen');
+            console.log("TitlescreenUi: Event listeners unbound.");
+        }
+    }
+
+    /**
+     * Configura as duas divs internas do banner usadas para o efeito de crossfade.
+     * Define a primeira imagem e aplica o efeito Ken Burns inicial.
+     */
+    #setupBannerElements() {
+        this.#bannerElement.innerHTML = '';
+        this.#imageElements = [];
+
+        for (let i = 0; i < 2; i++) {
+            const div = document.createElement('div');
+            div.classList.add('banner-image');
+            this.#bannerElement.appendChild(div);
+            this.#imageElements.push(div);
+        }
+
+        if (this.#imageUrls.length > 0) {
+            // Inicia com uma imagem aleatória para variar
+            this.#currentImageIndex = Math.floor(Math.random() * this.#imageUrls.length);
+            const firstDiv = this.#imageElements[0];
+            firstDiv.style.backgroundImage = `url('${this.#imageUrls[this.#currentImageIndex]}')`;
+            this.#applyRandomKenBurns(firstDiv);
+
+            setTimeout(() => {
+                // Verifica se o elemento ainda existe antes de adicionar a classe
+                if (this.#imageElements[0]) {
+                    this.#imageElements[0].classList.add('active');
+                }
+            }, 50);
+        }
+    }
+
+    /**
+     * Inicia o ciclo de troca de imagens usando setInterval.
+     */
+    #startBannerCycle() {
+        if (this.#intervalId) {
+            clearInterval(this.#intervalId);
+        }
+        if (this.#imageUrls.length > 1) {
+            this.#intervalId = setInterval(() => {
+                this.#showNextImage();
+            }, this.#imageDisplayTime);
+            console.log(`TitlescreenUi: Banner cycle started with interval ${this.#imageDisplayTime}ms.`);
+        } else {
+            console.log("TitlescreenUi: Only one image provided, banner cycle not started.");
+        }
+    }
+
+    /**
+     * Lógica principal para a transição de imagens (crossfade com Ken Burns).
+     */
+    #showNextImage() {
+        // Garante que os elementos ainda existem (importante se destroy for chamado durante a transição)
+        if (!this.#bannerElement || this.#imageElements.length < 2) return;
+
+        const activeDiv = this.#imageElements.find(div => div.classList.contains('active'));
+        const nextDiv = this.#imageElements.find(div => !div.classList.contains('active'));
+
+        if (!nextDiv) return; // Segurança
+
+        const nextImageIndex = (this.#currentImageIndex + 1) % this.#imageUrls.length;
+        nextDiv.style.backgroundImage = `url('${this.#imageUrls[nextImageIndex]}')`;
+        this.#applyRandomKenBurns(nextDiv);
+
+        if (activeDiv) {
+            activeDiv.classList.remove('active');
+            activeDiv.classList.add('exiting');
+        }
+        nextDiv.classList.add('active');
+
+        // Limpeza da classe 'exiting' após a transição
+        setTimeout(() => {
+            // Re-seleciona caso o DOM tenha mudado
+            const exitedDiv = this.#bannerElement?.querySelector('.banner-image.exiting');
+            exitedDiv?.classList.remove('exiting');
+        }, 1000); // DEVE CORRESPONDER À DURAÇÃO DA TRANSIÇÃO 'opacity' NO CSS
+
+        this.#currentImageIndex = nextImageIndex;
+    }
+
+    /**
+     * Aplica uma classe de animação Ken Burns aleatória a um elemento.
+     * @param {HTMLElement} element - O elemento div da imagem (.banner-image).
+     */
+    #applyRandomKenBurns(element) {
+        if (!this.#kenBurnsClasses || this.#kenBurnsClasses.length === 0 || !element) return;
+        this.#kenBurnsClasses.forEach(kbClass => element.classList.remove(kbClass));
+        const randomIndex = Math.floor(Math.random() * this.#kenBurnsClasses.length);
+        element.classList.add(this.#kenBurnsClasses[randomIndex]);
+    }
+
+    /**
+     * Vincula ações aos botões da tela de título usando UIManager para navegação.
+     * @param {HTMLElement} screenElement - O elemento DOM da tela de título.
+     */
+    #bindTitleScreenActions(screenElement) {
+        const $screen = $(screenElement);
+        const self = this;
+
+        // Limpa listeners antigos para evitar duplicação se init for chamado várias vezes
+        $screen.find('.title-menu').off('click.titlescreen');
+        $screen.find('.title-menu button').off('mouseenter.titlescreen');
+
+        // Delegação de evento para cliques nos botões dentro de .title-menu
+        $screen.find('.title-menu').on('click.titlescreen', 'button', (event) => {
+            const action = $(event.currentTarget).data('action');
+            self.audioManager?.playSFX('buttonClick'); // Toca som
+
+            console.log(`Titlescreen Action Clicked: ${action}`);
+
+            // Navega usando UIManager
+            switch (action) {
+                case 'login':
+                    self.uiManager?.navigateTo('login-screen');
+                    break;
+                case 'create-account':
+                    self.uiManager?.navigateTo('create-account-screen');
+                    break;
+                case 'settings':
+                    self.uiManager?.navigateTo('options-screen');
+                    break;
+                default:
+                    console.warn(`Titlescreen: Unknown button action '${action}'`);
+            }
+        });
+
+        // Adiciona som de hover
+        $screen.find('.title-menu button').on('mouseenter.titlescreen', () => {
+            self.audioManager?.playSFX('buttonHover');
+        });
+
+        console.log("TitlescreenUi: Title screen actions bound.");
+    }
+
+} // Fim da classe TitlescreenUi
+--- FIM DE: C:\Users\Fred\Documents\game-dev\runebound_dccg\js\ui\screens\titlescreenUi.js ---

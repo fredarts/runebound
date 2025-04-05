@@ -1,15 +1,16 @@
-// js/ui/html-templates/loginScreenTemplate.js
+// js/ui/html-templates/loginScreenTemplate.js - CORRIGIDO
 
 /**
  * Gera a string HTML para a Tela de Login.
  * @returns {string} HTML da tela de login.
  */
+// ---> ADICIONADO 'export' <---
 export function generateLoginScreenHTML() {
     return `
         <div id="login-screen" class="screen">
             <img class="login-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
             <h2>LOGIN</h2>
-            
+
             <form id="login-form" class="form-container">
                 <div class="form-group">
                     <label for="login-username">Nome de Usuário:</label>
