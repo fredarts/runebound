@@ -1,0 +1,9 @@
+/* css/base/_reset.css - Reset Básico */
+
+/* Reset de margin, padding e definição de box-sizing */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  

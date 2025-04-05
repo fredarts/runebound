@@ -1,0 +1,254 @@
+/* css/components/_cards.css - Estilização dos Cards */
+
+/* --- Base Card Styling --- */
+.card {
+    /* Dimensões e Box Model */
+    width: 100px; /* Tamanho base ligeiramente maior */
+    height: 146px;
+    border: 1px solid #aaa;
+    border-radius: 6px; /* Bordas suavemente arredondadas */
+    padding: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  
+    /* Layout & Conteúdo */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden; /* Evita transbordamento de conteúdo */
+    position: relative; /* Para posicionamento absoluto interno */
+  
+    /* Aparência */
+    background-color: #d8d8d8; /* Fundo padrão */
+    color: #1a1a1a; /* Texto escuro */
+    font-size: 0.7em; /* Tamanho base da fonte */
+    cursor: pointer; /* Indica interatividade */
+  
+    /* Imagem de Fundo */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  
+    /* Transições */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, outline 0.1s ease-in-out;
+    user-select: none; /* Previne seleção de texto */
+  }
+  
+  /* --- Efeitos de Hover nos Cards --- */
+  .card:hover:not(.card-back) {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 6px 12px rgba(200, 200, 150, 0.5);
+    z-index: 100;
+  }
+  .card.in-hand:hover:not(.card-back) {
+    transform: scale(1.25) translateY(-15px);
+    box-shadow: 0 8px 16px rgba(220, 220, 180, 0.6);
+  }
+  
+  /* --- Seções dos Cards --- */
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2px 4px;
+    border-radius: 3px 3px 0 0;
+    font-size: 0.95em;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .card-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 5px;
+  }
+  .card-cost {
+    background: #000000;
+    color: white;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    font-weight: bold;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+    flex-shrink: 0;
+    margin-left: 52px;
+    margin-top: -3px;
+  }
+  
+  .card-image {
+    flex-grow: 1;
+    background-color: #ccc;
+    margin: 3px 0;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .card-body {
+    font-size: 0.85em;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 3px 4px;
+    border-radius: 0 0 3px 3px;
+    flex-shrink: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .card-type {
+    font-weight: bold;
+    color: #444;
+    font-size: 0.9em;
+    margin-bottom: 2px;
+    text-align: center;
+  }
+  .card-description {
+    font-size: 0.9em;
+    line-height: 1.2;
+    margin-top: 3px;
+    max-height: 2.4em;
+    overflow: hidden;
+  }
+  
+  /* Estatísticas de Criaturas */
+  .card-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 1px 3px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+  .card-attack { color: #c62828; }
+  .card-toughness { color: #1565c0; }
+  
+  /* --- Estados dos Cards --- */
+  .card.tapped {
+    transform: rotate(90deg) scale(0.95);
+    transform-origin: center center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    margin: 0 10px;
+  }
+  .card.tapped:hover {
+    transform: rotate(90deg) scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 255, 150, 0.5);
+  }
+  
+  .card.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(50%);
+  }
+  .card.disabled:hover {
+    transform: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  }
+  
+  .card.targetable {
+    outline: 3px solid yellow;
+    outline-offset: 1px;
+    box-shadow: 0 0 12px 4px rgba(255, 255, 0, 0.6);
+  }
+  
+  .card.selected {
+    outline: 3px solid limegreen;
+    outline-offset: 1px;
+    box-shadow: 0 0 12px 4px rgba(50, 205, 50, 0.6);
+  }
+  
+  /* Estados de Combate */
+  .card.can-attack { outline: 2px dashed lightcoral; outline-offset: -2px; }
+  .card.can-block { outline: 2px dashed skyblue; outline-offset: -2px; }
+  .card.selected-attacker {
+    box-shadow: 0 0 10px 3px lightcoral;
+    outline: 3px solid red;
+    transform: scale(1.05) translateY(-2px);
+  }
+  .card.attacking {
+    border: 2px solid red;
+    box-shadow: 0 0 8px 2px rgba(255, 0, 0, 0.7);
+  }
+  .card.selected-blocker {
+    box-shadow: 0 0 10px 3px skyblue;
+    outline: 3px solid cyan;
+    transform: scale(1.05) translateY(-2px);
+  }
+  .card.blocking {
+    border: 2px solid cyan;
+    box-shadow: 0 0 8px 2px rgba(0, 255, 255, 0.7);
+  }
+  
+  /* Feedback e Animações (classes acionadas via JS) */
+  .card.feedback-shake { animation: shake 0.5s ease-in-out; }
+  .card.feedback-invalid-target { animation: invalid-pulse 0.6s; }
+  .card.feedback-damage { animation: damage-flash 0.4s; }
+  .card.feedback-heal { animation: heal-flash 0.4s; }
+  
+  /* Card Back (verso dos cards) */
+  .card.card-back {
+    background-color: #4a3a2a;
+    background-image: url('../assets/images/ui/card_back_placeholder.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: transparent;
+    cursor: default;
+    border: 1px solid #332a1f;
+  }
+  .card.card-back:hover {
+    transform: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  }
+  .card.card-back .card-header,
+  .card.card-back .card-image,
+  .card.card-back .card-body {
+    display: none;
+  }
+  
+  /* Mini Cards */
+  .mini-card {
+    width: 65px;
+    height: 95px;
+    border: 1px solid #888;
+    background-color: #ccc;
+    color: #111;
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 3px;
+    font-size: 0.65em;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+  .mini-card:hover {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 4px 8px rgba(255, 255, 150, 0.5);
+    z-index: 10;
+  }
+  .mini-card .card-name-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    font-size: 0.9em;
+    padding: 2px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+  .mini-card.in-deck {
+    border: 2px solid #ffeb3b;
+  }
+  

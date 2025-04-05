@@ -1,0 +1,40 @@
+/* css/base/_variables.css - Variáveis Globais */
+
+/* --- Variáveis Globais --- */
+:root {
+    --background-color: #2c3e50;
+    --primary-color: #3498db;
+    --secondary-color: #2980b9;
+    --accent-color: #e74c3c;
+    --text-color: #ecf0f1;
+    --text-color-secondary: #bdc3c7; /* Para textos menos importantes */
+    --text-color-subtle: #95a5a6;     /* Para textos ainda mais sutis */
+    --border-color: #4a637a;
+    --border-color-light: #5f7e9b; /* Borda mais clara para elementos como notícias */
+    --card-background: #7f8c8d;
+    --zone-background: rgba(0, 0, 0, 0.25); /* Zona um pouco mais escura */
+    --panel-background: rgba(20, 30, 40, 0.85); /* Painel mais escuro */
+    --highlight-color: yellow;
+    --disabled-color: #95a5a6;
+    --valid-color: #2ecc71;    /* Verde mais vibrante */
+    --invalid-color: #e74c3c;  /* Igual ao accent */
+    --error-color: #e74c3c;    /* Igual ao accent */
+    --success-color: #2ecc71;  /* Verde mais vibrante */
+  
+    --title-color: #e0eaf1; /* Cor mais clara para títulos principais */
+    --button-play-bg: #28a745; /* Verde para botão de jogar */
+    --button-play-text: #fff;
+    --button-play-border: #1f7a34;
+    --button-play-hover-bg: #218838;
+    --button-secondary-bg: #6c757d;
+    --button-secondary-hover-bg: #5a6268;
+    --accent-color-light: #66d9ef; /* Ciano claro para títulos/destaques */
+  
+    --card-width-battle: 100px;
+    --card-height-battle: 140px;
+    --card-width-mini: 80px;
+    --card-height-mini: 112px;
+  
+    --top-bar-height: 55px;    /* Altura reduzida para a top bar */
+  }
+  

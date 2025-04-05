@@ -1,0 +1,193 @@
+/* css/screens/_options.css - Estilos para a Tela de Opções */
+
+.options-layout {
+    /* Layout */
+    display: flex; /* Herdado de .screen */
+    flex-direction: column; /* Título, Container, Ações */
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    padding: 20px;
+    height: 100%;
+    box-sizing: border-box;
+
+    /* Fundo */
+    background: url('../../assets/images/ui/options_background.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+/* Título */
+.options-layout h2 {
+    margin-bottom: 20px;
+    flex-shrink: 0;
+    /* Herda h2 base */
+}
+
+/* Container Principal das Opções (com scroll) */
+.options-container {
+    max-width: 600px;
+    width: 95%;
+    overflow-y: auto; /* Permite scroll se o conteúdo for maior */
+    padding: 10px 20px 20px 20px; /* Ajustado padding */
+    background: var(--panel-background);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    /* overflow: hidden; REMOVIDO - Precisa de overflow-y: auto */
+    max-height: calc(100% - 150px); /* Altura máxima antes de rolar (ajuste 150px conforme necessário) */
+    box-sizing: border-box;
+    flex-shrink: 1; /* Permite encolher se necessário */
+}
+
+/* Grupo de Opções (Fieldset) */
+.options-group {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+
+/* Legenda do Grupo */
+.options-group legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+/* Item Individual de Opção */
+.option-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+}
+
+/* Label do Item */
+.option-item label {
+    flex-basis: 40%; /* Base de largura para o label */
+    min-width: 120px; /* Largura mínima */
+    margin-bottom: 0; /* Remove margem padrão do label */
+    flex-shrink: 0; /* Não encolhe */
+    text-align: right; /* Alinha texto do label à direita */
+    padding-right: 5px;
+    font-size: 0.95em; /* Tamanho da fonte */
+    color: var(--text-color-secondary); /* Cor mais suave */
+}
+
+/* Controles dentro do Item */
+.option-item input[type="range"] {
+    flex-grow: 1; /* Ocupa espaço restante */
+    min-width: 150px; /* Largura mínima */
+    margin: 0; /* Remove margens padrão */
+    cursor: pointer;
+}
+/* Aparência customizada do Range Slider (Opcional, mas recomendado) */
+/* (Adapte cores e tamanhos conforme seu design) */
+input[type=range] {
+  height: 20px; /* Altura total incluindo track e thumb */
+  -webkit-appearance: none;
+  margin: 5px 0;
+  width: 100%;
+  background: transparent; /* Remove fundo padrão */
+}
+input[type=range]:focus {
+  outline: none;
+}
+/* Track */
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: var(--border-color); /* Cor da trilha */
+  border-radius: 3px;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: var(--border-color);
+  border-radius: 3px;
+}
+/* Thumb (bolinha) */
+input[type=range]::-webkit-slider-thumb {
+  border: 1px solid #000000;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--primary-color); /* Cor da bolinha */
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5px; /* Centraliza verticalmente */
+}
+input[type=range]::-moz-range-thumb {
+  border: 1px solid #000000;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+/* Estilo quando desabilitado (Muted) */
+input[type=range]:disabled::-webkit-slider-thumb { background: var(--disabled-color); }
+input[type=range]:disabled::-moz-range-thumb { background: var(--disabled-color); }
+input[type=range]:disabled::-webkit-slider-runnable-track { background: #555; }
+input[type=range]:disabled::-moz-range-track { background: #555; }
+
+
+.option-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+    margin-left: auto; /* Empurra para a direita se houver espaço */
+}
+
+.option-item select {
+    width: auto; /* Largura baseada no conteúdo */
+    flex-grow: 1; /* Ocupa espaço */
+    min-width: 150px; /* Largura mínima */
+    /* Herda estilos de select base */
+}
+
+/* Valor do Volume (Span) */
+.volume-value {
+    min-width: 45px; /* Largura mínima para "100%" */
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--text-color-secondary);
+    font-variant-numeric: tabular-nums; /* Garante que os números tenham a mesma largura */
+}
+
+/* Ações (Botões Salvar/Voltar) */
+.options-actions {
+    margin-top: 10px;
+    flex-shrink: 0;
+    /* Herda .form-actions */
+    width: 100%;
+    max-width: 600px; /* Mesma largura do container */
+}
+
+#btn-options-back-to-main {
+    /* Herda botão base, mas cor secundária */
+     background-color: var(--button-secondary-bg);
+}
+#btn-options-back-to-main:hover {
+     background-color: var(--button-secondary-hover-bg);
+}
+
+/* Mensagem de Feedback ao Salvar */
+#options-save-message {
+    text-align: center;
+    margin-top: 10px;
+    min-height: 1.2em;
+    /* Herda .message */
+}
+
+/* --- Scrollbar --- */
+.options-container::-webkit-scrollbar { width: 8px; }
+.options-container::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+.options-container::-webkit-scrollbar-thumb { background-color: var(--secondary-color); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+.options-container::-webkit-scrollbar-thumb:hover { background-color: var(--primary-color); }
+.options-container { scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }

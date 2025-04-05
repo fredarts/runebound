@@ -1,0 +1,75 @@
+/* css/screens/_splash.css - Estilos para a Splash Screen */
+
+#splash-screen {
+    /* Layout e Posicionamento */
+    position: absolute; /* Ou fixed, para garantir que cubra tudo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex; /* Para usar flexbox para alinhar o conteúdo */
+    justify-content: flex-end; /* Alinha .splash-content na parte inferior */
+    align-items: center; /* Centraliza .splash-content horizontalmente */
+    text-align: center;
+    z-index: 9999; /* Garante que fique acima de tudo */
+    padding: 0;
+    margin: 0;
+    overflow: hidden; /* Esconde qualquer conteúdo que transborde */
+
+    /* Fundo e Imagem */
+    background: url('../../assets/images/ui/SplashCreenLogo.png') no-repeat center center; /* Define a imagem de fundo */
+    background-size: cover; /* Garante que a imagem cubra toda a tela */
+    background-color: #000; /* Cor de fundo enquanto a imagem carrega */
+
+    /* Garante visibilidade inicial se a classe 'active' for usada */
+    /* (O template já adiciona 'active', então isso pode não ser estritamente necessário) */
+    /* opacity: 1; */
+    /* visibility: visible; */
+}
+
+.splash-content {
+    width: 100%;
+    position: absolute; /* Permite posicionar na parte inferior */
+    bottom: 30px; /* Distância da parte inferior */
+    left: 0;
+    padding: 20px; /* Espaçamento interno */
+    display: flex;
+    justify-content: center; /* Centraliza a barra de mensagem */
+    box-sizing: border-box;
+}
+
+.splash-message {
+    font-size: 1.05em;
+    font-weight: bold;
+    color: var(--text-color); /* Cor do texto da mensagem */
+    background-color: rgba(0, 0, 0, 0.65); /* Fundo semi-transparente para a mensagem */
+    padding: 5px 18px;
+    border-radius: 5px;
+    position: relative; /* Necessário para o pseudo-elemento ::before */
+    overflow: hidden; /* Esconde o ::before que excede a largura */
+    width: 65%; /* Largura da barra de progresso/mensagem */
+    max-width: 450px; /* Largura máxima */
+    text-align: center;
+    z-index: 2; /* Garante que o texto fique acima do ::before */
+    margin: 0; /* Remove margens padrão de parágrafo */
+    box-sizing: border-box;
+}
+
+/* Pseudo-elemento usado como barra de progresso */
+.splash-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0%; /* Começa com 0% de largura */
+    background-color: #a00030; /* Cor da barra de progresso (vermelho escuro) */
+    z-index: -1; /* Fica atrás do texto */
+    border-radius: 5px; /* Mesmas bordas da mensagem */
+    transition: width 2.8s linear; /* Anima a largura (tempo deve coincidir com o JS) */
+}
+
+/* Quando a tela splash tem a classe 'loading', ativa a animação do ::before */
+#splash-screen.loading .splash-message::before {
+    width: 100%; /* Anima a largura para 100% */
+}

@@ -1,0 +1,20 @@
+/* css/components/_images.css - Estilos para Imagens Genéricas/Logos */
+
+/* Estilo genérico para logo (usado em várias telas, centralizado por padrão) */
+.logo {
+    display: block;
+    margin: 20px auto; /* Centraliza horizontalmente e adiciona margem vertical */
+    max-width: 80%;   /* Limita a largura máxima */
+    height: auto;     /* Mantém a proporção */
+    /* Filtros ou sombras podem ser adicionados aqui se forem comuns a todas as logos */
+    /* filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4)); */
+}
+
+/* Outros estilos de imagem genéricos podem ser adicionados aqui */
+/* Exemplo:
+.icon-image {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+*/

@@ -1,0 +1,183 @@
+/* css/animations/_animations.css - Transições e Animações Globais */
+
+/* ============================ */
+/* === TRANSICOES DE TELA === */
+/* ============================ */
+
+/* Preparação para fade-in */
+.screen.screen-prepare-fade-in {
+  opacity: 0 !important; /* Garante opacidade 0 */
+  visibility: visible !important; /* Torna visível para a transição */
+  z-index: 9; /* Fica acima da tela que está saindo, mas abaixo da que entra totalmente */
+}
+
+/* Fade-in */
+.screen.screen-fade-in {
+  opacity: 1 !important; /* Anima para opacidade 1 */
+  transition: opacity 0.3s ease-in-out; /* Duração e easing da transição */
+  z-index: 10; /* Garante que a tela ativa fique no topo */
+}
+
+/* Fade-out */
+.screen.screen-fade-out {
+  opacity: 0 !important; /* Anima para opacidade 0 */
+  transition: opacity 0.3s ease-in-out; /* Mesma duração/easing que fade-in */
+  z-index: 1; /* Mantém a tela atrás da próxima durante a transição */
+  /* A classe .active será removida pelo JS após a transição */
+}
+
+
+/* ==================================== */
+/* === ANIMACOES DE ELEMENTOS UI === */
+/* ==================================== */
+
+/* Animação Shake para feedback (ex: erro em formulário) */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-7px); } /* Ajuste a intensidade se necessário */
+  20%, 40%, 60%, 80% { transform: translateX(7px); }
+}
+
+/* Classe para aplicar a animação shake */
+.form-shake {
+  animation: shake 0.5s ease-in-out 1; /* Duração, easing, número de repetições */
+}
+
+
+/* ============================== */
+/* === ANIMACOES DE CARDS === */
+/* ============================== */
+
+/* Animação de entrada (Card Draw) */
+@keyframes card-draw-fly-in {
+  from {
+      opacity: 0;
+      transform: translateY(-150px) rotateY(60deg) scale(0.7);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0) rotateY(0) scale(1);
+  }
+}
+/* Classe para aplicar a animação de compra */
+.card.draw-animation { /* Aplica a um .card com esta classe */
+  animation: card-draw-fly-in 0.4s ease-out;
+}
+
+/* Animação de saída (Card Discard/Destroy) */
+@keyframes card-discard-fly-out {
+  to {
+      opacity: 0;
+      transform: translateX(200px) translateY(50px) rotateZ(30deg) scale(0.5);
+  }
+}
+/* Classe para aplicar a animação de descarte/destruição */
+.card.discard-animation {
+  animation: card-discard-fly-out 0.4s ease-in forwards; /* 'forwards' mantém o estado final */
+}
+
+/* Animação de Card Play (crescimento sutil) */
+@keyframes card-play-grow {
+  from {
+      transform: scale(1);
+      opacity: 1;
+  }
+  50% {
+      transform: scale(1.2);
+      opacity: 0.9;
+      box-shadow: 0 0 15px cyan; /* Destaque visual ao jogar */
+  }
+  to {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+/* Classe para aplicar a animação ao jogar a carta */
+.card.play-animation {
+  animation: card-play-grow 0.3s ease-out;
+  z-index: 150; /* Garante que fique visível durante a animação */
+}
+
+
+/* ===================================== */
+/* === ANIMACOES DE FEEDBACK CARDS === */
+/* ===================================== */
+
+/* Shake específico para cards (pode ser o mesmo @keyframes shake acima) */
+.card.feedback-shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; /* Easing diferente */
+  transform: translate3d(0, 0, 0); /* Melhora performance em alguns browsers */
+}
+
+/* Pulso vermelho para alvo inválido */
+@keyframes invalid-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7); outline-color: rgba(255, 82, 82, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 82, 82, 0); outline-color: rgba(255, 82, 82, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); outline-color: transparent; }
+}
+.card.feedback-invalid-target {
+  animation: invalid-pulse 0.6s ease-out;
+  outline: 2px solid red; /* Começa com outline vermelho */
+  outline-offset: 1px;
+}
+
+/* Flash vermelho para dano */
+@keyframes damage-flash {
+  from, to { background-color: inherit; /* Volta à cor original */ }
+  50% { background-color: rgba(255, 0, 0, 0.6); /* Flash vermelho */ }
+  /* Pode precisar ajustar 'inherit' se o fundo for complexo (imagem) */
+  /* Alternativa: Usar um pseudo-elemento ::after para o flash */
+}
+.card.feedback-damage {
+  animation: damage-flash 0.4s ease-out;
+}
+
+/* Flash verde para cura */
+@keyframes heal-flash {
+  from, to { background-color: inherit; }
+  50% { background-color: rgba(144, 238, 144, 0.6); /* Flash verde claro */ }
+}
+.card.feedback-heal {
+  animation: heal-flash 0.4s ease-out;
+}
+
+
+/* =================================================================== */
+/* === ANIMACOES KEN BURNS (BANNER DA TELA DE TÍTULO) === */
+/* =================================================================== */
+
+/* --- Definições (@keyframes) --- */
+@keyframes kenburns-1-kf {
+  0% { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.15) translate(-3%, 2%); } /* Zoom in, pan up-left */
+}
+
+@keyframes kenburns-2-kf {
+  0% { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.1) translate(2%, -1%); } /* Zoom in menor, pan down-right */
+}
+
+@keyframes kenburns-3-kf {
+  0% { transform: scale(1.1) translate(1%, 1%); } /* Start zoomed in */
+  100% { transform: scale(1.0) translate(0, 0); } /* Zoom out to normal */
+}
+
+@keyframes kenburns-4-kf {
+  0% { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.05) translate(0%, 3%); } /* Slow zoom, pan down */
+}
+
+/* --- Aplicação (Classes que ativam as animações) --- */
+/* Conectam a classe adicionada pelo JS ao @keyframe correspondente */
+.banner-image.kenburns-1 {
+  animation-name: kenburns-1-kf;
+}
+.banner-image.kenburns-2 {
+  animation-name: kenburns-2-kf;
+}
+.banner-image.kenburns-3 {
+  animation-name: kenburns-3-kf;
+}
+.banner-image.kenburns-4 {
+  animation-name: kenburns-4-kf;
+}

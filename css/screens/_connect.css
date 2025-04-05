@@ -1,0 +1,151 @@
+/* css/screens/_connect.css - Estilos para a Tela de Conexão */
+
+.connect-layout {
+    /* Layout Geral */
+    display: flex; /* Herdado de .screen */
+    flex-direction: column; /* Título, opções, mensagem, botão voltar */
+    align-items: center; /* Centraliza horizontalmente */
+    padding-top: 5vh; /* Espaço no topo */
+    text-align: center;
+    height: 100%;
+    box-sizing: border-box;
+
+    /* Fundo */
+    background: url('../../assets/images/ui/connect_background.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+/* Título H2 */
+.connect-layout h2 {
+    /* Herda estilos de h2 base */
+    margin-bottom: 30px; /* Espaço abaixo do título */
+    flex-shrink: 0;
+}
+
+/* Logo Específica */
+.connect-logo {
+    display: block;
+    /* Ajuste o posicionamento se necessário, ou deixe fluxo normal */
+    margin-top: -5vh; /* Puxa um pouco para cima */
+    margin-bottom: 2vh; /* Espaço abaixo */
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 300px;
+    width: 60%;
+    height: auto;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4));
+    flex-shrink: 0;
+}
+
+/* Container das Opções (Criar/Entrar) */
+.connect-options {
+    display: flex;
+    gap: 25px;
+    margin-top: 3vh;
+    justify-content: center;
+    width: 100%;
+    max-width: 650px;
+    flex-wrap: wrap; /* Quebra linha em telas menores */
+    flex-shrink: 0;
+}
+
+/* Seção Individual (Criar ou Entrar) */
+.connect-section {
+    flex: 1; /* Tenta ocupar espaço igual */
+    min-width: 250px; /* Largura mínima */
+    background: var(--panel-background); /* Fundo do painel */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.connect-section h3 {
+    margin-top: 0; /* Remove margem padrão */
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--primary-color); /* Cor do título da seção */
+}
+
+/* Ícones Host/Join */
+.connect-host,
+.connect-join {
+    display: block;
+    margin: 5px auto 15px auto; /* Centraliza e adiciona margem */
+    max-width: 80px;
+    height: auto;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+}
+
+/* Seção de Status do Servidor (quando criando) */
+#server-status-section {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#server-status-section p {
+    margin-bottom: 8px;
+}
+#server-status-section strong {
+    color: var(--highlight-color);
+}
+
+/* Seção para Entrar no Jogo */
+#join-game-section {
+    margin-top: 15px;
+    /* Usa estilos de .form-container definidos em _forms.css */
+    /* Mas remove margens automáticas para centralização */
+    margin-left: 0;
+    margin-right: 0;
+    padding: 15px; /* Padding menor */
+    background: none; /* Remove fundo do form-container, já está dentro de .connect-section */
+    border: none;
+    box-shadow: none;
+    max-width: none; /* Remove max-width */
+}
+
+#join-game-section .form-group {
+    margin-bottom: 10px;
+}
+
+#join-game-section label {
+    font-size: 0.9em;
+}
+
+#join-game-section input[type="text"] {
+    /* Herda estilos de input */
+}
+
+/* Ações (Botões) dentro das seções */
+#server-status-section .form-actions,
+#join-game-section .form-actions {
+    justify-content: center; /* Centraliza botões */
+    margin-top: 10px;
+}
+
+/* Mensagem de Feedback */
+#connect-message {
+    margin-top: 20px;
+    flex-grow: 1; /* Ocupa espaço vertical restante */
+    /* Herda estilos de .message */
+}
+
+/* Botão Voltar */
+.connect-actions {
+    margin-top: auto; /* Empurra para baixo se houver espaço */
+    padding-top: 15px; /* Espaço acima */
+    flex-shrink: 0;
+}
+
+#btn-connect-back-to-main {
+    /* Herda estilos de botão base */
+    background-color: var(--button-secondary-bg); /* Cor secundária */
+}
+#btn-connect-back-to-main:hover {
+     background-color: var(--button-secondary-hover-bg);
+}

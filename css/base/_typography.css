@@ -1,0 +1,30 @@
+/* css/base/_typography.css - Tipografia */
+
+/* Estilos globais de tipografia */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.4;
+    color: var(--text-color);
+  }
+  
+  /* Estilos para cabeçalhos */
+  h1, h2, h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  h2 {
+    font-size: 1.7em;
+  }
+  
+  h3 {
+    font-size: 1.25em;
+    color: var(--secondary-color);
+  }
+  
+  /* Outros estilos de tipografia podem ser adicionados conforme necessário */
+  

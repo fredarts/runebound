@@ -1,0 +1,36 @@
+/* css/main.css */
+
+/* Base */
+@import 'base/_reset.css';
+@import 'base/_variables.css'; /* Variáveis primeiro */
+@import 'base/_typography.css';
+
+/* Layout */
+@import 'layout/_layout.css'; /* Layout geral, containers, grids */
+
+/* Components */
+@import 'components/_buttons.css';
+@import 'components/_cards.css';
+@import 'components/_forms.css';
+@import 'components/_navigation.css'; /* Ex: Top Bar */
+@import 'components/_overlays.css';   /* Ex: Zoom, Game Over */
+@import 'components/_images.css';    /* Opcional, se criou para .logo etc */
+
+/* Animations */
+@import 'animations/_animations.css'; /* Keyframes e classes de animação */
+
+/* Screens / Pages (Estilos específicos de cada tela) */
+@import 'screens/_splash.css';
+@import 'screens/_title-screen.css';
+@import 'screens/_login.css';
+@import 'screens/_create-account.css';
+@import 'screens/_home.css';
+@import 'screens/_profile.css';
+@import 'screens/_deck-management.css';
+@import 'screens/_deck-builder.css';
+@import 'screens/_connect.css';
+@import 'screens/_battle-screen.css';
+@import 'screens/_options.css';
+
+/* Utilities */
+@import 'utilities/_utilities.css'; /* Classes auxiliares, scrollbars */

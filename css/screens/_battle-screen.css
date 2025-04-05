@@ -1,0 +1,464 @@
+/* css/screens/_battle-screen.css - Estilos para a Tela de Batalha */
+
+/* Layout Geral da Tela de Batalha */
+.battle-screen-layout {
+    display: flex;
+    flex-direction: column; /* Empilha áreas: Oponente, Centro, Jogador */
+    height: 100%; /* Ocupa toda a altura do container .screen */
+    padding: 5px; /* Pequeno padding geral */
+    gap: 5px; /* Espaço entre as áreas */
+    box-sizing: border-box;
+
+    /* Fundo */
+    background: url('../../assets/images/ui/battle_background.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Área do Jogador (Oponente ou Local) */
+.player-area {
+    background-color: rgba(10, 20, 30, 0.75); /* Fundo mais opaco */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    gap: 8px; /* Espaço entre Info, Mão/Campo */
+    position: relative; /* Para posicionar as zonas (Deck/Graveyard) */
+    backdrop-filter: blur(2px); /* Desfoque sutil no fundo */
+    overflow: hidden; /* Evita que conteúdo interno vaze */
+    /* Flex-basis define a altura relativa inicial */
+    flex-basis: 40%; /* Cada área de jogador ocupa 40% */
+    min-height: 150px; /* Altura mínima */
+}
+
+.player-area.opponent {
+    flex-direction: row; /* Avatar esquerda, Mão centro, Campo direita, Zonas canto */
+}
+
+.player-area.local-player {
+    flex-direction: row; /* Info direita, Mão centro, Campo esquerda, Zonas canto */
+}
+
+/* Área Central (Log, Controles) */
+.center-area {
+    background-color: rgba(0, 0, 0, 0.55); /* Fundo semi-transparente */
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribui espaço entre Log e Controles */
+    align-items: center;
+    flex-basis: 20%; /* Ocupa 20% da altura */
+    min-height: 100px;
+    overflow: hidden; /* Log rola internamente */
+}
+
+/* Informações do Jogador (Avatar, Nome, Stats) */
+.player-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinha no topo */
+    gap: 5px;
+    flex-basis: 130px; /* Largura fixa para Info */
+    flex-shrink: 0;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--zone-background);
+    text-align: center;
+    height: 100%; /* Ocupa altura da player-area */
+    box-sizing: border-box;
+    position: relative; /* Para posicionar stats */
+}
+/* Ajuste específico para posicionamento da info do jogador local */
+.player-area.local-player .player-info {
+    order: 3; /* Manda para a direita */
+}
+
+/* Avatar */
+.player-avatar img {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    object-fit: cover;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    margin-bottom: 5px;
+    margin-top: 10px; /* Espaço acima */
+}
+
+/* Stats (Nome, Vida, Mana) */
+.player-stats {
+    font-size: 0.9em;
+    width: 100%; /* Ocupa largura da info area */
+    position: absolute; /* Posiciona relativamente a .player-info */
+    bottom: 5px; /* Alinha na base */
+    left: 0;
+    padding: 0 5px; /* Padding lateral */
+    box-sizing: border-box;
+}
+
+#opponent-name, #player-name { /* Nome do Jogador */
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-color);
+    font-size: 1.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.resource { /* Container Vida/Mana */
+    display: inline-block;
+    margin: 1px 3px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    white-space: nowrap;
+}
+
+.resource.life { color: var(--accent-color); } /* Cor vermelha para vida */
+.resource.mana { color: var(--primary-color); } /* Cor azul para mana */
+
+/* Mão */
+.hand {
+    flex-grow: 1; /* Ocupa espaço flexível entre info e campo */
+    display: flex;
+    align-items: center; /* Centraliza cartas verticalmente */
+    justify-content: center; /* Centraliza cartas horizontalmente */
+    min-height: calc(var(--card-height-battle) + 20px); /* Altura mínima baseada na carta */
+    background: none; /* Fundo transparente */
+    padding: 5px;
+    position: relative; /* Para z-index se cartas sobrepuserem */
+    gap: 5px; /* Espaço entre cartas na mão */
+    /* Ajusta ordem para jogador local */
+    order: 2;
+}
+
+/* Mão do Oponente (Área e Display) */
+.opponent-hand-area { /* Wrapper para a mão do oponente */
+    order: 2; /* Centro no layout flex */
+    background-color: var(--zone-background);
+    border-radius: 4px;
+    padding: 10px 5px 5px 5px; /* Padding com mais espaço em cima para o texto */
+    height: 100%; /* Ocupa altura disponível */
+    box-sizing: border-box;
+    position: relative;
+}
+
+.opponent-hand-area > span { /* Texto "Mão Oponente: X cartas" */
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+    color: var(--text-color-subtle);
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1px 5px;
+    border-radius: 3px;
+    z-index: 1;
+}
+
+#opponent-hand { /* Container das cartas viradas */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centraliza verticalmente */
+    gap: -40px; /* Sobreposição das cartas */
+    padding-top: 15px; /* Espaço abaixo do texto de contagem */
+    width: 100%;
+    height: 100%; /* Ocupa o espaço da area */
+}
+
+#opponent-hand .card-back { /* Estilo da carta virada */
+    width: var(--card-width-battle); /* Tamanho da carta de batalha */
+    height: var(--card-height-battle);
+    background-color: var(--secondary-color); /* Cor do verso */
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    display: inline-block;
+    position: relative;
+    /* background-image: url(...); Se tiver imagem de verso */
+    background-size: cover;
+}
+/* Mão do Jogador Local */
+.player-area.local-player .hand {
+    justify-content: center; /* Centraliza as cartas */
+    background-color: var(--zone-background);
+    border-radius: 4px;
+    padding: 10px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-x: auto; /* Permite scroll horizontal se muitas cartas */
+    overflow-y: hidden;
+}
+
+/* Campo de Batalha */
+.battlefield {
+    flex-grow: 2; /* Ocupa mais espaço que a mão/info */
+    display: flex;
+    flex-wrap: wrap; /* Permite que criaturas quebrem linha */
+    gap: 8px; /* Espaço entre criaturas */
+    padding: 8px;
+    border-radius: 6px;
+    background-color: var(--zone-background);
+    min-height: calc(var(--card-height-battle) + 16px); /* Altura mínima */
+    align-content: flex-start; /* Alinha linhas de criaturas no topo */
+    align-items: flex-start; /* Alinha criaturas no topo dentro de uma linha */
+    overflow-y: auto; /* Permite scroll se muitas criaturas */
+    height: 100%; /* Ocupa altura disponível */
+    box-sizing: border-box;
+    /* Ajusta ordem para jogador local */
+     order: 1;
+}
+
+.player-area.opponent .battlefield {
+    order: 3; /* Direita no layout do oponente */
+}
+
+
+/* Zonas do Jogador (Deck/Graveyard) */
+.player-zones {
+    position: absolute; /* Posiciona sobre a player-area */
+    display: flex;
+    flex-direction: column; /* Empilha verticalmente */
+    gap: 8px;
+}
+
+/* Posicionamento específico para oponente e jogador */
+.player-area.opponent .player-zones {
+    top: 10px;
+    right: 10px; /* Canto superior direito */
+     order: 4; /* Garante que fique na extrema direita */
+     height: calc(100% - 20px); /* Ajusta altura para caber */
+     justify-content: center; /* Centraliza verticalmente */
+}
+
+.player-area.local-player .player-zones {
+    bottom: 10px;
+    left: 10px; /* Canto inferior esquerdo */
+    order: 0; /* Garante que fique na extrema esquerda */
+     height: calc(100% - 20px); /* Ajusta altura para caber */
+     justify-content: center; /* Centraliza verticalmente */
+}
+
+/* Estilo da Zona (Deck ou Cemitério) */
+.deck-zone, .graveyard-zone {
+    position: relative; /* Para overlays internos */
+    width: var(--card-width-battle); /* Largura da carta */
+    height: var(--card-height-battle); /* Altura da carta */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centraliza conteúdo */
+    border: 1px solid #555;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    padding: 2px;
+    overflow: hidden; /* Esconde partes da imagem que vazarem */
+    cursor: pointer; /* Indica interatividade (ver cemitério) */
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Borda interna sutil */
+.deck-zone::before, .graveyard-zone::before {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    opacity: 0.7;
+    pointer-events: none; /* Não interfere com cliques */
+}
+
+/* Label "Deck" / "Cemitério" */
+.deck-zone span, .graveyard-zone span {
+    font-size: 0.7em; /* Reduzido */
+    color: #ccc;
+    text-align: center;
+    line-height: 1;
+    width: 100%;
+    position: absolute;
+    bottom: 2px; /* Posição na base */
+    left: 0;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.7); /* Fundo para legibilidade */
+    padding: 1px 0;
+    pointer-events: none;
+}
+
+/* Efeito Hover nas Zonas */
+.deck-zone:hover, .graveyard-zone:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.05); /* Leve aumento */
+    z-index: 10; /* Traz para frente */
+}
+
+/* Imagem de Fundo da Zona (Deck Cover / Top Graveyard Card) */
+.zone-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cobre a área */
+    z-index: 1; /* Atrás da contagem e label */
+    border-radius: 3px; /* Borda interna leve */
+}
+
+/* Contagem de Cartas */
+.deck-count, .graveyard-count {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    border-radius: 50%;
+    width: 20px; /* Aumentado ligeiramente */
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75em; /* Aumentado ligeiramente */
+    font-weight: bold;
+    z-index: 3; /* Acima de tudo */
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+}
+
+/* Imagem Placeholder do Cemitério */
+.graveyard-image.is-placeholder {
+    object-fit: contain; /* Mostra a imagem inteira */
+    background-color: #2a2a2a; /* Fundo escuro */
+    padding: 5px; /* Espaçamento interno */
+}
+
+/* Log do Jogo */
+.game-log-container {
+    width: 100%;
+    max-height: 80px; /* Altura máxima antes de rolar */
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 5px;
+    flex-grow: 1; /* Ocupa espaço disponível na área central */
+}
+
+.game-log {
+    list-style: none;
+    padding: 5px 8px;
+    font-size: 0.8em; /* Fonte menor */
+    margin: 0;
+}
+
+.game-log li {
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    line-height: 1.3;
+    color: var(--text-color-secondary); /* Cor padrão */
+}
+
+.game-log li:last-child {
+    border-bottom: none;
+}
+
+/* Cores específicas para tipos de log */
+.log-damage { color: var(--accent-color); }
+.log-heal { color: var(--valid-color); }
+.log-draw { color: var(--primary-color); }
+.log-system { color: var(--disabled-color); font-style: italic; }
+.log-player-local { /* Log de ação do jogador local */ font-weight: 500; color: #e0eaf1;}
+.log-player-opponent { /* Log de ação do oponente */ font-weight: 500; color: #f1e0e0;}
+
+
+/* Informações de Turno/Fase */
+.turn-info {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+    text-align: center;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+#phase-indicator { color: var(--highlight-color); }
+#current-player-indicator { font-style: italic; }
+
+/* Controles do Turno (Botões) */
+.turn-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap; /* Quebra linha se não couber */
+    flex-shrink: 0;
+    margin-bottom: 5px;
+}
+
+.turn-controls button {
+    padding: 5px 10px;
+    font-size: 0.85em; /* Botões menores */
+    /* Herda estilos de botão base */
+}
+
+/* Botões específicos de combate (estilo inicial) */
+#btn-confirm-attack, #btn-confirm-blocks {
+    background-color: var(--button-play-bg); /* Verde */
+    border-color: var(--button-play-border);
+    display: none; /* Escondido inicialmente */
+}
+#btn-confirm-attack:hover, #btn-confirm-blocks:hover {
+    background-color: var(--button-play-hover-bg);
+}
+
+/* Área de Feedback de Ação */
+.action-feedback-area {
+    margin-top: 5px;
+    font-style: italic;
+    color: var(--highlight-color);
+    min-height: 1.3em; /* Evita pulos de layout */
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9em; /* Tamanho menor */
+    flex-shrink: 0;
+}
+
+/* Estilos de Cartas na Batalha (Tapped, Attacking, etc.) */
+/* Certifique-se que components/_cards.css contenha: */
+/* .card.tapped, .card.attacking, .card.blocking, .card.targetable, */
+/* .card.selected-attacker, .card.selected-blocker, .card.cannot-act, */
+/* .card.has-summoning-sickness */
+
+/* --- Scrollbar --- */
+.battle-screen-layout .game-log-container::-webkit-scrollbar,
+.battle-screen-layout .battlefield::-webkit-scrollbar,
+.battle-screen-layout .hand::-webkit-scrollbar /* Para mão do jogador local */
+{ width: 8px; }
+
+.battle-screen-layout .game-log-container::-webkit-scrollbar-track,
+.battle-screen-layout .battlefield::-webkit-scrollbar-track,
+.battle-screen-layout .hand::-webkit-scrollbar-track
+{ background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+
+.battle-screen-layout .game-log-container::-webkit-scrollbar-thumb,
+.battle-screen-layout .battlefield::-webkit-scrollbar-thumb,
+.battle-screen-layout .hand::-webkit-scrollbar-thumb
+{ background-color: var(--secondary-color); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+
+.battle-screen-layout .game-log-container::-webkit-scrollbar-thumb:hover,
+.battle-screen-layout .battlefield::-webkit-scrollbar-thumb:hover,
+.battle-screen-layout .hand::-webkit-scrollbar-thumb:hover
+{ background-color: var(--primary-color); }
+
+.battle-screen-layout .game-log-container,
+.battle-screen-layout .battlefield,
+.battle-screen-layout .hand
+{ scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }
+
+/* Overlay de Fim de Jogo (estilos básicos em _overlays.css) */
+/* #game-over-overlay, #game-over-message, #btn-back-to-profile */
+
+/* Overlay de Zoom (estilos básicos em _overlays.css) */
+/* #battle-image-zoom-overlay, #battle-zoomed-image */

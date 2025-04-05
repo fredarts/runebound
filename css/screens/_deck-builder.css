@@ -1,0 +1,202 @@
+/* css/screens/_deck-builder.css - Estilos para a Tela do Construtor de Decks */
+
+/* Layout Geral */
+.deck-builder-layout {
+    display: flex;
+    flex-direction: column; /* Título, Barra Superior, Área Principal */
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    /* Fundo pode ser herdado ou definido aqui */
+     /* background: url(...) ...; */
+}
+
+/* Título */
+.deck-builder-layout h2 { /* Ou use #deck-builder-title */
+    text-align: center;
+    margin-bottom: 15px; /* Menos espaço abaixo do título */
+    flex-shrink: 0;
+    /* Herda estilos de h2 base */
+}
+
+/* Barra Superior (Nome, Info, Ações) */
+.deck-builder-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 10px; /* Reduzido espaço abaixo da barra */
+    flex-wrap: wrap; /* Permite quebrar linha */
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.deck-builder-top-bar .form-group { /* Grupo Nome do Deck */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0; /* Remove margem padrão do form-group */
+}
+
+.deck-builder-top-bar .form-group label {
+    margin-bottom: 0;
+    font-size: 1em;
+    white-space: nowrap; /* Evita quebra do label */
+    flex-shrink: 0;
+}
+
+.deck-builder-top-bar .form-group input {
+    width: auto; /* Largura automática */
+    min-width: 200px; /* Largura mínima */
+    margin-bottom: 0;
+    flex-grow: 1; /* Ocupa espaço disponível */
+}
+
+/* Informações do Deck (Contador, Validade) */
+.deck-builder-top-bar .deck-info {
+    font-size: 1em;
+    display: flex;
+    gap: 15px; /* Espaço entre contador e validade */
+    align-items: center;
+    flex-shrink: 0;
+}
+
+#db-deck-validity {
+    font-weight: bold;
+    /* Cores são aplicadas via JS com base na validade */
+}
+
+/* Ações do Deck (Salvar, Limpar, Voltar) */
+.deck-builder-top-bar .deck-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Mensagem de Feedback */
+#deck-builder-message {
+    text-align: center;
+    min-height: 1.5em; /* Evita pulos de layout */
+    margin-top: -5px; /* Puxa um pouco para cima */
+    margin-bottom: 10px;
+    flex-shrink: 0;
+    /* Herda .message */
+}
+
+/* Área Principal (Coleção e Deck) */
+.deck-builder-main-area {
+    display: flex;
+    flex-grow: 1; /* Ocupa espaço vertical restante */
+    gap: 20px; /* Espaço entre painéis */
+    overflow: hidden; /* PREVINE OVERFLOW dos painéis */
+}
+
+/* Painel Genérico (Coleção ou Deck) */
+.deck-builder-panel {
+    flex: 1; /* Divide espaço igualmente */
+    background-color: var(--panel-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* Conteúdo empilhado verticalmente */
+    overflow: hidden; /* Painel não rola, conteúdo interno sim */
+}
+
+/* Título H3 dentro dos Painéis */
+.deck-builder-panel h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: left; /* Alinha à esquerda */
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0; /* Título não encolhe */
+    color: var(--text-color); /* Cor do título no painel */
+    font-size: 1.1em; /* Tamanho menor */
+}
+
+/* Filtros no Painel da Coleção */
+.filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Grid responsivo */
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.filters input[type="text"] {
+    grid-column: 1 / -1; /* Input de nome ocupa linha inteira */
+    width: 100%; /* Garante largura total */
+    box-sizing: border-box; /* Inclui padding/border na largura */
+}
+
+.filters select {
+    width: 100%; /* Ocupa largura da coluna do grid */
+    margin-bottom: 0;
+    box-sizing: border-box;
+}
+
+/* Lista de Cartas (Coleção ou Deck) */
+.card-list {
+    flex-grow: 1; /* Ocupa espaço vertical restante no painel */
+    background-color: var(--zone-background);
+    border: 1px dashed var(--border-color); /* Borda pontilhada */
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap; /* Cartas quebram linha */
+    gap: 8px; /* Espaço entre mini-cards */
+    align-content: flex-start; /* Alinha cartas no topo quando quebra linha */
+    overflow-y: auto; /* Habilita scroll vertical */
+    min-height: 150px; /* Garante altura mínima */
+}
+
+/* Estilos de Drag & Drop (SortableJS) */
+.card-list.drag-over { /* Quando um item é arrastado SOBRE esta lista */
+    border-color: var(--highlight-color);
+    border-style: solid;
+    background-color: rgba(255, 255, 0, 0.1);
+    box-shadow: inset 0 0 10px rgba(255, 255, 0, 0.3);
+}
+
+body.dragging-from-deck .collection-panel .card-list { /* Quando arrastando do DECK para a COLEÇÃO */
+    /* Pode ter um visual diferente se quiser */
+    /* Ex: background-color: rgba(0, 255, 0, 0.1); */
+}
+body.dragging-from-deck .deck-panel .card-list { /* Quando arrastando do DECK para fora */
+    /* background-color: rgba(255, 0, 0, 0.1); /* Fundo vermelho suave (opcional) */
+}
+
+
+/* Efeito visual ao remover (arrastar para fora do deck) */
+.card-list.drag-removal {
+    border: 2px solid var(--error-color, red) !important; /* Borda vermelha */
+    background-color: rgba(255, 0, 0, 0.1) !important; /* Fundo vermelho suave */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Transição suave */
+}
+
+
+/* Placeholder para listas vazias ou sem resultados */
+.placeholder-message {
+    width: 100%; /* Ocupa toda a largura da lista */
+    text-align: center;
+    color: var(--disabled-color);
+    font-style: italic;
+    margin-top: 20px;
+    font-size: 0.9em;
+    /* Garante que o placeholder não seja arrastável */
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Estilo do Mini Card é herdado de components/_cards.css */
+
+/* --- Scrollbar --- */
+.deck-builder-layout .card-list::-webkit-scrollbar { width: 8px; }
+.deck-builder-layout .card-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+.deck-builder-layout .card-list::-webkit-scrollbar-thumb { background-color: var(--secondary-color); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+.deck-builder-layout .card-list::-webkit-scrollbar-thumb:hover { background-color: var(--primary-color); }
+.deck-builder-layout .card-list { scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }
