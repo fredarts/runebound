@@ -1,0 +1,257 @@
+/* css/screens/_deck-management.css - Estilos para Gerenciamento de Decks e Coleção */
+
+/* Layout Geral da Tela */
+.deck-management-layout {
+    display: flex;
+    flex-direction: column; /* Título em cima, conteúdo principal abaixo */
+    height: 100%; /* Ocupa a altura do container pai (.screen) */
+    padding: 15px;
+    box-sizing: border-box;
+
+    /* Fundo */
+    background-color: var(--screen-bg-color, #282c34); /* Cor fallback */
+    background-image: url('../../assets/images/ui/deck_background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Título */
+.deck-management-layout h2 {
+    text-align: center;
+    margin-top: 20px; /* Menos margem superior que no style.css original */
+    margin-bottom: 30px; /* Menos margem inferior */
+    color: var(--header-color, #d9dce2); /* Cor fallback */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    font-size: 2em; /* Reduzido ligeiramente */
+    flex-shrink: 0; /* Não encolhe */
+}
+
+/* Área Principal com as Colunas */
+.deck-management-main-area {
+    display: flex;
+    flex-grow: 1; /* Ocupa o espaço vertical restante */
+    gap: 20px; /* Espaço entre as colunas */
+    overflow: hidden; /* Previne overflow das colunas */
+    background: rgba(0, 0, 0, 0.3); /* Fundo semi-transparente opcional */
+    padding: 15px; /* Padding interno */
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Coluna Esquerda (Decks) */
+.deck-management-left-column {
+    flex: 1; /* Ajuste a proporção se necessário, ex: flex: 0 0 40%; */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Conteúdo interno (lista) rola */
+    gap: 15px; /* Espaço entre seções dentro da coluna */
+}
+
+/* Coluna Direita (Coleção) */
+.deck-management-right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Conteúdo interno (grid) rola */
+    gap: 15px; /* Espaço entre seções dentro da coluna */
+}
+
+/* Estilo de Seção (Reutilizado do Perfil, ajustado para contexto) */
+.deck-management-layout .profile-section { /* Aplicado a .profile-decks e .profile-collection */
+    background-color: rgba(30, 33, 40, 0.85); /* Fundo mais opaco */
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 0; /* Remove margem, o gap da coluna controla o espaço */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    overflow: hidden; /* Seção não rola, conteúdo interno sim */
+    
+}
+
+.deck-management-layout .profile-section h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--accent-color-light, #61dafb); /* Cor fallback */
+    border-bottom: 1px solid var(--border-color, #444);
+    padding-bottom: 5px;
+    flex-shrink: 0; /* Título não encolhe */
+}
+
+/* Lista de Decks */
+#deck-management-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Permite que a lista ocupe espaço e role */
+    overflow-y: auto; /* Habilita rolagem vertical */
+    border: 1px solid var(--border-color, #444);
+    border-radius: 4px;
+    background-color: rgba(10, 10, 10, 0.4); /* Fundo mais escuro */
+}
+
+/* Item da Lista de Decks */
+#deck-management-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-color-light, #555);
+    color: var(--text-color-light, #ddd); /* Cor fallback */
+    transition: background-color 0.2s ease;
+}
+
+#deck-management-list li:last-child {
+    border-bottom: none;
+}
+
+#deck-management-list li:hover {
+    background-color: rgba(70, 70, 80, 0.5);
+}
+
+/* Nome do Deck na Lista */
+#deck-management-list .deck-name {
+    flex-grow: 1;
+    margin-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Indicadores de Validade */
+#deck-management-list .deck-invalid {
+    color: var(--invalid-color, salmon);
+    font-style: italic;
+    /* O texto "(Inválido: X)" é adicionado via JS */
+}
+
+#deck-management-list .deck-valid {
+   color: var(--valid-color, lightgreen); /* Verde sutil para válido */
+}
+
+/* Botões de Ação do Deck (Editar/Excluir) */
+#deck-management-list .deck-buttons {
+    flex-shrink: 0; /* Não deixa os botões encolherem */
+}
+
+#deck-management-list .deck-buttons button {
+    background: none;
+    border: none;
+    color: var(--icon-button-color, #aaa); /* Cor fallback */
+    cursor: pointer;
+    font-size: 1.1em; /* Tamanho do ícone/emoji */
+    padding: 2px 5px;
+    margin-left: 5px;
+    transition: color 0.2s ease, transform 0.1s ease;
+    line-height: 1; /* Garante alinhamento */
+}
+
+#deck-management-list .deck-buttons button:hover {
+    color: var(--accent-color, #61dafb);
+    transform: scale(1.1);
+}
+
+/* Botão Criar Novo Deck */
+#btn-create-new-deck {
+    margin-top: 15px; /* Espaço acima do botão */
+    padding: 8px 15px; /* Padding */
+    align-self: center; /* Centraliza o botão */
+    flex-shrink: 0; /* Não encolhe */
+    /* Herda estilos de botão base */
+}
+
+/* Filtros da Coleção */
+.deck-management-layout .collection-filters {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha se não couber */
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Filtros não encolhem */
+}
+
+.deck-management-layout .collection-filters input,
+.deck-management-layout .collection-filters select {
+    padding: 5px 8px;
+    background-color: var(--input-bg-color, rgba(255, 255, 255, 0.1)); /* Usa a variável de input */
+    color: var(--input-text-color, var(--text-color)); /* Usa a variável de input */
+    border: 1px solid var(--border-color, #444);
+    border-radius: 4px;
+    flex-grow: 1; /* Tenta dividir espaço */
+    min-width: 120px; /* Largura mínima para usabilidade */
+    font-size: 0.9em; /* Tamanho da fonte menor */
+    box-sizing: border-box;
+}
+
+/* Placeholder para filtros */
+.deck-management-layout .collection-filters input::placeholder {
+    color: #888;
+}
+
+/* Grid da Coleção (Reutiliza .card-grid dos estilos de perfil/comuns) */
+#deck-management-collection {
+    /* display: grid; definido em .card-grid */
+    /* grid-template-columns: ...; definido em .card-grid */
+    /* gap: ...; definido em .card-grid */
+    flex-grow: 1; /* Ocupa espaço vertical restante na coluna */
+    overflow-y: auto; /* Permite rolagem */
+    padding: 8px; /* Padding interno */
+    flex: initial;
+    border: 1px solid var(--border-color, #444);
+    border-radius: 4px;
+    background-color: rgba(10, 10, 10, 0.4); /* Fundo escuro */
+    /* Adiciona min-height para garantir visibilidade mesmo vazio */
+    min-height: 200px;
+}
+
+/* Mini Card (Reutiliza .mini-card dos estilos comuns) */
+/* Certifique-se que .mini-card está definido em css/components/_cards.css */
+
+/* Mensagem de feedback (salvar/excluir deck) */
+#deck-mgmt-message {
+    min-height: 1.2em; /* Evita pulos de layout */
+    text-align: center;
+    margin-top: 10px; /* Espaço acima da mensagem */
+    font-weight: bold;
+    flex-shrink: 0; /* Não encolhe */
+}
+
+/* Overlay de Zoom Específico (se necessário, senão usa o global) */
+#deck-management-zoom-overlay {
+    /* Usa .image-zoom-overlay base */
+}
+#deck-management-zoomed-image {
+    /* Usa #....-zoomed-image base, mas pode ter overrides */
+     width: 460px; /* Tamanho específico que estava no style.css */
+     max-width: 90%; /* Garante que não exceda a tela */
+     height: auto;
+}
+
+/* --- Scrollbar --- */
+/* Garanta que os estilos de scrollbar em _utilities.css se apliquem a */
+/* #deck-management-list e #deck-management-collection */
+#deck-management-list::-webkit-scrollbar,
+#deck-management-collection::-webkit-scrollbar {
+    width: 8px;
+}
+#deck-management-list::-webkit-scrollbar-track,
+#deck-management-collection::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+#deck-management-list::-webkit-scrollbar-thumb,
+#deck-management-collection::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+#deck-management-list::-webkit-scrollbar-thumb:hover,
+#deck-management-collection::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color);
+}
+#deck-management-list,
+#deck-management-collection {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.2);
+}

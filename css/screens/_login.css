@@ -1,0 +1,107 @@
+/* css/screens/_login.css - Estilos para a Tela de Login */
+
+#login-screen {
+    /* Layout Geral */
+    display: flex; /* Usado no .screen base, mas pode ser reafirmado */
+    justify-content: center; /* Centraliza o form-container horizontalmente */
+    align-items: center; /* Centraliza o form-container verticalmente */
+    text-align: center;
+    padding: 20px;
+    /* Herdará width, height, position, etc. de .screen */
+
+    /* Fundo */
+    background: url('../../assets/images/ui/login_background.jpg') no-repeat center center;
+    background-size: cover;
+
+    /* Garante que o conteúdo dentro possa ser posicionado absolutamente */
+    position: relative;
+}
+
+/* Logo Específica da Tela de Login */
+.login-logo {
+    display: block; /* Garante que seja um bloco para margin/position */
+    position: absolute; /* Posicionamento específico para esta tela */
+    /* Ajuste as margens/top/left/right conforme necessário para o posicionamento exato */
+    margin-top: -500px; /* Exemplo: Puxa para cima */
+    margin-left: 1300px; /* Exemplo: Empurra para a direita */
+    /* OU use top/left/right/bottom: */
+    /* top: 10vh; */
+    /* right: 10vw; */
+    max-width: 400px; /* Tamanho máximo da logo */
+    width: 65%; /* Largura relativa (ajuste conforme necessário) */
+    height: auto; /* Mantém proporção */
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4)); /* Sombra */
+    z-index: 1; /* Garante que fique acima do fundo, mas abaixo do form se necessário */
+}
+
+
+/* Título H2 Específico da Tela de Login */
+#login-screen h2 {
+    position: absolute; /* Posicionamento específico */
+    /* Ajuste as margens/top/left/right */
+    margin-top: 325px; /* Exemplo: Abaixo da logo */
+    /* Precisa centralizar ou posicionar explicitamente, pois o pai tem display:flex */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%; /* Para garantir que a centralização funcione */
+
+    color: var(--text-color); /* Cor clara */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Sombra forte */
+    font-size: 2.5em; /* Tamanho grande */
+    margin-bottom: 20px; /* Espaço abaixo antes do formulário */
+    z-index: 1;
+}
+
+/* Container do Formulário na Tela de Login */
+#login-screen .form-container {
+    /* Herda max-width de .form-container, mas aplica overrides */
+    position: absolute; /* Posicionamento específico */
+    /* Ajuste as margens/top/left/right */
+    margin-top: 700px; /* Exemplo: Abaixo do título */
+     left: 50%;
+     transform: translateX(-50%);
+
+    width: 100%; /* Garante que max-width funcione */
+    max-width: 400px; /* Largura máxima */
+    background-color: rgba(10, 20, 30, 0.85); /* Fundo escuro e translúcido */
+    border: 1px solid var(--border-color); /* Borda sutil */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
+    padding: 25px; /* Espaçamento interno maior */
+    border-radius: 5px; /* Herda, mas pode ser reafirmado */
+    z-index: 2; /* Garante que fique acima da logo/fundo */
+    margin-left: 0; /* Reseta margem auto do .form-container base */
+    margin-right: 0;
+}
+
+/* Labels dentro do formulário de login */
+#login-screen .form-container label {
+    text-align: left; /* Alinha à esquerda */
+    font-size: 0.95em; /* Tamanho ligeiramente maior */
+}
+
+/* Ações (botões) dentro do formulário de login */
+#login-screen .form-container .form-actions {
+    gap: 15px; /* Espaçamento maior entre botões */
+     /* justify-content: space-around; Herda de .form-actions */
+}
+
+/* Botões específicos dentro do formulário de login */
+#login-screen .form-container .form-actions button {
+    font-size: 1em; /* Tamanho padrão ou ligeiramente maior */
+    padding: 10px 15px; /* Padding padrão */
+    /* flex-basis: 45%; Herda de .form-actions */
+}
+
+/* Mensagem de feedback específica para login */
+#login-message {
+    /* Herda .message, mas pode ter overrides */
+    position: absolute; /* Posiciona abaixo do form */
+    bottom: 20px; /* Exemplo: fixa na parte inferior da tela */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    margin-top: 18px; /* Espaço acima */
+    font-size: 1em; /* Tamanho da fonte */
+    min-height: 1.2em; /* Evita pulos no layout */
+}

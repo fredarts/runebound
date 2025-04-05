@@ -1,0 +1,36 @@
+/* css/utilities/_utilities.css - Classes Utilitárias */
+
+/* Mensagens e textos auxiliares */
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    min-height: 1.2em;
+  }
+  
+  .subtle-text {
+    font-size: 0.85em;
+    color: var(--text-color-subtle);
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  
+  .disclaimer {
+    font-size: 0.8em;
+    color: var(--text-color-subtle);
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Classes para drag & drop */
+  .sortable-ghost {
+    opacity: 0.4;
+    background-color: var(--primary-color) !important;
+  }
+  
+  .sortable-chosen {
+    cursor: grabbing;
+  }
+  
+  /* Outras classes utilitárias podem ser adicionadas conforme necessário */
+  

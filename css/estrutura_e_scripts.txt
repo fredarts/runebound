@@ -1,0 +1,22 @@
+### ESTRUTURA DE DIRETÓRIOS ###
+
+css/
+    main.css
+    style.css
+    animations/
+        _animations.css
+    base/
+        _reset.css
+        _typography.css
+        _variables.css
+    components/
+        _buttons.css
+        _cards.css
+        _forms.css
+        _navigation.css
+    layout/
+        _layout.css
+    utilities/
+        _utilities.css
+
+### CONTEÚDO DOS SCRIPTS ###

@@ -9,9 +9,9 @@ class TitlescreenTemplate {
                 <img src="assets/images/ui/runebound_logo.png" alt="Logo do Jogo">
             </div>
             <nav class="title-menu">
-                <button data-action="login">Logar</button>
-                <button data-action="create-account">Criar Conta</button>
-                <button data-action="settings">Opções</button>
+                <button class="game-button" data-action="login">Logar</button>
+                <button class="game-button-blue"data-action="create-account">Criar Conta</button>
+                <button data-action="settings">⚙️</button>
             </nav>
         `;
         

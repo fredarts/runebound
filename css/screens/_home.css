@@ -1,0 +1,239 @@
+/* css/screens/_home.css - Estilos para a Tela Inicial (Notícias) */
+
+#home-screen {
+    /* Layout Geral */
+    display: flex; /* Herdado de .screen */
+    flex-direction: column; /* Organiza título, área de conteúdo e botão */
+    justify-content: flex-start; /* Alinha conteúdo no topo */
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100%; /* Garante que ocupe a altura do container */
+
+    /* Fundo */
+    background: url('../../assets/images/ui/home_background.jpg') no-repeat center center;
+    background-size: cover;
+
+    /* Permite posicionamento absoluto do botão Play */
+
+}
+
+/* Título */
+.home-layout h2 { /* Usa .home-layout se você tiver esse wrapper, senão use #home-screen h2 */
+    margin-bottom: 20px;
+    color: var(--title-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0; /* Não deixa o título encolher */
+    margin-top: 200px;
+}
+
+/* Área Principal de Conteúdo (Feed/Detalhe) */
+.home-content-area {
+    width: 95%;
+    max-width: 900px;
+    /* Altura flexível, limitada pelo espaço disponível menos o título e o espaço para o botão */
+    /* O cálculo exato depende da altura do h2 e do espaço desejado */
+    max-height: calc(100% - 130px); /* Exemplo: 100% - altura_titulo - margem_inferior - altura_botao */
+    position: relative; /* Para conter elementos internos se necessário */
+    background-color: rgba(0, 0, 0, 0.35); /* Fundo levemente escuro */
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* ESSENCIAL: Contém os filhos (feed/detail) */
+    margin-bottom: 80px; /* IMPORTANTE: Espaço para o botão 'Jogar' posicionado absolutamente */
+    display: flex; /* Facilita alternar entre feed e detalhe */
+}
+
+/* Feed de Notícias */
+.news-feed {
+    padding: 15px 15px 0 15px; /* Padding interno, sem padding no fundo para scroll funcionar bem */
+    width: 100%; /* Ocupa toda a largura da .home-content-area */
+    height: 100%; /* Ocupa toda a altura da .home-content-area */
+    overflow-y: auto; /* Habilita scroll VERTICAL se o conteúdo exceder */
+    background: var(--panel-background); /* Fundo do painel */
+    display: block; /* Visível por padrão */
+    box-sizing: border-box;
+}
+
+/* Item individual no Feed */
+.news-item {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color-light);
+    border-radius: 6px;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+}
+
+.news-item:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    border-color: var(--accent-color); /* Destaque na borda ao passar o mouse */
+}
+
+/* Imagem Resumo */
+.news-image-summary {
+    width: 100px;
+    height: 60px;
+    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+    border-radius: 4px;
+    align-self: center; /* Centraliza verticalmente */
+    flex-shrink: 0; /* Não deixa a imagem encolher */
+}
+
+/* Conteúdo de Texto do Item */
+.news-item-content {
+    flex-grow: 1; /* Ocupa o espaço restante */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho do Item (Título, Data, Categoria) */
+.news-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; /* Alinha pela base do texto */
+    flex-wrap: wrap; /* Permite quebrar linha se necessário */
+    margin-bottom: 5px;
+}
+
+/* Título Resumo */
+.news-title-summary {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--accent-color-light); /* Cor de destaque clara */
+    flex-basis: 60%; /* Ocupa a maior parte da linha */
+    margin-right: 10px; /* Espaço antes da data */
+}
+
+/* Data */
+.news-date {
+    font-size: 0.8em;
+    color: var(--text-color-subtle);
+    white-space: nowrap; /* Evita quebra de linha da data */
+}
+
+/* Categoria */
+.news-category {
+    font-weight: bold;
+    margin-left: 5px;
+    color: var(--accent-color);
+}
+
+/* Resumo */
+.news-summary {
+    font-size: 0.9em;
+    margin: 0;
+    color: var(--text-color-secondary);
+    line-height: 1.4;
+}
+
+
+/* Visão de Detalhe da Notícia */
+.news-detail-view {
+    padding: 20px;
+    width: 100%; /* Ocupa toda a .home-content-area */
+    height: 100%; /* Ocupa toda a .home-content-area */
+    display: flex; /* Alterado pelo JS para 'flex' quando visível */
+    flex-direction: column;
+    box-sizing: border-box;
+    background: var(--panel-background);
+    overflow: hidden; /* O container principal não rola */
+    /* 'display: none;' é controlado pelo JS */
+}
+
+/* Botão Voltar */
+.button-back {
+    align-self: flex-start; /* Alinha à esquerda */
+    margin-bottom: 15px;
+    background: var(--button-secondary-bg);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    font-size: 0.9em;
+    flex-shrink: 0; /* Não encolhe */
+}
+
+.button-back:hover {
+    background: var(--button-secondary-hover-bg);
+}
+
+/* Título no Detalhe */
+#news-detail-title {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--title-color);
+    flex-shrink: 0;
+}
+
+/* Imagem no Detalhe */
+.news-image-detail {
+    max-width: 80%; /* Largura máxima */
+    max-height: 200px; /* Altura máxima */
+    object-fit: contain; /* Garante visibilidade completa */
+    display: block;
+    margin: 0 auto 15px auto; /* Centraliza com margem inferior */
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+/* Conteúdo Detalhado (Área de Scroll) */
+.news-content-detail {
+    flex-grow: 1; /* Ocupa o espaço restante */
+    overflow-y: auto; /* Permite scroll VERTICAL apenas nesta área */
+    line-height: 1.6;
+    color: var(--text-color);
+    padding-right: 10px; /* Espaço para a barra de rolagem */
+}
+
+/* Estilos para tags comuns dentro do conteúdo */
+.news-content-detail p { margin-bottom: 1em; }
+.news-content-detail ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
+.news-content-detail li { margin-bottom: 0.5em; }
+.news-content-detail strong { color: var(--accent-color-light); font-weight: bold; } /* Usa a variável ou define aqui */
+.news-content-detail em { color: var(--text-color-secondary); font-style: italic; }
+
+
+/* Botão Jogar (Posicionado Absolutamente) */
+.button-play {
+    position: absolute;
+    bottom: 20px; /* Distância do fundo da tela */
+    right: 20px; /* Distância da direita da tela */
+    padding: 10px 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: var(--button-play-bg);
+    color: var(--button-play-text);
+    border: 1px solid var(--button-play-border);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    z-index: 10; /* Garante que fique acima da área de conteúdo */
+}
+
+.button-play:hover {
+    background-color: var(--button-play-hover-bg);
+    transform: scale(1.03);
+}
+
+.button-play:active {
+    transform: scale(0.98);
+}
+
+/* Placeholders e Mensagens de Erro */
+.placeholder-message { /* Já existe em _utilities? Se sim, pode remover daqui */
+    text-align: center;
+    color: var(--text-color-subtle);
+    padding: 20px;
+    font-style: italic;
+}
+
+.error-message {
+    text-align: center;
+    color: var(--error-color);
+    padding: 20px;
+    font-weight: bold;
+}

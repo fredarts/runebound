@@ -1,0 +1,172 @@
+/* css/screens/_profile.css - Estilos para a Tela de Perfil (Simplificada) */
+
+#profile-screen {
+    /* Layout */
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Título em cima, conteúdo abaixo */
+    height: 100%; /* Ocupa altura total */
+    box-sizing: border-box;
+
+    /* Fundo */
+    background: url('../../assets/images/ui/profile_background.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+/* Título H2 */
+#profile-screen h2 { /* Ou use .profile-layout-single-column h2 se houver wrapper */
+    text-align: center;
+    color: var(--title-color); /* Cor do título */
+    margin-bottom: 20px;
+    flex-shrink: 0; /* Não encolhe */
+}
+
+/* Área Principal (agora coluna única) */
+.profile-main-area {
+    display: flex;
+    flex-direction: column; /* Organiza as seções verticalmente */
+    gap: 20px; /* Espaço entre as seções */
+    /*flex-grow: 1;  Ocupa o espaço vertical restante */
+    overflow-y: auto; /* Permite rolagem se o conteúdo for muito alto */
+    padding-right: 10px; /* Espaço para barra de rolagem */
+    width: 90%; /* Largura da área principal */
+    max-width: 700px; /* Largura máxima */
+    margin: 0 auto; /* Centraliza horizontalmente */
+    background-color: rgba(0, 0, 0, 0.2); /* Fundo sutil opcional */
+    border-radius: 8px;
+    padding: 15px;
+}
+
+/* Seção genérica dentro do perfil */
+.profile-section {
+    background-color: var(--panel-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    /* Não definir max-height aqui, deixa o conteúdo determinar a altura */
+}
+
+/* Títulos H3 dentro das seções */
+.profile-section h3 {
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    margin-top: 0; /* Remove margem superior padrão */
+    color: var(--text-color);
+    font-size: 1.2em; /* Ajuste se necessário */
+    flex-shrink: 0;
+}
+
+/* Informações do Jogador */
+.profile-info p {
+    margin-bottom: 8px; /* Mais espaço entre linhas */
+    font-size: 1em;
+    line-height: 1.5; /* Melhora legibilidade */
+}
+
+.profile-info strong { /* Nome do jogador */
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.profile-info span { /* Rank, Vitórias, Derrotas */
+    color: var(--text-color); /* Cor normal */
+    font-weight: normal;
+}
+#profile-rank { font-style: italic; }
+
+/* Seção do Avatar */
+.profile-avatar-section {
+    align-items: center; /* Centraliza conteúdo horizontalmente */
+}
+
+/* Display do Avatar Atual */
+.profile-avatar-display img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Círculo */
+    border: 3px solid var(--primary-color);
+    margin-bottom: 15px; /* Mais espaço abaixo */
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.4);
+    object-fit: cover; /* Garante que a imagem cubra o círculo */
+}
+
+/* Container das Escolhas de Avatar */
+.avatar-choices-container {
+    display: flex;
+    flex-wrap: wrap; /* Quebra linha se não couber */
+    gap: 10px; /* Espaço entre avatares */
+    justify-content: center; /* Centraliza avatares */
+    padding-top: 8px;
+}
+
+/* Imagem de Escolha de Avatar */
+.avatar-choice {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid transparent; /* Borda invisível por padrão */
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    object-fit: cover;
+}
+
+.avatar-choice:hover {
+    border-color: var(--secondary-color);
+    transform: scale(1.08); /* Leve aumento no hover */
+}
+
+.avatar-choice.selected-avatar {
+    border-color: var(--highlight-color); /* Amarelo para selecionado */
+    box-shadow: 0 0 8px var(--highlight-color);
+    transform: scale(1.1); /* Aumento maior para selecionado */
+}
+
+/* Histórico de Partidas */
+#profile-match-history {
+    list-style: none;
+    padding: 0; /* Remove padding padrão da lista */
+    margin: 0; /* Remove margem padrão da lista */
+    max-height: 250px; /* Altura máxima antes de rolar */
+    overflow-y: auto; /* Scroll se necessário */
+    flex-grow: 1; /* Ocupa espaço se a seção precisar crescer */
+}
+
+#profile-match-history li {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border-color-light); /* Linha separadora mais clara */
+    font-size: 0.9em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.15s ease;
+}
+
+#profile-match-history li:last-child {
+    border-bottom: none; /* Remove borda do último item */
+}
+
+#profile-match-history li:hover {
+    background-color: rgba(255, 255, 255, 0.05); /* Fundo leve no hover */
+}
+
+/* Classes opcionais para resultado da partida */
+.history-win { color: var(--valid-color); }
+.history-loss { color: var(--invalid-color); }
+.history-draw { color: var(--text-color-secondary); }
+
+/* Grid de Cartas (se for adicionado futuramente) */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-width-mini, 80px), 1fr));
+    gap: 8px;
+    padding: 8px;
+    overflow-y: auto;
+    background-color: var(--zone-background);
+    border-radius: 6px;
+    flex-grow: 1; /* Ocupa espaço */
+    min-height: 150px; /* Altura mínima */
+}

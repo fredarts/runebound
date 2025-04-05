@@ -1,0 +1,179 @@
+/* css/screens/_title-screen.css - Estilos para a Tela de Título e Banner Base */
+
+/* --- Layout Geral da Tela --- */
+#title-screen {
+    /* Garante que o screen ocupe todo o espaço e permita pos. absoluto */
+    position: absolute; /* Ou fixed, dependendo da necessidade */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Esconde partes do banner que transbordam */
+    /* display: flex; é herdado de .screen base */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #000; /* Fundo fallback enquanto imagens carregam */
+    padding: 0; /* Remove padding padrão do .screen */
+}
+
+/* --- Container do Banner --- */
+#titlescreen-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Essencial para o Ken Burns funcionar corretamente */
+    z-index: 0; /* Fica atrás do conteúdo */
+    background-color: #000; /* Fundo enquanto a imagem carrega */
+}
+
+/* --- Estilos BASE da Imagem do Banner --- */
+.banner-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    /* Transição para Crossfade */
+    opacity: 0;
+    transition: opacity 1s ease-in-out; /* Ajuste a duração do fade (ex: 1s) */
+
+    /* Propriedades BASE da Animação Ken Burns */
+    /* A animação específica (animation-name) será definida em _animations.css */
+    animation-duration: 7s; /* Duração TOTAL da animação Ken Burns */
+    animation-timing-function: linear; /* Movimento constante */
+    animation-fill-mode: forwards; /* Mantém o estado final da animação */
+    animation-name: none; /* Nenhuma animação aplicada por padrão */
+}
+
+/* --- Estados da Imagem do Banner --- */
+.banner-image.active {
+    opacity: 1;
+    z-index: 1; /* Imagem ativa fica na frente durante a transição */
+    /* A classe .kenburns-X será adicionada/removida pelo JS para iniciar a animação */
+}
+
+.banner-image.exiting {
+    opacity: 0; /* Já está definido na transição, mas reafirma */
+    z-index: 0; /* Imagem saindo fica atrás */
+}
+
+
+/* --- Container do Conteúdo (Logo, Menu) --- */
+.titlescreen-content {
+    position: relative; /* Para que z-index funcione */
+    z-index: 1; /* Garante que fique ACIMA do banner */
+
+    /* Layout interno (centralizar logo e menu) */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center;   /* Centraliza horizontalmente */
+    padding: 20px;
+    box-sizing: border-box;
+
+    /* Garante que cliques não sejam capturados pelo container, apenas pelos filhos */
+    pointer-events: none;
+}
+
+/* --- Elementos do Conteúdo --- */
+
+/* Logo */
+.title-logo {
+    /* display: block; Não necessário com flex */
+    margin-bottom: 5vh; /* Espaço abaixo da logo */
+    max-width: 450px;
+    width: 70%; /* Ajuste conforme necessário */
+    height: auto;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+    pointer-events: auto; /* Logo PODE receber eventos (se for link, etc.) */
+    position: absolute;
+    margin: -200px 0 300px -1300px;
+}
+/* A imagem dentro da logo */
+.title-logo img {
+     display: block; /* Remove espaço extra abaixo da imagem */
+     max-width: 100%;
+     height: auto;
+}
+
+
+/* Menu de Navegação */
+.title-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+   
+    padding: 15px 25px;
+    border-radius: 8px;
+    pointer-events: auto; /* Menu PODE receber eventos */
+    margin-top: 30px; /* Espaço acima do menu */
+    position: absolute;
+    margin: 860px -1300px 0 0;
+}
+
+/* Botões do Menu */
+.title-menu button {
+    min-width: 140px;
+    font-size: 1.1em;
+    pointer-events: auto; /* Botões PODEM receber eventos */
+    /* Herda estilos de botão base */
+}
+
+/* Ícone de Opções (se existir) */
+.title-menu #btn-goto-options-icon {
+    min-width: auto;
+    padding: 8px;
+    font-size: 1.8em;
+    background: none;
+    line-height: 1;
+}
+.title-menu #btn-goto-options-icon:hover {
+     background: none; /* Garante que não mude o fundo no hover */
+     color: var(--primary-color);
+     transform: scale(1.1);
+}
+
+/* Efeito Vignette (Opcional) */
+#title-screen::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Não interfere com cliques */
+    z-index: 2; /* Acima do conteúdo e do banner */
+    /* Gradiente radial para escurecer as bordas */
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%);
+    /* Ajuste os valores (50%, 0.7, 100%) para controlar a intensidade e o tamanho da vinheta */
+}
+
+/* Footer (se existir) - Ajuste o posicionamento se necessário */
+.title-footer {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+    color: var(--text-color-subtle);
+    z-index: 3; /* Acima da vinheta */
+    pointer-events: auto; /* Permite clicar nos links */
+}
+.title-footer a {
+    color: var(--text-color-subtle);
+    text-decoration: none;
+    margin: 0 10px;
+}
+.title-footer a:hover {
+    color: var(--text-color);
+}
