@@ -19,6 +19,8 @@
     color: var(--title-color); /* Cor do título */
     margin-bottom: 20px;
     flex-shrink: 0; /* Não encolhe */
+    font-weight: bolder;
+    font-size: 2em;
 }
 
 /* Área Principal (agora coluna única) */
@@ -109,7 +111,7 @@
     height: 50px;
     border-radius: 50%;
     border: 2px solid transparent; /* Borda invisível por padrão */
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     transition: border-color 0.2s ease, transform 0.2s ease;
     object-fit: cover;
 }

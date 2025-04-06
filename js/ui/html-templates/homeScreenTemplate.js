@@ -20,9 +20,10 @@ export function generateHomeScreenHTML() {
 
                 <!-- Detalhe da Notícia (inicialmente escondido) -->
                 <div id="news-detail-container" class="news-detail-view" style="display: none;">
-                    <button id="btn-back-to-news-feed" class="button-back">< Voltar</button>
-                    <h3 id="news-detail-title">Título da Notícia</h3>
+                    <button id="btn-back-to-news-feed" class="button-back">Voltar</button>
+                    
                     <img id="news-detail-image" src="" alt="Imagem da Notícia" style="display: none;" class="news-image-detail"/>
+                    <h3 id="news-detail-title">Título da Notícia</h3>
                     <div id="news-detail-content" class="news-content-detail scrollable-list">
                         <p>Conteúdo completo da notícia...</p>
                     </div>

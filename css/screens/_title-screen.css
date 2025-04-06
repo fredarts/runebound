@@ -118,30 +118,9 @@
     pointer-events: auto; /* Menu PODE receber eventos */
     margin-top: 30px; /* Espaço acima do menu */
     position: absolute;
-    margin: 860px -1300px 0 0;
+    margin: 900px -1490px 0 0;
 }
 
-/* Botões do Menu */
-.title-menu button {
-    min-width: 140px;
-    font-size: 1.1em;
-    pointer-events: auto; /* Botões PODEM receber eventos */
-    /* Herda estilos de botão base */
-}
-
-/* Ícone de Opções (se existir) */
-.title-menu #btn-goto-options-icon {
-    min-width: auto;
-    padding: 8px;
-    font-size: 1.8em;
-    background: none;
-    line-height: 1;
-}
-.title-menu #btn-goto-options-icon:hover {
-     background: none; /* Garante que não mude o fundo no hover */
-     color: var(--primary-color);
-     transform: scale(1.1);
-}
 
 /* Efeito Vignette (Opcional) */
 #title-screen::after {
@@ -152,7 +131,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none; /* Não interfere com cliques */
-    z-index: 2; /* Acima do conteúdo e do banner */
+    z-index: 1; /* Acima do conteúdo e do banner */
     /* Gradiente radial para escurecer as bordas */
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%);
     /* Ajuste os valores (50%, 0.7, 100%) para controlar a intensidade e o tamanho da vinheta */

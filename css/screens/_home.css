@@ -25,7 +25,9 @@
     color: var(--title-color);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     flex-shrink: 0; /* Não deixa o título encolher */
-    margin-top: 200px;
+    margin-top: 60px;
+    font-weight: bolder;
+    font-size: 2em;
 }
 
 /* Área Principal de Conteúdo (Feed/Detalhe) */
@@ -38,7 +40,7 @@
     position: relative; /* Para conter elementos internos se necessário */
     background-color: rgba(0, 0, 0, 0.35); /* Fundo levemente escuro */
     border-radius: 8px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
     overflow: hidden; /* ESSENCIAL: Contém os filhos (feed/detail) */
     margin-bottom: 80px; /* IMPORTANTE: Espaço para o botão 'Jogar' posicionado absolutamente */
     display: flex; /* Facilita alternar entre feed e detalhe */
@@ -64,7 +66,7 @@
     padding: 10px 15px;
     display: flex;
     gap: 15px;
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
 }
 
@@ -77,11 +79,12 @@
 /* Imagem Resumo */
 .news-image-summary {
     width: 100px;
-    height: 60px;
-    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+    height: 70px;
+    object-fit: cover;
     border-radius: 4px;
-    align-self: center; /* Centraliza verticalmente */
-    flex-shrink: 0; /* Não deixa a imagem encolher */
+    align-self: center;
+    flex-shrink: 0;
+    margin: -15px -0 -15px -15px;
 }
 
 /* Conteúdo de Texto do Item */
@@ -98,6 +101,7 @@
     align-items: baseline; /* Alinha pela base do texto */
     flex-wrap: wrap; /* Permite quebrar linha se necessário */
     margin-bottom: 5px;
+    text-align: left;
 }
 
 /* Título Resumo */
@@ -129,6 +133,7 @@
     margin: 0;
     color: var(--text-color-secondary);
     line-height: 1.4;
+    text-align: left;
 }
 
 
@@ -141,10 +146,15 @@
     flex-direction: column;
     box-sizing: border-box;
     background: var(--panel-background);
-    overflow: hidden; /* O container principal não rola */
+    overflow:scroll; /* O container principal não rola */
     /* 'display: none;' é controlado pelo JS */
 }
 
+#news-detail-container{
+    height: 800px;
+    height: auto;
+    overflow-x: hidden;
+}
 /* Botão Voltar */
 .button-back {
     align-self: flex-start; /* Alinha à esquerda */
@@ -162,7 +172,7 @@
 
 /* Título no Detalhe */
 #news-detail-title {
-    text-align: center;
+    text-align: left;
     margin-bottom: 15px;
     color: var(--title-color);
     flex-shrink: 0;
@@ -170,19 +180,18 @@
 
 /* Imagem no Detalhe */
 .news-image-detail {
-    max-width: 80%; /* Largura máxima */
-    max-height: 200px; /* Altura máxima */
-    object-fit: contain; /* Garante visibilidade completa */
+    
+    width: 106%;
+    object-fit: contain;
     display: block;
-    margin: 0 auto 15px auto; /* Centraliza com margem inferior */
+    margin: -77px -30px 20px -30px;
     border-radius: 5px;
-    flex-shrink: 0;
 }
 
 /* Conteúdo Detalhado (Área de Scroll) */
 .news-content-detail {
     flex-grow: 1; /* Ocupa o espaço restante */
-    overflow-y: auto; /* Permite scroll VERTICAL apenas nesta área */
+    text-align: left;
     line-height: 1.6;
     color: var(--text-color);
     padding-right: 10px; /* Espaço para a barra de rolagem */
@@ -208,7 +217,7 @@
     color: var(--button-play-text);
     border: 1px solid var(--button-play-border);
     border-radius: 5px;
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     transition: background-color 0.2s ease, transform 0.1s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     z-index: 10; /* Garante que fique acima da área de conteúdo */
@@ -236,4 +245,25 @@
     color: var(--error-color);
     padding: 20px;
     font-weight: bold;
+}
+
+/* Estiliza a barra de rolagem inteira */
+::-webkit-scrollbar {
+    width: 10px; /* Largura da barra de rolagem */
+}
+
+/* Estiliza o "polegar" (a parte que você arrasta) */
+::-webkit-scrollbar-thumb {
+    background-color: #0659b2; /* Cor do polegar */
+    border-radius: 0px; /* Borda arredondada do polegar */
+}
+
+/* Estiliza a "trilha" (o fundo da barra de rolagem) */
+::-webkit-scrollbar-track {
+    background-color: #012b47; /* Cor da trilha */
+}
+
+/* Estiliza o polegar quando hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #064385; /* Cor do polegar no hover */
 }

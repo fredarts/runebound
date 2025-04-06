@@ -22,7 +22,7 @@
     background-color: #d8d8d8; /* Fundo padrão */
     color: #1a1a1a; /* Texto escuro */
     font-size: 0.7em; /* Tamanho base da fonte */
-    cursor: pointer; /* Indica interatividade */
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
   
     /* Imagem de Fundo */
     background-size: cover;
@@ -195,7 +195,7 @@
     background-position: center;
     background-repeat: no-repeat;
     color: transparent;
-    cursor: default;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     border: 1px solid #332a1f;
   }
   .card.card-back:hover {
@@ -223,7 +223,7 @@
     position: relative;
     background-size: cover;
     background-position: center;
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     overflow: hidden;
     transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);

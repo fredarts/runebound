@@ -139,7 +139,7 @@
     background: none;
     border: none;
     color: var(--icon-button-color, #aaa); /* Cor fallback */
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     font-size: 1.1em; /* Tamanho do ícone/emoji */
     padding: 2px 5px;
     margin-left: 5px;
@@ -158,6 +158,8 @@
     padding: 8px 15px; /* Padding */
     align-self: center; /* Centraliza o botão */
     flex-shrink: 0; /* Não encolhe */
+    font-size: 1em;
+    font-weight: bold;
     /* Herda estilos de botão base */
 }
 

@@ -20,6 +20,9 @@
     /* Herda estilos de h2 base */
     margin-bottom: 30px; /* Espaço abaixo do título */
     flex-shrink: 0;
+    font-weight: bolder;
+    font-size: 2em;
+    color: #fff;
 }
 
 /* Logo Específica */

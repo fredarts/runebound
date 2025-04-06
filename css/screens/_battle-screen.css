@@ -259,7 +259,7 @@
     border-radius: 4px;
     padding: 2px;
     overflow: hidden; /* Esconde partes da imagem que vazarem */
-    cursor: pointer; /* Indica interatividade (ver cemitério) */
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 

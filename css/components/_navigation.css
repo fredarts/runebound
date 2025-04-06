@@ -64,7 +64,7 @@
     color: var(--text-color);
     font-size: 1.5em;
     padding: 0 5px;
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     transition: color 0.2s ease, transform 0.2s ease;
     line-height: 1;
   }
