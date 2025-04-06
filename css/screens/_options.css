@@ -19,6 +19,9 @@
 .options-layout h2 {
     margin-bottom: 20px;
     flex-shrink: 0;
+    font-weight: bolder;
+    font-size: 2em;
+    color: #fff;
     /* Herda h2 base */
 }
 
@@ -81,7 +84,7 @@
     flex-grow: 1; /* Ocupa espaço restante */
     min-width: 150px; /* Largura mínima */
     margin: 0; /* Remove margens padrão */
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
 }
 /* Aparência customizada do Range Slider (Opcional, mas recomendado) */
 /* (Adapte cores e tamanhos conforme seu design) */
@@ -99,14 +102,14 @@ input[type=range]:focus {
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 6px;
-  cursor: pointer;
+  cursor: url('../../assets/images/ui/cursor.png'), auto;
   background: var(--border-color); /* Cor da trilha */
   border-radius: 3px;
 }
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 6px;
-  cursor: pointer;
+  cursor: url('../../assets/images/ui/cursor.png'), auto;
   background: var(--border-color);
   border-radius: 3px;
 }
@@ -117,7 +120,7 @@ input[type=range]::-webkit-slider-thumb {
   width: 16px;
   border-radius: 50%;
   background: var(--primary-color); /* Cor da bolinha */
-  cursor: pointer;
+  cursor: url('../../assets/images/ui/cursor.png'), auto;
   -webkit-appearance: none;
   margin-top: -5px; /* Centraliza verticalmente */
 }
@@ -127,7 +130,7 @@ input[type=range]::-moz-range-thumb {
   width: 16px;
   border-radius: 50%;
   background: var(--primary-color);
-  cursor: pointer;
+  cursor: url('../../assets/images/ui/cursor.png'), auto;
 }
 /* Estilo quando desabilitado (Muted) */
 input[type=range]:disabled::-webkit-slider-thumb { background: var(--disabled-color); }
@@ -140,7 +143,7 @@ input[type=range]:disabled::-moz-range-track { background: #555; }
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    cursor: pointer;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
     margin-left: auto; /* Empurra para a direita se houver espaço */
 }
 

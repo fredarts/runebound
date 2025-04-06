@@ -89,6 +89,7 @@
 #login-screen .form-container .form-actions button {
     font-size: 1em; /* Tamanho padrão ou ligeiramente maior */
     padding: 10px 15px; /* Padding padrão */
+    font-weight: bold;
     /* flex-basis: 45%; Herda de .form-actions */
 }
 

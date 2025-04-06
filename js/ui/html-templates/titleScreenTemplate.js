@@ -11,7 +11,7 @@ class TitlescreenTemplate {
             <nav class="title-menu">
                 <button class="game-button" data-action="login">Logar</button>
                 <button class="game-button-blue"data-action="create-account">Criar Conta</button>
-                <button data-action="settings">⚙️</button>
+                <button class="no-background" data-action="settings">⚙️</button>
             </nav>
         `;
         

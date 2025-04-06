@@ -14,6 +14,12 @@ export default class TitlescreenUi {
         'assets/images/backgrounds/bg4.jpg',
         'assets/images/backgrounds/bg5.jpg',
         'assets/images/backgrounds/bg6.jpg',
+        'assets/images/backgrounds/bg7.jpg',
+        'assets/images/backgrounds/bg8.jpg',
+        'assets/images/backgrounds/bg9.jpg',
+        'assets/images/backgrounds/bg10.jpg',
+        'assets/images/backgrounds/bg11.jpg',
+        'assets/images/backgrounds/bg12.jpg',
         // Adicione mais URLs conforme necessário
     ];
     #imageDisplayTime = 7000; // Tempo de exibição de cada imagem (ms) - Ex: 6 segundos

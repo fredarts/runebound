@@ -1,38 +1,47 @@
 [
-    {
-      "id": "news_004",
-      "date": "2023-10-28",
-      "category": "Evento",
-      "title": "Torneio Semanal de Outono!",
-      "summary": "Prepare seu melhor deck! O torneio de outono começa na próxima sexta-feira. Inscrições abertas!",
-      "image": "assets/images/news/tournament_banner.png",
-      "content": "<p>As folhas caem, mas a competição esquenta! Participe do nosso <strong>Torneio Semanal de Outono</strong> e mostre suas habilidades.</p><p><strong>Data:</strong> Toda sexta-feira de Novembro, a partir das 19:00 GMT-3.</p><p><strong>Formato:</strong> Standard, Suíço 5 rodadas + Top 8.</p><p><strong>Prêmios:</strong> Gemas, Pacotes da nova coleção e um título exclusivo no jogo!</p><p><em>Inscrições limitadas. Garanta sua vaga!</em></p>"
-    },
-    {
-      "id": "news_003",
-      "date": "2023-10-26",
-      "category": "Nova Coleção",
-      "title": "Pacote 'Sombras Ancestrais' Disponível!",
-      "summary": "Desvende segredos antigos com a nova coleção 'Sombras Ancestrais'. Novas criaturas mortas-vivas e runas sombrias aguardam!",
-      "image": "assets/images/news/booster_news.png",
-      "content": "<p>A escuridão se aprofunda em Terrinoth! A nova coleção <strong>Sombras Ancestrais</strong> chegou à loja.</p><ul><li>Descubra 5 novas criaturas do tipo Morto-vivo com habilidades únicas.</li><li>Domine 3 Runebindings poderosas focadas em controle e debuffs.</li><li>Encontre 2 Instants devastadores para surpreender seus oponentes.</li></ul><p>Adquira seus pacotes na loja hoje mesmo e fortaleça seu arsenal!</p>"
-    },
-    {
-        "id": "news_002",
-        "date": "2023-10-26",
-        "category": "Nova Coleção",
-        "title": "Pacote 'Sombras Ancestrais' Disponível!",
-        "summary": "Desvende segredos antigos com a nova coleção 'Sombras Ancestrais'. Novas criaturas mortas-vivas e runas sombrias aguardam!",
-        "image": "assets/images/news/pack_sombras.png",
-        "content": "<p>A escuridão se aprofunda em Terrinoth! A nova coleção <strong>Sombras Ancestrais</strong> chegou à loja.</p><ul><li>Descubra 5 novas criaturas do tipo Morto-vivo com habilidades únicas.</li><li>Domine 3 Runebindings poderosas focadas em controle e debuffs.</li><li>Encontre 2 Instants devastadores para surpreender seus oponentes.</li></ul><p>Adquira seus pacotes na loja hoje mesmo e fortaleça seu arsenal!</p>"
-      },
-    {
-      "id": "news_001",
-      "date": "2023-10-25",
-      "category": "Atualização",
-      "title": "Atualização v0.1.1 - Correções e Balanceamento",
-      "summary": "Implementamos diversas correções de bugs e fizemos ajustes de balanceamento em algumas cartas populares.",
-      "image": null,
-      "content": "<p>Olá, Aventureiros!</p><p>A versão 0.1.1 já está disponível e traz as seguintes melhorias:</p><ul><li><strong>Correção:</strong> Resolvido um problema onde 'Molten Wyrm' não ativava corretamente sua habilidade em certas condições.</li><li><strong>Correção:</strong> Corrigido um bug visual na tela de coleção em resoluções ultra-wide.</li><li><strong>Balanceamento:</strong> Custo de 'Fireball' aumentado de 1 para 2.</li><li><strong>Balanceamento:</strong> Ataque de 'Elven Ranger' reduzido de 3 para 2.</li></ul><p>Agradecemos o feedback contínuo da comunidade!</p>"
-    }
-  ]
+  {
+    "id": "news_005",
+    "date": "2025-04-05",
+    "category": "Evento",
+    "title": "Campeonato Inaugural de Runebound!",
+    "summary": "Prepare-se para o primeiro torneio oficial de Runebound com premiações especiais.",
+    "image": "assets/images/news/compeonato.jpg",
+    "content": "<p>O <strong>Campeonato de Lançamento</strong> começa neste mês!</p><p><strong>Data:</strong> Sábado, 20 de Abril, 19h (GMT-3)</p><p><strong>Formato:</strong> Eliminatória simples, melhor de 3</p><p><strong>Prêmios:</strong> Cartas lendárias, gemas, e um troféu exclusivo para o vencedor.</p><p><em>Garanta sua vaga e entre para a história de Eldraem!</em></p>"
+  },
+  {
+    "id": "news_004",
+    "date": "2025-04-04",
+    "category": "Atualização",
+    "title": "Atualização v1.0.1 - Correções e Balanceamento",
+    "summary": "Diversos ajustes foram implementados com base no feedback da comunidade.",
+    "image": "assets/images/news/correcao.jpg",
+    "content": "<p>A primeira atualização pós-lançamento já está disponível!</p><ul><li><strong>Correção:</strong> Bug no efeito de retorno do Soul Revenant resolvido.</li><li><strong>Balanceamento:</strong> Fireball agora custa 3 de mana.</li><li><strong>Melhoria:</strong> Interface de coleção otimizada para telas 4K.</li><li><strong>Nova função:</strong> Marcar cartas favoritas.</li></ul><p>Continue enviando seus comentários para tornar Runebound ainda melhor!</p>"
+  },
+  {
+    "id": "news_003",
+    "date": "2025-04-03",
+    "category": "Booster",
+    "title": "Pacotes de Expansão Já Disponíveis!",
+    "summary": "Expanda sua coleção com os novos boosters contendo 15 cartas cada!",
+    "image": "assets/images/news/booster_news.png",
+    "content": "<p>Adicione mais poder ao seu grimório com os <strong>Boosters de 15 cartas</strong>!</p><ul><li>Comuns, incomuns, raras e lendárias</li><li>Possibilidade de cartas foil exclusivas</li><li>Inclui novas criaturas, feitiços e runebindings</li></ul><p>Monte o deck dos seus sonhos e desafie outros jogadores pelo controle dos Vínculos.</p>"
+  },
+  {
+    "id": "news_002",
+    "date": "2025-04-02",
+    "category": "Facções",
+    "title": "Decks: Ordem de Galadreth vs Círculo de Ashkar",
+    "summary": "Escolha seu lado neste conflito ancestral e domine o campo de batalha com táticas únicas!",
+    "image": "assets/images/news/Decks_lancamento.png",
+    "content": "<p>Dois poderosos decks estão disponíveis para você começar sua jornada:</p><ul><li><strong>Ordem de Galadreth:</strong> Defensores da harmonia rúnica e da natureza.</li><li><strong>Círculo de Ashkar:</strong> Cultistas que buscam libertar o mundo através do caos.</li></ul><p>Cada deck traz cartas exclusivas e estratégias únicas. Quem dominará Eldraem?</p>"
+  },
+  {
+    "id": "news_001",
+    "date": "2025-04-01",
+    "category": "Lançamento",
+    "title": "Runebound já está disponível!",
+    "summary": "O universo mágico de Eldraem ganha vida com o lançamento oficial de Runebound.",
+    "image": "assets/images/news/lancamento.jpg",
+    "content": "<p>O aguardado jogo de cartas <strong>Runebound</strong> foi lançado! Descubra as Runas Primordiais, crie estratégias únicas e mergulhe em conflitos mágicos entre facções rivais!</p><ul><li>Modo 1v1 competitivo online</li><li>Facções únicas com lore próprio</li><li>Cartas colecionáveis e jogabilidade tática</li></ul><p>Prepare-se para o despertar dos vínculos mágicos. Sua jornada em Eldraem começa agora!</p>"
+  }
+]
