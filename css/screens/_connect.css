@@ -29,7 +29,7 @@
 .connect-logo {
     display: block;
     /* Ajuste o posicionamento se necessário, ou deixe fluxo normal */
-    margin-top: -5vh; /* Puxa um pouco para cima */
+    
     margin-bottom: 2vh; /* Espaço abaixo */
     margin-left: auto;
     margin-right: auto;
@@ -148,6 +148,10 @@
 #btn-connect-back-to-main {
     /* Herda estilos de botão base */
     background-color: var(--button-secondary-bg); /* Cor secundária */
+    margin-top: -220px;
+    margin-left: -80px;
+    position: absolute;
+
 }
 #btn-connect-back-to-main:hover {
      background-color: var(--button-secondary-hover-bg);
