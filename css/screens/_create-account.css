@@ -34,17 +34,11 @@
 /* Título H2 Específico */
 #create-account-screen h2 {
     position: absolute;
-    /* Ajuste o posicionamento */
     margin-top: 300px;  /* Exemplo */
     margin-left: 1381px; /* Exemplo */
-     /* Ou centralize com:
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%; */
-
     color: var(--text-color);
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-    margin-bottom: 20px; /* Espaço abaixo do título */
+    margin-bottom: 0px; /* Espaço abaixo do título */
     font-size: 2em; /* Tamanho da fonte */
     z-index: 1;
 }
@@ -52,29 +46,27 @@
 /* Container do Formulário */
 #create-account-screen .form-container {
     position: absolute;
-    /* Ajuste o posicionamento */
     margin-left: 1400px; /* Exemplo */
     margin-top: 700px; /* Exemplo */
-    /* Ou centralize com:
-    left: 50%;
-    transform: translate(-50%, -50%); se quiser centralizar completamente */
-
     width: 100%;
     max-width: 400px;
     background-color: rgba(10, 20, 30, 0.85);
     border: 1px solid var(--border-color);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     padding: 25px;
-    border-radius: 5px; /* Herdado, mas pode reafirmar */
-    z-index: 2; /* Acima da logo */
-    
+    border-radius: 30px; /* Herdado, mas pode reafirmar */
+    z-index: 2; /* Acima da logo */    
     margin-right: 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 30px;
+   
 }
 
 /* Labels */
 #create-account-screen .form-container label {
-    text-align: left;
+    text-align: center;
     font-size: 0.95em;
+    margin-bottom: 12px;
 }
 
 /* Ações (Botões) */

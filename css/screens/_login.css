@@ -65,17 +65,18 @@
     max-width: 400px; /* Largura máxima */
     background-color: rgba(10, 20, 30, 0.85); /* Fundo escuro e translúcido */
     border: 1px solid var(--border-color); /* Borda sutil */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra */
+   
     padding: 25px; /* Espaçamento interno maior */
-    border-radius: 5px; /* Herda, mas pode ser reafirmado */
+    border-radius: 30px; /* Herda, mas pode ser reafirmado */
     z-index: 2; /* Garante que fique acima da logo/fundo */
     margin-left: 0; /* Reseta margem auto do .form-container base */
     margin-right: 0;
+    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5); /* Subtle initial shadow */
 }
 
 /* Labels dentro do formulário de login */
 #login-screen .form-container label {
-    text-align: left; /* Alinha à esquerda */
+    text-align: center; /* Alinha à esquerda */
     font-size: 0.95em; /* Tamanho ligeiramente maior */
 }
 

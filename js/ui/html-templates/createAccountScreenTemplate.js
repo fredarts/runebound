@@ -11,15 +11,15 @@ export function generateCreateAccountScreenHTML() {
             <h2>CRIAR CONTA NOVA</h2>
             <form id="create-account-form" class="form-container">
                 <div class="form-group">
-                    <label for="create-username">Nome de Usuário (min 3):</label>
+                    <label for="create-username">Nome de Usuário</label>
                     <input type="text" id="create-username" name="username" required minlength="3">
                 </div>
                 <div class="form-group">
-                    <label for="create-password">Senha:</label>
+                    <label for="create-password">Senha</label>
                     <input type="password" id="create-password" name="password" required>
                     <!-- Poderia adicionar confirmação de senha se desejado -->
                     <!--
-                    <label for="create-confirm-password">Confirmar Senha:</label>
+                    <label for="create-confirm-password">Confirmar Senha</label>
                     <input type="password" id="create-confirm-password" name="confirm_password" required>
                     -->
                 </div>

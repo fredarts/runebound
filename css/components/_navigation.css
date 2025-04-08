@@ -67,6 +67,7 @@
     cursor: url('../../assets/images/ui/cursor.png'), auto;
     transition: color 0.2s ease, transform 0.2s ease;
     line-height: 1;
+    box-shadow:none
   }
   
   #top-bar button:hover {
