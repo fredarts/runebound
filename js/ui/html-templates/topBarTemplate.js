@@ -1,13 +1,11 @@
-// js/ui/html-templates/topBarTemplate.js - ATUALIZADO
+// js/ui/html-templates/topBarTemplate.js - ATUALIZADO PARA GRUPO AVATAR+NOME
 
 /**
  * Gera a string HTML para a Barra Superior (Top Bar).
- * Contém logo, nome do jogo, nome do usuário (direita) e botões de navegação.
+ * Contém logo, nome do jogo, grupo (avatar+nome) e botões de navegação.
  * @returns {string} HTML da Top Bar.
  */
 export function generateTopBarHTML() {
-    // Logo e Nome do Jogo adicionados à esquerda.
-    // Nome do Usuário movido para a direita.
     return `
         <div id="top-bar" class=""> <!-- Começa sem a classe 'active' -->
             <div class="top-bar-left">
@@ -15,21 +13,26 @@ export function generateTopBarHTML() {
                 <span class="top-bar-game-name">Runebound Clash</span>
             </div>
             <div class="top-bar-right">
-                <!-- Nome do usuário vem ANTES dos botões na direita -->
-                <span id="top-bar-username">Carregando...</span>
 
+                <!-- NOVO: Grupo para Avatar e Nome de Usuário -->
+                <div class="user-info-group">
+                    <div class="top-bar-avatar">
+                         <img src="assets/images/avatars/default.png" alt="Avatar">
+                     </div>
+                    <span id="top-bar-username">Carregando...</span>
+                </div>
+                <!-- FIM: Grupo -->
+
+                <!-- Botões de Navegação -->
                 <button id="top-bar-btn-home" title="Início / Notícias">
                      <span role="img" aria-label="Início">🏠</span>
                 </button>
-
                 <button id="top-bar-btn-profile" title="Perfil / Coleção">
                     <span role="img" aria-label="Perfil">👤</span>
                 </button>
-                   <!-- NOVO BOTÃO DE DECKS -->
                 <button id="top-bar-btn-decks" title="Decks / Coleção">
                     <span role="img" aria-label="Decks">📚</span>
                 </button>
-                <!-- FIM NOVO BOTÃO -->
                 <button id="top-bar-btn-connect" title="Conectar / Jogar Online">
                      <span role="img" aria-label="Jogar">⚔️</span>
                 </button>

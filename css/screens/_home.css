@@ -23,11 +23,11 @@
 
 /* Título */
 .home-layout h2 { /* Usa .home-layout se você tiver esse wrapper, senão use #home-screen h2 */
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     color: var(--title-color);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     flex-shrink: 0; /* Não deixa o título encolher */
-    margin-top: 40px;
+    margin-top: 120px;
     font-weight: bolder;
     font-size: 2em;
     text-align: left;
@@ -187,6 +187,7 @@
 /* Título no Detalhe */
 #news-detail-title {
     text-align: left;
+    
     margin-bottom: 15px;
     color: var(--title-color);
     flex-shrink: 0;
@@ -201,8 +202,13 @@
     width: 106%;
     object-fit: contain;
     display: block;
-    margin: -77px -30px 20px -30px;
+    margin: -79px -30px 20px -30px;
     border-radius: 5px;
+}
+
+#btn-goto-connect-from-home{
+    position: absolute;
+    margin-top: -60px;
 }
 
 /* Conteúdo Detalhado (Área de Scroll) */
@@ -215,7 +221,7 @@
 }
 
 /* Estilos para tags comuns dentro do conteúdo */
-.news-content-detail p { margin-bottom: 1em; }
+.news-content-detail p { margin-bottom: 1em; text-align: justify;}
 .news-content-detail ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
 .news-content-detail li { margin-bottom: 0.5em; }
 .news-content-detail strong { color: var(--accent-color-light); font-weight: bold; } /* Usa a variável ou define aqui */
@@ -226,7 +232,7 @@
 /* Botão Jogar (Posicionado Absolutamente) */
 .button-play {
     position: absolute;
-    bottom: 20px; /* Distância do fundo da tela */
+    bottom: 100px; /* Distância do fundo da tela */
     right: 20px; /* Distância da direita da tela */
     padding: 10px 20px;
     font-size: 1.1em;
@@ -239,6 +245,7 @@
     transition: background-color 0.2s ease, transform 0.1s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     z-index: 10; /* Garante que fique acima da área de conteúdo */
+    
 }
 
 .button-play:hover {
@@ -310,6 +317,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle initial shadow */
     background-image: radial-gradient(circle at center, #4a90e2 0%, #1e3c72 100%); /* Initial radial gradient */
     margin-top: 20px;
+    margin-left: 173px;
   }
   
   /* Hover Effect */

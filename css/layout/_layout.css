@@ -5,21 +5,24 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden; /* Previne scroll do body */
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    cursor: url('../../assets/images/ui/cursor.png') 32 32, auto;
+    
   }
   
-  /* Container das Telas */
-  #screens-container {
-    position: relative;
-    width: 100%;
-    height: 100%; /* Preenche o body */
-    overflow: hidden; /* Previne scroll interno */
-  }
-  
-  #screens-container.with-top-bar {
-    height: calc(100% - var(--top-bar-height));
-    margin-top: var(--top-bar-height);
-  }
+/* Ajuste do Layout Principal */
+#screens-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin-top: 0; /* Começa sem margem */
+  transition: margin-top 0.35s ease-in-out; /* Anima a margem */
+}
+
+#screens-container.with-top-bar {
+  /* height: calc(100% - var(--top-bar-height)); */ /* A altura não precisa mudar */
+  margin-top: var(--top-bar-height); /* <<< EMPURRA O CONTEÚDO PARA BAIXO */
+}
   
   /* Estilo das Telas (Screens) */
   .screen {
@@ -46,24 +49,7 @@ html, body {
     transition: opacity 0.3s ease-in-out, visibility 0s linear 0s;
   }
   
-  /* Top Bar */
-  #top-bar {
-    position: fixed; /* Fixa a barra no topo */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: var(--top-bar-height);
-    background-color: rgba(10, 20, 30, 0.9);
-    backdrop-filter: blur(5px);
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    z-index: 500; /* Garante que fique acima dos demais elementos */
-    transition: top 0.35s ease-in-out;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  }
+
   
   /* Title Screen Layout */
   #title-screen {
