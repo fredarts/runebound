@@ -13,11 +13,11 @@ export function generateLoginScreenHTML() {
 
             <form id="login-form" class="form-container">
                 <div class="form-group">
-                    <label for="login-username">Nome de Usuário:</label>
+                    <label for="login-username">Nome de Usuário</label>
                     <input type="text" id="login-username" name="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="login-password">Senha:</label>
+                    <label for="login-password">Senha</label>
                     <input type="password" id="login-password" name="password" required>
                 </div>
                 <div class="form-actions">

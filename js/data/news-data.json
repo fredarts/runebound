@@ -1,7 +1,7 @@
 [
   {
-    "id": "news_005",
-    "date": "2025-04-05",
+    "id": "news_006",
+    "date": "2025-04-06",
     "category": "Evento",
     "title": "Campeonato Inaugural de Runebound!",
     "summary": "Prepare-se para o primeiro torneio oficial de Runebound com premiações especiais.",
@@ -9,8 +9,8 @@
     "content": "<p>O <strong>Campeonato de Lançamento</strong> começa neste mês!</p><p><strong>Data:</strong> Sábado, 20 de Abril, 19h (GMT-3)</p><p><strong>Formato:</strong> Eliminatória simples, melhor de 3</p><p><strong>Prêmios:</strong> Cartas lendárias, gemas, e um troféu exclusivo para o vencedor.</p><p><em>Garanta sua vaga e entre para a história de Eldraem!</em></p>"
   },
   {
-    "id": "news_004",
-    "date": "2025-04-04",
+    "id": "news_005",
+    "date": "2025-04-05",
     "category": "Atualização",
     "title": "Atualização v1.0.1 - Correções e Balanceamento",
     "summary": "Diversos ajustes foram implementados com base no feedback da comunidade.",
@@ -18,8 +18,8 @@
     "content": "<p>A primeira atualização pós-lançamento já está disponível!</p><ul><li><strong>Correção:</strong> Bug no efeito de retorno do Soul Revenant resolvido.</li><li><strong>Balanceamento:</strong> Fireball agora custa 3 de mana.</li><li><strong>Melhoria:</strong> Interface de coleção otimizada para telas 4K.</li><li><strong>Nova função:</strong> Marcar cartas favoritas.</li></ul><p>Continue enviando seus comentários para tornar Runebound ainda melhor!</p>"
   },
   {
-    "id": "news_003",
-    "date": "2025-04-03",
+    "id": "news_004",
+    "date": "2025-04-04",
     "category": "Booster",
     "title": "Pacotes de Expansão Já Disponíveis!",
     "summary": "Expanda sua coleção com os novos boosters contendo 15 cartas cada!",
@@ -27,14 +27,25 @@
     "content": "<p>Adicione mais poder ao seu grimório com os <strong>Boosters de 15 cartas</strong>!</p><ul><li>Comuns, incomuns, raras e lendárias</li><li>Possibilidade de cartas foil exclusivas</li><li>Inclui novas criaturas, feitiços e runebindings</li></ul><p>Monte o deck dos seus sonhos e desafie outros jogadores pelo controle dos Vínculos.</p>"
   },
   {
-    "id": "news_002",
-    "date": "2025-04-02",
+    "id": "news_003",
+    "date": "2025-04-03",
     "category": "Facções",
     "title": "Decks: Ordem de Galadreth vs Círculo de Ashkar",
     "summary": "Escolha seu lado neste conflito ancestral e domine o campo de batalha com táticas únicas!",
     "image": "assets/images/news/Decks_lancamento.png",
     "content": "<p>Dois poderosos decks estão disponíveis para você começar sua jornada:</p><ul><li><strong>Ordem de Galadreth:</strong> Defensores da harmonia rúnica e da natureza.</li><li><strong>Círculo de Ashkar:</strong> Cultistas que buscam libertar o mundo através do caos.</li></ul><p>Cada deck traz cartas exclusivas e estratégias únicas. Quem dominará Eldraem?</p>"
   },
+
+  {
+    "id": "news_002",
+    "date": "2025-04-02",
+    "category": "Lore",
+    "title": "Eldraem: O Mundo dos Vínculos Rúnicos",
+    "summary": "Descubra a história de Eldraem, um mundo onde runas ancestrais governam a existência.",
+    "image": "assets/images/news/eldraem_lore.jpg",
+    "content": "<h2>A Tapeçaria Rúnica</h2><p>Em Eldraem, cada existência é parte de uma grande tapeçaria rúnica. Por eras incontáveis, os Vínculos Rúnicos — fragmentos de poder primordiais deixados pelos deuses ancestrais — mantiveram o equilíbrio entre os reinos élficos das florestas vivas, as fortalezas anãs nas montanhas sagradas, os santuários humanos nos vales férteis e os domínios etéreos dos espíritos.</p><p>O poder arcano é tecido por estas runas ancestrais, conectando cada montanha, cada gota d'água, cada criatura viva em uma harmonia complexa. É esta trama mística que permite que a magia flua de forma ordenada e previsível através de todo o mundo.</p><img src='assets/images/lore/vinculos_runicos.jpg' alt='Os Vínculos Rúnicos brilhando sobre a paisagem de Eldraem'><h2>A Ruptura dos Vínculos</h2><p>Durante o eclipse triplo que ocorre uma vez a cada milênio — quando as três luas de Eldraem se alinharam perfeitamente — surgiu uma anomalia sem precedentes: <strong>A Runa Vazia</strong> — o símbolo do desequilíbrio e da negação. Diferente de todas as outras runas conhecidas, ela não canaliza poder — ela o consome. Não obedece às leis dos Vínculos antigos, corroendo encantamentos estabelecidos há milênios e desatando pactos entre povos e elementos.</p><p>Onde a Runa Vazia toca, a realidade se distorce. Florestas envelhecem em instantes apenas para rejuvenescer momentos depois. Água flui para cima, pedras flutuam, e seres mortos há séculos despertam de seus túmulos. Se os Vínculos centrais forem completamente destruídos, Eldraem não será apenas transformado — será totalmente dissolvido, retornando ao vazio primordial.</p><img src='assets/images/lore/runa_vazia.jpg' alt='A Runa Vazia manifestando-se na Fenda do Caos'><h2>Os Dois Grandes Poderes</h2><p>Enquanto o mundo se fragmenta, dois grandes poderes emergiram para determinar o destino de Eldraem:</p><h3>Ordem de Galadreth</h3><p><em>\"Guardamos a essência da vida. Se os Vínculos se romperem, toda Eldraem sangrará.\"</em></p><p>Liderada pelo Conselho dos Sete Guardiões e presidida por Lyrandar Vínculoforte, a Ordem defende que os Vínculos Rúnicos são a fundação sagrada da realidade. Estabelecidos pelos deuses para proteger Eldraem da entropia, eles veem a Runa Vazia como uma corrupção que ameaça toda a existência.</p><p>Das torres de cristal e madeira viva de Galadreth, a Ordem coordena seus aliados: os rangers élficos da Floresta de Terysia, os anões rúnicos de Barak'Tor, e os espíritos guardiões das Fontes de Lúnia.</p><h3>Círculo de Ashkar</h3><p><em>\"A ordem é uma prisão. O caos é liberdade. A ruína traz o renascimento.\"</em></p><p>Sob o comando de Magus Valerian Cinzarrubro, o Círculo vê os Vínculos como correntes impostas pelos deuses para limitar o potencial verdadeiro das criaturas de Eldraem. Acreditam que apenas através da destruição da ordem atual um mundo de liberdade verdadeira pode nascer.</p><p>Da cidade vulcânica de Ashkar, os cultistas realizam rituais proibidos, despertando forças elementais antigas e corrompendo a própria estrutura da realidade para acelerar a ruptura dos Vínculos.</p><img src='assets/images/lore/faccoes_em_guerra.jpg' alt='Forças da Ordem de Galadreth enfrentando cultistas do Círculo de Ashkar'><h2>O Estopim da Guerra</h2><p>Foi durante o ritual para conter a Runa Vazia na Fenda do Caos que os elfos de Galadreth e os magos de Ashkar entraram em confronto aberto. Lyrandar liderou mestres rúnicos para criar um selo que isolasse a anomalia, mas Valerian e seus seguidores chegaram com outro propósito — absorver o poder da Runa e usá-lo para desfazer os Vínculos primordiais.</p><p>A batalha na Fenda foi apenas o início. Os Stonecallers anões convocaram pedras vivas para criar muralhas de contenção, apenas para vê-las reduzidas a lava pelos Volcanic Behemoths. Os Rangers élficos emboscaram cultistas nas passagens estreitas, mas foram surpreendidos pelos Shadowblade Assassins posicionados dias antes.</p><p>À medida que mais Vínculos se rompem, novas frentes de batalha surgem por todo Eldraem. O exército de mortos-vivos do Rei Nocthyr marcha das profundezas da Cripta; a entidade conhecida como Pestilência expande seu domínio corrupto; e em Syl'Velanor, Vaelyr o Esquecido desperta runas adormecidas que nem mesmo os elfos mais antigos conhecem.</p><img src='assets/images/lore/fenda_do_caos.jpg' alt='A Fenda do Caos, epicentro da ruptura dos Vínculos'><h2>Terras de Eldraem</h2><p>O conflito se espalha por regiões de poder e beleza ancestrais:</p><ul><li><strong>Galadreth:</strong> Cidade arbórea dos elfos, onde torres de cristal e madeira viva refletem a luz em padrões rúnicos que fortalecem os Vínculos.</li><li><strong>Floresta de Terysia:</strong> Um ecossistema consciente, onde árvores exibem runas naturais em seus troncos e abrem caminho para aliados.</li><li><strong>Montanhas de Barak'Tor:</strong> Fortaleza anã esculpida na própria montanha, com salões gigantescos sustentados por colunas rúnicas vivas.</li><li><strong>Vale de Elaron:</strong> Santuário onde a energia vital pulsa visível como correntes de luz verde e dourada no ar.</li><li><strong>Fontes de Lúnia:</strong> Águas sagradas que fluem para cima em cascatas invertidas sob a luz constante de duas luas gêmeas.</li><li><strong>Ashkar:</strong> Cidade erguida dentro de um vulcão adormecido, com edifícios que se dobram sobre si mesmos em ângulos impossíveis.</li><li><strong>Planícies de Cinza:</strong> Antigas terras verdes transformadas em desolação onde cinzas caem sem cessar.</li><li><strong>Fenda do Caos:</strong> Epicentro da ruptura, onde o tempo se dobra sobre si mesmo e a manifestação física da Runa Vazia paira como um símbolo tridimensional de negação pura.</li></ul><img src='assets/images/lore/mapa_eldraem.jpg' alt='Mapa das principais regiões de Eldraem'><h2>Personagens-Chave</h2><p>Neste mundo em guerra, grandes poderes se manifestam através de indivíduos extraordinários:</p><p><strong>Lyrandar Vínculoforte:</strong> Arquimago da Ordem que testemunhou três eras de Eldraem e foi o primeiro a reconhecer os sinais da ruptura.</p><p><strong>Elowyn Sussurroverde:</strong> A Voz da Floresta, nascida durante um alinhamento lunar raro, consegue comunicar-se com a consciência coletiva das árvores.</p><p><strong>Thorgrim Runagranito:</strong> Mestre das Forjas Eternas, guarda segredos de forja que nenhum outro ser vivo conhece.</p><p><strong>Magus Valerian Cinzarrubro:</strong> Ex-arquivista expulso por heresia, fundou o Círculo após descobrir textos proibidos sobre a natureza limitadora dos Vínculos.</p><p><strong>Rei Nocthyr:</strong> O primeiro rei de Eldraem, agora reanimado como Monarca do Sepulcro, lidera uma corte de reis e rainhas mortos há milênios.</p><p><strong>A Runa Vazia:</strong> Mais que um símbolo, está desenvolvendo uma consciência primitiva alimentada pelo colapso dos Vínculos, atraindo seguidores sem verdadeira intencionalidade.</p><img src='assets/images/lore/confronto_lideres.jpg' alt='Confronto entre Lyrandar e Valerian na Fenda do Caos'><h2>A Guerra dos Vínculos</h2><p>Este conflito colossal não é apenas uma batalha por território ou poder, mas pela própria natureza da realidade. Cada confronto entre as facções rompe mais Vínculos Rúnicos, acelerando a desintegração do tecido da realidade.</p><p>As criaturas como os Crystal Golems, Elven Rangers, Volcanic Behemoths e Soul Revenants são apenas peões neste jogo cósmico, enquanto poderes maiores manipulam os próprios fundamentos da existência.</p><p>Enquanto isso, a Runa Vazia cresce em poder e consciência, uma entidade nascente que poderia representar tanto o fim de Eldraem quanto sua transformação em algo completamente novo.</p><h2>Seu Papel em Eldraem</h2><p>É neste mundo à beira do colapso que você deve escolher seu caminho. Preservará os Vínculos antigos ao lado da Ordem de Galadreth, mantendo a harmonia mesmo que isso signifique eternizar limitações? Ou se juntará ao Círculo de Ashkar, buscando liberdade absoluta através do caos, mesmo que isso ameace a própria existência?</p><p>A cada carta jogada, a cada estratégia executada, você molda o destino de Eldraem. O equilíbrio dos poderes está em suas mãos.</p><p><strong>A Guerra dos Vínculos apenas começou. Que lado você escolherá?</strong></p><p class='cta'><a class='game-link', href='#play_now'>ENTRE NA BATALHA AGORA!</a></p> <img src='assets/images/lore/path.jpg' alt='path to choose'>"
+  },
+
   {
     "id": "news_001",
     "date": "2025-04-01",

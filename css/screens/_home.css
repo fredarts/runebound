@@ -1,5 +1,7 @@
 /* css/screens/_home.css - Estilos para a Tela Inicial (Notícias) */
 
+
+
 #home-screen {
     /* Layout Geral */
     display: flex; /* Herdado de .screen */
@@ -25,9 +27,21 @@
     color: var(--title-color);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     flex-shrink: 0; /* Não deixa o título encolher */
-    margin-top: 60px;
+    margin-top: 40px;
     font-weight: bolder;
     font-size: 2em;
+    text-align: left;
+}
+
+.home-layout h3 { /* Usa .home-layout se você tiver esse wrapper, senão use #home-screen h2 */
+    margin-bottom: 20px;
+    color: var(--accent-color-light);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0; /* Não deixa o título encolher */
+    margin-top: 40px;
+    font-weight: bolder;
+    font-size: 1.5em;
+    text-align: left;
 }
 
 /* Área Principal de Conteúdo (Feed/Detalhe) */
@@ -176,6 +190,9 @@
     margin-bottom: 15px;
     color: var(--title-color);
     flex-shrink: 0;
+    font-size: 2.3em;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
+    
 }
 
 /* Imagem no Detalhe */
@@ -203,6 +220,7 @@
 .news-content-detail li { margin-bottom: 0.5em; }
 .news-content-detail strong { color: var(--accent-color-light); font-weight: bold; } /* Usa a variável ou define aqui */
 .news-content-detail em { color: var(--text-color-secondary); font-style: italic; }
+.news-content-detail img { width: 107%; margin: 0 -30px -40px -30px;}
 
 
 /* Botão Jogar (Posicionado Absolutamente) */
@@ -267,3 +285,89 @@
 ::-webkit-scrollbar-thumb:hover {
     background-color: #064385; /* Cor do polegar no hover */
 }
+
+.cta{
+    text-align: center;
+    font-size: 2em;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
+    
+}
+
+
+.game-link {
+    display: inline-block; /* Allows setting width/height and margin/padding */
+    padding: 15px 30px;
+    font-family: sans-serif; /* Choose a game-like font */
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff; /* Default text color */
+    border-radius: 8px; /* Slightly rounded corners */
+    cursor: pointer;
+    position: relative; /* For absolute positioning of pseudo-elements */
+    overflow: hidden; /* Clip any overflowing pseudo-elements */
+    z-index: 1; /* Ensure text is above pseudo-elements */
+    transition: transform 0.3s ease-in-out; /* Smooth grow effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle initial shadow */
+    background-image: radial-gradient(circle at center, #4a90e2 0%, #1e3c72 100%); /* Initial radial gradient */
+    margin-top: 20px;
+  }
+  
+  /* Hover Effect */
+  .game-link:hover {
+    transform: scale(1.05); /* Slight grow on hover */
+    box-shadow: rgb(99, 164, 255, 0.3) 0px 0px 15px 6px, rgb(46, 89, 132, 0.8) 0px 0px 6px;
+  }
+  
+  /* Inner Glow (using a pseudo-element) */
+  .game-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at center, rgba(68, 155, 255, 0.8) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: -1; /* Behind the text */
+    border-radius: inherit; /* Match border-radius of the link */
+  }
+  
+  .game-link:hover::before {
+    opacity: 1; /* Fade in the inner glow on hover */
+  }
+  
+  /* Outer Glow (using another pseudo-element) */
+  .game-link::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: rgba(74, 144, 226, 0.5); /* Soft glow color */
+    border-radius: 10px; /* Slightly larger than the link */
+    opacity: 0;
+    z-index: -2; /* Behind the inner glow and text */
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .game-link:hover::after {
+    opacity: 1; /* Fade in the outer glow on hover */
+  }
+  
+  /* Subtle Border Highlight */
+  .game-link:hover {
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Add a subtle border on hover */
+  }
+  
+  /* Click/Active State (Optional) */
+  .game-link:active {
+    transform: scale(0.95); /* Slight shrink on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Reduced shadow on click */
+  }
+
+
+  .news-content-detail  h2{
+    margin-top: 60px;
+  }

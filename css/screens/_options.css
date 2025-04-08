@@ -22,6 +22,7 @@
     font-weight: bolder;
     font-size: 2em;
     color: #fff;
+    margin-top: 60px;
     /* Herda h2 base */
 }
 
@@ -39,6 +40,7 @@
     max-height: calc(100% - 150px); /* Altura máxima antes de rolar (ajuste 150px conforme necessário) */
     box-sizing: border-box;
     flex-shrink: 1; /* Permite encolher se necessário */
+    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
 }
 
 /* Grupo de Opções (Fieldset) */
