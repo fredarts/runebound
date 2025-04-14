@@ -190,7 +190,7 @@
   /* Card Back (verso dos cards) */
   .card.card-back {
     background-color: #4a3a2a;
-    background-image: url('../assets/images/ui/card_back_placeholder.png');
+    background-image: url('../../assets/images/ui/card_back_placeholder.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

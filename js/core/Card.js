@@ -57,15 +57,17 @@ export default class Card { // Using export default
         return true; // Return true indicating the 'play' sequence started
     }
 
-     /** Placeholder: Does this card require a target? Subclasses override. */
-     requiresTarget() {
+       /** Placeholder: Does this card require a target? Subclasses override. */
+    requiresTarget() {
+        // Base cards usually don't require targets unless a subclass says otherwise
         return false;
-     }
+    }
 
-     /** Placeholder: What kind of target? Subclasses override. */
-     targetType() {
-        return null;
-     }
+    /** Placeholder: What kind of target? Subclasses override. */
+    targetType() {
+        // Base cards have no specific target type
+        return null; // Or 'none' if you prefer
+    }
 
     // --- Rendering ---
     getRenderData() {

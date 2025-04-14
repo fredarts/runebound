@@ -1,13 +1,12 @@
-// js/ui/screens/BattleScreenUI.js - ATUALIZADO (v2.5 - AudioManager Integration)
+// js/ui/screens/BattleScreenUI.js - ATUALIZADO (v2.5 - AudioManager + Button Debug Logs)
 
 // Importar dependências
 import CardRenderer from '../helpers/CardRenderer.js';
 import ZoomHandler from '../helpers/ZoomHandler.js';
 import CreatureCard from '../../core/CreatureCard.js';
 import { RunebindingCard } from '../../core/RunebindingCard.js';
-import { InstantCard } from '../../core/InstantCard.js'; // Importar InstantCard se for verificar tipo
+import { InstantCard } from '../../core/InstantCard.js';
 import { Graveyard } from '../../core/Graveyard.js';
-// AudioManager não precisa ser importado aqui, ele é injetado
 
 export default class BattleScreenUI {
     // --- Referências Injetadas ---
@@ -16,7 +15,7 @@ export default class BattleScreenUI {
     #cardDatabase;
     #cardRenderer;
     #zoomHandler;
-    #audioManager; // <<<=== Adicionado: Referência para AudioManager
+    #audioManager;
 
     // --- Estado do Jogo (Recebido) ---
     #gameInstance = null;
@@ -75,13 +74,13 @@ export default class BattleScreenUI {
     #graveyardPlaceholderSrc = 'assets/images/ui/graveyard.png';
 
     // --- Construtor ---
-    constructor(screenManager, accountManager, cardDatabase, cardRenderer, zoomHandler, audioManager) { // <<<=== Parâmetro audioManager adicionado
+    constructor(screenManager, accountManager, cardDatabase, cardRenderer, zoomHandler, audioManager) {
         this.#screenManager = screenManager;
         this.#accountManager = accountManager;
         this.#cardDatabase = cardDatabase;
         this.#cardRenderer = cardRenderer;
         this.#zoomHandler = zoomHandler;
-        this.#audioManager = audioManager; // <<<=== Armazena a instância
+        this.#audioManager = audioManager;
 
         this.#graveyardPlaceholderSrc = 'assets/images/ui/graveyard.png';
 
@@ -109,20 +108,17 @@ export default class BattleScreenUI {
     renderInitialState() {
         if (!this.#gameInstance || !this.#localPlayerId) {
             console.error("BattleScreenUI Error: Game Instance or Local Player ID not set.");
-            this.#screenManager.showScreen('profile-screen'); // Volta pro perfil se der erro
+            this.#screenManager.showScreen('profile-screen');
             return;
         }
         console.log("BattleScreenUI: Rendering initial game state...");
-
-        // Limpeza e Reset
         this._clearUI();
         this._resetUIState();
-
         const localPlayer = this.#gameInstance.getPlayer(this.#localPlayerId);
         const opponent = this.#gameInstance.getOpponent(this.#localPlayerId);
         if (!localPlayer || !opponent) { console.error("BattleScreenUI Error: Players not found."); return; }
-
-        // Render Infos, Mãos, Campos, Zonas
+        console.log(`DEBUG: Initial Render - Local Hand Size: ${localPlayer.hand.getSize()}, Deck Size: ${localPlayer.deck.getSize()}`);
+        console.log(`DEBUG: Initial Render - Opponent Hand Size: ${opponent.hand.getSize()}, Deck Size: ${opponent.deck.getSize()}`);
         this._renderPlayerInfo(localPlayer, true);
         this._renderPlayerInfo(opponent, false);
         this._renderPlayerHand(localPlayer);
@@ -131,38 +127,26 @@ export default class BattleScreenUI {
         this._updateDeckDisplay(opponent);
         this._updateGraveyardDisplay(localPlayer);
         this._updateGraveyardDisplay(opponent);
-        this._renderBattlefield(localPlayer.battlefield, this.#playerBattlefieldElement); // Renderiza campo inicial
-        this._renderBattlefield(opponent.battlefield, this.#opponentBattlefieldElement); // Renderiza campo inicial
-
-        // Render Info Turno/Fase
+        this._renderBattlefield(localPlayer.battlefield, this.#playerBattlefieldElement);
+        this._renderBattlefield(opponent.battlefield, this.#opponentBattlefieldElement);
         this.#turnNumberElement.text(this.#gameInstance.turnNumber || 1);
         this._updatePhaseIndicator();
         this._updateCurrentPlayerIndicator();
-
-        // Configurar Botões
         this.#btnConfirmAttack.hide().prop('disabled', true);
         this.#btnConfirmBlocks.hide().prop('disabled', true);
         this._updateTurnControls();
-
-        // Vincular Ações da UI
-        this.bindGameActions();
-
-        // Mostra a tela (após tudo renderizado)
-        // this.#screenManager.showScreen('battle-screen'); // O main.js faz isso após initializeAndStartGame
+        this.bindGameActions(); // Rebind actions AFTER initial render might be safer
         console.log("BattleScreenUI: Initial game state render complete.");
     }
 
     // --- Bindings de Eventos ---
     _bindPermanentEvents() {
-        // Fechar zoom clicando fora
         $('#battle-image-zoom-overlay').off('click.battlezoom').on('click.battlezoom', (event) => {
             if (event.target === event.currentTarget) this.#zoomHandler.closeZoom();
         });
-        // Não fechar game over clicando fora
         this.#gameOverOverlayElement.off('click.gameover').on('click.gameover', (event) => {
-            if (event.target === event.currentTarget) { /* Não faz nada */ }
+            if (event.target === event.currentTarget) { /* No action */ }
         });
-        // Fechar seletores/zoom com ESC
         $(document).off('keydown.battlescreen').on('keydown.battlescreen', (e) => {
             if (!this.#battleScreenElement.hasClass('active')) return;
             if (e.key === "Escape") {
@@ -177,12 +161,10 @@ export default class BattleScreenUI {
     _bindGameEventListeners() {
          if (!this.#gameInstance) return;
          console.log("BattleScreenUI: Binding game event listeners...");
-         // Adiciona listeners para eventos do Game
          this.#gameInstance.addEventListener('turnChange', this._handleTurnChange.bind(this));
          this.#gameInstance.addEventListener('phaseChange', this._handlePhaseChange.bind(this));
          this.#gameInstance.addEventListener('playerStatsChanged', this._handlePlayerStatsChanged.bind(this));
          this.#gameInstance.addEventListener('cardDrawn', this._handleCardDrawn.bind(this));
-         // 'cardPlayed' é tratado implicitamente por 'cardMoved'
          this.#gameInstance.addEventListener('cardMoved', this._handleCardMoved.bind(this));
          this.#gameInstance.addEventListener('gameLog', this._handleGameLog.bind(this));
          this.#gameInstance.addEventListener('creatureUpdate', this._handleCreatureUpdate.bind(this));
@@ -200,119 +182,96 @@ export default class BattleScreenUI {
     bindGameActions() {
         console.log("BattleScreenUI: Binding game action interactions...");
 
-        // --- Adicionar áudio aos botões ---
         const addBattleAudio = ($element, sfxClick = 'buttonClick', sfxHover = 'buttonHover') => {
-             $element.off('click.battleaudio').on('click.battleaudio', () => this.#audioManager?.playSFX(sfxClick));
-             $element.off('mouseenter.battleaudio').on('mouseenter.battleaudio', () => this.#audioManager?.playSFX(sfxHover));
+             $element.off('click.battleaudio mouseenter.battleaudio');
+             $element.on('click.battleaudio', () => this.#audioManager?.playSFX(sfxClick));
+             $element.on('mouseenter.battleaudio', () => this.#audioManager?.playSFX(sfxHover));
         };
 
-        // Bind Ações Principais + Áudio
-        this.#btnEndTurn.off('click').on('click', this._handleEndTurnClick.bind(this));
+        // --- CHECK IF BUTTONS ARE CACHED CORRECTLY ---
+        if (!this.#btnEndTurn || !this.#btnEndTurn.length) console.error("DEBUG: #btnEndTurn not cached!");
+        if (!this.#btnPassPhase || !this.#btnPassPhase.length) console.error("DEBUG: #btnPassPhase not cached!");
+        if (!this.#btnDiscardMana || !this.#btnDiscardMana.length) console.error("DEBUG: #btnDiscardMana not cached!");
+        // --- END CHECK ---
+
+        this.#btnEndTurn.off('click.battlescreen').on('click.battlescreen', this._handleEndTurnClick.bind(this));
         addBattleAudio(this.#btnEndTurn);
-
-        this.#btnPassPhase.off('click').on('click', this._handlePassPhaseClick.bind(this));
+        this.#btnPassPhase.off('click.battlescreen').on('click.battlescreen', this._handlePassPhaseClick.bind(this));
         addBattleAudio(this.#btnPassPhase);
-
-        this.#btnDiscardMana.off('click').on('click', this._handleDiscardForManaClick.bind(this));
+        this.#btnDiscardMana.off('click.battlescreen').on('click.battlescreen', this._handleDiscardForManaClick.bind(this));
         addBattleAudio(this.#btnDiscardMana);
-
-        // Bind Ações de Combate + Áudio
-        this.#btnConfirmAttack.off('click').on('click', this._handleConfirmAttackersClick.bind(this));
+        this.#btnConfirmAttack.off('click.battlescreen').on('click.battlescreen', this._handleConfirmAttackersClick.bind(this));
         addBattleAudio(this.#btnConfirmAttack);
-
-        this.#btnConfirmBlocks.off('click').on('click', this._handleConfirmBlockersClick.bind(this));
+        this.#btnConfirmBlocks.off('click.battlescreen').on('click.battlescreen', this._handleConfirmBlockersClick.bind(this));
         addBattleAudio(this.#btnConfirmBlocks);
-
-        // Bind Ações nas Cartas (Mão e Campo)
-        this.#playerHandElement.off('click', '.card').on('click', '.card', this._handleHandCardClick.bind(this));
-        this.#playerBattlefieldElement.off('click', '.card').on('click', '.card', this._handleBattlefieldCardClick.bind(this));
-        this.#opponentBattlefieldElement.off('click', '.card').on('click', '.card', this._handleBattlefieldCardClick.bind(this));
-
-        // Bind Zoom (Context Menu)
-        this.#playerHandElement.off('contextmenu', '.card').on('contextmenu', '.card', (e) => this.#zoomHandler.handleZoomClick(e, this.#gameInstance));
-        this.#playerBattlefieldElement.off('contextmenu', '.card').on('contextmenu', '.card', (e) => this.#zoomHandler.handleZoomClick(e, this.#gameInstance));
-        this.#opponentBattlefieldElement.off('contextmenu', '.card').on('contextmenu', '.card', (e) => this.#zoomHandler.handleZoomClick(e, this.#gameInstance));
-        this.#battleScreenElement.off('contextmenu', '.card').on('contextmenu', '.card', (e) => e.preventDefault()); // Previne menu default
-
-        // Botão Voltar do Game Over + Áudio
-        const $btnGameOverBack = this.#btnBackToProfile; // Renomeado para clareza
-        $btnGameOverBack.off('click').on('click', () => {
+        this.#playerHandElement.off('click.battlescreen', '.card').on('click.battlescreen', '.card', this._handleHandCardClick.bind(this));
+        this.#playerBattlefieldElement.off('click.battlescreen', '.card').on('click.battlescreen', '.card', this._handleBattlefieldCardClick.bind(this));
+        this.#opponentBattlefieldElement.off('click.battlescreen', '.card').on('click.battlescreen', '.card', this._handleBattlefieldCardClick.bind(this));
+        this.#playerHandElement.off('contextmenu.battlescreen', '.card').on('contextmenu.battlescreen', '.card', (e) => this.#zoomHandler.handleZoomClick(e, this.#gameInstance));
+        this.#playerBattlefieldElement.off('contextmenu.battlescreen', '.card').on('contextmenu.battlescreen', '.card', (e) => this.#zoomHandler.handleZoomClick(e, this.#gameInstance));
+        this.#opponentBattlefieldElement.off('contextmenu.battlescreen', '.card').on('contextmenu.battlescreen', '.card', (e) => this.#zoomHandler.handleZoomClick(e, this.#gameInstance));
+        this.#battleScreenElement.off('contextmenu.battlescreen', '.card').on('contextmenu.battlescreen', '.card', (e) => e.preventDefault());
+        const $btnGameOverBack = this.#btnBackToProfile;
+        $btnGameOverBack.off('click.battlescreen').on('click.battlescreen', () => {
             this.#gameOverOverlayElement.removeClass('active');
-            this.#gameInstance = null; // Desvincula a instância do jogo
-            this.#screenManager.showScreen('profile-screen'); // Vai para o perfil
-            // A BGM será tocada pelo handler de navegação do UIManager
+            this.#gameInstance = null;
+            this.#screenManager.showScreen('profile-screen');
         });
         addBattleAudio($btnGameOverBack);
+        console.log("BattleScreenUI: Game action bindings presumably complete.");
     }
 
-    // --- Handlers de Eventos do Jogo (com Áudio) ---
+    // --- Handlers de Eventos do Jogo ---
     _handleTurnChange(e) { this._updateCurrentPlayerIndicator(); this._updateTurnControls(); }
     _handlePhaseChange(e) { this._updatePhaseIndicator(); this._updateTurnControls(); this._exitCombatModes(); }
     _handlePlayerStatsChanged(e) { const p = this.#gameInstance?.getPlayer(e.detail.playerId); if (p) this._updatePlayerStats(p); }
     _handleCardDrawn(e) {
         const { playerId, card } = e.detail;
+        // console.log(`DEBUG: _handleCardDrawn - Player ID: ${playerId}, Card: ${card?.name}`); // Kept for reference
         if (playerId === this.#localPlayerId) {
             this._addCardToHandUI(card);
-            this.#audioManager?.playSFX('cardDraw'); // <<<=== Toca SFX
+            this.#audioManager?.playSFX('cardDraw');
         } else {
             this._updateOpponentHandCount(this.#gameInstance?.getPlayer(playerId));
         }
         const player = this.#gameInstance?.getPlayer(playerId);
         if (player) this._updateDeckDisplay(player);
     }
-    _handleCardPlayed(e) { /* Tratado por _handleCardMoved */ }
+    _handleCardPlayed(e) { /* Handled by _handleCardMoved */ }
     _handleCardMoved(e) {
         const { cardUniqueId, cardData, fromZone, toZone, ownerId } = e.detail;
         const isLocal = ownerId === this.#localPlayerId;
         const player = this.#gameInstance?.getPlayer(ownerId); if (!player) return;
 
-        // --- Remover do DOM antigo ---
         if (fromZone === 'hand' && isLocal) this.#playerHandElement.find(`.card[data-card-unique-id="${cardUniqueId}"]`).remove();
         else if (fromZone === 'battlefield') $(`#${isLocal ? 'player' : 'opponent'}-battlefield .card[data-card-unique-id="${cardUniqueId}"]`).remove();
-        // Adicionar remoção de outras zonas se necessário
 
-        // --- Adicionar ao DOM novo ---
         if (toZone === 'hand' && isLocal) this._addCardToHandUI(cardData);
         else if (toZone === 'battlefield') this._addCardToBattlefieldUI(cardData, ownerId);
-        // Adicionar adição a outras zonas se necessário
 
-        // --- Tocar SFX baseado na Ação ---
         if (toZone === 'graveyard' && fromZone === 'hand' && isLocal) {
-            // Descarte da mão (inclui descarte por mana ou por excesso)
             this.#audioManager?.playSFX('cardDiscard');
-            // Atualiza contador de descarte obrigatório, se aplicável
             if (this.#pendingDiscardCount > 0) {
                  this.#pendingDiscardCount--;
                  if (this.#pendingDiscardCount <= 0) this._exitDiscardRequiredMode();
                  else this.#actionFeedbackElement.text(`Mão cheia! Descarte ${this.#pendingDiscardCount} carta(s).`);
              }
         } else if ((toZone === 'battlefield' || toZone === 'graveyard') && fromZone === 'hand') {
-            // Carta jogada da mão (para campo ou direto pro cemitério como Instant)
-            if (cardData?.type === 'Creature') {
-                this.#audioManager?.playSFX('playCreature');
-            } else if (cardData?.type === 'Instant') {
-                this.#audioManager?.playSFX('playInstant');
-            } else if (cardData?.type === 'Runebinding') {
-                 this.#audioManager?.playSFX('playRunebinding');
-            }
-        } else if (toZone === 'graveyard' && fromZone === 'battlefield') {
-            // Criatura destruída, etc. (Poderia ter um som específico de destruição)
-            // this.#audioManager?.playSFX('creatureDestroyed'); // Exemplo
+            if (cardData?.type === 'Creature') this.#audioManager?.playSFX('playCreature');
+            else if (cardData?.type === 'Instant') this.#audioManager?.playSFX('playInstant');
+            else if (cardData?.type === 'Runebinding') this.#audioManager?.playSFX('playRunebinding');
         }
 
-        // --- Atualizar Contagens/Displays ---
         if (['deck'].includes(fromZone) || ['deck'].includes(toZone)) this._updateDeckDisplay(player);
         if (['graveyard'].includes(fromZone) || ['graveyard'].includes(toZone)) this._updateGraveyardDisplay(player);
         if ((fromZone === 'hand' || toZone === 'hand') && !isLocal) this._updateOpponentHandCount(player);
-
-        // NÃO decrementar #pendingDiscardCount aqui novamente, já foi feito acima no if (toZone === 'graveyard')
     }
     _handleGameLog(e) { this._addLogMessage(e.detail.message, e.detail.type || 'system'); }
-    _handleCreatureUpdate(e) { /* ... (lógica de update visual inalterada) ... */ }
-    _handleDamagePrevented(e) { this._showCardFeedback(this.#battleScreenElement.find(`.card[data-card-unique-id="${e.detail.target.uniqueId}"]`), 'damage-prevented'); /* SFX aqui? */ }
-    _handleCreatureTookDamage(e) { this._showCardFeedback(this.#battleScreenElement.find(`.card[data-card-unique-id="${e.detail.creature.uniqueId}"]`), 'damage', e.detail.amount); /* SFX aqui? ('takeDamage') */ }
-    _handleCreatureHealed(e) { this._showCardFeedback(this.#battleScreenElement.find(`.card[data-card-unique-id="${e.detail.creature.uniqueId}"]`), 'heal', e.detail.amount); /* SFX aqui? ('healEffect') */ }
-    _handleCombatResolved(e) { /* ... (lógica visual inalterada) ... */ }
+    _handleCreatureUpdate(e) { /* ... */ }
+    _handleDamagePrevented(e) { /* ... */ }
+    _handleCreatureTookDamage(e) { /* ... */ }
+    _handleCreatureHealed(e) { /* ... */ }
+    _handleCombatResolved(e) { /* ... */ }
     _handleGameOver(e) {
         const { winnerId, winnerName, loserName } = e.detail;
         const isWinner = winnerId === this.#localPlayerId;
@@ -320,70 +279,396 @@ export default class BattleScreenUI {
         this.#gameOverMessageElement.text(msg);
         this.#gameOverOverlayElement.addClass('active');
         this._disableAllGameActions();
-        this.#audioManager?.playSFX(isWinner ? 'gameOverWin' : 'gameOverLose'); // <<<=== Toca SFX Fim de Jogo
-        this.#audioManager?.stopBGM(); // <<<=== Para BGM
+        this.#audioManager?.playSFX(isWinner ? 'gameOverWin' : 'gameOverLose');
+        this.#audioManager?.stopBGM();
     }
-    _handleDeckEmpty(e) { /* ... (log inalterado) ... */ }
-    _handleDiscardRequired(e) { /* ... (lógica de estado inalterada) ... */ }
+    _handleDeckEmpty(e) { /* ... */ }
+    _handleDiscardRequired(e) { /* ... */ }
     _handleAttackPhaseStart(e) { this._updateTurnControls(); }
-    _handleAttackersDeclared(e) { /* ... (lógica visual inalterada) ... */ }
-    _handleBlockersDeclared(e) { /* ... (lógica visual inalterada) ... */ }
+    _handleAttackersDeclared(e) { /* ... */ }
+    _handleBlockersDeclared(e) { /* ... */ }
 
-    // --- Handlers de Ações da UI ---
-    // Os handlers de clique nos botões (_handleEndTurnClick, etc.) não precisam
-    // tocar áudio aqui, pois já foi adicionado nos listeners em bindGameActions.
-    _handleEndTurnClick() { if (this._canInteract(true)) this.#gameInstance?.endTurn(); }
-    _handlePassPhaseClick() { if (this._canInteract(true)) this.#gameInstance?.passPhase(); }
-    _handleDiscardForManaClick() { if (this._canInteract(true) && !this.#btnDiscardMana.prop('disabled')) this._enterDiscardSelectionMode(); }
-    _handleHandCardClick(event) { /* ... (lógica de jogar/descartar/selecionar alvo inalterada) ... */ }
-    _handleBattlefieldCardClick(event) { /* ... (lógica de alvo/ataque/bloqueio inalterada) ... */ }
+    // --- Handlers de Ações da UI (with DEBUG LOGS) ---
+    _handleEndTurnClick() {
+        // === DEBUG LOG ===
+        console.log("DEBUG: _handleEndTurnClick called.");
+        console.log("DEBUG: _canInteract(true) =", this._canInteract(true));
+        console.log("DEBUG: gameInstance =", this.#gameInstance);
+        // === END DEBUG LOG ===
+        if (this._canInteract(true)) {
+            console.log("DEBUG: Calling gameInstance.endTurn()");
+            this.#gameInstance?.endTurn();
+        }
+    }
+    _handlePassPhaseClick() {
+        // === DEBUG LOG ===
+        console.log("DEBUG: _handlePassPhaseClick called.");
+        console.log("DEBUG: _canInteract(true) =", this._canInteract(true));
+        console.log("DEBUG: gameInstance =", this.#gameInstance);
+        // === END DEBUG LOG ===
+        if (this._canInteract(true)) {
+            console.log("DEBUG: Calling gameInstance.passPhase()");
+            this.#gameInstance?.passPhase();
+        }
+    }
+    _handleDiscardForManaClick() {
+        // === DEBUG LOG ===
+        console.log("DEBUG: _handleDiscardForManaClick called.");
+        console.log("DEBUG: _canInteract(true) =", this._canInteract(true));
+        console.log("DEBUG: Button disabled =", this.#btnDiscardMana.prop('disabled'));
+        // === END DEBUG LOG ===
+        if (this._canInteract(true) && !this.#btnDiscardMana.prop('disabled')) {
+            console.log("DEBUG: Entering discard selection mode for mana.");
+            this._enterDiscardSelectionMode();
+        }
+    }
+    _handleHandCardClick(event) {
+        console.log("DEBUG: _handleHandCardClick called.");
+        const $cardElement = $(event.currentTarget);
+        const cardUniqueId = $cardElement.data('card-unique-id');
+        if (!cardUniqueId) return;
+
+        // === FIX: PRIORITIZE DISCARD CHECK ===
+        if (this.#isSelectingDiscard) {
+            console.log(`DEBUG: Attempting to discard card ${cardUniqueId} for mana...`);
+            // Directly call the player's discard function
+            if (this.#gameInstance?.getPlayer(this.#localPlayerId)?.discardCardForMana(cardUniqueId, this.#gameInstance)) {
+                // Success! Exit discard mode.
+                this._exitDiscardSelectionMode();
+            } else {
+                // Discard failed (e.g., already discarded this turn) - Game core should emit log
+                // No need to exit discard mode here, let the player try another card.
+                console.warn(`DEBUG: discardCardForMana returned false for ${cardUniqueId}`);
+            }
+            return; // <<< IMPORTANT: Stop further processing in this handler
+        }
+
+          if (this.#isSelectingTarget) {
+              console.warn("DEBUG: Cannot click hand card while selecting target.");
+              this._addLogMessage("Selecione um alvo válido ou pressione ESC para cancelar.", "feedback");
+              return;
+          }
+
+          if (!this._canInteract(true)) return; // Check if player can act
+
+          const card = this.#gameInstance?.getPlayer(this.#localPlayerId)?.hand.getCard(cardUniqueId);
+          if (!card) { console.warn(`Card not found in hand: ${cardUniqueId}`); return; }
+
+          if (card.requiresTarget()) {
+              this._enterTargetSelectionMode({ cardUniqueId: cardUniqueId, targetType: card.targetType() });
+          } else {
+              console.log(`DEBUG: Playing card ${cardUniqueId} without target...`);
+              this.#gameInstance?.getPlayer(this.#localPlayerId)?.playCard(cardUniqueId, null, this.#gameInstance);
+          }
+     }
+    _handleBattlefieldCardClick(event) {
+         console.log("DEBUG: _handleBattlefieldCardClick called."); // <<< LOG ADDED
+         /* ... (rest of the existing logic) ... */
+           const $cardElement = $(event.currentTarget);
+           const cardUniqueId = $cardElement.data('card-unique-id');
+           const ownerId = $cardElement.closest('.player-area').attr('id')?.includes('opponent')
+                         ? this.#gameInstance?.getOpponent(this.#localPlayerId)?.id
+                         : this.#localPlayerId;
+
+           if (!cardUniqueId) return;
+
+           // --- TARGET SELECTION LOGIC ---
+           if (this.#isSelectingTarget) {
+               if (this._checkIfValidTarget(cardUniqueId, ownerId, this.#actionPendingTarget)) {
+                   const actionCardId = this.#actionPendingTarget.cardUniqueId;
+                   console.log(`DEBUG: Playing card ${actionCardId} targeting ${cardUniqueId}...`);
+                   this.#gameInstance?.getPlayer(this.#localPlayerId)?.playCard(actionCardId, cardUniqueId, this.#gameInstance);
+                   this._exitTargetSelectionMode();
+               } else {
+                   this._showCardFeedback($cardElement, 'invalid-target');
+                   this._addLogMessage("Alvo inválido para esta ação.", "error");
+               }
+               return; // Exit after handling target click
+           }
+
+           // --- ATTACKER DECLARATION LOGIC ---
+           if (this.#isDeclaringAttackers && ownerId === this.#localPlayerId) {
+                const creature = this.#gameInstance?.getPlayer(this.#localPlayerId)?.battlefield.getCard(cardUniqueId);
+                if (creature?.canAttack()) {
+                     if (this.#selectedAttackerIds.has(cardUniqueId)) {
+                         this.#selectedAttackerIds.delete(cardUniqueId);
+                         $cardElement.removeClass('selected-attacker');
+                     } else {
+                         this.#selectedAttackerIds.add(cardUniqueId);
+                         $cardElement.addClass('selected-attacker');
+                     }
+                      this.#btnConfirmAttack.prop('disabled', this.#selectedAttackerIds.size === 0);
+                 } else {
+                      this._showCardFeedback($cardElement, 'shake');
+                      this._addLogMessage("Esta criatura não pode atacar.", "feedback");
+                 }
+                 return; // Exit after handling attacker selection
+           }
+
+           // --- BLOCKER ASSIGNMENT LOGIC ---
+           if(this.#isAssigningBlockers) {
+               const isOpponentCard = ownerId !== this.#localPlayerId;
+               const isLocalCard = ownerId === this.#localPlayerId;
+
+               if (isOpponentCard && this.#selectedAttackerIds.has(cardUniqueId)) {
+                   // Clicked on an ATTACKER (to assign blockers TO it)
+                   this.#selectedBlockerId = null; // Clear selected blocker
+                   $('.card.selected-blocker').removeClass('selected-blocker');
+                   $('.card.targetable-attacker').removeClass('targetable-attacker');
+                   $cardElement.addClass('targetable-attacker'); // Highlight the attacker being assigned to
+                   this._addLogMessage("Selecione uma criatura sua para bloquear este atacante.", "feedback");
+
+               } else if (isLocalCard) {
+                   // Clicked on one of YOUR creatures (potential blocker)
+                   const blocker = this.#gameInstance?.getPlayer(this.#localPlayerId)?.battlefield.getCard(cardUniqueId);
+                   const targetAttackerId = $('.card.targetable-attacker').data('card-unique-id');
+
+                   if (blocker?.canBlock() && targetAttackerId) {
+                        // Assign this blocker to the highlighted attacker
+                        this._assignBlocker(targetAttackerId, cardUniqueId);
+                        $('.card.targetable-attacker').removeClass('targetable-attacker'); // Clear attacker highlight
+                        this._addLogMessage("Bloqueador designado. Selecione outro atacante ou confirme.", "feedback");
+                   } else if (!targetAttackerId) {
+                        this._addLogMessage("Selecione um atacante inimigo primeiro.", "feedback");
+                   } else {
+                       this._showCardFeedback($cardElement, 'shake');
+                       this._addLogMessage("Esta criatura não pode bloquear.", "feedback");
+                   }
+               }
+               return; // Exit after handling blocker assignment click
+           }
+
+            // Default action if no specific mode is active (e.g., activate ability - future)
+            console.log(`DEBUG: Battlefield card clicked (no active mode): ${cardUniqueId}`);
+     }
+
     _handleConfirmAttackersClick() { if (this.#isDeclaringAttackers) { this.#gameInstance?.confirmAttackDeclaration(this.#localPlayerId, [...this.#selectedAttackerIds]); this._exitAttackerDeclarationMode(); } }
     _handleConfirmBlockersClick() { if (this.#isAssigningBlockers) { this.#gameInstance?.confirmBlockDeclaration(this.#localPlayerId, { ...this.#blockerAssignmentsUI }); this._exitBlockerAssignmentMode(); } }
 
     // --- Métodos de Estado da UI ---
-    _resetUIState() { /* ... (inalterado) ... */ }
-    _canInteract(needsActiveTurn=true){ /* ... (inalterado) ... */ }
-    _enterDiscardRequiredMode(c){ /* ... (inalterado) ... */ }
-    _exitDiscardRequiredMode(){ /* ... (inalterado) ... */ }
-    _enterDiscardSelectionMode(){ /* ... (inalterado) ... */ }
-    _exitDiscardSelectionMode(){ /* ... (inalterado) ... */ }
-    _enterTargetSelectionMode(aI){ /* ... (inalterado) ... */ }
-    _exitTargetSelectionMode(){ /* ... (inalterado) ... */ }
-    _enterAttackerDeclarationMode(){ /* ... (inalterado) ... */ }
-    _exitAttackerDeclarationMode(){ /* ... (inalterado) ... */ }
-    _enterBlockerAssignmentMode(){ /* ... (inalterado) ... */ }
-    _exitBlockerAssignmentMode(){ /* ... (inalterado) ... */ }
-    _exitCombatModes(){ /* ... (inalterado) ... */ }
-    _clearCombatVisuals(){ /* ... (inalterado) ... */ }
-    _assignBlocker(aId,bId){ /* ... (inalterado) ... */ }
-    _updateBlockerAssignmentVisuals(){ /* ... (inalterado) ... */ }
-    _highlightValidTargets(tT){ /* ... (inalterado) ... */ }
-    _checkIfValidTarget(tI, tOId, aI) { /* ... (inalterado) ... */ }
-    _showCardFeedback($cE, fT, v = ''){ /* ... (inalterado) ... */ }
-    _disableAllGameActions(allowTargetables=false){ /* ... (inalterado) ... */ }
+    _resetUIState() { /* ... */ }
+    _canInteract(needsActiveTurn = true) {
+        if (this.#gameInstance?.state !== 'playing') return false;
+        if (needsActiveTurn && this.#gameInstance?.getCurrentPlayer()?.id !== this.#localPlayerId) return false;
+        if (this.#isSelectingDiscard || this.#isSelectingTarget || this.#isDeclaringAttackers || this.#isAssigningBlockers) return false; // Can't do general actions during specific selections
+        return true;
+    }
+    _enterDiscardRequiredMode(count) { /* ... */ }
+    _exitDiscardRequiredMode() { /* ... */ }
+    _enterDiscardSelectionMode() { /* ... */ }
+    _exitDiscardSelectionMode() {
+        if (!this.#isSelectingDiscard) return;
+        console.log("DEBUG: Exiting discard selection mode.");
+        this.#isSelectingDiscard = false;
+        this.#actionFeedbackElement.text(''); // Clear feedback message
+        this.#playerHandElement.removeClass('selecting-discard');
+        this.#playerHandElement.find('.card').removeClass('targetable'); // Remove highlight
+    }
+    _enterTargetSelectionMode(actionInfo) { /* ... */ }
+    _exitTargetSelectionMode() { /* ... */ }
+    _enterAttackerDeclarationMode() { /* ... */ }
+    _exitAttackerDeclarationMode() { /* ... */ }
+    _enterBlockerAssignmentMode() { /* ... */ }
+    _exitBlockerAssignmentMode() { /* ... */ }
+    _exitCombatModes() { /* ... */ }
+    _clearCombatVisuals() { /* ... */ }
+    _assignBlocker(attackerId, blockerId) { /* ... */ }
+    _updateBlockerAssignmentVisuals() { /* ... */ }
+    _highlightValidTargets(targetType) { /* ... */ }
+    _checkIfValidTarget(targetId, targetOwnerId, actionInfo) { /* ... */ }
+    _showCardFeedback($cardElement, feedbackType, value = '') { /* ... */ }
+    _disableAllGameActions(allowTargetables=false) { /* ... */ }
     _closeZoomedImage() { this.#zoomHandler.closeZoom(); }
 
     // --- Métodos de Renderização da UI ---
-    _clearUI() { /* ... (inalterado) ... */ }
-    _renderPlayerInfo(player, isLocal) { /* ... (inalterado) ... */ }
-    _addCardToHandUI(cD) { /* ... (inalterado) ... */ }
-    _renderPlayerHand(p) { /* ... (inalterado) ... */ }
-    _renderOpponentHand(o) { /* ... (inalterado) ... */ }
-    _updateOpponentHandCount(o) { /* ... (inalterado) ... */ }
-    _addCardToBattlefieldUI(cD, oId) { /* ... (inalterado) ... */ }
-    _renderBattlefield(battlefield, $container) { // <<<=== NOVO (ou ajustar se já existir)
+    _clearUI() {
+        this.#playerHandElement.empty();
+        this.#playerBattlefieldElement.empty();
+        this.#opponentHandElement.empty();
+        this.#opponentBattlefieldElement.empty();
+        this.#gameLogElement.html('<li>Log da Partida:</li>');
+        this.#actionFeedbackElement.text('');
+        this.#playerDeckCountElement.text('?');
+        this.#playerGraveyardCountElement.text('0');
+        this.#opponentDeckCountElement.text('?');
+        this.#opponentGraveyardCountElement.text('0');
+        this.#opponentHandCountElement.text('?');
+        console.log("DEBUG: _clearUI called.");
+    }
+    _renderPlayerInfo(player, isLocal) {
+        const prefix = isLocal ? 'player' : 'opponent';
+        $(`#${prefix}-name`).text(player.name);
+        $(`#${prefix}-life`).text(player.life);
+        $(`#${prefix}-mana`).text(player.mana);
+        $(`#${prefix}-max-mana`).text(player.maxMana);
+        // console.log(`DEBUG: Rendering player info for ${player.name} (isLocal: ${isLocal}) - Life: ${player.life}, Mana: ${player.mana}/${player.maxMana}`);
+        const userData = this.#accountManager?.getUserData(player.name);
+        const avatarSrc = `assets/images/avatars/${userData?.avatar || 'default.png'}`;
+        $(`#${prefix}-avatar-img`).attr('src', avatarSrc).attr('alt', `${player.name} Avatar`);
+    }
+    _addCardToHandUI(cardData) {
+        if (!cardData) return;
+        // console.log(`DEBUG: _addCardToHandUI - Attempting to render card: ${cardData.name} (ID: ${cardData.uniqueId})`);
+        const $cardElement = this.#cardRenderer.renderCard(cardData, 'hand');
+        if ($cardElement) {
+            // console.log(`DEBUG: _addCardToHandUI - Appending card element to player hand:`, $cardElement[0]);
+            this.#playerHandElement.append($cardElement);
+        } else {
+            console.warn("DEBUG: _addCardToHandUI - Failed to render card element for", cardData.name);
+        }
+    }
+    _renderPlayerHand(player) {
+        this.#playerHandElement.empty();
+        const handCards = player.hand.getCards();
+        // console.log(`DEBUG: _renderPlayerHand - Rendering ${handCards.length} cards for ${player.name}`);
+        handCards.forEach(card => {
+            this._addCardToHandUI(card.getRenderData());
+        });
+    }
+    _renderOpponentHand(opponent) {
+        this.#opponentHandElement.empty();
+        const handSize = opponent.hand.getSize();
+        // console.log(`DEBUG: _renderOpponentHand - Rendering ${handSize} card backs for ${opponent.name}`);
+        this.#opponentHandCountElement.text(handSize);
+        for (let i = 0; i < handSize; i++) {
+            const $cardBack = $('<div class="card card-back"></div>');
+            this.#opponentHandElement.append($cardBack);
+        }
+    }
+    _updateOpponentHandCount(opponent) {
+        if (!opponent) return;
+        const count = opponent.hand.getSize();
+        // console.log(`DEBUG: _updateOpponentHandCount - Setting count to ${count} for ${opponent.name}`);
+        this.#opponentHandCountElement.text(count);
+        this._renderOpponentHand(opponent); // Re-render backs to match count
+    }
+    _addCardToBattlefieldUI(cardData, ownerId) {
+        if (!cardData) return;
+        const $container = ownerId === this.#localPlayerId ? this.#playerBattlefieldElement : this.#opponentBattlefieldElement;
+        const $cardElement = this.#cardRenderer.renderCard(cardData, 'battlefield');
+        if ($cardElement) {
+            // console.log(`DEBUG: Appending card ${cardData.name} to battlefield for owner ${ownerId}`);
+            $container.append($cardElement);
+        } else {
+            console.warn("DEBUG: Failed to render battlefield card for", cardData.name);
+        }
+    }
+    _renderBattlefield(battlefield, $container) {
         $container.empty();
-        battlefield.getAllCards().forEach(card => {
+        const cards = battlefield.getAllCards();
+        // console.log(`DEBUG: _renderBattlefield - Rendering ${cards.length} cards into container`, $container[0]);
+        cards.forEach(card => {
             this._addCardToBattlefieldUI(card.getRenderData(), card.ownerId);
         });
     }
-    _updatePlayerStats(p) { /* ... (inalterado) ... */ }
-    _updatePhaseIndicator() { /* ... (inalterado) ... */ }
-    _updateCurrentPlayerIndicator() { /* ... (inalterado) ... */ }
-    _updateTurnControls() { /* ... (inalterado) ... */ }
-    _addLogMessage(m, t = 'info') { /* ... (inalterado) ... */ }
-    _updateDeckDisplay(player) { /* ... (inalterado) ... */ }
-    _updateGraveyardDisplay(player) { /* ... (inalterado) ... */ }
+    _updatePlayerStats(player) {
+        if (!player) return;
+        const isLocal = player.id === this.#localPlayerId;
+        const prefix = isLocal ? 'player' : 'opponent';
+        // console.log(`DEBUG: _updatePlayerStats for ${player.name} - Life: ${player.life}, Mana: ${player.mana}/${player.maxMana}`);
+        $(`#${prefix}-life`).text(player.life);
+        $(`#${prefix}-mana`).text(player.mana);
+        $(`#${prefix}-max-mana`).text(player.maxMana);
+    }
+    _updatePhaseIndicator() {
+        if (!this.#gameInstance || !this.#phaseIndicatorElement || !this.#phaseIndicatorElement.length) {
+            console.warn("DEBUG: _updatePhaseIndicator - Cannot update, gameInstance or element missing.");
+            return;
+        }
+        const currentPhase = this.#gameInstance.getCurrentPhase();
+
+        // Optional: Map internal phase names to user-friendly names
+        const phaseMap = {
+            'mana': 'Mana',
+            'draw': 'Compra',
+            'main': 'Principal',
+            'attack': 'Ataque',
+            'end': 'Final'
+        };
+        const displayPhase = phaseMap[currentPhase] || currentPhase; // Use mapped name or raw name as fallback
+
+        // === DEBUG LOG ===
+        console.log(`DEBUG: _updatePhaseIndicator - Setting phase text to: ${displayPhase} (raw: ${currentPhase})`);
+        // === END DEBUG LOG ===
+        this.#phaseIndicatorElement.text(displayPhase);
+    }
+
+    // Make sure _handlePhaseChange calls it:
+    _handlePhaseChange(e) {
+        // === DEBUG LOG ===
+        // console.log("DEBUG: _handlePhaseChange received:", e.detail);
+        // === END DEBUG LOG ===
+        this._updatePhaseIndicator();
+        this._updateTurnControls(); // Already likely here
+        this._exitCombatModes();    // Already likely here
+    }
+    _updateCurrentPlayerIndicator() { /* ... */ }
+    _updateTurnControls() { /* ... */ }
+    _addLogMessage(message, type = 'system') {
+        if (!message || !this.#gameLogElement || !this.#gameLogElement.length) {
+            console.warn("DEBUG: _addLogMessage - Cannot add log, element missing or message empty.");
+            return;
+        }
+        // === DEBUG LOG ===
+        console.log(`DEBUG: _addLogMessage - Adding log (type: ${type}): "${message}"`);
+        // === END DEBUG LOG ===
+
+        const logClass = `log-${type}`; // Apply class based on type for styling
+        const $logEntry = $(`<li class="${logClass}"></li>`).text(message);
+
+        this.#gameLogElement.prepend($logEntry); // Add to the top (most recent first)
+
+        // Keep log trimmed (optional, e.g., keep last 50 entries)
+        const maxLogEntries = 50;
+        if (this.#gameLogElement.children().length > maxLogEntries) {
+            this.#gameLogElement.children().last().remove();
+        }
+
+        // Auto-scroll the container to the top
+        if (this.#gameLogContainerElement && this.#gameLogContainerElement.length) {
+            this.#gameLogContainerElement.scrollTop(0);
+             // === DEBUG LOG ===
+            // console.log("DEBUG: _addLogMessage - Scrolled log container to top.");
+             // === END DEBUG LOG ===
+        } else {
+             console.warn("DEBUG: _addLogMessage - Log container element not found for scrolling.");
+        }
+    }
+
+    // Make sure the _handleGameLog method exists and calls _addLogMessage:
+    _handleGameLog(e) {
+        // === DEBUG LOG ===
+        // console.log("DEBUG: _handleGameLog received:", e.detail);
+        // === END DEBUG LOG ===
+        this._addLogMessage(e.detail.message, e.detail.type || 'system');
+    }
+    _updateDeckDisplay(player) {
+        if (!player) return;
+        const isLocal = player.id === this.#localPlayerId;
+        const $countElement = isLocal ? this.#playerDeckCountElement : this.#opponentDeckCountElement;
+        const $imgElement = isLocal ? this.#playerDeckImgElement : this.#opponentDeckImgElement;
+        const count = player.deck.getSize();
+        // console.log(`DEBUG: _updateDeckDisplay for ${player.name} (isLocal: ${isLocal}) - Setting count to ${count}`);
+        $countElement.text(count);
+        $imgElement.toggle(count > 0);
+    }
+    _updateGraveyardDisplay(player) {
+        if (!player) return;
+        const isLocal = player.id === this.#localPlayerId;
+        const $countElement = isLocal ? this.#playerGraveyardCountElement : this.#opponentGraveyardCountElement;
+        const $imgElement = isLocal ? this.#playerGraveyardImgElement : this.#opponentGraveyardImgElement;
+        const graveyardCards = player.graveyard.getCards();
+        const count = graveyardCards.length;
+        // console.log(`DEBUG: _updateGraveyardDisplay for ${player.name} (isLocal: ${isLocal}) - Setting count to ${count}`);
+        $countElement.text(count);
+        if (count > 0) {
+            const topCard = graveyardCards[count - 1];
+            const topCardData = topCard.getRenderData();
+            $imgElement.attr('src', topCardData.imageSrc).attr('alt', `Top Card: ${topCardData.name}`).removeClass('is-placeholder');
+        } else {
+            $imgElement.attr('src', this.#graveyardPlaceholderSrc).attr('alt', 'Cemitério Vazio').addClass('is-placeholder');
+        }
+    }
 
     // Cache dos seletores jQuery
     _cacheSelectors() {

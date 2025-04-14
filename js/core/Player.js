@@ -99,20 +99,47 @@ export default class Player { // Using export default
         return playSuccess;
     }
 
-    discardCardForMana(cardUniqueId, game) {
+      // Inside Player class (js/core/Player.js)
+
+      discardCardForMana(cardUniqueId, game) {
+        console.log(`DEBUG: Player ${this.name} attempting discardCardForMana for ${cardUniqueId}`); // <<< LOG ADDED
         if (!game) { console.error("Player.discardCardForMana needs game!"); return false; }
-        if (this.#hasDiscardedForMana) { game.emitEvent('gameLog', { message: `Já descartou por mana.` }); return false; }
-        if (this.#maxMana >= 10) { game.emitEvent('gameLog', { message: `Mana máxima (10) atingida.` }); return false; }
-        const card = this.#hand.getCard(cardUniqueId); if(!card) return false; // Get name before move
-        const moved = game.moveCardToZone(cardUniqueId, this.id, 'hand', 'graveyard'); // Game handles event
-        if (moved) { this.#maxMana++; this.#mana++; this.#hasDiscardedForMana = true; game.emitEvent('playerStatsChanged', { playerId: this.id, updates: { mana: this.mana, maxMana: this.maxMana }}); console.log(`${this.name} discarded ${card.name}. Mana: ${this.#mana}/${this.#maxMana}.`); return true; }
-        return false;
-    }
-    checkHandSize(game) { // Called during end phase cleanup
-        const excess = this.#hand.getSize() - this.#hand.getMaxSize();
-        if (excess > 0) {
-             console.log(`Player ${this.name}: Must discard ${excess} cards.`);
-             game.requestPlayerDiscard(this.id, excess); // Game changes state and emits event
+
+        if (this.#hasDiscardedForMana) {
+            console.log(`DEBUG: Discard failed - already discarded this turn.`); // <<< LOG ADDED
+            game.emitEvent('gameLog', { message: `${this.name}: Já descartou por mana neste turno.`, type: 'error' }); // Emit log
+            return false;
+        }
+        if (this.#maxMana >= 10) {
+            console.log(`DEBUG: Discard failed - max mana (10) reached.`); // <<< LOG ADDED
+            game.emitEvent('gameLog', { message: `${this.name}: Mana máxima (10) já atingida.`, type: 'feedback' }); // Emit log
+            return false;
+        }
+
+        const card = this.#hand.getCard(cardUniqueId);
+        if (!card) {
+             console.log(`DEBUG: Discard failed - card ${cardUniqueId} not in hand.`); // <<< LOG ADDED
+             return false; // Card not found in hand
+        }
+
+        console.log(`DEBUG: Attempting to move card ${card.name} (${cardUniqueId}) from hand to graveyard.`); // <<< LOG ADDED
+        // Game's moveCardToZone handles the actual move and emits 'cardMoved'
+        const moved = game.moveCardToZone(cardUniqueId, this.id, 'hand', 'graveyard');
+
+        if (moved) {
+            this.#maxMana++;
+            this.#mana = this.#maxMana; // Also refill mana to the new max immediately upon gaining max mana
+            this.#hasDiscardedForMana = true;
+            const logMsg = `${this.name} descartou ${card.name} para ganhar +1 Mana Máx.`;
+             console.log(`DEBUG: Discard SUCCESSFUL. ${logMsg} Mana: ${this.#mana}/${this.#maxMana}.`); // <<< LOG ADDED
+            game.emitEvent('gameLog', { message: logMsg, type: 'action' }); // Log success
+            // Emit stats change AFTER updating mana/maxMana
+            game.emitEvent('playerStatsChanged', { playerId: this.id, updates: { mana: this.mana, maxMana: this.maxMana } });
+            return true; // Indicate success
+        } else {
+            console.error(`DEBUG: Discard FAILED - game.moveCardToZone returned false for ${cardUniqueId}.`); // <<< LOG ADDED
+             game.emitEvent('gameLog', { message: `Erro ao mover ${card.name} para o cemitério.`, type: 'error' });
+            return false; // Indicate failure
         }
     }
 
