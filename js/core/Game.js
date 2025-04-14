@@ -128,13 +128,61 @@ export default class Game {
     }
 
     _onPhaseEnter(phase, player) {
-        console.log(`Game: Entering ${phase} phase for ${player.name}.`);
+        console.log(`Game: Entering ${phase} phase for ${player.name}.`); // Existing log
+
+        // === DEBUG LOG: Show game state during phase entry ===
+        console.log(`DEBUG: Game state is now '${this.#state}' during phase entry for ${phase} phase.`);
+        // === END DEBUG LOG ===
+
         // Only reset combat state at the VERY START of the attack phase
-        if (phase === 'attack') { this.#combatManager.reset(); this.emitEvent('attackPhaseStart', { playerId: player.id }); }
-        else if (phase === 'end') { player.endTurnCleanup(this); } // Cleanup & Hand size check happens here
-        else if (phase === 'draw') { this._drawCard(player); }
-        // Set state to 'playing' unless a specific state like 'discarding' was triggered
-        if (this.#state !== 'discarding') this.#state = 'playing';
+        if (phase === 'attack') {
+            // === DEBUG LOG: Confirm Attack Phase Entry ===
+            console.log("DEBUG: Attack Phase Entered. Resetting Combat Manager.");
+            // === END DEBUG LOG ===
+            this.#combatManager.reset();
+            this.emitEvent('attackPhaseStart', { playerId: player.id });
+        }
+        else if (phase === 'end') {
+             // === DEBUG LOG: Confirm End Phase Entry ===
+            console.log("DEBUG: End Phase Entered. Starting player cleanup.");
+            // === END DEBUG LOG ===
+            player.endTurnCleanup(this); // Cleanup & Hand size check happens here
+        }
+        else if (phase === 'draw') {
+            // === DEBUG LOG: Confirm Draw Phase Entry ===
+            console.log("DEBUG: Draw Phase Entered. Drawing card.");
+            // === END DEBUG LOG ===
+            this._drawCard(player);
+        }
+        else if (phase === 'main') {
+             // === DEBUG LOG: Confirm Main Phase Entry ===
+             console.log("DEBUG: Main Phase Entered.");
+             // === END DEBUG LOG ===
+             // No specific action needed here by default, player can now play cards
+        }
+        else if (phase === 'mana') {
+             // === DEBUG LOG: Confirm Mana Phase Entry ===
+             console.log("DEBUG: Mana Phase Entered. Player can discard for mana.");
+             // === END DEBUG LOG ===
+             // No specific action needed here by default, player can discard
+        }
+
+
+        // Set state back to 'playing' unless a specific state like 'discarding' was triggered
+        // This usually happens *within* the player.endTurnCleanup() call if hand size is over limit.
+        if (this.#state !== 'discarding') {
+            // === DEBUG LOG: Confirm State Set to Playing ===
+            // Only log if it wasn't already playing, to avoid spam
+            if (this.#state !== 'playing') {
+                console.log(`DEBUG: Setting game state back to 'playing' (was '${this.#state}').`);
+            }
+            // === END DEBUG LOG ===
+            this.#state = 'playing';
+        } else {
+            // === DEBUG LOG: Confirm State Remains Discarding ===
+            console.log(`DEBUG: Game state remains 'discarding' after entering ${phase} phase.`);
+            // === END DEBUG LOG ===
+        }
     }
 
     endTurn() {

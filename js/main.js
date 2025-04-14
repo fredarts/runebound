@@ -298,15 +298,24 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
              if (!opponentDeckIds || opponentDeckIds.length < 30) {
                  console.warn(`MAIN: Opponent deck '${opponentDeckId}' invalid or not found, using fallback.`);
                  const allCardIds = Object.keys(cardDatabase);
-                 if (allCardIds.length >= 30) {
-                     opponentDeckIds = allCardIds.sort(() => 0.5 - Math.random()).slice(0, 30);
-                     console.log(`MAIN: Using fallback opponent deck with 30 random cards.`);
-                 } else {
-                     console.error("MAIN: Cannot create fallback opponent deck! Insufficient card definitions.");
-                     $('#connect-message').text('Erro Crítico: Definições de cartas insuficientes para o oponente.').css('color', 'salmon');
-                     audioManager.playSFX('genericError');
-                     return;
+             const requiredDeckSize = 30; // Define the target size
+
+             if (allCardIds.length > 0) { // Check if there are *any* cards
+                 opponentDeckIds = [];
+                 // Shuffle the available unique IDs
+                 const shuffledUniqueIds = allCardIds.sort(() => 0.5 - Math.random());
+                 // Add cards, cycling through unique IDs until the deck is full
+                 for (let i = 0; i < requiredDeckSize; i++) {
+                     opponentDeckIds.push(shuffledUniqueIds[i % shuffledUniqueIds.length]); // Use modulo to loop
                  }
+                 console.log(`MAIN: Using fallback opponent deck with ${requiredDeckSize} cards (allowing duplicates).`);
+             } else {
+                 // This case should ideally not happen if card loading worked at all
+                 console.error("MAIN: Cannot create fallback opponent deck! No card definitions loaded.");
+                 $('#connect-message').text('Erro Crítico: Nenhuma definição de carta carregada.').css('color', 'salmon');
+                 audioManager.playSFX('genericError');
+                 return;
+             }
              } else {
                  console.log(`MAIN: Using opponent deck '${opponentDeckId}'.`);
              }
