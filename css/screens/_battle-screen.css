@@ -32,10 +32,12 @@
 
 .player-area.opponent {
     flex-direction: row; /* Avatar esquerda, Mão centro, Campo direita, Zonas canto */
+    max-height: 390px;
 }
 
 .player-area.local-player {
     flex-direction: row; /* Info direita, Mão centro, Campo esquerda, Zonas canto */
+    max-height: 390px;
 }
 
 /* Área Central (Log, Controles) */
@@ -47,7 +49,7 @@
     flex-direction: column;
     justify-content: space-between; /* Distribui espaço entre Log e Controles */
     align-items: center;
-    flex-basis: 20%; /* Ocupa 20% da altura */
+    flex-basis: 21%; /* Ocupa 20% da altura */
     min-height: 100px;
     overflow: hidden; /* Log rola internamente */
 }
@@ -59,7 +61,7 @@
     align-items: center;
     justify-content: flex-start; /* Alinha no topo */
     gap: 5px;
-    flex-basis: 130px; /* Largura fixa para Info */
+    flex-basis: 230px; /* Largura fixa para Info */
     flex-shrink: 0;
     padding: 5px;
     border-radius: 5px;
@@ -91,9 +93,9 @@
     font-size: 0.9em;
     width: 100%; /* Ocupa largura da info area */
     position: absolute; /* Posiciona relativamente a .player-info */
-    bottom: 5px; /* Alinha na base */
+    margin-top: 120px;
     left: 0;
-    padding: 0 5px; /* Padding lateral */
+    
     box-sizing: border-box;
 }
 
@@ -116,7 +118,7 @@
     background-color: rgba(0, 0, 0, 0.6);
     padding: 2px 6px;
     border-radius: 8px;
-    font-size: 1.1em;
+    font-size: 2em;
     white-space: nowrap;
 }
 
@@ -147,6 +149,7 @@
     height: 100%; /* Ocupa altura disponível */
     box-sizing: border-box;
     position: relative;
+    max-width: 600px;
 }
 
 .opponent-hand-area > span { /* Texto "Mão Oponente: X cartas" */
@@ -191,6 +194,7 @@
     border-radius: 4px;
     padding: 10px;
     height: 100%;
+    max-width: 600px;
     box-sizing: border-box;
     overflow-x: auto; /* Permite scroll horizontal se muitas cartas */
     overflow-y: hidden;
@@ -222,7 +226,7 @@
 
 /* Zonas do Jogador (Deck/Graveyard) */
 .player-zones {
-    position: absolute; /* Posiciona sobre a player-area */
+  
     display: flex;
     flex-direction: column; /* Empilha verticalmente */
     gap: 8px;
@@ -232,18 +236,27 @@
 .player-area.opponent .player-zones {
     top: 10px;
     right: 10px; /* Canto superior direito */
-     order: 4; /* Garante que fique na extrema direita */
-     height: calc(100% - 20px); /* Ajusta altura para caber */
-     justify-content: center; /* Centraliza verticalmente */
+    order: 4; /* Garante que fique na extrema direita */
+    margin-top: 100px;
+    justify-content: center; /* Centraliza verticalmente */
 }
 
 .player-area.local-player .player-zones {
     bottom: 10px;
     left: 10px; /* Canto inferior esquerdo */
     order: 0; /* Garante que fique na extrema esquerda */
-     height: calc(100% - 20px); /* Ajusta altura para caber */
-     justify-content: center; /* Centraliza verticalmente */
+    margin-top: 100px;
+    justify-content: center; /* Centraliza verticalmente */
 }
+
+.player-info .player-zones{
+    display:flex;
+    flex-direction:row;      /* deck em cima, cemitério em baixo       */
+    gap:8px;
+    margin-top:6px;             /* ligeiro respiro abaixo das stats       */
+    align-items:center;         /* centraliza as mini‑cartas              */
+}
+
 
 /* Estilo da Zona (Deck ou Cemitério) */
 .deck-zone, .graveyard-zone {
@@ -345,6 +358,9 @@
     border: 1px solid var(--border-color);
     border-radius: 4px;
     margin-bottom: 5px;
+    padding: 5px 5px 5px 10px;
+    text-decoration: none;
+    font-size: 12px;
     flex-grow: 1; /* Ocupa espaço disponível na área central */
 }
 
