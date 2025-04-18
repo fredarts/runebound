@@ -136,6 +136,8 @@ export default class BattleScreenUI {
         if (typeof this._unbindGameActions === 'function') {
             this._unbindGameActions();
         }
+
+        $('#top-bar').addClass('battle-only');   // deixa a Top Bar em “modo batalha”
     
         /* ------------------------------------------------------------------
          * 3)  Sanidade mínima: precisamos ter um gameInstance válido e o
@@ -194,6 +196,49 @@ export default class BattleScreenUI {
         this.bindGameActions();
     
         console.log('BattleScreenUI: Initial game state render complete.');
+    }
+
+    _cleanupBattleUI() {
+        // Zonas dinâmicas
+        this.#playerHandElement.empty();
+        this.#playerBattlefieldElement.empty();
+        this.#opponentHandElement.empty();
+        this.#opponentBattlefieldElement.empty();
+        this.#gameLogElement.html('<li>Log da Partida:</li>');
+        this.#actionFeedbackElement.text('');
+
+        // Contadores básicos
+        this.#playerDeckCountElement.text('.');
+        this.#playerGraveyardCountElement.text('0');
+        this.#opponentDeckCountElement.text('.');
+        this.#opponentGraveyardCountElement.text('0');
+        this.#opponentHandCountElement.text('.');
+
+        // Place‑holders de player info
+        this.#playerLifeElement.text('.');
+        this.#playerManaElement.text('.');
+        this.#playerMaxManaElement.text('.');
+        this.#opponentLifeElement.text('.');
+        this.#opponentManaElement.text('.');
+        this.#opponentMaxManaElement.text('.');
+        this.#playerNameElement.text('Jogador');
+        this.#opponentNameElement.text('Oponente');
+        this.#playerAvatarElement.attr('src', 'assets/images/avatars/default.png');
+        this.#opponentAvatarElement.attr('src', 'assets/images/avatars/default.png');
+
+        // Imagens das zonas
+        this.#playerDeckImgElement.attr('src', 'assets/images/cards/card_cover.png').show();
+        this.#opponentDeckImgElement.attr('src', 'assets/images/cards/card_cover.png').show();
+        this.#playerGraveyardImgElement
+            .attr('src', this.#graveyardPlaceholderSrc)
+            .addClass('is-placeholder');
+        this.#opponentGraveyardImgElement
+            .attr('src', this.#graveyardPlaceholderSrc)
+            .addClass('is-placeholder');
+
+        console.log('BattleScreenUI: UI cleared (cleanup).');
+
+        $('#top-bar').removeClass('battle-only');   // restaura a Top Bar ao estado normal
     }
 
     // --- Bindings de Eventos ---

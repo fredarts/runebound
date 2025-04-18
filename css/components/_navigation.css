@@ -100,3 +100,9 @@
   color: var(--primary-color);
   transform: scale(1.1);
 }
+
+/* === Battle Scene: mostrar só avatar+nome, opções e sair =========== */
+/* =================================================================== */
+#top-bar.battle-only .top-bar-right > button          { display: none; } /* esconde TODOS */
+#top-bar.battle-only #top-bar-btn-options,            /* …e depois libera só: */
+#top-bar.battle-only #top-bar-btn-logout              { display: flex; } /* (ou inline-flex) */
