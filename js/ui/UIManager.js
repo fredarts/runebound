@@ -61,7 +61,7 @@ export default class UIManager {
         );
         this.#battleUI = new BattleScreenUI(
              this.#screenManager, this.#accountManager, this.#cardDatabase,
-             this.#cardRenderer, this.#zoomHandler, this.#audioManager
+             this.#cardRenderer, this.#zoomHandler, this.#audioManager, this
         );
 
         this._bindPermanentUIActions();
