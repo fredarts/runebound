@@ -4,6 +4,9 @@
 const ACCOUNTS_STORAGE_KEY = 'runebound_clash_accounts';
 const CURRENT_USER_SESSION_KEY = 'runebound_clash_current_user';
 
+import { processMatch } from '../core/RankingManager.js';
+import { addXp }        from '../core/SetMasteryManager.js';
+
 /**
  * Gerencia contas de usuário, login, logout e dados associados (decks, histórico, avatar).
  * Utiliza localStorage para persistência entre sessões e sessionStorage para o login atual.
@@ -126,7 +129,19 @@ export default class AccountManager {
             // --- ADD AVATAR FIELD ---
             avatar: 'default.png', // Default avatar filename
             // -----------------------
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            rating: 1500,          // Glicko
+            rd: 350,               // rating deviation
+            volatility: 0.06,      // σ do Glicko‑2
+            rankTier: 'Bronze',    // Bronze | Prata | Ouro
+            rankDivision: 4,       // 4‑1 (4 é o mais baixo)
+            setMastery: {          // uma entrada por coleção
+              ELDRAEM: { xp: 0, level: 0 }
+            },
+            setsOwned: {           // para o Set Collection
+                ELDRAEM:{ owned:[ ...startingCollection ], missing:[] }
+            },
+
         };
      }
 
@@ -164,6 +179,17 @@ export default class AccountManager {
 
     getCurrentUser() {
         if (!this.#currentUser) { this.#loadCurrentUserFromSession(); }
+        if (this.#currentUser && typeof this.#currentUser.rating === 'undefined') {
+            Object.assign(this.#currentUser, {
+                rating:        1500,
+                rd:            350,
+                volatility:    0.06,
+                rankTier:      'Bronze',
+                rankDivision:  4,
+                setMastery:    { ELDRAEM:{ xp:0, level:0 } },
+                setsOwned:     { ELDRAEM:{ owned:[], missing:[] } }
+            });
+        }
         // Ensure avatar exists even if loaded from old data
         if (this.#currentUser && typeof this.#currentUser.avatar === 'undefined') {
              this.#currentUser.avatar = 'default.png'; // Add default avatar if missing
@@ -172,6 +198,7 @@ export default class AccountManager {
                 this.#saveAccounts(); // Save the added default avatar
              }
         }
+        
         return this.#currentUser ? { ...this.#currentUser } : null;
     }
 
@@ -230,20 +257,53 @@ export default class AccountManager {
      }
 
      addMatchHistory(matchData) {
-        if (!this.#currentUser) { return { success: false, message: "Nenhum usuário logado." }; }
-        if (!matchData?.opponent || !matchData?.result) { return { success: false, message: "Dados inválidos da partida." }; }
-        const historyEntry = { ...matchData, date: Date.now() };
-        if (!this.#currentUser.matchHistory) this.#currentUser.matchHistory = [];
-        if (!this.#currentUser.stats) this.#currentUser.stats = { wins: 0, losses: 0 };
-        this.#currentUser.matchHistory.unshift(historyEntry);
-        if (this.#currentUser.matchHistory.length > 50) this.#currentUser.matchHistory.pop();
-        if (matchData.result === 'win') this.#currentUser.stats.wins++;
-        else if (matchData.result === 'loss') this.#currentUser.stats.losses++;
+
+        // ── 1. saneamento ───────────────────────────────────────────────
+        if (!this.#currentUser)
+            return { success:false, message:"Nenhum usuário logado." };
+    
+        if (!matchData?.opponent || !matchData?.result)
+            return { success:false, message:"Dados inválidos da partida." };
+    
+        // ── 2. histórico simples ────────────────────────────────────────
+        const entry = { ...matchData, date: Date.now() };
+        this.#currentUser.matchHistory ??= [];
+        this.#currentUser.matchHistory.unshift(entry);
+        if (this.#currentUser.matchHistory.length > 50)
+            this.#currentUser.matchHistory.pop();
+    
+        // ── 3. vitórias / derrotas ──────────────────────────────────────
+        this.#currentUser.stats ??= { wins:0, losses:0 };
+        if (matchData.result === 'win')  this.#currentUser.stats.wins++;
+        if (matchData.result === 'loss') this.#currentUser.stats.losses++;
+    
+        // ── 4. ranking Glicko‑2 ─────────────────────────────────────────
+        const opponentData = this.getUserData(matchData.opponent) ?? {
+            rating:1500, rd:350, volatility:0.06
+        };
+    
+        const rankUpdate = processMatch(
+            this.#currentUser,
+            opponentData,
+            matchData.result                    // 1 | 0.5 | 0
+        );
+    
+        Object.assign(this.#currentUser, rankUpdate);
+        // agora o usuário tem: rating, rd, volatility, rankTier, rankDivision
+    
+        // ── 5. Set Mastery: concede XP ──────────────────────────────────
+        const xpGain =
+            matchData.result === 'win'  ? 200 :
+            matchData.result === 'loss' ? 50  :
+                                          100;        // empate
+        addXp(this.#currentUser, 'ELDRAEM', xpGain);
+    
+        // ── 6. salva tudo ───────────────────────────────────────────────
         this.#accounts[this.#currentUser.username] = this.#currentUser;
         this.#saveAccounts();
-        console.log(`Histórico de partida adicionado para ${this.#currentUser.username}.`);
-        return { success: true, message: "Histórico salvo." };
-     }
+    
+        return { success:true, message:"Histórico e ranking atualizados." };
+    }
 
      getMatchHistory() { const user = this.getCurrentUser(); return user?.matchHistory ? [...user.matchHistory] : null; }
      getStats() { const user = this.getCurrentUser(); return user?.stats ? { ...user.stats } : null; }

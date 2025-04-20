@@ -9,6 +9,7 @@
             "toughness": 2,
             "tribe": "Elf",
             "image_src": "assets/images/cards/elf_ranger.png",
+            "set":"ELDRAEM",
             "description": "Quick and agile, ideal for early pressure."
         },
         {
@@ -20,6 +21,7 @@
             "toughness": 4,
             "tribe": "Dwarf",
             "image_src": "assets/images/cards/dwarf_guardian.png",
+            "set":"ELDRAEM",
             "description": "A stalwart defender that protects allies."
         },
         {
@@ -31,6 +33,7 @@
             "toughness": 1,
             "tribe": "Beast",
             "image_src": "assets/images/cards/plague_rat.png",
+            "set":"ELDRAEM",
             "description": "A disposable creature."
         },
         {
@@ -42,6 +45,7 @@
             "toughness": 4,
             "tribe": "Dragon",
             "image_src": "assets/images/cards/molten_wyrm.png",
+            "set":"ELDRAEM",
             "description": "A powerful finisher."
         },
         {
@@ -53,6 +57,7 @@
             "toughness": 2,
             "tribe": "Undead",
             "image_src": "assets/images/cards/soul_revenant.png",
+            "set":"ELDRAEM",
             "description": "Hard to kill.",
             "abilities": ["Deathrattle: Return this card to your hand."]
         },
@@ -65,6 +70,7 @@
             "toughness": 3,
             "tribe": "Elemental",
             "image_src": "assets/images/cards/storm_elemental.png",
+            "set":"ELDRAEM",
             "description": "An elemental creature."
         },
         {
@@ -76,6 +82,7 @@
             "toughness": 1,
             "tribe": "Human",
             "image_src": "assets/images/cards/human_duelist.png",
+            "set":"ELDRAEM",
             "description": "Simple, fast, and deadly."
         },
         {
@@ -87,6 +94,7 @@
             "toughness": 5,
             "tribe": "Construct",
             "image_src": "assets/images/cards/crystal_golem.png",
+            "set":"ELDRAEM",
             "description": "Solid magical defense unit."
         },
         {
@@ -98,6 +106,7 @@
             "toughness": 3,
             "tribe": "Beast",
             "image_src": "assets/images/cards/feral_bear.png",
+            "set":"ELDRAEM",
             "description": "Balanced creature."
         },
         {
@@ -109,6 +118,7 @@
             "toughness": 1,
             "tribe": "Human",
             "image_src": "assets/images/cards/firebrand_zealot.png",
+            "set":"ELDRAEM",
             "description": "Fierce attacker."
         },
         {
@@ -120,6 +130,7 @@
             "toughness": 1,
             "tribe": "Spirit",
             "image_src": "assets/images/cards/wisp_of_light.png",
+            "set":"ELDRAEM",
             "description": "Tiny, but helpful."
         },
         {
@@ -131,6 +142,7 @@
             "toughness": 2,
             "tribe": "Undead",
             "image_src": "assets/images/cards/ghoul_devourer.png",
+            "set":"ELDRAEM",
             "description": "Feeds on the fallen.",
             "abilities": ["Deathrattle: Deal 1 damage to opponent."]
         },
@@ -143,6 +155,7 @@
             "toughness": 6,
             "tribe": "Dwarf",
             "image_src": "assets/images/cards/stonecaller.png",
+            "set":"ELDRAEM",
             "description": "A support tank."
         },
         {
@@ -154,6 +167,7 @@
             "toughness": 1,
             "tribe": "Elf",
             "image_src": "assets/images/cards/shadowblade_assassin.png",
+            "set":"ELDRAEM",
             "description": "Strike fast."
         },
         {
@@ -165,6 +179,7 @@
             "toughness": 7,
             "tribe": "Elemental",
             "image_src": "assets/images/cards/volcanic_behemoth.png",
+            "set":"ELDRAEM",
             "description": "Massive threat."
         },
         {
@@ -176,6 +191,7 @@
             "toughness": 2,
             "tribe": "Spirit",
             "image_src": "assets/images/cards/arcane_familiar.png",
+            "set":"ELDRAEM",
             "description": "Helpful spirit.",
              "abilities": ["ETB: Draw a card."]
         },
@@ -186,6 +202,7 @@
             "cost": 2,
             "effect": "Destroy target creature",
             "image_src": "assets/images/cards/destroy.png",
+            "set":"ELDRAEM",
             "description": "Eliminates a threat."
         },
         {
@@ -195,6 +212,7 @@
             "cost": 2,
             "effect": "Draw 2 cards",
             "image_src": "assets/images/cards/draw_rune.png",
+            "set":"ELDRAEM",
             "description": "Expands your options."
         },
         {
@@ -204,6 +222,7 @@
             "cost": 1,
             "effect": "Target creature can't attack next turn",
             "image_src": "assets/images/cards/silence.png",
+            "set":"ELDRAEM",
             "description": "Temporarily disables a unit.",
             "isTemporary": true,
             "duration": 2
@@ -215,6 +234,7 @@
             "cost": 1,
             "effect": "Target creature gains +2 attack this turn",
             "image_src": "assets/images/cards/power_boost.png",
+            "set":"ELDRAEM",
             "description": "Extra punch.",
             "isTemporary": true,
             "duration": 1
@@ -226,6 +246,7 @@
             "cost": 1,
             "effect": "Target creature gains +2 toughness this turn",
             "image_src": "assets/images/cards/toughness_boost.png",
+            "set":"ELDRAEM",
             "description": "Extra defense.",
             "isTemporary": true,
             "duration": 1
@@ -237,6 +258,7 @@
             "cost": 2,
             "effect": "Restore 4 life",
             "image_src": "assets/images/cards/heal.png",
+            "set":"ELDRAEM",
             "description": "A burst of recovery."
         },
         {
@@ -246,6 +268,7 @@
             "cost": 2,
             "effect": "Deal 3 damage to target creature",
             "image_src": "assets/images/cards/fireball.png",
+            "set":"ELDRAEM",
             "description": "Burns a creature."
         },
         {
@@ -255,6 +278,7 @@
             "cost": 1,
             "effect": "Draw 2 cards",
             "image_src": "assets/images/cards/draw.png",
+            "set":"ELDRAEM",
             "description": "Refill your hand."
         },
         {
@@ -264,6 +288,7 @@
             "cost": 1,
             "effect": "Prevent all damage to a creature this turn",
             "image_src": "assets/images/cards/shield.png",
+            "set":"ELDRAEM",
             "description": "Protect a key creature."
         },
         {
@@ -273,6 +298,7 @@
             "cost": 3,
             "effect": "Return target creature to its owner's hand",
             "image_src": "assets/images/cards/bounce.png",
+            "set":"ELDRAEM",
             "description": "Reset an enemy creature."
         },
         {
@@ -282,6 +308,7 @@
             "cost": 2,
             "effect": "Destroy target Runebinding",
             "image_src": "assets/images/cards/destroy_binding.png",
+            "set":"ELDRAEM",
             "description": "Dispel enchantments."
         },
         {
@@ -291,6 +318,7 @@
             "cost": 1,
             "effect": "Target creature gets -2 attack this turn",
             "image_src": "assets/images/cards/weaken.png",
+            "set":"ELDRAEM",
             "description": "Debilitate the enemy."
         }
     ]

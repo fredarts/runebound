@@ -1,58 +1,72 @@
 // js/ui/html-templates/profileScreenTemplate.js
-
-/**
- * Gera a string HTML para a Tela de Perfil do Jogador.
- * ATUALIZADO: Removeu seção de decks e coleção.
- * @returns {string} HTML da tela de perfil.
- */
-export function generateProfileScreenHTML() {
-    const avatarPath = 'assets/images/avatars/';
-    const availableAvatars = ['default.png', 'avatar1.png', 'avatar2.png', 'avatar3.png']; // Adicione mais se tiver
-
-    let avatarChoicesHTML = availableAvatars.map(filename => `
-        <img src="${avatarPath}${filename}"
-             class="avatar-choice ${filename === 'default.png' ? 'selected-avatar' : ''}"
-             data-avatar="${filename}"
-             alt="Avatar ${filename.split('.')[0]}"
-             title="Selecionar ${filename.split('.')[0]}">
-    `).join('');
-
+export function generateProfileScreenHTML () {
     return `
-        <div id="profile-screen" class="screen profile-layout-single-column"> <!-- Ajuste o layout CSS -->
-            <h2>Perfil do Jogador</h2>
-
-            <div class="profile-main-area">
-                <!-- Conteúdo fica em uma única coluna agora -->
-                <div class="profile-section profile-info">
-                    <h3>Informações</h3>
-                    <p>Nome: <strong id="profile-username">(Carregando...)</strong></p>
-                    <p>Rank: <span id="profile-rank">N/A</span></p>
-                    <p>Vitórias/Derrotas: <span id="profile-wins">0</span> / <span id="profile-losses">0</span></p>
-                </div>
-
-                <div class="profile-section profile-avatar-section">
-                    <h3>Avatar</h3>
-                    <div class="profile-avatar-display">
-                        <img id="profile-avatar-img" src="${avatarPath}default.png" alt="Avatar do Jogador">
-                    </div>
-                    <div id="profile-avatar-choices" class="avatar-choices-container">
-                        ${avatarChoicesHTML}
-                    </div>
-                </div>
-
-                <div class="profile-section profile-history">
-                     <h3>Histórico de Partidas (Últimas 10)</h3>
-                     <ul id="profile-match-history" class="scrollable-list">
-                         <li>(Nenhum histórico ainda)</li>
-                         <!-- O histórico será preenchido -->
-                     </ul>
-                </div>
-                <!-- Seção de Decks e Coleção REMOVIDA -->
-
-            </div>
-
-             <!-- Overlay de Zoom não é mais necessário aqui se a coleção foi movida -->
-             <!-- <div id="image-zoom-overlay" class="image-zoom-overlay"> ... </div> -->
+    <div id="profile-screen" class="screen profile-layout">
+  
+      <!-- ─────────── CABEÇALHO ─────────── -->
+      <section class="profile-header">
+        <h2>PROFILE</h2>
+  
+        <div class="gold-wrapper">
+          <span id="gold-amount">0</span>
+          <img class="icon-gold" src="assets/images/ui/coin.png" alt="Gold">
         </div>
-    `;
-}
+      </section>
+  
+      <!-- ─────────── INFO PRINCIPAL ─────────── -->
+      <section class="profile-info card-panel">
+
+      <div class="avatar-wrapper">
+          <img id="profile-avatar-img"
+               src="assets/images/avatars/default.png" alt="Avatar">
+          <button id="btn-edit-avatar" title="Editar Avatar">
+            ✏️
+          </button>
+        </div>
+  
+        <h2 id="profile-username">Jogador</h2>
+  
+        <p class="rank-line">
+          <img id="rank-icon" class="icon-rank" src="assets/images/ui/bronze_ranking.png" alt="">
+          <span id="profile-rank-badge" class="rank-badge bronze">Bronze 4</span>
+          <small id="profile-rating" class="subtle-text">(1500 ±350)</small>
+        </p>
+  
+        <div class="rank-bar"><div id="rank-progress"></div></div>
+  
+        <p>Vitórias / Derrotas:
+          <span id="profile-wins">0</span> /
+          <span id="profile-losses">0</span>
+        </p>
+  
+        <h4 class="link master-link" id="link-mastery">
+          <img class="inline-icon" src="assets/images/ui/set_mastery.png" alt="">
+          Set Mastery – Eldraem
+        </h4>
+        <div class="mastery-bar"><div id="mastery-progress"></div><span id="mastery-level"></span></div>
+  
+        <h4 class="link collection-link" id="link-collection">
+          <img class="inline-icon" src="assets/images/ui/set_colletion.png" alt="">
+          Coleção – Eldraem
+        </h4>
+        <div class="collection-bar"><div id="collection-progress"></div></div>
+        <small id="collection-count" class="subtle-text">0/285 cartas</small>
+      </section>
+  
+      <!-- ─────────── MENU DE AVATARS ─────────── -->
+      <section class="avatar-choices hidden" id="avatar-choices">
+        <img class="avatar-choice" data-avatar="avatar1.png" src="assets/images/avatars/avatar1.png">
+        <img class="avatar-choice" data-avatar="avatar2.png" src="assets/images/avatars/avatar2.png">
+        <img class="avatar-choice" data-avatar="avatar3.png" src="assets/images/avatars/avatar3.png">
+        <img class="avatar-choice" data-avatar="default.png" src="assets/images/avatars/default.png">
+      </section>
+  
+      <!-- ─────────── HISTÓRICO ─────────── -->
+      <section class="profile-history card-panel">
+        <h3>Histórico de Partidas (últimas 10)</h3>
+        <ul id="profile-match-history"></ul>
+      </section>
+  
+    </div>`;
+  }
+  

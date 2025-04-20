@@ -10,7 +10,8 @@ export default class ZoomHandler {
         // 'profile-screen': { overlay: '#image-zoom-overlay', image: '#zoomed-image' }, // Não é mais necessário no perfil
         'deck-builder-screen': { overlay: '#deckbuilder-image-zoom-overlay', image: '#deckbuilder-zoomed-image' },
         'battle-screen': { overlay: '#battle-image-zoom-overlay', image: '#battle-zoomed-image' },
-        'deck-management-screen': { overlay: '#deck-management-zoom-overlay', image: '#deck-management-zoomed-image' } // <<<=== ENTRADA ADICIONADA
+        'deck-management-screen': { overlay: '#deck-management-zoom-overlay', image: '#deck-management-zoomed-image' },
+        'set-collection-screen': { overlay: '#set-collection-zoom-overlay', image  : '#set-collection-zoomed-image'},
     };
     // --- FIM DA ATUALIZAÇÃO ---
 

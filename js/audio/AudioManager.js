@@ -26,6 +26,7 @@ export default class AudioManager {
         'connect-screen': 'assets/audio/bgm_title.mp3',
         'options-screen': 'assets/audio/bgm_title.mp3',
         'battle-screen': 'assets/audio/bgm_battle.mp3',
+        'set-collection-screen': 'assets/audio/bgm_title.mp3',
     };
 
     #sfxTracks = { // Definir os caminhos corretos
