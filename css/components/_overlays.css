@@ -36,7 +36,8 @@
 #zoomed-image, /* Usado no profile (se ainda existir lá) */
 #battle-zoomed-image, /* Usado na tela de batalha */
 #deckbuilder-zoomed-image, /* Usado no deck builder */
-#deck-management-zoomed-image /* Usado no gerenciamento de decks */
+#deck-management-zoomed-image,
+#set-collection-zoomed-image /* Usado no gerenciamento de decks */
 {
     max-width: 90%; /* Largura máxima relativa */
     max-height: 90%; /* Altura máxima relativa */

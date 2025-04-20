@@ -15,12 +15,13 @@
 
 /* Título H2 */
 #profile-screen h2 { /* Ou use .profile-layout-single-column h2 se houver wrapper */
-    text-align: center;
+    text-align: left;
     color: var(--title-color); /* Cor do título */
     margin-bottom: 20px;
     flex-shrink: 0; /* Não encolhe */
     font-weight: bolder;
     font-size: 2em;
+
 }
 
 /* Área Principal (agora coluna única) */
@@ -172,3 +173,71 @@
     flex-grow: 1; /* Ocupa espaço */
     min-height: 150px; /* Altura mínima */
 }
+
+
+.rank-badge{ padding:2px 6px;border-radius:4px;font-weight:bold;}
+.rank-badge.bronze{background:#cd7f32;}
+.rank-badge.prata {background:#c0c0c0;}
+.rank-badge.ouro  {background:#d4af37;}
+
+.rank-bar,.mastery-bar,.collection-bar{
+  height:10px;background:#333;border-radius:4px;margin-bottom:6px;
+  position:relative;overflow:hidden;
+}
+.rank-bar .fill,.mastery-bar .fill,.collection-bar .fill{
+  background:var(--primary-color);height:100%;width:0;
+  transition:width 0.4s;
+}
+.bar-label{position:absolute;top:-18px;right:4px;font-size:0.75em;}
+
+/* layout ocupa full‑width */
+.profile-layout{
+    width:100%; max-width:none; margin:0 auto; padding:10px 4%;
+    display:flex; flex-direction:column; gap:24px;
+  }
+  
+/* cabeçalho */
+.profile-header{display:flex;align-items:center;gap:16px;justify-content:space-between;}
+.avatar-wrapper{position:relative; margin-bottom: 40px;}
+#profile-avatar-img{width:96px;height:96px;border-radius:50%;border:3px solid var(--primary-color)}
+#btn-edit-avatar{bottom:-6px;right:-6px;background:none;border:none;
+font-size:1.2em;color:var(--text-color)}
+.gold-wrapper{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:1.1em}
+.gold-wrapper img {width: 50px; height: 50px; margin-left: 10px;}
+/* barras */
+.rank-bar,.mastery-bar,.collection-bar{height:10px;background:#333;border-radius:4px;overflow:hidden}
+.rank-bar div,.mastery-bar div,.collection-bar div{height:100%;width:0;background:var(--primary-color)}
+.mastery-bar span{position:absolute;right:4px;top:-18px;font-size:.75em}
+
+.card-panel{background:var(--panel-background);padding:16px;border-radius:8px;border:1px solid var(--border-color)}
+.link{text-decoration:underline}
+.hidden{display:none}
+
+.collection-layout{width:100%;height:100%;display:flex;flex-direction:column;padding:10px 3%}
+.collection-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.filters{display:flex;gap:8px;margin-bottom:12px}
+#collection-grid {
+    /* usa CSS Grid, mas com colunas fixas no tamanho da carta */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 65px);   /* 65 px = largura da mini‑card */
+    grid-auto-rows: 95px;                             /* 95 px = altura da mini‑card */
+    gap: 8px;                                         /* mesmo espaço horiz. e vert. */
+    justify-content: center;
+    max-height: 880px;                          /* centraliza se sobrar margem */
+}
+.locked:hover{transform:none;box-shadow:none}
+
+/* ícones em linha */
+.inline-icon{width:100px;height:100px;margin-right:4px;vertical-align:middle}
+.icon-rank{width:100px;height:100px;margin-right:6px;vertical-align:middle}
+.icon-gold{width:100px;height:100px;}
+
+/* botão editar avatar usa a própria imagem */
+#btn-edit-avatar{padding:0; width:28px; height:28px; border:none; background:none; position: absolute; left: 80px; box-shadow: none;}
+#btn-edit-avatar img{width:100%;height:100%}
+
+.collection-link{ vertical-align: bottom;}
+
+#search-name{border-radius: 25px; padding: 10px;}
+
+#profile-username{position: absolute; margin: -110px 0 0 120px;}

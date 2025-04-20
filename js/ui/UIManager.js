@@ -10,6 +10,9 @@ import DeckManagementScreenUI from './screens/DeckManagementScreenUI.js';
 import TitlescreenUi from './screens/titlescreenUi.js';
 import CardRenderer from './helpers/CardRenderer.js';
 import ZoomHandler from './helpers/ZoomHandler.js';
+import SetCollectionScreenUI from './screens/SetCollectionScreenUI.js';
+
+
 // AudioManager é injetado, não importado aqui diretamente
 
 export default class UIManager {
@@ -31,6 +34,7 @@ export default class UIManager {
     #titlescreenUI;
     #cardRenderer;
     #zoomHandler;
+    #setCollectionUI;
 
     #activeScreenUI = null;
 
@@ -42,6 +46,12 @@ export default class UIManager {
 
         this.#cardRenderer = new CardRenderer();
         this.#zoomHandler = new ZoomHandler(this.#cardDatabase);
+        this.#setCollectionUI = new SetCollectionScreenUI(
+            this.#screenManager,
+            this.#accountManager,
+            this.#cardDatabase,
+            this.#zoomHandler       
+        );
 
         // Instancia os módulos de UI específicos
         this.#titlescreenUI = new TitlescreenUi(this.#screenManager, this, this.#audioManager);
@@ -289,47 +299,68 @@ export default class UIManager {
 
         let renderPromise = null;
         switch (screenId) {
+
+            /* ───────────────── clássicos ───────────────── */
             case 'title-screen':
                 renderPromise = this.renderTitlescreen(...args);
                 break;
+        
             case 'login-screen':
                 renderPromise = this.renderLoginScreen(...args);
                 break;
+        
             case 'create-account-screen':
                 renderPromise = this.renderCreateAccountScreen(...args);
                 break;
+        
             case 'home-screen':
                 renderPromise = this.renderHomeScreen(...args);
                 break;
+        
             case 'profile-screen':
                 renderPromise = this.renderProfileScreen(...args);
                 break;
+        
             case 'deck-management-screen':
                 renderPromise = this.renderDeckManagementScreen(...args);
                 break;
+        
             case 'deck-builder-screen':
                 renderPromise = this.renderDeckBuilderScreen(...args);
                 break;
-            case 'options-screen': // Acessível logado ou não
+        
+            /* ─────────────── NOVO : Set Collection ─────────────── */
+            case 'set-collection-screen': {
+                renderPromise = this.#setCollectionUI.render(...args);
+                break;
+            }
+        
+            /* ───────────────── opções / conexões / batalha ───────────────── */
+            case 'options-screen':        // acessível logado ou não
                 renderPromise = this.renderOptionsScreen(...args);
                 break;
-             case 'connect-screen':
-                 this.#cleanupActiveUI();
-                 this.#activeScreenUI = null;
-                 $('#connect-message').text('');
-                 $('#server-status-section, #join-game-section').hide();
-                 $('#opponent-ip').val('');
-                 console.log("UIManager: Resetting Connect Screen state.");
-                 renderPromise = Promise.resolve();
+        
+            case 'connect-screen':
+                this.#cleanupActiveUI();
+                this.#activeScreenUI = null;
+                $('#connect-message').text('');
+                $('#server-status-section, #join-game-section').hide();
+                $('#opponent-ip').val('');
+                console.log('UIManager: Resetting Connect Screen state.');
+                renderPromise = Promise.resolve();
                 break;
-             case 'battle-screen':
-                 console.warn("UIManager: Use 'renderInitialGameState' for battle screen setup, not navigateTo.");
-                 renderPromise = Promise.resolve(); // Não faz nada aqui, renderInitialGameState cuida
-                 break;
+        
+            case 'battle-screen':
+                console.warn("UIManager: Use 'renderInitialGameState' for battle screen setup, not navigateTo.");
+                renderPromise = Promise.resolve();
+                break;
+        
+            /* ───────────────────────── default ───────────────────────── */
             default:
                 console.error(`UIManager: Unknown screenId for navigation: ${screenId}`);
                 renderPromise = Promise.reject(new Error(`Unknown screenId: ${screenId}`));
         }
+        
 
         try {
             await renderPromise; // Espera a renderização/inicialização terminar (se for async)

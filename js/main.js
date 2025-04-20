@@ -22,6 +22,7 @@ import { generateDeckBuilderScreenHTML } from './ui/html-templates/deckBuilderSc
 import { generateOptionsScreenHTML } from './ui/html-templates/optionsScreenTemplate.js';
 import { generateBattleScreenHTML } from './ui/html-templates/battleScreenTemplate.js';
 import { generateTopBarHTML } from './ui/html-templates/topBarTemplate.js';
+import { generateSetCollectionHTML } from './ui/html-templates/setCollectionTemplate.js';
 
 
 // --- Document Ready ---
@@ -55,7 +56,8 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             .append(generateConnectScreenHTML())
             .append(generateDeckBuilderScreenHTML())
             .append(generateOptionsScreenHTML())
-            .append(generateBattleScreenHTML());
+            .append(generateBattleScreenHTML())
+            .append(generateSetCollectionHTML());
 
         $body.prepend(generateTopBarHTML());
 
