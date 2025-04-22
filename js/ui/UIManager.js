@@ -276,7 +276,7 @@ export default class UIManager {
         // --- CONTROLE DE ACESSO ---
         const requiresLogin = [
             'home-screen', 'profile-screen', 'deck-management-screen',
-            'deck-builder-screen', 'connect-screen', 'battle-screen'
+            'deck-builder-screen', 'connect-screen', 'battle-screen', 'set-mastery-screen'
             // Note: battle-screen é protegido pelo fluxo de início de jogo também
         ];
         const restrictedWhenLoggedIn = ['login-screen', 'create-account-screen', 'title-screen']; // Telas que um user logado não deveria acessar
@@ -337,6 +337,17 @@ export default class UIManager {
             case 'deck-management-screen':
                 renderPromise = this.renderDeckManagementScreen(...args);
                 break;
+
+            case 'set-mastery-screen': {
+                // cria on‑demand se ainda não existir
+                if (!this.#setMasteryUI) {
+                    this.#setMasteryUI = new SetMasteryScreenUI(this.#screenManager,
+                                                                this.#accountManager);
+                    this.#setMasteryUI.init();
+                }
+                renderPromise = Promise.resolve(this.#setMasteryUI.render(...args));
+                break;
+                }
         
             case 'deck-builder-screen':
                 renderPromise = this.renderDeckBuilderScreen(...args);

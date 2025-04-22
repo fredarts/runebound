@@ -202,7 +202,7 @@
 #profile-avatar-img{width:96px;height:96px;border-radius:50%;border:3px solid var(--primary-color)}
 #btn-edit-avatar{bottom:-6px;right:-6px;background:none;border:none;
 font-size:1.2em;color:var(--text-color)}
-.gold-wrapper{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:1.1em; margin-left: 1625px;}
+.gold-wrapper{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:1.1em;}
 .gold-wrapper img {width: 50px; height: 50px; margin-left: 10px;}
 /* barras */
 .rank-bar,.mastery-bar,.collection-bar{height:10px;background:#333;border-radius:4px;overflow:hidden}
@@ -322,6 +322,9 @@ font-size:1.2em;color:var(--text-color)}
     box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
     margin-top: 40px;
     margin-bottom: 48px;
+    background-image: none;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
   }
 
   #profile-setcollection-block{
@@ -331,6 +334,8 @@ font-size:1.2em;color:var(--text-color)}
     box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
     margin-top: 40px;
     margin-bottom: 48px;
+    background-image: none;
+    cursor: url('../../assets/images/ui/cursor.png'), auto;
   }
   
   /* medalhas / ícones */
@@ -396,3 +401,15 @@ font-size:1.2em;color:var(--text-color)}
 .progress-bar.large>div { background:var(--primary-color); height:100%; }
 .progress-bar.large>span{ position:absolute; inset:0; display:flex; 
     align-items:center; justify-content:center; font-size:.75em; }
+
+
+
+
+
+.currency-wrapper   { display:flex; gap:14px; align-items:center; }
+.gems-wrapper, .gold-wrapper { display:flex; align-items:center; gap:6px; font-weight:bold; font-size:1.1em; }
+.icon-gems          { width:50px; height:50px; }
+
+/* blocos clicáveis */
+.link-block         { background:none; border:none; padding:0; cursor:pointer; text-align:inherit; color:inherit; }
+.link-block:focus   { outline:2px solid var(--primary-color); }

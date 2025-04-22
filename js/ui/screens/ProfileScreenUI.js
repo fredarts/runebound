@@ -17,7 +17,8 @@ export default class ProfileScreenUI{
   
     /* cabeçalho */
     $('#profile-username').text(u.username);
-    $('#gold-amount').text(u.wallet?.gold ?? 0);
+    $('#gold-amount').text(u.wallet?.gold ?? 300);
+    $('#gems-amount').text(u.wallet?.gems ?? 5);
     $('#profile-avatar-img').attr('src',`assets/images/avatars/${u.avatar}`);
   
     /* rank + ícone */
@@ -48,7 +49,7 @@ export default class ProfileScreenUI{
     $('#mastery-progress').css('width',`${Math.min(1,m.xp/next)*100}%`);
   
     /* coleção */
-    const owned=u.setsOwned.ELDRAEM?.owned.length ?? 0;
+    const owned=u.setsOwned.ELDRAEM?.owned.length ?? 16;
     $('#collection-count').text(`${owned}/40 cartas`);
     $('#collection-progress').css('width',`${owned/2.85}%`);
   
@@ -81,13 +82,10 @@ export default class ProfileScreenUI{
         $('#avatar-choices').addClass('hidden');
       }
     });
-    this.#el.on('click', '#link-mastery', () => {
-      this.#uiManager.renderSetMasteryScreen();     // novo helper
-      this.#screenManager.showScreen('set-mastery-screen');
-    });
+    this.#el.on('click','#profile-setmastery-block',
+      ()=> this.#uiManager.navigateTo('set-mastery-screen'));
     /* link coleção */
-    this.#el.on('click','#link-collection',()=>{
-      this.#uiManager.navigateTo('set-collection-screen');
-    });
+    this.#el.on('click','#profile-setcollection-block',
+      ()=> this.#uiManager.navigateTo('set-collection-screen'));
   }
 }

@@ -152,7 +152,7 @@
   
   button:not(.game-button):not(.game-button-blue):hover:not(:disabled) {
    
-    transform: scale(1.1);
+    transform: scale(1.01);
   }
 
   .no-background {
