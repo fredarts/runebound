@@ -11,6 +11,7 @@ import TitlescreenUi from './screens/titlescreenUi.js';
 import CardRenderer from './helpers/CardRenderer.js';
 import ZoomHandler from './helpers/ZoomHandler.js';
 import SetCollectionScreenUI from './screens/SetCollectionScreenUI.js';
+import SetMasteryScreenUI from './screens/SetMasteryScreenUI.js';
 
 
 // AudioManager é injetado, não importado aqui diretamente
@@ -35,6 +36,7 @@ export default class UIManager {
     #cardRenderer;
     #zoomHandler;
     #setCollectionUI;
+    #setMasteryUI;
 
     #activeScreenUI = null;
 
@@ -160,6 +162,17 @@ export default class UIManager {
             } catch(error) { console.error("UIManager: Erro ao renderizar ProfileScreenUI", error); }
         }
     }
+
+    renderSetMasteryScreen() {
+        if (!this.#setMasteryUI) {            // use # para manter o padrão privado
+          this.#setMasteryUI = new SetMasteryScreenUI(
+            this.#screenManager,
+            this.#accountManager             // <‑‑ campo privado correto
+          );
+          this.#setMasteryUI.init();
+        }
+        this.#setMasteryUI.render('ELDRAEM'); // ou outro setCode, se criá‑los depois
+      }
 
     renderDeckManagementScreen() {
         const screenId = 'deck-management-screen';
