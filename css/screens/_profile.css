@@ -17,7 +17,7 @@
 #profile-screen h2 { /* Ou use .profile-layout-single-column h2 se houver wrapper */
     text-align: left;
     color: var(--title-color); /* Cor do título */
-    margin-bottom: 20px;
+    margin-bottom: 0;
     flex-shrink: 0; /* Não encolhe */
     font-weight: bolder;
     font-size: 2em;
@@ -202,7 +202,7 @@
 #profile-avatar-img{width:96px;height:96px;border-radius:50%;border:3px solid var(--primary-color)}
 #btn-edit-avatar{bottom:-6px;right:-6px;background:none;border:none;
 font-size:1.2em;color:var(--text-color)}
-.gold-wrapper{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:1.1em}
+.gold-wrapper{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:1.1em; margin-left: 1625px;}
 .gold-wrapper img {width: 50px; height: 50px; margin-left: 10px;}
 /* barras */
 .rank-bar,.mastery-bar,.collection-bar{height:10px;background:#333;border-radius:4px;overflow:hidden}
@@ -240,4 +240,139 @@ font-size:1.2em;color:var(--text-color)}
 
 #search-name{border-radius: 25px; padding: 10px;}
 
-#profile-username{position: absolute; margin: -110px 0 0 120px;}
+#profile-username{position: absolute; margin: 20px 0 0 140px;}
+
+
+/* === PROFILE REWORK (match mock) ===================== */
+.profile-info {               /* painel geral           */
+    display:flex;
+    flex-direction:column;
+    gap:40px;
+    align-items:center;
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    
+  }
+
+  #profile-info-block{
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    
+  }
+
+  #profile-header-block{
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--panel-background);
+  }
+
+  .profile-history{
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+    text-align: center;
+  }
+  
+  /* ---------- header ---------- */
+  .profile-header{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    
+  }
+  .profile-header h2{
+    margin:0;
+    font-size:2rem;
+    color:var(--text-color);
+  }
+  
+  /* ---------- grid dos blocos ---------- */
+  .profile-grid{
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    gap:40px;
+    text-align:center;
+  }
+  
+  .profile-block{
+    flex:1 1 280px;             /* grow, min‑width 280    */
+    
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+
+  #profile-rank-block{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  #profile-setmastery-block{
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+    margin-top: 40px;
+    margin-bottom: 48px;
+  }
+
+  #profile-setcollection-block{
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
+    margin-top: 40px;
+    margin-bottom: 48px;
+  }
+  
+  /* medalhas / ícones */
+  .profile-block img{
+    width:140px;
+    height:auto;
+  }
+  
+  /* progress‑bars genéricas (cinza + overlay) */
+  .progress-bar{
+    width:100%;
+    height:10px;
+    background:#2c3846;
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-bar > div{
+    height:100%;
+    background:var(--primary-color);
+  }
+  
+  /* rank específico – barra espessa */
+  .icon-rank{width:160px;}
+  
+  .wins-losses{
+    margin-top:4px;
+    font-weight:500;
+    color:var(--text-color-secondary);
+  }
+  
+  /* pequeníssimo ajuste do botão de editar avatar */
+  .avatar-wrapper{
+    position:relative;
+    margin: 20px;
+  }
+  #btn-edit-avatar{
+    position:absolute;
+    bottom:4px; right:4px;
+    font-size:1.2rem;
+    background:none;
+    border:none;
+    
+  }
+  /* ============================================== */
+  
