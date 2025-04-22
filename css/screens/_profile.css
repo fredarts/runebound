@@ -376,3 +376,23 @@ font-size:1.2em;color:var(--text-color)}
   }
   /* ============================================== */
   
+.mastery-layout         { display:flex; flex-direction:column; gap:12px; 
+    background:url('../../assets/images/ui/mountain_bg.jpg') center/cover; }
+.mastery-header         { display:flex; justify-content:space-between; align-items:center; }
+.mastery-header h2 {text-align: left;
+  color: var(--title-color);
+  margin-bottom: 0;
+  flex-shrink: 0;
+  font-weight: bolder;
+  font-size: 2em;}
+.mastery-list           { overflow-y:auto; padding-right:4px;  background-color: var(--panel-background); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);}
+.mastery-row            { display:grid; grid-template-columns:80px 100px 1fr; 
+    padding:6px 10px; border-bottom:1px solid var(--border-color); }
+.mastery-row.reached    { background:rgba(0,128,0,.15); }
+.level-col              { font-weight:bold; }
+.reward-icon            { width:24px; vertical-align:middle; margin-right:4px; }
+.progress-bar.large     { height:24px; position:relative; border:1px solid var(--border-color); 
+    border-radius:25px; overflow:hidden; }
+.progress-bar.large>div { background:var(--primary-color); height:100%; }
+.progress-bar.large>span{ position:absolute; inset:0; display:flex; 
+    align-items:center; justify-content:center; font-size:.75em; }

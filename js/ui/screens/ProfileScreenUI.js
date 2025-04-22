@@ -49,7 +49,7 @@ export default class ProfileScreenUI{
   
     /* coleção */
     const owned=u.setsOwned.ELDRAEM?.owned.length ?? 0;
-    $('#collection-count').text(`${owned}/285 cartas`);
+    $('#collection-count').text(`${owned}/40 cartas`);
     $('#collection-progress').css('width',`${owned/2.85}%`);
   
     /* histórico */
@@ -80,6 +80,10 @@ export default class ProfileScreenUI{
         $('#profile-avatar-img').attr('src',`assets/images/avatars/${file}`);
         $('#avatar-choices').addClass('hidden');
       }
+    });
+    this.#el.on('click', '#link-mastery', () => {
+      this.#uiManager.renderSetMasteryScreen();     // novo helper
+      this.#screenManager.showScreen('set-mastery-screen');
     });
     /* link coleção */
     this.#el.on('click','#link-collection',()=>{
