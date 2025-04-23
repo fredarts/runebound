@@ -12,6 +12,7 @@ import CardRenderer from './helpers/CardRenderer.js';
 import ZoomHandler from './helpers/ZoomHandler.js';
 import SetCollectionScreenUI from './screens/SetCollectionScreenUI.js';
 import SetMasteryScreenUI from './screens/SetMasteryScreenUI.js';
+import StoreScreenUI from './screens/StoreScreenUI.js';
 
 
 // AudioManager é injetado, não importado aqui diretamente
@@ -37,6 +38,7 @@ export default class UIManager {
     #zoomHandler;
     #setCollectionUI;
     #setMasteryUI;
+    #storeUI;
 
     #activeScreenUI = null;
 
@@ -72,8 +74,14 @@ export default class UIManager {
             this.#cardRenderer, this.#zoomHandler, this.#audioManager // Passa AudioManager se necessário
         );
         this.#battleUI = new BattleScreenUI(
-             this.#screenManager, this.#accountManager, this.#cardDatabase,
-             this.#cardRenderer, this.#zoomHandler, this.#audioManager, this
+            this.#screenManager, this.#accountManager, this.#cardDatabase,
+            this.#cardRenderer, this.#zoomHandler, this.#audioManager, this
+        );
+        this.#setMasteryUI = new SetMasteryScreenUI(
+            screenManager, accountManager, this, audioManager
+        );
+        this.#storeUI = new StoreScreenUI(
+            this.#screenManager, this.#accountManager, this.#audioManager, this
         );
 
         this._bindPermanentUIActions();
@@ -164,14 +172,14 @@ export default class UIManager {
     }
 
     renderSetMasteryScreen() {
-        if (!this.#setMasteryUI) {            // use # para manter o padrão privado
+        if (!this.#setMasteryUI) {          
           this.#setMasteryUI = new SetMasteryScreenUI(
             this.#screenManager,
-            this.#accountManager             // <‑‑ campo privado correto
+            this.#accountManager            
           );
           this.#setMasteryUI.init();
         }
-        this.#setMasteryUI.render('ELDRAEM'); // ou outro setCode, se criá‑los depois
+        this.#setMasteryUI.render('ELDRAEM'); 
       }
 
     renderDeckManagementScreen() {
@@ -215,6 +223,13 @@ export default class UIManager {
             } catch(error) { console.error("UIManager: Erro ao renderizar OptionsUI", error); }
         }
     }
+
+    renderStoreScreen() {
+        this.#storeUI.init();
+        this.#cleanupActiveUI(this.#storeUI);
+        this.#storeUI.render();
+        this.#activeScreenUI = this.#storeUI;
+      }
 
     renderInitialGameState() {
         const screenId = 'battle-screen';
@@ -338,11 +353,23 @@ export default class UIManager {
                 renderPromise = this.renderDeckManagementScreen(...args);
                 break;
 
+            case 'store-screen':
+                if (!this.#storeUI) {
+                    this.#storeUI = new StoreScreenUI(
+                        this.#screenManager, this.#accountManager);
+                    
+                }
+                renderPromise = (async () => {
+                    await this.#storeUI.init();
+                    this.renderStoreScreen();
+                })();
+                break;
+
             case 'set-mastery-screen': {
                 // cria on‑demand se ainda não existir
                 if (!this.#setMasteryUI) {
-                    this.#setMasteryUI = new SetMasteryScreenUI(this.#screenManager,
-                                                                this.#accountManager);
+                    this.#setMasteryUI = new SetMasteryScreenUI(
+                        this.#screenManager, this.#accountManager);
                     this.#setMasteryUI.init();
                 }
                 renderPromise = Promise.resolve(this.#setMasteryUI.render(...args));
@@ -476,6 +503,12 @@ export default class UIManager {
             self.navigateTo('options-screen');
         });
         addTopBarHoverAudio($btnOptions);
+
+        // Botão Store
+        $('#top-bar-btn-store').on('click', () => {
+            this.#audioManager?.playSFX('buttonClick');
+            this.navigateTo('store-screen');          // usa o método centralizado
+          });
 
         // Botão Logout
         const $btnLogout = $('#top-bar-btn-logout');

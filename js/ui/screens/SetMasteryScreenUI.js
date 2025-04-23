@@ -1,109 +1,147 @@
-// js/ui/screens/SetMasteryScreenUI.js — nova tela “Set Mastery Rewards”
-// Mostra os 20 níveis definidos em core/SetMasteryManager.js e as
-// recompensas correspondentes. Inspirado no layout do MTG Arena, mas
-// alinhado ao estilo visual existente (Runebound CSS variables + componentes).
+// js/ui/screens/SetMasteryScreenUI.js – Refatorado com template separado
 
-import { LEVELS }            from '../../core/SetMasteryManager.js';
-import ScreenManager         from '../../ui/ScreenManager.js'; // já existe no projeto
+// Import necessary constants and potentially other modules
+import { LEVELS } from '../../core/SetMasteryManager.js';
+// Removed ScreenManager import as navigation is handled by UIManager
+// Import UIManager if not passed via constructor, otherwise assume it's passed
 
 export default class SetMasteryScreenUI {
-  /**
-   * @param {ScreenManager} screenManager – gerenciador de telas
-   * @param {Object} accountManager       – para obter usuário/logar recompensas futuramente
-   */
-  constructor(screenManager, accountManager){
-    this._sm  = screenManager;
-    this._am  = accountManager;
-    this._el  = null; // cache do elemento da tela após inserção no DOM
-  }
+    // Use private fields for consistency
+    #screenManager; // Still needed to potentially show/hide screens if not using UIManager
+    #accountManager;
+    #uiManager;      // To handle navigation
+    #audioManager;    // To handle sounds
 
-  /* ╔════════════════════════════════════════════════════════════╗
-     ║               INITIALISATION & RENDERING                   ║
-     ╚════════════════════════════════════════════════════════════╝ */
+    // UI Element Cache
+    #el; // Root element #set-mastery-screen
+    #progressBar;
+    #progressLabel;
+    #rewardsList;
+    #backButton;
 
-  /** Chame uma vez após criar ScreenManager.showScreen('set-mastery-screen') */
-  init(){
-    // Gera o HTML e injeta no container, se ainda não existir
-    if (!$('#set-mastery-screen').length){
-      $('#screens-container').append(this._generateHTML());
+    #initialized = false; // Prevent multiple initializations
+
+    /**
+     * @param {ScreenManager} screenManager – gerenciador de telas
+     * @param {Object} accountManager       – para obter usuário
+     * @param {Object} uiManager            – para navegação
+     * @param {Object} audioManager         – para sons
+     */
+    constructor(screenManager, accountManager, uiManager, audioManager) { // Added uiManager, audioManager
+        this.#screenManager = screenManager;
+        this.#accountManager = accountManager;
+        this.#uiManager = uiManager; // Store UIManager
+        this.#audioManager = audioManager; // Store AudioManager
+        console.log("SetMasteryScreenUI instance created.");
+        // init() is now called by UIManager after HTML is potentially added
     }
-    this._el = $('#set-mastery-screen');
-    this._bind();
-  }
 
-  /** Atualiza a barra de progresso e marca níveis já alcançados */
-  render(setCode='ELDRAEM'){
-    const user = this._am.getCurrentUser();
-    if (!user) return;
+    /**
+     * Initializes the UI by caching selectors and binding events.
+     * Called by UIManager after the screen's HTML is in the DOM.
+     */
+    init() {
+        if (this.#initialized) return;
 
-    const progress = user.setMastery?.[setCode] ?? { level: 0, xp: 0 };
-    const totalXP  = progress.xp;
+        if (!this._cacheSelectors()) {
+            console.error("SetMasteryScreenUI: Initialization failed. Could not cache selectors.");
+            return;
+        }
+        this._bindEvents();
+        this.#initialized = true;
+        console.log("SetMasteryScreenUI: Initialized.");
+    }
 
-    // Atualiza barra de progresso geral
-    const maxXP = LEVELS[LEVELS.length-1].xp;
-    const pct   = Math.min(100, (totalXP / maxXP) * 100).toFixed(1);
-    $('#mastery-screen-progress').css('width', pct+'%');
-    $('#mastery-screen-progress-label').text(`${totalXP} / ${maxXP} XP`);
+    /** Caches jQuery selectors */
+    _cacheSelectors() {
+        this.#el = $('#set-mastery-screen');
+        if (!this.#el.length) {
+            console.error("SetMasteryScreenUI Cache Error: #set-mastery-screen not found!");
+            return false;
+        }
+        this.#progressBar = this.#el.find('#mastery-screen-progress');
+        this.#progressLabel = this.#el.find('#mastery-screen-progress-label');
+        this.#rewardsList = this.#el.find('#mastery-rewards-list'); // Ensure template uses this ID
+        this.#backButton = this.#el.find('#btn-mastery-back-profile');
 
-    // Marca níveis completados
-    LEVELS.forEach((lvl, idx)=>{
-      const reached = progress.level > idx;
-      const $row    = this._el.find(`[data-level-row="${idx}"]`);
-      $row.toggleClass('reached', reached);
-    });
-  }
+        if (!this.#progressBar.length || !this.#progressLabel.length || !this.#rewardsList.length || !this.#backButton.length) {
+             console.error("SetMasteryScreenUI Cache Error: One or more essential child elements not found!");
+             return false;
+        }
+        return true;
+    }
 
-  /* ╔════════════════════════════════════════════════════════════╗
-     ║                           UI                              ║
-     ╚════════════════════════════════════════════════════════════╝ */
+    /** Binds event listeners */
+    _bindEvents() {
+        const self = this;
 
-  _bind(){
-    // Voltar para perfil
-    this._el.on('click', '#btn-mastery-back-profile', ()=>{
-      this._sm.showScreen('profile-screen');
-    });
-  }
+        // Back Button - Use UIManager for navigation
+        this.#backButton.off('click.setmastery').on('click.setmastery', () => {
+            self.#audioManager?.playSFX('buttonClick');
+            // Use UIManager to navigate back to the profile screen
+            self.#uiManager?.navigateTo('profile-screen');
+        });
+         // Add hover sound
+         this.#backButton.off('mouseenter.setmastery').on('mouseenter.setmastery', () => {
+             self.#audioManager?.playSFX('buttonHover');
+         });
+    }
 
-  /** Constrói a string HTML completa da tela (template inline) */
-  _generateHTML(){
-    const rows = LEVELS.map((lvl, idx)=>{
-      const rwd = lvl.reward;
-      function icon(type){
-        return `<img class="reward-icon" src="assets/images/ui/rewards/${type}.png" alt="${type}">`;
-      }
-      let rewardHTML = '';
-      if (rwd.gold)   rewardHTML += `${icon('gold')} <span>${rwd.gold}</span>`;
-      if (rwd.gems)   rewardHTML += `${icon('gems')} <span>${rwd.gems}</span>`;
-      if (rwd.card)   rewardHTML += `${icon('card')} <span>${rwd.card}</span>`;
-      if (rwd.avatar) rewardHTML += `${icon('avatar')} <span>${rwd.avatar.replace('.png','')}</span>`;
-      if (rwd.booster){
-        const { code, count } = typeof rwd.booster === 'string' ? { code: rwd.booster, count: 1 } : rwd.booster;
-        rewardHTML += `${icon('booster')} <span>${count}× ${code}</span>`;
-      }
-      return `
-        <li class="mastery-row" data-level-row="${idx}">
-          <div class="level-col">Lv ${idx+1}</div>
-          <div class="xp-col">${lvl.xp} XP</div>
-          <div class="reward-col">${rewardHTML}</div>
-        </li>`;
-    }).join('\n');
+    /**
+     * Updates the screen's dynamic elements based on current user progress.
+     * @param {string} [setCode='ELDRAEM'] - The code for the mastery set to display.
+     */
+    render(setCode = 'ELDRAEM') {
+        if (!this.#initialized) {
+            console.error("SetMasteryScreenUI: Cannot render before init() is called.");
+            return;
+        }
+        console.log(`SetMasteryScreenUI: Rendering progress for set ${setCode}...`);
 
-    return `
-      <div id="set-mastery-screen" class="screen mastery-layout">
-        <div class="mastery-header">
-          <h2>Set Mastery – Eldraem</h2>
-          <button id="btn-mastery-back-profile" class="button-back">← Voltar</button>
-        </div>
+        const user = this.#accountManager.getCurrentUser();
+        if (!user) {
+            console.warn("SetMasteryScreenUI: Cannot render, no user logged in.");
+            // Potentially redirect or show a message
+            this.#progressBar.css('width', '0%');
+            this.#progressLabel.text('Usuário não encontrado');
+            this.#rewardsList.find('.mastery-row').removeClass('reached'); // Clear reached status
+            return;
+        }
 
-        <div class="progress-bar large">
-          <div id="mastery-screen-progress" style="width:0%"></div>
-          <span id="mastery-screen-progress-label">0 / 0 XP</span>
-        </div>
+        const progress = user.setMastery?.[setCode] ?? { level: 0, xp: 0 };
+        const totalXP = progress.xp;
+        const currentLevel = progress.level;
 
-        <ul class="mastery-list scrollable-list">
-          ${rows}
-        </ul>
-      </div>`;
-  }
+        // Update overall progress bar
+        const maxXP = LEVELS.length > 0 ? LEVELS[LEVELS.length - 1].xp : 0; // Handle empty LEVELS array
+        const percentage = maxXP > 0 ? Math.min(100, (totalXP / maxXP) * 100) : 0;
+        this.#progressBar.css('width', `${percentage.toFixed(1)}%`);
+        this.#progressLabel.text(`${totalXP} / ${maxXP} XP`);
+
+        // Update individual level rows (mark as reached)
+        this.#rewardsList.find('.mastery-row').each((index, rowElement) => {
+            const levelIndex = parseInt($(rowElement).data('level-row'), 10);
+            if (!isNaN(levelIndex)) {
+                const reached = currentLevel > levelIndex;
+                $(rowElement).toggleClass('reached', reached);
+            }
+        });
+
+        console.log(`SetMasteryScreenUI: Render complete. Level: ${currentLevel}, XP: ${totalXP}`);
+    }
+
+    /** Optional: Cleanup method to unbind events */
+    destroy() {
+        console.log("SetMasteryScreenUI: Destroying (unbinding events)...");
+        this.#backButton?.off('.setmastery');
+        this.#initialized = false;
+        this.#el = null; // Clear cached element
+        // Clear other cached elements if needed
+        this.#progressBar = null;
+        this.#progressLabel = null;
+        this.#rewardsList = null;
+        this.#backButton = null;
+    }
+
+    // Remove the _generateHTML method as it's now in the template file.
 }
-
