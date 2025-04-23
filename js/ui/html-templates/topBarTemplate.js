@@ -36,6 +36,8 @@ export function generateTopBarHTML() {
                 <button id="top-bar-btn-connect" title="Conectar / Jogar Online">
                      <span role="img" aria-label="Jogar">⚔️</span>
                 </button>
+                <button id="top-bar-btn-store" title="Loja">🛒</button>
+                
                  <button id="top-bar-btn-options" title="Opções do Jogo">
                      <span role="img" aria-label="Opções">⚙️</span>
                  </button>

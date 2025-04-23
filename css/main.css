@@ -32,6 +32,7 @@
 @import 'screens/_connect.css';
 @import 'screens/_battle-screen.css';
 @import 'screens/_options.css';
+@import 'screens/_store.css';
 
 /* Utilities */
 @import 'utilities/_utilities.css'; /* Classes auxiliares, scrollbars */

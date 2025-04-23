@@ -23,6 +23,8 @@ import { generateOptionsScreenHTML } from './ui/html-templates/optionsScreenTemp
 import { generateBattleScreenHTML } from './ui/html-templates/battleScreenTemplate.js';
 import { generateTopBarHTML } from './ui/html-templates/topBarTemplate.js';
 import { generateSetCollectionHTML } from './ui/html-templates/setCollectionTemplate.js';
+import { generateSetMasteryScreenHTML } from './ui/html-templates/setMasteryScreenTemplate.js';
+import { generateStoreScreenHTML } from './ui/html-templates/StoreScreenTemplate.js';
 
 
 // --- Document Ready ---
@@ -57,7 +59,9 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             .append(generateDeckBuilderScreenHTML())
             .append(generateOptionsScreenHTML())
             .append(generateBattleScreenHTML())
-            .append(generateSetCollectionHTML());
+            .append(generateSetCollectionHTML())
+            .append(generateSetMasteryScreenHTML())
+            .append(generateStoreScreenHTML())
 
         $body.prepend(generateTopBarHTML());
 
