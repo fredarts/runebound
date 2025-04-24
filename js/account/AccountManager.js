@@ -55,6 +55,13 @@ export default class AccountManager {
         }
     }
 
+    saveCurrentUserData() {
+        if (!this.#currentUser) return;
+        this.#accounts[this.#currentUser.username] = this.#currentUser;
+        this.#saveAccounts();
+        console.log("AccountManager: Dados do usuário atualizados e salvos.");
+      }
+
      /** Tenta carregar o usuário logado da sessionStorage. */
      #loadCurrentUserFromSession() {
         const currentUsername = sessionStorage.getItem(CURRENT_USER_SESSION_KEY);
@@ -115,6 +122,7 @@ export default class AccountManager {
         return {
             username: username,
             password: password, // INSECURE!
+            wallet: { gold: 10000, gems: 10000 },
             rank: 'Bronze III',
             stats: { wins: 0, losses: 0 },
             matchHistory: [],
@@ -227,7 +235,7 @@ export default class AccountManager {
         return { success: true, message: "Deck salvo com sucesso!" };
     }
 
-     deleteDeck(deckId) {
+    deleteDeck(deckId) {
         if (!this.#currentUser) { return { success: false, message: "Nenhum usuário logado." }; }
         if (!this.#currentUser.decks || !this.#currentUser.decks[deckId]) { return { success: false, message: "Deck não encontrado." }; }
         if (Object.keys(this.#currentUser.decks).length <= 1) { /* Optional: return { success: false, message: "Não pode excluir último deck." }; */ }
@@ -236,14 +244,14 @@ export default class AccountManager {
         this.#saveAccounts();
         console.log(`Deck ID '${deckId}' excluído para ${this.#currentUser.username}.`);
         return { success: true, message: "Deck excluído com sucesso!" };
-     }
+    }
 
     loadDecks() {
         const user = this.getCurrentUser(); return user?.decks ? { ...user.decks } : null;
     }
-     getCollection() {
+    getCollection() {
         const user = this.getCurrentUser(); return user?.collection ? [...user.collection] : null;
-     }
+    }
 
      /** Saves the user's chosen avatar preference */
      saveAvatarChoice(avatarFilename) {

@@ -1,27 +1,30 @@
 // js/ui/html-templates/StoreScreenTemplate.js
 
-/**
- * Gera a string HTML para a Tela da Loja.
- * @returns {string} HTML da tela da loja.
- */
 export function generateStoreScreenHTML() {
-    // Note: The back button (#btn-store-back-profile) is included here,
-    // but its event listener should ideally be handled by the UIManager
-    // or a global navigation system if it always goes back to the profile.
-    // If its behavior is specific to the store context, keep the listener in StoreScreenUI.
-    return `
-      <div id="store-screen" class="screen store-layout">
-        
-        <div class="store-header">
-          <h2>Loja</h2>
-          <button id="btn-store-back-profile" class="button-back" title="Voltar ao Perfil">← Voltar</button>
+  return `
+    <div id="store-screen" class="screen store-layout">
+      
+      <div class="store-header">
+        <h2>Loja</h2>
+
+        <!-- Currencies (lado direito) -->
+        <div class="currency-wrapper store-currency">
+          <div class="gold-wrapper">
+            <span id="store-gold-amount">0</span>
+            <img class="icon-gold" src="assets/images/ui/coin.png" alt="Gold">
+          </div>
+          <div class="gems-wrapper">
+            <span id="store-gems-amount">0</span>
+            <img class="icon-gems" src="assets/images/ui/gem.png" alt="Gemas">
+          </div>
         </div>
 
-       
-        <div id="store-grid" class="store-grid scrollable-list">
-          
-          <p class="placeholder-message">Carregando itens...</p>
-        </div>
+        <button id="btn-store-back-profile" class="button-back" title="Voltar ao Perfil">← Voltar</button>
+      </div>
+
+      <div id="store-grid" class="store-grid scrollable-list">
+        <p class="placeholder-message">Carregando itens...</p>
+      </div>
 
         
         <div id="store-detail-overlay" class="store-detail-overlay">
