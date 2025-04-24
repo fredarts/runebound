@@ -20,7 +20,7 @@
       "priceGems": 400
     },
     {
-      "id": "deck_starter",
+      "id": "deck_starter_circle_ashkar",
       "type": "deck",
       "name": "Deck Inicial Circle of Ashkar",
       "img": "Ashkar_deck.png",
@@ -30,7 +30,7 @@
       "priceGems": 800
     },
     {
-      "id": "deck_starter",
+      "id": "deck_starter_order_galadreth",
       "type": "deck",
       "name": "Deck Inicial Order of Galadreth",
       "img": "Galadreth_deck.png",
@@ -54,7 +54,7 @@
       "type": "avatar",
       "name": "Avatar Lyrandar Vínculoforte",
       "img": "Lyrandar_Vínculoforte.png",
-      "short": "primeiro a reconhecer os sinais da ruptura",
+      "short": "primeiro a reconhecer a ruptura",
       "long": "Lyrandar testemunhou três eras de Eldraem e foi o primeiro a reconhecer os sinais da ruptura dos Vínculos",
       "priceGold": 2000,
       "priceGems": 400
@@ -84,7 +84,7 @@
         "type": "card",
         "name": "Shadowblade Assassin",
         "img": "shadowblade_assassin.png",
-        "short": "creature",
+        "short": "Creature",
         "long": "Where shadows lengthen, the cold blade takes heart",
         "priceGold": 5000,
         "priceGems": 800

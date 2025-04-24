@@ -453,6 +453,11 @@ export default class UIManager {
         // A lógica agora está em OptionsUI._saveOptions, chamada pelo botão Salvar lá.
     }
 
+    updateCurrenciesDisplay(gold, gems) {
+        $('#top-bar-gold').text(gold);
+        $('#top-bar-gems').text(gems);
+      }
+
     // --- Bindings Globais e da Top Bar ---
     _bindPermanentUIActions() {
         console.log("UI Coordinator: Binding permanent UI actions (Top Bar, global)...");

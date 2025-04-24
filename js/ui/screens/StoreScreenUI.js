@@ -5,6 +5,7 @@ export default class StoreScreenUI {
     #accountManager;
     #audioManager;
     #uiManager;
+    
 
     // UI Element Cache
     #el;                     // Root element #store-screen
@@ -16,7 +17,9 @@ export default class StoreScreenUI {
     #btnConfirmGold;
     #btnConfirmGems;
     #btnCloseDetail;
-    #btnBack;                // Back button element
+    #btnBack;
+    #goldAmountEl;
+    #gemsAmountEl;               
 
     #initialized = false;    // Flag interno para init()
 
@@ -75,6 +78,11 @@ export default class StoreScreenUI {
         }
         
         console.log("StoreScreenUI: Rendering store grid...");
+
+        const user   = this.#accountManager.getCurrentUser() || {};
+        const wallet = user.wallet || { gold: 10000, gems: 5000 };
+        this.#goldAmountEl.text(wallet.gold);
+        this.#gemsAmountEl.text(wallet.gems);
         this._renderGrid();
         this._closeDetail();
     }
@@ -87,6 +95,8 @@ export default class StoreScreenUI {
             return false;
         }
         this.#gridEl           = this.#el.find('#store-grid');
+        this.#goldAmountEl     = this.#el.find('#store-gold-amount');
+        this.#gemsAmountEl     = this.#el.find('#store-gems-amount');
         this.#detailOverlayEl  = this.#el.find('#store-detail-overlay');
         this.#detailImg        = this.#detailOverlayEl.find('#store-detail-image');
         this.#detailName       = this.#detailOverlayEl.find('#store-detail-name');
@@ -164,30 +174,41 @@ export default class StoreScreenUI {
     /** Popula o grid com base em this.items */
     _renderGrid() {
         const user = this.#accountManager.getCurrentUser();
+        // Garante inventário vazio se não existir
         if (user && !user.inventory) user.inventory = { purchases: [] };
         const owned = new Set(user?.inventory?.purchases ?? []);
-
+    
+        // Limpa o grid
         this.#gridEl.empty();
+    
+        // Se não estiver logado, mostra mensagem
         if (!user) {
             this.#gridEl.append('<p class="placeholder-message">Faça login para ver a loja.</p>');
             return;
         }
-
+    
+        // Popula cada item
         this.items.forEach(item => {
             const isOwned = owned.has(item.id);
             const html = `
               <div class="store-item${isOwned ? ' owned' : ''}" data-item-id="${item.id}">
-                <img src="assets/images/store/${item.img}" alt="${item.name}">
+                <div class="store-item-image-container">
+                  <img src="assets/images/store/${item.img}" alt="${item.name}">
+                </div>
                 <h4>${item.name}</h4>
                 <p class="item-short">${item.short}</p>
                 <div class="price-buttons">
-                  <button class="btn-price-gold" ${isOwned ? 'disabled' : ''} title="${item.priceGold} Ouro">${item.priceGold} 💰</button>
-                  <button class="btn-price-gems" ${isOwned ? 'disabled' : ''} title="${item.priceGems} Gemas">${item.priceGems} 💎</button>
+                  <button class="btn-price-gold" ${isOwned ? 'disabled' : ''} title="${item.priceGold} Ouro">
+                    ${item.priceGold} 💰
+                  </button>
+                  <button class="btn-price-gems" ${isOwned ? 'disabled' : ''} title="${item.priceGems} Gemas">
+                    ${item.priceGems} 💎
+                  </button>
                 </div>
               </div>`;
             this.#gridEl.append(html);
         });
-
+    
         console.log(`StoreScreenUI: Grid rendered with ${this.items.length} items.`);
     }
 
@@ -229,14 +250,16 @@ export default class StoreScreenUI {
 
     /** Lógica de compra de item (mantida igual) */
     _handlePurchase(currency) {
+        // 1) Recupera o ID do item e o próprio item
         const itemId = this.#detailOverlayEl.data('item-id');
         const item = this.items.find(i => i.id === itemId);
         if (!item) {
-            console.error("Store Purchase Error: Item data not found for ID:", itemId);
+            console.error("StorePurchase Error: Item não encontrado para ID:", itemId);
             this._closeDetail();
             return;
         }
-
+    
+        // 2) Recupera o usuário e garante que está logado
         const user = this.#accountManager.getCurrentUser();
         if (!user) {
             this.#audioManager?.playSFX('genericError');
@@ -245,8 +268,43 @@ export default class StoreScreenUI {
             this.#uiManager?.navigateTo('login-screen');
             return;
         }
-
-        // ... (restante da lógica de compra, mesma do original) ...
+    
+        // 3) Garante que wallet e inventory existem
+        if (!user.wallet) user.wallet = { gold: 0, gems: 0 };
+        if (!user.inventory) user.inventory = { purchases: [] };
+    
+        const wallet = user.wallet;
+        const inventory = user.inventory.purchases;
+        const cost = currency === 'gold' ? item.priceGold : item.priceGems;
+    
+        // 4) Checa saldo
+        if (wallet[currency] < cost) {
+            this.#audioManager?.playSFX('genericError');
+            alert(`Saldo insuficiente de ${currency}.`);
+            return;
+        }
+    
+        // 5) Deduz custo e registra compra
+        wallet[currency] -= cost;
+        inventory.push(item.id);
+    
+        // 6) Persiste dados do usuário (precisa do método saveCurrentUserData em AccountManager)
+        this.#accountManager.saveCurrentUserData();
+    
+        // 7) Feedback sonoro e visual
+        this.#audioManager?.playSFX('deckSave');
+        alert("Compra realizada com sucesso!");
+    
+        // 8) Atualiza a UI de moedas/gemas na própria loja
+        this.#goldAmountEl.text(wallet.gold);
+        this.#gemsAmountEl.text(wallet.gems);
+    
+        // 9) Fecha detalhe e re-renderiza o grid (com itens possivelmente desabilitados)
+        this._closeDetail();
+        this._renderGrid();
+    
+        // 10) Atualiza também a barra superior
+        this.#uiManager.updateCurrenciesDisplay(wallet.gold, wallet.gems);
     }
 
     /** Opcional: destrói a UI ao sair da tela */
