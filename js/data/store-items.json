@@ -2,6 +2,7 @@
     {
       "id": "boost_el1",
       "type": "booster",
+      "set": "ELDRAEM",
       "name": "Booster Eldraem",
       "img": "booster_eldraem.png",
       "short": "Pacote de 10 cartas de Eldraem",
@@ -22,6 +23,9 @@
     {
       "id": "deck_starter_circle_ashkar",
       "type": "deck",
+      "deckContents": [
+      "CR004", "CR004", "CR010", "CR010", "CR010", "CR010", "CR012", "CR012",
+      "CR015", "IS002", "IS002", "IS002", "IS002", "IS007", "IS007","RB_POWER", "RB_POWER"],
       "name": "Deck Inicial Circle of Ashkar",
       "img": "Ashkar_deck.png",
       "short": "30 cartas prontas p/ jogar",
@@ -30,8 +34,12 @@
       "priceGems": 800
     },
     {
-      "id": "deck_starter_order_galadreth",
+      "id": "DECK_GALADRETH",
       "type": "deck",
+      "deckContents": [
+      "CR001", "CR001", "CR001", "CR002", "CR002", "CR007", "CR007", "CR009",
+      "CR009", "CR011", "CR011", "CR016", "CR016", "IS001", "IS001", 
+      "RB_TOUGH", "RB_TOUGH", "RB_DRAW2"], 
       "name": "Deck Inicial Order of Galadreth",
       "img": "Galadreth_deck.png",
       "short": "30 cartas prontas p/ jogar",
@@ -42,6 +50,7 @@
     {
       "id": "booster_el2",
       "type": "booster",
+      "set": "Eldraem",
       "name": "Booster Eldraem - Deluxe",
       "img": "booster_deluxe.png",
       "short": "15 cartas (3 raras)",
@@ -62,6 +71,7 @@
     {
         "id": "bounce",
         "type": "card",
+        "cardId": "IS005", 
         "name": "Bounce",
         "img": "bounce.png",
         "short": "Instant Spell",
@@ -72,6 +82,7 @@
       {
         "id": "molten_wyrm",
         "type": "card",
+        "cardId": "CR004", 
         "name": "Molten Wyrm",
         "img": "molten_wyrm.png",
         "short": "Creature",
@@ -82,6 +93,7 @@
       {
         "id": "shadowblade_assassin",
         "type": "card",
+        "cardId": "CR014",
         "name": "Shadowblade Assassin",
         "img": "shadowblade_assassin.png",
         "short": "Creature",
@@ -102,6 +114,7 @@
       {
         "id": "silence",
         "type": "card",
+        "cardId": "RB_SILENCE",
         "name": "Silence",
         "img": "silence.png",
         "short": "Runebinding",
@@ -112,6 +125,7 @@
       {
         "id": "soul_revenant",
         "type": "card",
+        "cardId": "CR005",
         "name": "Soul Revenant",
         "img": "soul_revenant.png",
         "short": "Creature",
