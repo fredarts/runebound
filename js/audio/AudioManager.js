@@ -44,6 +44,7 @@ export default class AudioManager {
         'gameOverLose': 'assets/audio/sfx_game_over_lose.mp3', // Precisa existir esse arquivo
         'genericError': 'assets/audio/sfx_error.mp3',
         'deckSave': 'assets/audio/sfx_deck_save.mp3',
+        
         // Adicione outros SFX conforme necessário
     };
 

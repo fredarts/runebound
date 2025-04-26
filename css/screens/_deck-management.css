@@ -93,12 +93,12 @@
 
 /* Item da Lista de Decks */
 #deck-management-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex;       /* Use flexbox for layout */
+    align-items: center; /* Vertically center items */
+    gap: 15px;           /* Space between image and text/buttons */
     padding: 8px 12px;
     border-bottom: 1px solid var(--border-color-light, #555);
-    color: var(--text-color-light, #ddd); /* Cor fallback */
+    color: var(--text-color-light, #ddd);
     transition: background-color 0.2s ease;
 }
 
@@ -117,6 +117,49 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.deck-list-thumbnail {
+    width: 80px;   /* Adjust size as needed */
+    height: 50px;  /* Adjust size as needed */
+    object-fit: cover; /* Crop image nicely */
+    border-radius: 4px;
+    flex-shrink: 0; /* Prevent image from shrinking */
+    border: 1px solid var(--border-color, #444);
+}
+
+.deck-list-thumbnail-placeholder {
+    width: 80px;
+    height: 50px;
+    background-color: #333; /* Placeholder background */
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-color, #444);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.deck-list-thumbnail-placeholder::before {
+    content: "IMG"; /* Or use an icon */
+}
+
+.deck-info-container {
+    flex-grow: 1; /* Allow text/buttons to take remaining space */
+    display: flex;
+    justify-content: space-between; /* Push buttons to the right */
+    align-items: center;
+    overflow: hidden; /* Prevent text overflow issues */
+}
+
+#deck-management-list .deck-name {
+    /* Removed flex-grow: 1; as container handles it */
+    margin-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Indicadores de Validade */

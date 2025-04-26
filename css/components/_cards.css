@@ -251,4 +251,30 @@
   .mini-card.in-deck {
     border: 2px solid #ffeb3b;
   }
+
+  /* --- Mini Card Quantity Counter --- */
+.mini-card .mini-card-quantity {
+  position: absolute;
+  top: 2px;             /* Adjust position as needed */
+  right: 2px;            /* Adjust position as needed */
+  background-color: rgba(0, 0, 0, 0.8); /* Dark background */
+  color: #fff;           /* White text */
+  font-size: 0.75em;      /* Smaller font size */
+  font-weight: bold;
+  padding: 1px 4px;       /* Small padding */
+  border-radius: 50%;   /* Circular shape */
+  min-width: 16px;       /* Ensure minimum size */
+  height: 16px;
+  line-height: 14px;     /* Adjust line-height for vertical centering */
+  text-align: center;
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.5); /* Optional subtle glow */
+  z-index: 5;            /* Ensure it's above the name overlay */
+  pointer-events: none;  /* Prevent interfering with clicks on the card */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Optional border */
+}
+
+/* Style for locked cards (ensure quantity isn't shown) */
+.mini-card.locked .mini-card-quantity {
+  display: none;
+}
   

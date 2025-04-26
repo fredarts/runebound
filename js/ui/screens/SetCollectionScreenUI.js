@@ -1,124 +1,193 @@
 /*  js/ui/screens/SetCollectionScreenUI.js
     Tela “Coleção – Eldraem” completa, já com cálculo dinâmico
-    de cartas possuídas / faltantes e filtros básicos          */
+    de cartas possuídas / faltantes e filtros básicos, e contador de quantidade */
 
     import CardRenderer from '../helpers/CardRenderer.js';
 
     export default class SetCollectionScreenUI {
     
-      #screenManager; #accountManager; #cardDB;
-      #renderer; #el; #zoomHandler;
+        #screenManager;
+        #accountManager;
+        #cardDB;
+        #renderer;
+        #el;
+        #zoomHandler;
+        #uiManager;
+        #audioManager;
     
-      constructor(screenManager, accountManager, cardDatabase, zoomHandler){
-        this.#screenManager  = screenManager;
-        this.#accountManager = accountManager;
-        this.#cardDB         = cardDatabase;
-        this.#zoomHandler    = zoomHandler;
-        this.#renderer       = new CardRenderer();
-        this.#el = $('#set-collection-screen');
+        _filtersPopulated = false; // Flag para popular filtros apenas uma vez
     
-        this._bind();
-      }
+        constructor(screenManager, accountManager, cardDatabase, zoomHandler, uiManager, audioManager) {
+            this.#screenManager  = screenManager;
+            this.#accountManager = accountManager;
+            this.#cardDB         = cardDatabase;
+            this.#zoomHandler    = zoomHandler;
+            this.#uiManager      = uiManager;
+            this.#audioManager   = audioManager;
+            this.#renderer       = new CardRenderer();
+            this.#el = $('#set-collection-screen');
     
-      /* ────────────────────────────── PUBLIC ────────────────────────────── */
-      render(){
-        const user = this.#accountManager.getCurrentUser();
-        if (!user) return;                     // sem jogador → nada a fazer
+            // REMOVED _bindEvents() from constructor
+            console.log("SetCollectionScreenUI initialized.");
+        }
     
-        /* -------- calcula dinamicamente owned / missing -------- */
-        const ownedSet  = new Set(user.collection);           // coleção real
-        const allCards  = Object.values(this.#cardDB)
-                           .filter(c => c.set === 'ELDRAEM');  // só o set alvo
-        const ownedArr   = [];
-        const missingArr = [];
+        render(setCode = 'ELDRAEM'){
+            // Ensure element is cached
+            if (!this.#el?.length) this.#el = $('#set-collection-screen');
+            if (!this.#el?.length) {
+                 console.error("SetCollectionScreenUI Render Error: Root element not found.");
+                 return;
+            }
     
-        allCards.forEach(c => (ownedSet.has(c.id) ? ownedArr : missingArr).push(c.id));
+            const user = this.#accountManager.getCurrentUser();
+            const $grid = this.#el.find('#collection-grid'); // Find grid within the cached root
+            $grid.empty();
     
-        // guarda p/ o perfil exibir depois
-        user.setsOwned ??= {};
-        user.setsOwned.ELDRAEM = { owned: ownedArr, missing: missingArr };
+            if (!user) {
+                console.warn("SetCollectionScreenUI: No user logged in.");
+                $grid.append('<p class="placeholder-message">Faça login para ver a coleção.</p>');
+                return;
+            }
     
-        /* -------- popula filtros (apenas 1ª vez) -------- */
-        this.#populateFiltersOnce(allCards);
+            const cardQuantities = {};
+            const userActualCollection = user.collection || [];
+            userActualCollection.forEach(id => {
+                cardQuantities[id] = (cardQuantities[id] || 0) + 1;
+            });
     
-        /* -------- aplica filtros atuais -------- */
-        const filteredCards = this.#applyFilters(allCards);
+            const allCardsInSet = Object.values(this.#cardDB)
+                               .filter(c => c.set === setCode);
     
-        /* -------- renderiza grade -------- */
-        const $grid = $('#collection-grid').empty();
+            this._populateFiltersOnce(allCardsInSet); // Still populate only once
     
-        filteredCards.forEach(card => {
-          const $mini = $(this.#renderer.renderMiniCard(card));
-          if (!ownedSet.has(card.id)){
-            $mini.addClass('locked').css('filter','grayscale(1) opacity(.35)')
-                 .append('<span class="locked-label">?</span>');
-          }
-          $grid.append($mini);
-        });
-      }
+            const filteredCards = this._applyFilters(allCardsInSet);
     
-      /* ────────────────────────────── PRIVATE ───────────────────────────── */
-      _bind(){
+            if (filteredCards.length === 0) {
+                 $grid.append('<p class="placeholder-message">(Nenhuma carta encontrada ou corresponde aos filtros)</p>');
+            } else {
+                filteredCards.forEach(cardDef => {
+                    const quantity = cardQuantities[cardDef.id] || 0;
+                    const $mini = this.#renderer.renderMiniCard(cardDef, 'collection', quantity);
     
-        /* botão voltar */
-        this.#el.on('click','#btn-back-profile', ()=>{
-          this.#screenManager.showScreen('profile-screen');
-        });
+                    if (!$mini) {
+                        console.warn(`SetCollectionScreenUI: Failed to render card ${cardDef.id}`);
+                        return;
+                    }
     
-        /* change nos selects ou pesquisa → re‑render */
-        this.#el.on('change','#filter-cost,#filter-type,#filter-tribe',
-          ()=> this.render());
-        this.#el.on('input','#search-name',
-          ()=> this.render());
-
-          this.#el.on('contextmenu', '.mini-card', ev => {
-            ev.preventDefault();
-            this.#zoomHandler.handleZoomClick(ev);
-        });
-        
-        $('#set-collection-zoom-overlay').on('click', ev => {
-            if (ev.target === ev.currentTarget) this.#zoomHandler.closeZoom();
-        });
-      
-      
-      }
+                    if (!quantity || quantity === 0){
+                      $mini.addClass('locked').css('filter','grayscale(1) opacity(.35)')
+                           .append('<span class="locked-label">?</span>');
+                    }
+                    $grid.append($mini);
+                });
+            }
+            console.log(`SetCollectionScreenUI: Rendered ${filteredCards.length} cards for set ${setCode} with quantities.`);
     
-      #populateFiltersOnce(allCards){
-        if (this._filtersReady) return;      // só uma vez
-        this._filtersReady = true;
+            // --- MOVED BINDING HERE ---
+            this._bindEvents();
+            // --------------------------
+        }
     
-        /* custo */
-        const costs = [...new Set(allCards.map(c=>c.cost))].sort((a,b)=>a-b);
-        costs.forEach(c=>{
-          $('#filter-cost').append(`<option value="${c}">${c}</option>`);
-        });
+        _bindEvents(){
+            if (!this.#el || !this.#el.length) {
+                console.warn("SetCollectionScreenUI: Cannot bind events, root element missing.");
+                return;
+            }
+            console.log("SetCollectionScreenUI: Binding events...");
+            const self = this;
+            const namespace = '.setcollection';
     
-        /* tipo */
-        const types = [...new Set(allCards.map(c=>c.type))].sort();
-        types.forEach(t=>{
-          $('#filter-type').append(`<option value="${t}">${t}</option>`);
-        });
+            // --- Clear old listeners ---
+            this.#el.off(namespace);
+            $('#set-collection-zoom-overlay')?.off(namespace); // Use optional chaining
     
-        /* tribo (assumindo campo tribe opcional) */
-        const tribes = [...new Set(allCards.map(c=>c.tribe).filter(Boolean))].sort();
-        tribes.forEach(t=>{
-          $('#filter-tribe').append(`<option value="${t}">${t}</option>`);
-        });
-      }
+            /* Back button */
+            this.#el.on(`click${namespace}`, '#btn-back-profile', () => {
+                self.#audioManager?.playSFX('buttonClick');
+                self.#uiManager?.navigateTo('profile-screen');
+            });
+             this.#el.on(`mouseenter${namespace}`, '#btn-back-profile', () => {
+                 self.#audioManager?.playSFX('buttonHover');
+             });
     
-      #applyFilters(cards){
-        const costVal   = $('#filter-cost').val();
-        const typeVal   = $('#filter-type').val();
-        const tribeVal  = $('#filter-tribe').val();
-        const searchTxt = $('#search-name').val()?.toLowerCase() ?? '';
+            /* Filters */
+            this.#el.on(`change${namespace}`, '#filter-cost, #filter-type, #filter-tribe', () => {
+                 self.#audioManager?.playSFX('buttonClick');
+                 self.render(); // Re-render on filter change
+            });
+            this.#el.on(`input${namespace}`, '#search-name', () => {
+                self.render(); // Re-render on search input
+            });
     
-        return cards.filter(c=>{
-          if (costVal && String(c.cost) !== costVal) return false;
-          if (typeVal && c.type !== typeVal)         return false;
-          if (tribeVal && c.tribe !== tribeVal)      return false;
-          if (searchTxt && !c.name.toLowerCase().includes(searchTxt)) return false;
-          return true;
-        });
-      }
+            /* Card Zoom (Delegated) */
+            this.#el.on(`contextmenu${namespace}`, '.mini-card', ev => {
+                ev.preventDefault();
+                self.#zoomHandler.handleZoomClick(ev);
+            });
+    
+            /* Close Zoom Overlay */
+            $('#set-collection-zoom-overlay').on(`click${namespace}`, ev => {
+                if (ev.target === ev.currentTarget) {
+                    self.#zoomHandler.closeZoom();
+                }
+            });
+            console.log("SetCollectionScreenUI: Events rebound.");
+        }
+    
+        _populateFiltersOnce(allCardsInSet){
+            if (this._filtersPopulated || !this.#el?.length) return;
+            const $costFilter = this.#el.find('#filter-cost');
+            const $typeFilter = this.#el.find('#filter-type');
+            const $tribeFilter = this.#el.find('#filter-tribe');
+    
+            if (!$costFilter.length || !$typeFilter.length || !$tribeFilter.length) {
+                console.error("SetCollectionScreenUI: Filter select elements not found during population.");
+                return;
+            }
+    
+            $costFilter.children('option:not(:first-child)').remove();
+            $typeFilter.children('option:not(:first-child)').remove();
+            $tribeFilter.children('option:not(:first-child)').remove();
+    
+            const costs = [...new Set(allCardsInSet.map(c => c.cost))].sort((a,b) => a - b);
+            costs.forEach(c => $costFilter.append(`<option value="${c}">${c}</option>`));
+    
+            const types = [...new Set(allCardsInSet.map(c => c.type))].sort();
+            types.forEach(t => $typeFilter.append(`<option value="${t}">${t}</option>`));
+    
+            const tribes = [...new Set(allCardsInSet.map(c => c.tribe).filter(Boolean))].sort();
+            tribes.forEach(t => $tribeFilter.append(`<option value="${t}">${t}</option>`));
+    
+            this._filtersPopulated = true; // Mark as populated
+            console.log("SetCollectionScreenUI: Filters populated.");
+        }
+    
+        _applyFilters(cards){
+            if (!this.#el?.length) return cards;
+    
+            const costVal   = this.#el.find('#filter-cost').val();
+            const typeVal   = this.#el.find('#filter-type').val();
+            const tribeVal  = this.#el.find('#filter-tribe').val();
+            const searchTxt = this.#el.find('#search-name').val()?.toLowerCase() ?? '';
+    
+            return cards.filter(c => {
+                if (!c) return false;
+                if (costVal && String(c.cost ?? '') !== costVal) return false;
+                if (typeVal && c.type !== typeVal) return false;
+                if (tribeVal && (c.tribe || '') !== tribeVal) return false;
+                if (searchTxt && !(c.name || '').toLowerCase().includes(searchTxt)) return false;
+                return true;
+            });
+        }
+    
+        destroy() {
+            console.log("SetCollectionScreenUI: Destroying...");
+            const namespace = '.setcollection';
+            this.#el?.off(namespace); // Use optional chaining
+            $('#set-collection-zoom-overlay')?.off(namespace);
+            // Reset flags if necessary, e.g., if filters should be repopulated on next view
+            // this._filtersPopulated = false;
+            this.#el = null;
+            console.log("SetCollectionScreenUI: Destroy complete.");
+        }
     }
-    
