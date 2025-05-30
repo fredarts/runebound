@@ -1,137 +1,147 @@
 [
-    {
-      "id": "boost_el1",
-      "type": "booster",
-      "set": "ELDRAEM",
-      "name": "Booster Eldraem",
-      "img": "booster_eldraem.png",
-      "short": "Pacote de 10 cartas de Eldraem",
-      "long": "Contém 10 cartas aleatórias do set Eldraem, garantindo 1 rara ou melhor.",
+  {
+    "id": "boost_el1",
+    "type": "booster",
+    "set": "ELDRAEM", 
+    "name": "Booster Eldraem",
+    "img": "booster_eldraem.png",
+    "short": "Pacote de 10 cartas de Eldraem",
+    "long": "Contém 10 cartas aleatórias do set Eldraem, garantindo 1 rara ou melhor.",
+    "priceGold": 1000,
+    "priceGems": 200
+  },
+  {
+    "id": "sleeve_dragon",
+    "type": "sleeve",
+    "name": "Sleeve Dragão Rubi",
+    "img": "sleeve_dragon.png",
+    "short": "Arte rubi flamejante",
+    "long": "Um protetor de deck premium com arte de um dragão rubi flamejante.",
+    "priceGold": 2000,
+    "priceGems": 400
+  },
+  {
+    "id": "deck_starter_circle_ashkar",
+    "type": "deck",
+  
+    "deckContents": [
+      "CR001", "CR001", "CR001", "CR001", "CR003", "CR003", "CR003", "CR003",
+      "CR007", "CR007", "CR007", "CR011", "CR011", "CR011", "CR009", "CR009",
+      "CR016", "CR016", "CR010", "CR010", "CR002", "IS002", "IS002", "IS002",
+      "IS002", "IS003", "IS003", "IS003", "RB_POWER","RB_POWER", "RB_TOUGH",
+      "RB_TOUGH", "IS004", "IS004", "IS001", "RB001", "RB_DRAW2" 
+    ],
+  
+    "name": "Deck Inicial Circle of Ashkar", 
+    "img": "Ashkar_deck.png",
+    "short": "37 cartas prontas p/ jogar", 
+    "long": "Um deck completo focado em táticas agressivas e elementais de fogo. Ideal para começar.",
+    "priceGold": 5000,
+    "priceGems": 800
+  },
+  {
+    "id": "DECK_GALADRETH",
+    "type": "deck",
+
+     "deckContents": [
+      "CR001", "CR001", "CR001", "CR001", "CR003", "CR003", "CR003", "CR003",
+      "CR007", "CR007", "CR007", "CR011", "CR011", "CR011", "CR009", "CR009",
+      "CR016", "CR016", "CR010", "CR010", "CR002", "IS002", "IS002", "IS002",
+      "IS002", "IS003", "IS003", "IS003", "RB_POWER","RB_POWER", "RB_TOUGH",
+      "RB_TOUGH", "IS004", "IS004", "IS001", "RB001", "RB_DRAW2" 
+    ],
+  
+    "name": "Deck Inicial Order of Galadreth", 
+    "img": "Galadreth_deck.png",
+    "short": "37 cartas prontas p/ jogar", 
+    "long": "Um deck completo focado em criaturas resistentes e cura. Ideal para começar.",
+    "priceGold": 5000,
+    "priceGems": 800
+  },
+  {
+    "id": "booster_el2",
+    "type": "booster",
+    "set": "ELDRAEM", 
+    "name": "Booster Eldraem - Deluxe",
+    "img": "booster_deluxe.png",
+    "short": "15 cartas (3 raras)",
+    "long": "Versão deluxe com 15 cartas, 3 delas raras ou míticas.",
+    "priceGold": 3000,
+    "priceGems": 600
+  },
+  {
+    "id": "avatar_lyrandar",
+    "type": "avatar",
+    "name": "Avatar Lyrandar Vínculoforte",
+    "img": "Lyrandar_Vínculoforte.png",
+    "short": "primeiro a reconhecer a ruptura",
+    "long": "Lyrandar testemunhou três eras de Eldraem e foi o primeiro a reconhecer os sinais da ruptura dos Vínculos",
+    "priceGold": 2000,
+    "priceGems": 400
+  },
+  {
+      "id": "card_bounce", 
+      "type": "card",
+      "cardId": "IS005",
+      "name": "Bounce",
+      "img": "bounce.png",
+      "short": "Instant Spell",
+      "long": "Return the target creature to its owner's hand.",
       "priceGold": 1000,
       "priceGems": 200
     },
     {
-      "id": "sleeve_dragon",
-      "type": "sleeve",
-      "name": "Sleeve Dragão Rubi",
-      "img": "sleeve_dragon.png",
-      "short": "Arte rubi flamejante",
-      "long": "Um protetor de deck premium com arte de um dragão rubi flamejante.",
+      "id": "card_molten_wyrm", 
+      "type": "card",
+      "cardId": "CR004",
+      "name": "Molten Wyrm",
+      "img": "molten_wyrm.png",
+      "short": "Creature",
+      "long": "A powerful creature",
       "priceGold": 2000,
       "priceGems": 400
     },
     {
-      "id": "deck_starter_circle_ashkar",
-      "type": "deck",
-      "deckContents": [
-      "CR004", "CR004", "CR010", "CR010", "CR010", "CR010", "CR012", "CR012",
-      "CR015", "IS002", "IS002", "IS002", "IS002", "IS007", "IS007","RB_POWER", "RB_POWER"],
-      "name": "Deck Inicial Circle of Ashkar",
-      "img": "Ashkar_deck.png",
-      "short": "30 cartas prontas p/ jogar",
-      "long": "Um deck completo focado em criaturas de fogo. Ideal para iniciantes.",
+      "id": "card_shadowblade_assassin", 
+      "type": "card",
+      "cardId": "CR014",
+      "name": "Shadowblade Assassin",
+      "img": "shadowblade_assassin.png",
+      "short": "Creature",
+      "long": "Where shadows lengthen, the cold blade takes heart",
       "priceGold": 5000,
       "priceGems": 800
     },
     {
-      "id": "DECK_GALADRETH",
-      "type": "deck",
-      "deckContents": [
-      "CR001", "CR001", "CR001", "CR002", "CR002", "CR007", "CR007", "CR009",
-      "CR009", "CR011", "CR011", "CR016", "CR016", "IS001", "IS001", 
-      "RB_TOUGH", "RB_TOUGH", "RB_DRAW2"], 
-      "name": "Deck Inicial Order of Galadreth",
-      "img": "Galadreth_deck.png",
-      "short": "30 cartas prontas p/ jogar",
-      "long": "Um deck completo focado em criaturas de fogo. Ideal para iniciantes.",
-      "priceGold": 5000,
-      "priceGems": 800
+      "id": "avatar_valerian", 
+      "type": "avatar",
+      "name": "Magus Valerian Cinzarrubro",
+      "img": "Magus_Valerian_Cinzarrubro.png",
+      "short": "Ex-arquivista da Ordem de Galadreth",
+      "long": ", Valerian descobriu textos proibidos sobre a natureza limitadora dos Vínculos. Após ser expulso por heresia, fundou o Círculo de Ashkar para libertar Eldraem de suas correntes místicas.",
+      "priceGold": 1500,
+      "priceGems": 300
     },
     {
-      "id": "booster_el2",
-      "type": "booster",
-      "set": "Eldraem",
-      "name": "Booster Eldraem - Deluxe",
-      "img": "booster_deluxe.png",
-      "short": "15 cartas (3 raras)",
-      "long": "Versão deluxe com 15 cartas, 3 delas raras ou míticas.",
+      "id": "card_silence",
+      "type": "card",
+      "cardId": "RB_SILENCE",
+      "name": "Silence",
+      "img": "silence.png",
+      "short": "Runebinding",
+      "long": "Target creature can't attack next turn",
       "priceGold": 3000,
       "priceGems": 600
     },
     {
-      "id": "avatar",
-      "type": "avatar",
-      "name": "Avatar Lyrandar Vínculoforte",
-      "img": "Lyrandar_Vínculoforte.png",
-      "short": "primeiro a reconhecer a ruptura",
-      "long": "Lyrandar testemunhou três eras de Eldraem e foi o primeiro a reconhecer os sinais da ruptura dos Vínculos",
+      "id": "card_soul_revenant",
+      "type": "card",
+      "cardId": "CR005",
+      "name": "Soul Revenant",
+      "img": "soul_revenant.png",
+      "short": "Creature",
+      "long": "Dearthrattle: Return this card to your hand.",
       "priceGold": 2000,
       "priceGems": 400
-    },
-    {
-        "id": "bounce",
-        "type": "card",
-        "cardId": "IS005", 
-        "name": "Bounce",
-        "img": "bounce.png",
-        "short": "Instant Spell",
-        "long": "Return the target creature to its owner's hand.",
-        "priceGold": 1000,
-        "priceGems": 200
-      },
-      {
-        "id": "molten_wyrm",
-        "type": "card",
-        "cardId": "CR004", 
-        "name": "Molten Wyrm",
-        "img": "molten_wyrm.png",
-        "short": "Creature",
-        "long": "A powerful creature",
-        "priceGold": 2000,
-        "priceGems": 400
-      },
-      {
-        "id": "shadowblade_assassin",
-        "type": "card",
-        "cardId": "CR014",
-        "name": "Shadowblade Assassin",
-        "img": "shadowblade_assassin.png",
-        "short": "Creature",
-        "long": "Where shadows lengthen, the cold blade takes heart",
-        "priceGold": 5000,
-        "priceGems": 800
-      },
-      {
-        "id": "Magus_Valerian_Cinzarrubro",
-        "type": "avatar",
-        "name": "Magus Valerian Cinzarrubro",
-        "img": "Magus_Valerian_Cinzarrubro.png",
-        "short": "Ex-arquivista da Ordem de Galadreth",
-        "long": ", Valerian descobriu textos proibidos sobre a natureza limitadora dos Vínculos. Após ser expulso por heresia, fundou o Círculo de Ashkar para libertar Eldraem de suas correntes místicas.",
-        "priceGold": 1500,
-        "priceGems": 300
-      },
-      {
-        "id": "silence",
-        "type": "card",
-        "cardId": "RB_SILENCE",
-        "name": "Silence",
-        "img": "silence.png",
-        "short": "Runebinding",
-        "long": "Target creature can't attack next turn",
-        "priceGold": 3000,
-        "priceGems": 600
-      },
-      {
-        "id": "soul_revenant",
-        "type": "card",
-        "cardId": "CR005",
-        "name": "Soul Revenant",
-        "img": "soul_revenant.png",
-        "short": "Creature",
-        "long": "Dearthrattle: Return this card to your hand.",
-        "priceGold": 2000,
-        "priceGems": 400
-      }
-
-  ]
+    }
+]

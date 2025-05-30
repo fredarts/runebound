@@ -1,59 +1,34 @@
-// BoosterOpeningScreenUI.js – versão com correções de verso espelhado e cores
-// -----------------------------------------------------------------------------
-// Alterações principais:
-//  • Carta agora é um THREE.Group contendo dois meshes (face + verso)
-//  • Espaço de cor sRGB ativado no renderer e em todas as texturas
-//  • Luzes mais suaves
-//  • Flip troca visibilidade em vez de trocar material
-//  • Código escrito para r152+ (usa .colorSpace / .outputColorSpace)
-// -----------------------------------------------------------------------------
-
-import * as THREE from 'three';
-// import TWEEN from '@tweenjs/tween.js'; // Mantido como global UMD
-
-const USE_BASIC_MATERIAL_DEBUG = true; // true = MeshBasicMaterial para debug
+// js/ui/screens/BoosterOpeningScreenUI.js – versão com variáveis CSS
+// Substitui o transform inline por variáveis (--offX, --offY, --stackRot)
+// para viabilizar o flip sem conflito de especificidade.
 
 export default class BoosterOpeningScreenUI {
-    // Dependências externas
+    // ──────────── Dependências Injetadas ────────────
     #screenManager;
     #accountManager;
     #audioManager;
     #uiManager;
-    #cardRenderer;
+    #cardRenderer; // Mantido (caso queira usar futuramente para mini‑render)
 
-    // Elementos DOM
-    #el;
-    #canvasContainer;
-    #btnSkip;
+    // ──────────── Elementos DOM ────────────
+    #el;                // Root element da tela
+    #cardContainer;     // Div que conterá as cartas
+    #btnSkip;           // Botão “Pular Abertura”
 
-    // THREE.js
-    #scene;
-    #camera;
-    #renderer;
-    #raycaster;
-    #mouseVector;
-    #textureLoader;
-    #animationFrameId = null;
+    // ──────────── Estado das Cartas ────────────
+    #cardElements = [];     // Array de jQuery elements das cartas
+    #pack = [];             // IDs das cartas do booster
+    #currentTopIndex = -1;  // Índice da carta do topo em #cardElements
+    #flippedElement = null; // jQuery element atualmente flipado
+    #isAnimating = false;   // Travar ações durante animações
 
-    // Cartas
-    #cardGroups = [];           // array de THREE.Group (antes eram meshes)
-    #pack = [];
-    #currentTopIndex = -1;
-    #flippedGroup = null;
-    #isFlipping = false;
-    #isDismissing = false;
-
-    #cardBackTexture = null;
-    #cardFaceTextures = {};     // cache por id
-
-    // Constantes geométricas
-    #CARD_ASPECT_RATIO = 1 / 1.4;
-    #CARD_WIDTH  = 10;
-    #CARD_HEIGHT = this.#CARD_WIDTH / this.#CARD_ASPECT_RATIO;
-    #STACK_OFFSET = 0.03;
-
+    // ──────────── Estado da UI ────────────
     #initialized = false;
     #isRendering = false;
+
+    // ──────────── Constantes de Animação (CSS ∞ JS) ────────────
+    #FLIP_DURATION = 600;    // ms
+    #DISMISS_DURATION = 400; // ms
 
     constructor(screenManager, accountManager, audioManager, uiManager, cardRenderer) {
         this.#screenManager  = screenManager;
@@ -61,386 +36,182 @@ export default class BoosterOpeningScreenUI {
         this.#audioManager   = audioManager;
         this.#uiManager      = uiManager;
         this.#cardRenderer   = cardRenderer;
-
-        if (!this.#cardRenderer) {
-            console.error('BoosterOpeningScreenUI Critical Error: CardRenderer dependency was not injected!');
-        }
-
-        // THREE core
-        this.#scene         = new THREE.Scene();
-        this.#raycaster     = new THREE.Raycaster();
-        this.#mouseVector   = new THREE.Vector2();
-        this.#textureLoader = new THREE.TextureLoader();
-
-        console.log('BoosterOpeningScreenUI created with Three.js setup.');
+        console.log('BoosterOpeningScreenUI (vars‑CSS) constructed.');
     }
 
+    // ────────────────────────────────────────────────
+    //  INIT / CACHE / BIND
+    // ────────────────────────────────────────────────
     async init() {
-        if (this.#initialized) return true;
-        console.log('BoosterOpeningScreenUI: Initializing...');
-
-        // --- pega elementos DOM ------------------------------------------------
-        this.#el              = $('#booster-opening-screen');
-        this.#canvasContainer = this.#el.find('#booster-canvas-container');
-        this.#btnSkip         = this.#el.find('#btn-booster-skip');
-
-        if (!this.#el.length || !this.#canvasContainer.length || !this.#btnSkip.length) {
-            console.error('BoosterOpeningScreenUI Init Error: Required elements not found!');
-            return false;
-        }
-
-        try {
-            const container = this.#canvasContainer[0];
-            let width  = container.offsetWidth  || container.clientWidth  || 300;
-            let height = container.offsetHeight || container.clientHeight || 650;
-
-            // Câmera e renderer --------------------------------------------------
-            this.#camera = new THREE.PerspectiveCamera(200, width / height, 0.1, 100);
-            this.#camera.position.z = 2;
-
-            this.#renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            this.#renderer.setSize(width, height);
-            this.#renderer.setPixelRatio(window.devicePixelRatio);
-            this.#renderer.outputColorSpace = THREE.SRGBColorSpace; // r152+
-
-            container.innerHTML = '';
-            container.appendChild(this.#renderer.domElement);
-
-            // --- Luzes ---------------------------------------------------------
-            const ambient = new THREE.AmbientLight(0xffffff, 0.35);
-            this.#scene.add(ambient);
-            const sun = new THREE.DirectionalLight(0xffffff, 0.55);
-            sun.position.set(2, 4, 5);
-            this.#scene.add(sun);
-
-            // Carrega textura do verso primeiro
-            await this._loadCardBackTexture();
-
-            // Eventos -----------------------------------------------------------
+        if (this.#initialized) {              // re‑init (voltar à tela)
+            console.log('BoosterOpeningScreenUI: Re‑initializing.');
+            if (!this._cacheSelectors()) return false;
             this._bindEvents();
-            this.#initialized = true;
-
-            // garante resize inicial
-            requestAnimationFrame(() => this._onWindowResize());
-
-            console.log('BoosterOpeningScreenUI initialized successfully.');
             return true;
-        } catch (err) {
-            console.error('BoosterOpeningScreenUI: Error during Three.js setup:', err);
-            return false;
         }
+
+        console.log('BoosterOpeningScreenUI: First‑time init…');
+        if (!this._cacheSelectors()) return false;
+        this._bindEvents();
+        this.#initialized = true;
+        return true;
     }
 
-    // ---------- Carregamento de texturas --------------------------------------
-    async _loadCardBackTexture() {
-        return new Promise((resolve, reject) => {
-            const path = 'assets/images/ui/card_back_placeholder.png';
-            console.log('Loading back texture:', path);
-            this.#textureLoader.load(
-                path,
-                (tex) => {
-                    tex.colorSpace = THREE.SRGBColorSpace; // r152+
-                    tex.flipY = false;                     // não inverta
-                    this.#cardBackTexture = tex;
-                    resolve();
-                },
-                undefined,
-                (e) => {
-                    console.error('Erro carregando verso da carta:', e);
-                    reject(e);
-                }
-            );
-        });
+    _cacheSelectors() {
+        this.#el            = $('#booster-opening-screen');
+        this.#cardContainer = this.#el.find('#booster-card-container');
+        this.#btnSkip       = this.#el.find('#btn-booster-skip');
+
+        const ok = this.#el.length && this.#cardContainer.length && this.#btnSkip.length;
+        if (!ok) console.error('BoosterOpeningScreenUI: Elementos essenciais não encontrados!');
+        return ok;
     }
 
-    async _loadCardFaceTexture(cardId) {
-        if (this.#cardFaceTextures[cardId]) return this.#cardFaceTextures[cardId];
-
-        const cardDef   = this.#uiManager.getCardDatabase()?.[cardId];
-        const imagePath = cardDef?.image_src || 'assets/images/cards/default.png';
-
-        return new Promise((resolve, reject) => {
-            this.#textureLoader.load(
-                imagePath,
-                (tex) => {
-                    tex.colorSpace = THREE.SRGBColorSpace;
-                    tex.flipY = false;
-                    this.#cardFaceTextures[cardId] = tex;
-                    resolve(tex);
-                },
-                undefined,
-                (err) => {
-                    console.error(`Erro carregando face ${cardId}:`, err);
-                    // tenta default
-                    this.#textureLoader.load('assets/images/cards/default.png', (dTex) => {
-                        dTex.colorSpace = THREE.SRGBColorSpace;
-                        dTex.flipY = false;
-                        this.#cardFaceTextures[cardId] = dTex;
-                        resolve(dTex);
-                    }, undefined, (dErr) => reject(dErr));
-                }
-            );
-        });
-    }
-
-    // ---------- Eventos -------------------------------------------------------
     _bindEvents() {
-        this.#btnSkip.off('click.booster').on('click.booster', () => {
+        const ns = '.boosterui';
+        this.#btnSkip.off(ns);
+        this.#cardContainer.off(ns);
+
+        // botão pular
+        this.#btnSkip.on(`click${ns}`, () => {
             this.#audioManager?.playSFX('buttonClick');
             this.finish(true);
-        });
-        this.#btnSkip.off('mouseenter.booster').on('mouseenter.booster', () => {
-            this.#audioManager?.playSFX('buttonHover');
-        });
+        }).on(`mouseenter${ns}`, () => this.#audioManager?.playSFX('buttonHover'));
 
-        if (this.#renderer?.domElement) {
-            this.#renderer.domElement.addEventListener('click', this._onCanvasClick.bind(this), false);
-        }
-        window.addEventListener('resize', this._onWindowResize.bind(this), false);
+        // clique nas cartas (delegação)
+        this.#cardContainer.on(`click${ns}`, '.booster-card.interactive', ev => this._onCardClick(ev))
+                           .on(`mouseenter${ns}`, '.booster-card.interactive', () => this.#audioManager?.playSFX('buttonHover'));
     }
 
-    _onWindowResize() {
-        if (!this.#initialized) return;
-        const container = this.#canvasContainer[0];
-        const w = container.offsetWidth  || container.clientWidth;
-        const h = container.offsetHeight || container.clientHeight;
-        if (!w || !h) return;
-
-        if (this.#camera.aspect !== w / h) {
-            this.#camera.aspect = w / h;
-            this.#camera.updateProjectionMatrix();
-        }
-        const size = this.#renderer.getSize(new THREE.Vector2());
-        if (size.x !== w || size.y !== h) this.#renderer.setSize(w, h);
-    }
-
-    // ---------- Render --------------------------------------------------------
+    // ────────────────────────────────────────────────
+    //  RENDER
+    // ────────────────────────────────────────────────
     async render({ pack = [] } = {}) {
-        if (!this.#initialized && !(await this.init())) {
-            console.error('Não inicializado – abortando render.');
-            return;
-        }
-        this.#isRendering = true;
-        this.#pack        = pack;
+        if (!this.#initialized && !(await this.init())) return;
+
+        this.#isRendering   = true;
+        this.#pack          = pack;
+        this._cleanupDOM();
 
         if (!Array.isArray(this.#pack) || !this.#pack.length) {
-            console.warn('Pacote vazio – saindo.');
+            console.warn('BoosterOpeningScreenUI: Pacote vazio ou inválido.');
             this.finish(true);
             return;
         }
 
-        this._cleanupThreeScene();
-        this.#cardGroups   = [];
-        this.#flippedGroup = null;
-        this.#isFlipping   = false;
-        this.#isDismissing = false;
+        const cardDb = this.#uiManager.getCardDatabase();
+        if (!cardDb) { console.error('BoosterOpeningScreenUI: Card DB não disponível.'); this.finish(true); return; }
 
-        const geometry = new THREE.PlaneGeometry(this.#CARD_WIDTH, this.#CARD_HEIGHT);
-        const Material  = USE_BASIC_MATERIAL_DEBUG ? THREE.MeshBasicMaterial : THREE.MeshStandardMaterial;
-        if (USE_BASIC_MATERIAL_DEBUG) console.warn('USANDO MeshBasicMaterial para DEBUG');
+        // adiciona cartas (ordem inversa → topo por último) ------------------
+        for (let i = this.#pack.length - 1; i >= 0; i--) {
+            const cardId   = this.#pack[i];
+            const cardDef  = cardDb[cardId] || {};
+            const faceURL  = cardDef.image_src || 'assets/images/cards/default.png';
+            const cardName = cardDef.name      || 'Carta desconhecida';
 
-        const backMaterialBase = new Material({
-            map: this.#cardBackTexture,
-            side: THREE.DoubleSide,
-            transparent: false,
-            color: 0xffffff
-        });
+            const $cardDiv = $(
+                `<div class="booster-card" data-card-id="${cardId}" title="${cardName}">
+                    <div class="card-back"></div>
+                    <div class="card-face" style="background-image:url('${faceURL}')"></div>
+                 </div>`);
 
-        // Carrega faces em paralelo
-        const faceTextures = await Promise.all(this.#pack.map(id => this._loadCardFaceTexture(id)));
+            // empilhamento via z‑index
+            $cardDiv.css('z-index', i + 1);
 
-        // Cria grupos de cartas
-        this.#pack.forEach((cardId, idx) => {
-            const faceTex = faceTextures[idx];
-            const faceMat = new Material({ map: faceTex, side: THREE.DoubleSide, transparent: false, color: 0xffffff });
-            const backMat = backMaterialBase.clone();
+            // deslocamento na pilha usando variáveis CSS (SEM transform inline)
+            const offset = (this.#pack.length - 1 - i) * 2;
+            $cardDiv.css({
+                '--offX'    : `-${50 + offset * 0.1}%`,
+                '--offY'    : `-${50 + offset * 0.1}%`,
+                '--stackRot': `${offset * -0.3}deg`
+            });
 
-            // Verso
-            const backMesh = new THREE.Mesh(geometry, backMat);
-            backMesh.rotation.y = Math.PI; // 180°
+            this.#cardContainer.append($cardDiv);
+            this.#cardElements.unshift($cardDiv); // base → topo
+        }
 
-            // Frente
-            const frontMesh = new THREE.Mesh(geometry, faceMat);
-            frontMesh.visible = false;
-
-            // Grupo
-            const group = new THREE.Group();
-            group.add(backMesh);
-            group.add(frontMesh);
-            group.position.set(0, 0, idx * this.#STACK_OFFSET);
-
-            group.userData = {
-                cardId,
-                isFlipped: false,
-                isTopCard: idx === this.#pack.length - 1,
-                backMesh,
-                frontMesh,
-                isInteractive: idx === this.#pack.length - 1
-            };
-            group.name = `card-${cardId}-${idx}`;
-
-            this.#scene.add(group);
-            this.#cardGroups.push(group);
-        });
-
-        this.#currentTopIndex = this.#cardGroups.length - 1;
-        this._startAnimationLoop();
+        // ativa carta do topo
+        this.#currentTopIndex = this.#cardElements.length - 1;
+        if (this.#currentTopIndex >= 0) this.#cardElements[this.#currentTopIndex].addClass('interactive');
     }
 
-    // ---------- Animation loop -----------------------------------------------
-    _startAnimationLoop() {
-        if (this.#animationFrameId) return;
-        const animate = () => {
-            if (!this.#isRendering) return;
-            this.#animationFrameId = requestAnimationFrame(animate);
-            try {
-                TWEEN.update();
-                this.#renderer.render(this.#scene, this.#camera);
-            } catch (err) {
-                console.error('Erro no render loop:', err);
-                this._stopAnimationLoop();
-            }
-        };
-        animate();
+    // ────────────────────────────────────────────────
+    //  INTERAÇÕES (clique / flip / dismiss)
+    // ────────────────────────────────────────────────
+    _onCardClick(ev) {
+        if (this.#isAnimating || this.#currentTopIndex < 0) return;
+        const $card = $(ev.currentTarget);
+        if (!$card.length) return;
+
+        if (!$card.hasClass('flipped')) this._flipCard($card);
+        else                            this._dismissCard($card);
     }
 
-    _stopAnimationLoop() {
-        if (this.#animationFrameId) cancelAnimationFrame(this.#animationFrameId);
-        this.#animationFrameId = null;
-    }
-
-    // ---------- Interação -----------------------------------------------------
-    _onCanvasClick(ev) {
-        if (!this.#isRendering || this.#isFlipping || this.#isDismissing || this.#currentTopIndex < 0) return;
-
-        const rect = this.#renderer.domElement.getBoundingClientRect();
-        this.#mouseVector.x = ((ev.clientX - rect.left) / rect.width)  * 2 - 1;
-        this.#mouseVector.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
-
-        this.#raycaster.setFromCamera(this.#mouseVector, this.#camera);
-        const intersects = this.#raycaster.intersectObjects(this.#cardGroups, true);
-        if (!intersects.length) return;
-
-        const clickedGroup = intersects[0].object.parent; // mesh -> group
-        const topGroup     = this.#cardGroups[this.#currentTopIndex];
-
-        if (clickedGroup !== topGroup || !clickedGroup.userData.isInteractive) return;
-
-        if (!clickedGroup.userData.isFlipped) this._flipCard(clickedGroup);
-        else this._dismissCard(clickedGroup);
-    }
-
-    _flipCard(group) {
-        if (this.#isFlipping || this.#isDismissing) return;
-        this.#isFlipping = true;
-        group.userData.isInteractive = false;
-        this.#flippedGroup = group;
+    _flipCard($card) {
+        if (this.#isAnimating) return;
+        this.#isAnimating   = true;
+        this.#flippedElement = $card;
+        $card.removeClass('interactive').addClass('flipped');
         this.#audioManager?.playSFX('cardDraw');
 
-        const DUR = 600;
-        const back = group.userData.backMesh;
-        const front = group.userData.frontMesh;
-
-        new TWEEN.Tween(group.rotation)
-            .to({ y: group.rotation.y + Math.PI }, DUR)
-            .easing(TWEEN.Easing.Quadratic.InOut)
-            .onUpdate(() => {
-                const localRot = group.rotation.y % Math.PI;
-                if (localRot >= Math.PI / 2) {
-                    back.visible = false;
-                    front.visible = true;
-                }
-            })
-            .onComplete(() => {
-                group.userData.isFlipped     = true;
-                group.userData.isInteractive = true;
-                this.#isFlipping = false;
-            })
-            .start();
-    }
-
-    _dismissCard(group) {
-        if (this.#isFlipping || this.#isDismissing || group !== this.#flippedGroup) return;
-        this.#isDismissing = true;
-        group.userData.isInteractive = false;
-        this.#audioManager?.playSFX('cardDiscard');
-
-        const DUR = 400;
-        const materials = [group.userData.backMesh.material, group.userData.frontMesh.material];
-        materials.forEach(m => { m.transparent = true; m.needsUpdate = true; });
-
-        new TWEEN.Tween(group.scale)
-            .to({ x: 0.1, y: 0.1, z: 0.1 }, DUR)
-            .easing(TWEEN.Easing.Quadratic.In)
-            .onComplete(() => {
-                this.#scene.remove(group);
-                group.traverse(obj => {
-                    if (obj.isMesh) {
-                        obj.geometry.dispose();
-                        obj.material.dispose();
-                    }
-                });
-
-                const idx = this.#cardGroups.indexOf(group);
-                if (idx > -1) this.#cardGroups.splice(idx, 1);
-
-                this.#currentTopIndex = this.#cardGroups.length - 1;
-                this.#flippedGroup    = null;
-                this.#isDismissing   = false;
-
-                if (this.#currentTopIndex < 0) this.finish(false);
-                else this.#cardGroups[this.#currentTopIndex].userData.isInteractive = true;
-            })
-            .start();
-    }
-
-    // ---------- Finalização / limpeza ----------------------------------------
-    finish(skipped = false) {
-        if (!this.#isRendering) return;
-        this.#isRendering = false;
-        this._stopAnimationLoop();
-        TWEEN.removeAll();
-
-        if (this.#pack.length) {
-            try { this.#accountManager.addCardsToCollection([...this.#pack]); }
-            catch (e) { console.error('Erro ao adicionar cartas', e); }
-        }
-
         setTimeout(() => {
-            this._cleanupThreeScene();
-            this.#uiManager?.navigateTo('set-collection-screen');
-        }, skipped ? 100 : 600);
+            if (this.#flippedElement && this.#flippedElement[0] === $card[0]) $card.addClass('interactive');
+            this.#isAnimating = false;
+        }, this.#FLIP_DURATION);
     }
 
-    _cleanupThreeScene() {
-        this._stopAnimationLoop();
-        while (this.#scene.children.length) {
-            const obj = this.#scene.children[0];
-            this.#scene.remove(obj);
-            if (obj.isMesh) {
-                obj.geometry.dispose();
-                obj.material.dispose();
-            }
+    _dismissCard($card) {
+        if (this.#isAnimating || !$card.hasClass('flipped') || !$card[0] === this.#flippedElement?.[0]) return;
+        this.#isAnimating = true;
+        $card.removeClass('interactive flipped').addClass('dismissing');
+        this.#audioManager?.playSFX('cardDiscard');
+    
+        setTimeout(() => {
+            // remove do array & DOM
+            const idx = this.#cardElements.findIndex($el => $el[0] === $card[0]);
+            if (idx !== -1) this.#cardElements.splice(idx, 1);
+            $card.remove();
+    
+            this.#currentTopIndex = this.#cardElements.length - 1;
+            this.#flippedElement  = null;
+            this.#isAnimating     = false;
+    
+            if (this.#currentTopIndex < 0) this.finish(false);
+            else this.#cardElements[this.#currentTopIndex].addClass('interactive');
+        }, this.#DISMISS_DURATION);
+    }
+
+    // ────────────────────────────────────────────────
+    //  FINALIZAÇÃO / LIMPEZA
+    // ────────────────────────────────────────────────
+    finish(skipped = false) {
+        if (!this.#isRendering && !skipped) return;
+        this.#isRendering = false;
+        this.#isAnimating = false;
+
+        if (Array.isArray(this.#pack) && this.#pack.length > 0) {
+            try {
+                this.#accountManager.addCardsToCollection([...this.#pack]);
+            } catch (e) { console.error('Erro ao adicionar cartas:', e); }
+            this.#pack = [];
         }
-        this.#cardGroups   = [];
-        this.#currentTopIndex = -1;
-        this.#flippedGroup = null;
+
+        setTimeout(() => this.#uiManager?.navigateTo('set-collection-screen'), skipped ? 50 : 450);
+    }
+
+    _cleanupDOM() {
+        this.#cardContainer.empty();
+        this.#cardElements      = [];
+        this.#currentTopIndex   = -1;
+        this.#flippedElement    = null;
+        this.#isAnimating       = false;
     }
 
     destroy() {
-        console.log('BoosterOpeningScreenUI: Destroying...');
-        this.#isRendering = false;
-        this._stopAnimationLoop();
-        TWEEN.removeAll();
-        this.#btnSkip?.off('.booster');
-        window.removeEventListener('resize', this._onWindowResize);
-        if (this.#renderer?.domElement) this.#renderer.domElement.removeEventListener('click', this._onCanvasClick);
-        this._cleanupThreeScene();
-        if (this.#renderer) {
-            this.#renderer.dispose();
-            this.#renderer = null;
-        }
-        this.#scene = this.#camera = this.#raycaster = this.#mouseVector = null;
+        const ns = '.boosterui';
+        this.#btnSkip?.off(ns);
+        this.#cardContainer?.off(ns);
+        this._cleanupDOM();
         this.#initialized = false;
     }
 }

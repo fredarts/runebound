@@ -1,17 +1,20 @@
-/* css/screens/_booster-opening.css */
+/* ====================================================================== */
+/*  css/screens/_booster-opening.css                                      */
+/*  Tela de Abertura de Booster – REFINADO para Flip Correto              */
+/* ====================================================================== */
 
 .booster-opening-layout {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Push instructions/button down */
+    justify-content: center;
     padding: 20px;
     height: 100%;
     box-sizing: border-box;
-    background-color: #1a202c; /* Dark background */
-    position: relative; /* Needed for absolute positioning of skip button? */
-     /* Add a background image if desired */
-     /* background: url(...) center/cover; */
+    background-color: #1a202c;
+    overflow: hidden;
+    /* Adiciona perspectiva ao container PAI para melhor efeito 3D */
+    perspective: 1500px; /* Ajuste o valor conforme necessário */
 }
 
 .booster-opening-layout h2 {
@@ -19,54 +22,151 @@
     color: var(--title-color);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     flex-shrink: 0;
+    position: absolute;
+    top: 20px;
 }
 
-#booster-canvas-container {
-    flex-grow: 1; /* Takes up available space */
+#booster-card-container {
+    flex-grow: 1;
     width: 100%;
-    max-width: 80vh; /* Limit width based on height */
+    max-width: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* Context for canvas */
-    overflow: hidden; /* Ensure canvas doesn't overflow */
-    cursor: pointer; /* Indicate interactivity */
-    margin-bottom: 10px; /* Space before instructions */
-    /* height: 100%; */ /* <<< REMOVE this line if present */
-    min-height: 0;     /* <<< ADD this line - Important for flex shrinking */
-}
-
-
-#booster-canvas-container canvas {
-    display: block; /* Remove extra space below canvas */
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    position: relative;
+    margin-top: 60px;
+    margin-bottom: 80px;
+    min-height: 300px;
+    /* Preserve-3d aqui também pode ajudar */
+    transform-style: preserve-3d;
 }
 
 .booster-instructions {
     text-align: center;
     color: var(--text-color-secondary);
     font-size: 0.9em;
-    margin-bottom: 15px;
-    flex-shrink: 0;
-}
-.booster-instructions p {
-    margin: 2px 0;
+    position: absolute;
+    bottom: 60px;
+    width: 100%;
+    left: 0;
 }
 
+.booster-instructions p { margin: 2px 0; }
 
-.btn-skip { /* Style the skip button */
-    position: absolute; /* Position it */
-    bottom: 25px;
-    right: 25px;
+.btn-skip {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
     padding: 8px 15px;
-    /* Inherit base button styles or add specific ones */
     background-color: var(--button-secondary-bg);
     border: 1px solid var(--border-color);
     color: var(--text-color);
-    z-index: 10; /* Ensure it's above canvas if overlapping */
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s ease;
 }
-.btn-skip:hover {
-    background-color: var(--button-secondary-hover-bg);
+
+.btn-skip:hover { background-color: var(--button-secondary-hover-bg); }
+
+/* --- Container do Card Individual --- */
+.booster-card {
+    /* Variáveis CSS para posição/rotação da pilha (mantidas) */
+    --offX: -50%;
+    --offY: -50%;
+    --stackRot: 0deg;
+
+    width: 200px;  /* Exemplo de tamanho */
+    height: 280px; /* Exemplo de tamanho */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Transform inicial: Posição + Rotação da pilha + Rotação Y (0 graus = verso visível) */
+    transform: translate(var(--offX), var(--offY)) rotate(var(--stackRot)) rotateY(0deg);
+
+    background-color: transparent; /* Container não tem cor */
+    border: none;
+    border-radius: 10px; /* Aplica aos filhos também */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+
+    /* --- Essencial para a Rotação 3D --- */
+    transform-style: preserve-3d;
+    /* A perspectiva no container pai (.booster-opening-layout) já ajuda */
+
+    /* --- Transição para o Flip --- */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Easing suave */
+    will-change: transform; /* Otimização */
+}
+
+/* --- Estado Virado (Aplica Rotação ao Container) --- */
+.booster-card.flipped {
+    /* Gira o CONTAINER em 180 graus no eixo Y */
+    transform: translate(var(--offX), var(--offY)) rotate(var(--stackRot)) rotateY(180deg);
+}
+
+/* --- Estilos Comuns para as Faces (Frente e Verso) --- */
+.booster-card .card-face,
+.booster-card .card-back {
+    position: absolute; /* Crucial para sobreposição */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit; /* Herda bordas arredondadas */
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(180, 180, 180, 0.5); /* Borda opcional */
+
+    /* --- Essencial para o Flip --- */
+    backface-visibility: hidden;         /* Esconde a face de trás */
+    -webkit-backface-visibility: hidden; /* Prefixo para Safari/iOS */
+    transform-style: preserve-3d;        /* Garante participação na 3D */
+}
+
+/* --- Verso da Carta (Card Back) --- */
+.booster-card .card-back {
+    background-image: url('../../assets/images/ui/card_back_placeholder.png');
+    /* O verso começa virado para o usuário (0 graus) */
+    transform: rotateY(0deg);
+    /* Z-index ligeiramente maior pode ajudar em alguns casos, mas não é estritamente necessário com backface-visibility */
+    z-index: 2;
+}
+
+/* --- Frente da Carta (Card Face) --- */
+.booster-card .card-face {
+    /* A frente começa virada para longe do usuário (180 graus) */
+    transform: rotateY(180deg);
+    /* Background é definido dinamicamente via JS/template */
+    background-color: #eee; /* Cor fallback caso a imagem não carregue */
+    z-index: 1;
+}
+
+/* --- Animação de Dispensar (Dismissing) --- */
+.booster-card.dismissing {
+    /* Mantém a rotação Y de 180 graus (se estava virado) e aplica outros transforms */
+    transform: translate(var(--offX), -150%) scale(0.8) rotate(var(--stackRot)) rotateY(180deg); 
+    opacity: 0;
+    pointer-events: none;
+    /* Ajuste a duração/easing se necessário */
+    transition: transform 0.4s ease-in, opacity 0.3s ease-in;
+}
+
+/* --- Interatividade e Hover --- */
+.booster-card:not(.interactive) {
+    pointer-events: none;
+    cursor: default;
+}
+
+.booster-card.interactive { cursor: pointer; }
+
+/* Efeito hover (opcional, pode precisar ajustar transforms se usar scale) */
+.booster-card.interactive:hover:not(.flipped) {
+    transform: translate(var(--offX), var(--offY)) scale(1.03) rotate(var(--stackRot)) rotateY(0deg);
+    box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+}
+
+.booster-card.interactive.flipped:hover {
+    transform: translate(var(--offX), var(--offY)) scale(1.03) rotate(var(--stackRot)) rotateY(180deg);
+    box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
 }
