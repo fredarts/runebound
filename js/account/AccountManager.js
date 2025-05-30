@@ -264,12 +264,15 @@ export default class AccountManager {
         this.saveCurrentUserData(); // Salva o estado INTERNO atualizado
     }
 
-    addDeck(deckId, cards /*string[]*/) {
+    addDeck(deckId, cards, deckName) { // <<<--- Adicionado deckName
         if (!this.#currentUser) { console.error("AccMgr: No user."); return; }
         if (!deckId || !Array.isArray(cards)) { console.error("AccMgr: Invalid deck data."); return; }
         this.#currentUser.decks ??= {};
-        this.#currentUser.decks[deckId] = { id: deckId, cards: cards, name: `Deck ${deckId.substring(0,5)}` };
-        console.log(`AccMgr: Added purchased deck ${deckId} for ${this.#currentUser.username}.`);
+        // --- CORREÇÃO: Usa o nome passado como parâmetro ---
+        const finalDeckName = deckName || `Deck ${deckId.substring(0, 5)}`; // Fallback se nome não for passado
+        this.#currentUser.decks[deckId] = { id: deckId, cards: cards, name: finalDeckName };
+        // ----------------------------------------------------
+        console.log(`AccMgr: Added purchased deck '${finalDeckName}' (ID: ${deckId}) for ${this.#currentUser.username}.`);
         this.saveCurrentUserData();
     }
 

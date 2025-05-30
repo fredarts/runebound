@@ -1,6 +1,6 @@
 // js/ui/screens/StoreScreenUI.js - ATUALIZADO E PRONTO
 
-import * as THREE from 'three'; // Keep this if you were planning 3D elements later
+
 
 export default class StoreScreenUI {
     #screenManager;
@@ -359,7 +359,7 @@ export default class StoreScreenUI {
                          throw new Error(`Erro ao comprar deck ${item.name}: Definição de cartas inválida.`);
                     }
                     this.#accountManager.addCardsToCollection(item.deckContents);
-                    this.#accountManager.addDeck(item.id, item.deckContents);
+                    this.#accountManager.addDeck(item.id, item.deckContents, item.name);
                     navigationTarget = 'deck-management-screen';
                     navigationAttempted = true;
                     break;

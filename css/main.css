@@ -33,6 +33,8 @@
 @import 'screens/_battle-screen.css';
 @import 'screens/_options.css';
 @import 'screens/_store.css';
+@import 'screens/_booster-opening.css';
+
 
 /* Utilities */
 @import 'utilities/_utilities.css'; /* Classes auxiliares, scrollbars */
