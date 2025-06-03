@@ -1,14 +1,15 @@
 // js/core/InstantCard.js
 
 import Card from './Card.js';
+import CreatureCard from './CreatureCard.js'; // Importado para instanceof (embora Game.resolveEffect lide com isso)
 
 /**
  * Represents an Instant Spell card, which has an immediate effect
  * and then typically goes to the graveyard.
  */
 export class InstantCard extends Card {
-    #effectText;
-    #targetType;
+    #effectText; // Descrição textual para UI
+    #cardEffects; // Array com as definições dos efeitos lógicos
 
     constructor(cardDefinition, ownerId) {
         super(cardDefinition, ownerId); // Call base class constructor
@@ -18,194 +19,183 @@ export class InstantCard extends Card {
         }
 
         this.#effectText = cardDefinition.effect || 'No effect description.';
-        // Determine target type (similar logic as Runebinding)
-        this.#targetType = this.#determineTargetType(cardDefinition.effect);
-
-        // Instants don't usually have duration
+        // Armazena a definição dos efeitos da carta (o array de objetos)
+        this.#cardEffects = cardDefinition.effects || []; // Default para array vazio se 'effects' não estiver definido no JSON
     }
 
     // --- Getters ---
     get effectText() { return this.#effectText; }
-    get targetType() { return this.#targetType; }
+    get cardEffects() { return this.#cardEffects; } // Getter para os efeitos lógicos
 
-    // --- Card Specific Methods ---
+    // --- Métodos para determinar tipo de alvo e se requer alvo ---
 
-     /** Basic heuristic for target type */
-    #determineTargetType(effectText = "") {
+    // Método legado para manter compatibilidade com a lógica de UI de alvo existente por enquanto
+    // Idealmente, a UI também leria dos #cardEffects para determinar os requisitos de alvo.
+    #determineTargetTypeFromEffectText(effectText = "") {
         const text = effectText.toLowerCase();
         if (text.includes('target creature')) return 'creature';
-        if (text.includes('target player')) return 'player';
-        if (text.includes('target runebinding')) return 'runebinding';
+        if (text.includes('target player')) return 'player'; // Se você tiver alvos de jogador diretos
+        if (text.includes('target runebinding')) return 'runebinding'; // Se você tiver alvos de runebinding
+        // Casos onde o alvo é implícito ou não há alvo explícito na string
         if (text.includes('draw') && !text.includes('target')) return 'player_self';
         if (text.includes('restore') && !text.includes('target')) return 'player_self'; // Heal self
-        // Add more rules
-        return 'none'; // No target needed
+        return 'none'; // Default se nenhum padrão de alvo explícito for encontrado
     }
 
-    /** Checks if this card requires a target. */
-    requiresTarget() {
-        return this.#targetType !== 'none' && this.#targetType !== 'player_self';
+    // Deriva o tipo de alvo principal da carta com base nos seus #cardEffects
+    // Isso é uma simplificação; uma carta poderia ter múltiplos efeitos com diferentes alvos.
+    // Por ora, pegamos o requisito do primeiro efeito que o define.
+    #determinePrimaryTargetRequirement() {
+        if (!this.#cardEffects || this.#cardEffects.length === 0) {
+            return null; // Nenhum efeito definido
+        }
+        for (const effect of this.#cardEffects) {
+            if (effect.targetRequirement && effect.targetRequirement !== 'none' && effect.targetRequirement !== 'player_self') {
+                return effect.targetRequirement; // Retorna o primeiro requisito de alvo encontrado
+            }
+        }
+        return null; // Nenhum efeito requer um alvo externo explícito
     }
 
     /**
-     * Overrides base canPlay for Instants.
-     * Instants might be playable during more phases (e.g., opponent's turn, attack phase).
-     * This depends heavily on your game rules - adjust accordingly!
+     * Verifica se esta carta requer um alvo explícito para ser jogada.
+     * Baseia-se no primeiro efeito que declara um `targetRequirement` diferente de 'none' ou 'player_self'.
+     * Se nenhum efeito no array `effects` do JSON declarar um alvo explícito,
+     * ele fará um fallback para a análise do `effectText` legado.
+     */
+    requiresTarget() {
+        const primaryRequirement = this.#determinePrimaryTargetRequirement();
+        if (primaryRequirement) {
+            return true; // Se algum efeito definir um targetRequirement explícito
+        }
+        // Fallback para a lógica antiga baseada no texto, se nenhum efeito no JSON definir
+        const targetTypeFromText = this.#determineTargetTypeFromEffectText(this.#effectText);
+        return targetTypeFromText !== 'none' && targetTypeFromText !== 'player_self';
+    }
+
+    /**
+     * Retorna o tipo de alvo principal esperado pela carta.
+     * Usado pela UI para filtrar alvos válidos.
+     * Deriva do `targetRequirement` do primeiro efeito que o define, ou faz fallback para o `effectText`.
+     */
+    get targetType() {
+        const primaryRequirement = this.#determinePrimaryTargetRequirement();
+        if (primaryRequirement) {
+            // Mapeia o targetRequirement para os valores que a UI espera
+            // (Se forem diferentes, senão pode retornar primaryRequirement diretamente)
+            switch (primaryRequirement) {
+                case 'creature': return 'creature';
+                case 'player': return 'player';
+                case 'runebinding': return 'runebinding';
+                // Adicione outros mapeamentos se os valores de targetRequirement forem diferentes dos de targetType
+                default: return 'none'; // Ou um valor padrão
+            }
+        }
+        // Fallback para a lógica antiga baseada no texto
+        return this.#determineTargetTypeFromEffectText(this.#effectText);
+    }
+
+
+    /**
+     * Overrides base canPlay para Instants.
      * @param {Player} player
      * @param {Game} game
      * @returns {boolean}
      */
     canPlay(player, game) {
-        // Base checks (mana, hand)
-        if (!super.canPlay(player, game)) return false;
+        if (!super.canPlay(player, game)) return false; // Checks de mana, mão, etc.
 
-        // --- Timing Restrictions (EXAMPLE - NEEDS YOUR RULES) ---
         const currentPhase = game.getCurrentPhase();
         const isActivePlayer = game.getCurrentPlayer()?.id === player.id;
 
-        // Simple rule: Allow anytime if it's your turn, or during opponent's attack phase?
-        // if (isActivePlayer) return true; // Allow anytime on your turn
-        // if (!isActivePlayer && currentPhase === 'attack') return true; // Allow during opponent's attack
-
-        // More restrictive rule (like Sorcery speed): Only on your main phase
+        // Por enquanto, regra simples: Instants podem ser jogados na fase principal do jogador ativo.
+        // No futuro, você pode expandir isso para permitir reações no turno do oponente, etc.
         if (!isActivePlayer || currentPhase !== 'main') {
-             console.log(`Instant ${this.name}: Cannot play during phase ${currentPhase}.`);
-             // return false; // Uncomment for Sorcery speed
+            // console.log(`Instant ${this.name}: Cannot play during phase ${currentPhase} or not active player.`);
+            // game.emitEvent('gameLog', { message: `Não pode jogar ${this.name} fora da sua fase principal.` });
+            return false;
         }
-         // For now, let's allow on player's main phase only for simplicity
-         if (!isActivePlayer || currentPhase !== 'main') return false;
 
-
-        // TODO: Check if target is required and available (similar to Runebinding)
-        // if (this.requiresTarget() && !game.hasValidTargets(this.#targetType, player)) return false;
-
+        // Se a carta requer um alvo, verifica se há alvos válidos disponíveis (simplificado)
+        // A UI é quem realmente vai mostrar os alvos e permitir a seleção.
+        // Esta verificação é mais para o caso de a lógica do jogo tentar jogar a carta sem interação da UI.
+        if (this.requiresTarget()) {
+            const hasValidTargets = game.findCardInstance(null) !== undefined; // Placeholder - precisa de game.hasValidTargets(this.targetType)
+            // if (!game.hasValidTargets(this.targetType, player)) {
+            //     game.emitEvent('gameLog', { message: `Nenhum alvo válido para ${this.name}.` });
+            //     return false;
+            // }
+        }
         return true;
     }
 
     /**
-     * Overrides base play method for Instants.
-     * Resolves the effect and moves the card to the graveyard.
+     * Overrides base play method para Instants.
+     * Delega a resolução dos efeitos para `game.resolveEffect` e move a carta para o cemitério.
      * @param {Player} player
      * @param {Game} game
-     * @param {string | null} targetId - The uniqueId of the target or null.
+     * @param {string | null} targetId - The uniqueId do alvo principal selecionado para a carta.
      */
     play(player, game, targetId = null) {
-        if (!super.play(player, game, targetId)) { // Handles cost, base checks
+        if (!super.play(player, game, targetId)) { // Validações base como custo de mana já foram feitas pelo Player.playCard
             return false;
         }
 
-        console.log(`Instant: ${player.name} playing ${this.name} ${targetId ? `on target ${targetId}` : ''}`);
+        console.log(`Instant: ${player.name} jogando ${this.name} ${targetId ? `no alvo ${targetId}` : ''}`);
 
-        // Resolve the effect immediately
-        const success = this.resolveEffect(targetId, game, player);
+        // Resolve os efeitos definidos no JSON da carta
+        const effectResolutionSuccess = this.resolveEffect(targetId, game, player);
 
-        // Regardless of success (usually), move Instant to graveyard after resolving/attempting
-        console.log(`Instant: ${this.name} moving to graveyard.`);
+        // Sempre move o Instant para o cemitério após a tentativa de resolução.
+        console.log(`Instant: ${this.name} movendo para o cemitério.`);
         game.moveCardToZone(this.uniqueId, this.ownerId, 'hand', 'graveyard');
 
-        // If effect failed, maybe log it, but card is usually still spent
-        if (!success) {
-            console.warn(`Instant: Effect of ${this.name} may have failed to resolve fully.`);
-            // Don't refund mana here, it was spent on the attempt
+        if (!effectResolutionSuccess) {
+            console.warn(`Instant: Efeito de ${this.name} pode ter falhado ao resolver completamente.`);
+            // A mana já foi gasta; não há reembolso aqui.
         }
 
-        return success; // Return success status of the *effect*
+        return effectResolutionSuccess; // Retorna o sucesso da RESOLUÇÃO DO EFEITO
     }
 
     /**
-     * Executes the instant spell's effect.
-     * Needs specific logic for each Instant card.
-     * @param {string | null} targetId
-     * @param {Game} game
-     * @param {Player} castingPlayer
-     * @returns {boolean} True if the effect resolved successfully.
+     * Itera pelos efeitos definidos da carta e pede ao Game para resolvê-los.
+     * @param {string | null} targetId - O ID do alvo principal selecionado para a carta.
+     * @param {Game} game - A instância do jogo.
+     * @param {Player} castingPlayer - O jogador que está conjurando a carta.
+     * @returns {boolean} True se todos os efeitos foram resolvidos com sucesso (ou não houve falhas críticas).
      */
     resolveEffect(targetId, game, castingPlayer) {
-        console.log(`Instant: Resolving effect of ${this.name} (Target: ${targetId || 'N/A'})`);
+        // Log já feito no método 'play' ou no 'resolveEffect' do Game.
+        let allEffectsSucceeded = true;
 
-        // --- !!! Requires specific logic for EACH Instant card !!! ---
-        try {
-            let target = null;
-            if (targetId) {
-                target = game.getPlayer(targetId) || game.findCardInstance(targetId);
-                if (!target) {
-                     console.warn(`Instant ResolveEffect: Target ${targetId} not found.`);
-                     return false; // Target disappeared
-                }
-            }
-
-            // Example effects based on provided JSON
-            switch (this.id) {
-                case 'IS001': // Heal
-                    castingPlayer.gainLife(4, game); // Assumes Player has gainLife(amount, game)
-                    break;
-                case 'IS002': // Fireball
-                     if (target && target.type === 'Creature') { // Or target instanceof CreatureCard
-                         target.takeDamage(3, this, game); // Assumes CreatureCard has takeDamage(amount, source, game)
-                     } else return false; // Invalid target
-                     break;
-                case 'IS003': // Draw (Assuming ID, effect "Draw 2 cards")
-                     castingPlayer.drawCards(2, game);
-                     break;
-                 case 'IS004': // Shield
-                     if (target && target.type === 'Creature') {
-                         // TODO: Implement damage prevention effect
-                         target.applyStatusEffect('shielded', 1); // Prevent damage for 1 tick (this turn)
-                         console.log(`${target.name} is shielded from damage this turn.`);
-                     } else return false;
-                     break;
-                 case 'IS005': // Bounce
-                      if (target && target.type === 'Creature') {
-                           const owner = game.getPlayer(target.ownerId); // Find the owner
-                           if (owner) {
-                                game.moveCardToZone(target.uniqueId, target.ownerId, 'battlefield', 'hand');
-                                console.log(`${target.name} returned to ${owner.name}'s hand.`);
-                           } else return false; // Owner not found?
-                      } else return false;
-                      break;
-                 case 'IS006': // Destroy Binding
-                      if (target && target.type === 'Runebinding') { // Check if target is a Runebinding instance
-                           // How to destroy? If it's on battlefield, move to graveyard
-                           if (target.location === 'battlefield') {
-                               target.removeEffect(game); // Let the Runebinding clean itself up
-                           } else {
-                               // If it's somehow targeted elsewhere? Maybe just log error.
-                               console.warn(`Cannot destroy Runebinding ${target.name} not on battlefield.`);
-                               return false;
-                           }
-                      } else return false;
-                      break;
-                 case 'IS007': // Weaken
-                      if (target && target.type === 'Creature') {
-                          target.applyTemporaryBoost({ attack: -2 }, 1); // Apply negative boost
-                          console.log(`${target.name} gets -2 attack this turn.`);
-                      } else return false;
-                      break;
-
-                // Add cases for all other Instant cards...
-
-                default:
-                    console.warn(`Instant ResolveEffect: No specific effect logic for ${this.name} (ID: ${this.id})`);
-                    break;
-            }
+        if (!this.#cardEffects || this.#cardEffects.length === 0) {
+            console.warn(`Instant ResolveEffect: Sem efeitos definidos para ${this.name} (ID: ${this.id}) no array 'effects'. Usando 'effectText' legado como fallback se necessário, ou nenhum efeito.`);
+            // Poderia ter um fallback aqui para a lógica antiga do switch(this.id) se quisesse manter
+            // mas a ideia é mover tudo para o Game.resolveEffect.
+            // Por enquanto, se não houver 'effects', consideramos que não há efeito lógico a ser processado aqui.
             return true;
-        } catch (error) {
-            console.error(`Instant ResolveEffect: Error resolving effect for ${this.name}:`, error);
-            return false;
         }
+
+        for (const effectDefinition of this.#cardEffects) {
+            // Passa a definição do efeito individual, o conjurador, o alvo principal da carta, e a própria carta como fonte.
+            const effectSuccess = game.resolveEffect(effectDefinition, castingPlayer, targetId, this);
+            if (!effectSuccess) {
+                allEffectsSucceeded = false;
+                console.warn(`Instant ResolveEffect: Sub-efeito do tipo '${effectDefinition.type}' falhou para ${this.name}.`);
+                // Você pode decidir parar de processar outros efeitos se um falhar:
+                // break;
+            }
+        }
+        return allEffectsSucceeded;
     }
 
-    // Override getRenderData if needed
+    // Override getRenderData se Instants precisarem de dados adicionais para a UI
      getRenderData() {
         return {
             ...super.getRenderData(),
-            effectText: this.effectText,
-            // Instants usually don't have much other state to show
+            effectText: this.effectText, // A UI ainda pode usar o effectText para display
+            // Se houver outros estados específicos de Instant para renderizar, adicione aqui
         };
     }
 }
-
-// Ensure Player.js has: gainLife(amount, game), drawCards(count, game)
-// Ensure CreatureCard.js has: takeDamage(amount, source, game), applyStatusEffect(name, duration), applyTemporaryBoost(boost, duration)
-// Ensure RunebindingCard.js has: removeEffect(game)
-// Ensure Game.js has: findCardInstance(uniqueId)

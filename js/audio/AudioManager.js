@@ -37,11 +37,11 @@ export default class AudioManager {
         'createAccountError': 'assets/audio/sfx_error.mp3',
         'cardDraw': 'assets/audio/sfx_card_draw.mp3',
         'cardDiscard': 'assets/audio/sfx_card_discard.mp3',
-        'playCreature': 'assets/audio/sfx_play_creature.mp3', // Precisa existir esse arquivo
-        'playInstant': 'assets/audio/sfx_play_instant.wav', // Precisa existir esse arquivo
-        'playRunebinding': 'assets/audio/sfx_play_runebinding.mp3', // Precisa existir esse arquivo
+        'playCreature': 'assets/audio/sfx_play_creature.mp3', 
+        'playInstant': 'assets/audio/sfx_play_instant.mp3',
+        'playRunebinding': 'assets/audio/sfx_play_runebinding.mp3',
         'gameOverWin': 'assets/audio/sfx_game_over_win.mp3',
-        'gameOverLose': 'assets/audio/sfx_game_over_lose.mp3', // Precisa existir esse arquivo
+        'gameOverLose': 'assets/audio/sfx_game_over_lose.mp3', 
         'genericError': 'assets/audio/sfx_error.mp3',
         'deckSave': 'assets/audio/sfx_deck_save.mp3',
         
