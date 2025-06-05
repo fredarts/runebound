@@ -274,12 +274,12 @@ export default class Player { // Using export default
     takeDamage(amount, source, game) {
         if (amount <= 0) return;
         this.#life -= amount;
-        console.log(`Player ${this.#name}: Took ${amount} damage. Remaining life: ${this.#life}`);
+        console.log(`DEBUG_PLAYER_TAKE_DAMAGE: ${this.#name} took ${amount}. New life: ${this.#life}. Player ID: ${this.id}`);
         game?.emitEvent('playerStatsChanged', { playerId: this.id, updates: { life: this.#life }});
         game?.emitEvent('gameLog', { message: `${this.name} levou ${amount} dano.` });
         if (this.#life <= 0) {
             console.log(`Player ${this.#name} has been defeated.`);
-            game?.gameOver(game.getOpponent(this.id)); // Game over, the opponent wins
+            game?.gameOver(game.getOpponent(this.id));
         }
     }
 

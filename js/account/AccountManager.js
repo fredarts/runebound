@@ -22,7 +22,12 @@ export default class AccountManager {
         this.#loadCurrentUserFromSession();
         console.log("AccountManager inicializado.");
         console.warn("ATENÇÃO: Este AccountManager armazena senhas em texto plano no localStorage. NÃO use em produção!");
+        this._ensureAiAccountExists(); // Chamada para um novo método privado
+        console.log("AccountManager inicializado e conta da IA verificada.");
+        
     }
+
+    
 
     // --- Métodos Privados ---
 
@@ -103,6 +108,8 @@ export default class AccountManager {
         }
      }
 
+    
+
     #createDefaultUserData(username, password) {
         // (Código inalterado da versão anterior)
         console.log(`Criando dados padrão para novo usuário: ${username}`);
@@ -147,6 +154,75 @@ export default class AccountManager {
             inventory: { purchases: [], boosters: {} }
         };
      }
+
+     // Novo método privado em AccountManager.js
+_ensureAiAccountExists() {
+    const AI_USERNAME = "Opponent_AI";
+    const AI_DEFAULT_DECK_ID = 'default_deck_1';
+
+    if (!this.#accounts[AI_USERNAME] || !this.#accounts[AI_USERNAME].decks?.[AI_DEFAULT_DECK_ID]) {
+        console.log(`AccountManager: Conta da IA (${AI_USERNAME}) ou deck padrão não encontrado. Criando/Atualizando...`);
+
+        const aiDeckCards = [ // <<< DEFINA O DECK PADRÃO DA IA AQUI
+            'CR001', 'CR001', 'CR001', 'CR002', 'CR002', 'CR003', 'CR003', 'CR003',
+            'CR007', 'CR007', 'CR009', 'CR009', 'CR010', 'CR010', 'CR011', 'CR011',
+            'CR016', 'CR016', 'IS001', 'IS001', 'IS002', 'IS002', 'IS003', 'IS003',
+            'IS004', 'IS004', 'RB001', 'RB_POWER', 'RB_TOUGH', 'RB_DRAW2' // 30 cartas
+        ];
+        // Garanta que o deck da IA tenha entre 30 e 40 cartas.
+
+        // Se a conta da IA não existe, cria a estrutura base
+        if (!this.#accounts[AI_USERNAME]) {
+            this.#accounts[AI_USERNAME] = {
+                username: AI_USERNAME,
+                password: "ai_very_secure_password", // Senha fictícia
+                wallet: { gold: 9999, gems: 999 },
+                avatars: ['default.png', 'avatar1.png'], // Avatares que a IA pode usar
+                rank: 'Bronze III',
+                stats: { wins: 0, losses: 0 },
+                matchHistory: [],
+                avatar: 'avatar1.png', // Avatar padrão da IA
+                createdAt: Date.now(),
+                rating: 1400, rd: 200, volatility: 0.06, // Rating um pouco diferente
+                rankTier: 'Bronze', rankDivision: 4,
+                setMastery: { ELDRAEM: { xp: 0, level: 0 } },
+                inventory: { purchases: [], boosters: {} },
+                collection: [], // Será preenchida abaixo
+                decks: {}       // Será preenchido abaixo
+            };
+        }
+
+        // Garante que as estruturas de coleção e decks existam
+        this.#accounts[AI_USERNAME].collection = this.#accounts[AI_USERNAME].collection || [];
+        this.#accounts[AI_USERNAME].decks = this.#accounts[AI_USERNAME].decks || {};
+        this.#accounts[AI_USERNAME].setsOwned = this.#accounts[AI_USERNAME].setsOwned || { ELDRAEM: { owned: [], missing: [] } };
+        this.#accounts[AI_USERNAME].setsOwned.ELDRAEM = this.#accounts[AI_USERNAME].setsOwned.ELDRAEM || { owned: [], missing: [] };
+
+
+        // Adiciona/Atualiza o deck padrão da IA
+        this.#accounts[AI_USERNAME].decks[AI_DEFAULT_DECK_ID] = {
+            id: AI_DEFAULT_DECK_ID,
+            name: 'Deck Padrão da IA',
+            cards: [...aiDeckCards] // Usa uma cópia
+        };
+
+        // Garante que a IA "possua" as cartas do seu deck padrão em sua coleção
+        const aiCollectionSet = new Set(this.#accounts[AI_USERNAME].collection);
+        aiDeckCards.forEach(cardId => aiCollectionSet.add(cardId));
+        this.#accounts[AI_USERNAME].collection = [...aiCollectionSet];
+
+        // Atualiza setsOwned também
+        const aiSetsOwnedSet = new Set(this.#accounts[AI_USERNAME].setsOwned.ELDRAEM.owned);
+        aiDeckCards.forEach(cardId => aiSetsOwnedSet.add(cardId));
+        this.#accounts[AI_USERNAME].setsOwned.ELDRAEM.owned = [...aiSetsOwnedSet];
+
+
+        this.#saveAccounts(); // Salva as contas atualizadas no localStorage
+        console.log(`AccountManager: Conta/Deck da IA (${AI_USERNAME}) assegurada no localStorage.`);
+    } else {
+        console.log(`AccountManager: Conta e deck padrão da IA (${AI_USERNAME}) já existem e são válidos.`);
+    }
+}
 
 
     // --- Métodos Públicos ---
@@ -344,5 +420,7 @@ export default class AccountManager {
         const user = this.getCurrentUser();
         return user?.rank || null;
     }
+
+    
 
 } // End of class AccountManager

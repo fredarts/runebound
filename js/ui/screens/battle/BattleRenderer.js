@@ -265,6 +265,8 @@ export default class BattleRenderer {
         this.#btnPassPhase?.prop('disabled', controlsState.passPhaseDisabled);
         this.#btnEndTurn?.prop('disabled', controlsState.endTurnDisabled);
         this.#btnDiscardMana?.prop('disabled', controlsState.discardManaDisabled);
+
+        // Os botões de combate já têm sua própria lógica de toggle (show/hide)
         this.#btnConfirmAttack?.toggle(controlsState.confirmAttackVisible).prop('disabled', controlsState.confirmAttackDisabled);
         this.#btnConfirmBlocks?.toggle(controlsState.confirmBlocksVisible).prop('disabled', controlsState.confirmBlocksDisabled);
     }

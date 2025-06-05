@@ -473,6 +473,31 @@
 .battle-screen-layout .hand
 { scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }
 
+.card.can-attack-visual { /* Destaque para criaturas que podem ser selecionadas para atacar */
+    outline: 2px dashed limegreen;
+    outline-offset: 1px;
+}
+
+.card.selected-attacker { /* Destaque para criatura selecionada como atacante */
+    box-shadow: 0 0 10px 3px red, inset 0 0 0 2px red;
+    transform: scale(1.05);
+}
+
+.card.can-block-visual { /* Destaque para criaturas que podem ser selecionadas para bloquear */
+    outline: 2px dashed skyblue;
+    outline-offset: 1px;
+}
+
+.card.attacker-selected-for-blocking { /* Destaque para o atacante que está sendo alvo de um bloqueio */
+    box-shadow: 0 0 12px 4px orange !important; /* Use !important se necessário para sobrescrever outros shadows */
+    border: 2px solid orange !important;
+}
+
+.card.selected-blocker { /* Destaque para criatura selecionada como bloqueadora */
+    box-shadow: 0 0 10px 3px cornflowerblue, inset 0 0 0 2px cornflowerblue;
+    transform: scale(1.05);
+}
+
 /* Overlay de Fim de Jogo (estilos básicos em _overlays.css) */
 /* #game-over-overlay, #game-over-message, #btn-back-to-profile */
 

@@ -24,7 +24,7 @@ import { generateBattleScreenHTML } from './ui/html-templates/battleScreenTempla
 import { generateTopBarHTML } from './ui/html-templates/topBarTemplate.js';
 import { generateSetCollectionHTML } from './ui/html-templates/setCollectionTemplate.js';
 import { generateSetMasteryScreenHTML } from './ui/html-templates/setMasteryScreenTemplate.js';
-import { generateStoreScreenHTML } from './ui/html-templates/StoreScreenTemplate.js'; // Corrigido: StoreScreenTemplate.js
+import { generateStoreScreenHTML } from './ui/html-templates/storeScreenTemplate.js';
 import { generateBoosterOpeningTemplate } from './ui/html-templates/boosterOpeningTemplate.js';
 
 

@@ -1,4 +1,4 @@
-// js/ui/html-templates/StoreScreenTemplate.js
+// js/ui/html-templates/storeScreenTemplate.js
 
 export function generateStoreScreenHTML() {
   return `
