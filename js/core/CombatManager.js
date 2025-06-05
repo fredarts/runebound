@@ -205,8 +205,9 @@ export default class CombatManager {
 
             } else {
                 // --- Attacker is Unblocked ---
-                console.log(`CombatManager: Unblocked attacker ${attacker.name} deals ${attacker.attack} damage to player ${defendingPlayer.name}`);
+                console.log(`DEBUG_COMBAT: Unblocked: ${attacker.name} (${attacker.attack}) vs ${defendingPlayer.name} (Vida antes: ${defendingPlayer.life})`);
                 defendingPlayer.takeDamage(attacker.attack, attacker, this.#game);
+                console.log(`DEBUG_COMBAT: ${defendingPlayer.name} (Vida depois: ${defendingPlayer.life})`);
             }
         });
 
