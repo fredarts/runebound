@@ -10,7 +10,7 @@ export function generateTopBarHTML() {
         <div id="top-bar" class=""> <!-- Começa sem a classe 'active' -->
             <div class="top-bar-left">
                 <img src="assets/images/ui/logo_small_placeholder.png" alt="Runebound Clash Logo" class="top-bar-logo">
-                <span class="top-bar-game-name">Runebound Clash</span>
+                <span class="top-bar-game-name">Runebound - DCCG</span>
             </div>
             <div class="top-bar-right">
 
