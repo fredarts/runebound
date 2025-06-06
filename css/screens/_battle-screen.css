@@ -282,7 +282,7 @@
     background-color: rgba(0, 0, 0, 0.75);
     color: white;
     border-radius: 50%;
-    width: 20px; height: 20px;
+    width: 24px; height: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -293,9 +293,9 @@
     box-sizing: border-box;
 }
 .graveyard-image.is-placeholder {
-    object-fit: contain;
+    
     background-color: #2a2a2a;
-    padding: 5px;
+    
 }
 
 
@@ -318,8 +318,8 @@
 .game-log-container {
     width: 500px; /* LARGURA FIXA PARA O LOG */
     flex-shrink: 0; /* Impede que o log encolha */
-    height: 100%; /* Ocupa toda a altura da .center-area */
-    max-height: 200px; /* Limita a altura se a center-area for muito alta */
+    height: 200px; /* Ocupa toda a altura da .center-area */
+    
     overflow-y: auto;
     background-color: rgba(0, 0, 0, 0.6);
     border: 1px solid var(--border-color);
@@ -359,11 +359,11 @@
 
 /* Informações de Turno/Fase (Banner Estilizado) */
 #turn-info.turn-info-banner-styled {
-    background-color: #FFC107; /* Amarelo/Laranja vibrante */
-    color: #333333; /* Cinza escuro para o texto */
+    background-image: radial-gradient(circle at center, #FFA500 30%, #E67E00 100%);
+    color: #1d1d1d; /* Cinza escuro para o texto */
     padding: 10px 20px;
     border-radius: 30px;
-    border: 1px solid #E6A200; /* Borda um pouco mais escura */
+    border: 1px solid #ab7905; /* Borda um pouco mais escura */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     font-size: 1.15em;
     font-weight: 600;
