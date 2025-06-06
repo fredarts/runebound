@@ -262,21 +262,21 @@
             "description": "A burst of recovery."
         },
         {
-    "id": "IS002",
-    "name": "Fireball",
-    "type": "Instant",
-    "cost": 2,
-    "effect": "Deal 3 damage to target creature",
-    "effects": [ 
-        {
-            "type": "dealDamage", 
-            "value": 3,           
-            "targetRequirement": "creature" 
-        }
-    ],
-    "image_src": "assets/images/cards/fireball.png",
-    "set":"ELDRAEM",
-    "description": "Burns a creature."
+            "id": "IS002",
+            "name": "Fireball",
+            "type": "Instant",
+            "cost": 2,
+            "effect": "Deal 3 damage to target creature",
+            "effects": [
+                {
+                    "type": "dealDamage",
+                    "value": 3,
+                    "targetRequirement": "creature"
+                }
+            ],
+            "image_src": "assets/images/cards/fireball.png",
+            "set":"ELDRAEM",
+            "description": "Burns a creature."
 },
         {
             "id": "IS003",
@@ -294,10 +294,18 @@
             "type": "Instant",
             "cost": 1,
             "effect": "Prevent all damage to a creature this turn",
+            "effects": [
+                {
+                    "type": "applyStatusEffect",
+                    "status": "shielded", 
+                    "duration": 1,
+                    "targetRequirement": "creature"
+                }
+            ],
             "image_src": "assets/images/cards/shield.png",
             "set":"ELDRAEM",
             "description": "Protect a key creature."
-        },
+},
         {
             "id": "IS005",
             "name": "Bounce",
