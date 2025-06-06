@@ -42,7 +42,7 @@ export default class CardRenderer {
             const displayAttack = cardData.attack ?? '?';
             const displayToughness = cardData.currentToughness ?? cardData.toughness ?? '?';
             cardHtml += `<div class="card-overlay card-stats">
-                            <span class="card-attack">${displayAttack}</span>/<span class="card-toughness">${displayToughness}</span>
+                            <span class="card-attack">${displayAttack}</span><span class="card-toughness">${displayToughness}</span>
                          </div>`;
         }
         cardHtml += `</div>`;

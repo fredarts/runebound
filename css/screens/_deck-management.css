@@ -250,6 +250,7 @@
     background-color: rgba(10, 10, 10, 0.4); /* Fundo escuro */
     /* Adiciona min-height para garantir visibilidade mesmo vazio */
     min-height: 200px;
+    cursor: url(../../assets/images/ui/cursor.png), auto;
 }
 
 /* Mini Card (Reutiliza .mini-card dos estilos comuns) */

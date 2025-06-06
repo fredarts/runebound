@@ -481,6 +481,24 @@ export default class Game {
                     } else return false;
                 }
                 return true;
+            case 'applyStatusEffect':
+                if (!actualTarget || typeof actualTarget.applyStatusEffect !== 'function') {
+                    console.warn(`Game.resolveEffect (applyStatusEffect): Target inválido ou não pode receber status.`);
+                    this.emitEvent('gameLog', {message: `Efeito de ${sourceCard.name} falhou: alvo inválido para status.`});
+                    return false;
+                }
+                const statusName = effectDefinition.status;
+                const duration = parseInt(effectDefinition.duration, 10) || 1; // Default 1 tick
+                if (statusName) {
+                    actualTarget.applyStatusEffect(statusName, duration); // CreatureCard precisa desse método
+                    this.emitEvent('gameLog', { message: `${actualTarget.name} agora tem ${statusName} por ${duration} turno(s) (efeito de ${sourceCard.name}).` });
+                    // A UI precisará de um evento para atualizar o visual da criatura com o status
+                    this.emitEvent('creatureUpdate', { cardUniqueId: actualTarget.uniqueId, updates: actualTarget.getRenderData() });
+                } else {
+                    console.warn(`Game.resolveEffect (applyStatusEffect): Nome do status não definido.`);
+                    return false;
+                }
+                return true;
             default: return false;
         }
     }
