@@ -1,7 +1,6 @@
-/* css/components/_navigation.css - ATUALIZADO PARA GRUPO AVATAR+NOME */
+/* css/components/_navigation.css - ATUALIZADO PARA GRUPO AVATAR+NOME E MODO SIMPLIFICADO */
 
 #top-bar {
-  /* ... seus estilos existentes ... */
   position: fixed;
   top: 0;
   left: 0;
@@ -10,14 +9,14 @@
   background-color: rgba(10, 20, 30, 0.9);
   backdrop-filter: blur(5px);
   border-bottom: 1px solid var(--border-color);
-  display: none; /* Esconde por padrão */
+  display: none; /* Esconde por padrão, ativado por JS com .active */
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  z-index: 500;
+  z-index: 500; /* Garante que fique acima da maioria dos conteúdos */
   transition: top 0.35s ease-in-out, opacity 0.3s ease-in-out;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  opacity: 0;
+  opacity: 0; /* Começa invisível para fade-in */
 }
 
 #top-bar.active {
@@ -25,36 +24,35 @@
   opacity: 1;
 }
 
-/* Parte Esquerda (sem alterações significativas) */
+/* Parte Esquerda (Logo e Nome do Jogo) */
 .top-bar-left {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-.top-bar-logo { /* Ajuste se necessário */
-  height: calc(var(--top-bar-height) - 16px);
+.top-bar-logo {
+  height: calc(var(--top-bar-height) - 16px); /* Ajuste conforme o tamanho da sua logo */
   width: auto;
   display: block;
 }
-.top-bar-game-name { /* Ajuste se necessário */
+.top-bar-game-name {
   font-size: 1.6em;
   font-weight: bold;
   color: var(--text-color);
   white-space: nowrap;
 }
 
-/* Parte Direita */
+/* Parte Direita (Informações do Usuário e Botões) */
 .top-bar-right {
   display: flex;
-  align-items: center; /* Alinha verticalmente todos os itens na direita */
+  align-items: center;
   gap: 15px; /* Espaço entre o grupo user-info e os botões, e entre os botões */
 }
 
-/* --- NOVO: Estilos para o Grupo User Info --- */
+/* Grupo User Info (Avatar e Nome) */
 .user-info-group {
-  display: flex;       /* Coloca avatar e nome lado a lado */
-  align-items: center; /* Alinha verticalmente o avatar e o nome */
-  /* Não precisa de margin-right aqui, o gap do top-bar-right cuida disso */
+  display: flex;
+  align-items: center;
 }
 
 .top-bar-avatar {
@@ -64,35 +62,33 @@
 }
 
 .top-bar-avatar img {
-  width: 35px;         /* Tamanho do avatar */
+  width: 35px;
   height: 35px;
-  border-radius: 50%;  /* Círculo */
-  object-fit: cover;   /* Garante que a imagem preencha o círculo */
-  border: 1px solid var(--border-color-light); /* Borda sutil opcional */
-  display: block;      /* Remove espaço extra abaixo */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color-light);
+  display: block;
 }
 
 #top-bar-username {
   font-weight: 500;
   font-size: 1em;
   color: var(--text-color);
-  white-space: nowrap; /* Impede que o nome quebre linha */
-  /* Remove margin-right se tinha antes */
+  white-space: nowrap;
 }
-/* --- FIM: Estilos para o Grupo User Info --- */
 
-/* Botões da Top Bar (mantidos como estavam) */
+/* Botões da Top Bar (Estilo Padrão) */
 #top-bar button {
   background: none;
   border: none;
   color: var(--text-color);
-  font-size: 1.5em;
+  font-size: 1.5em; /* Tamanho dos ícones/texto dos botões */
   padding: 0 5px;
-  cursor: url('../../assets/images/ui/cursor.png'), auto;
+  cursor: url('../../assets/images/ui/cursor.png'), auto; /* Cursor customizado */
   transition: color 0.2s ease, transform 0.2s ease;
-  line-height: 1;
-  box-shadow:none;
-  display: flex; /* Garante alinhamento se tiver ícones */
+  line-height: 1; /* Garante alinhamento vertical */
+  box-shadow: none; /* Remove sombra padrão de botões, se houver */
+  display: flex;    /* Para alinhar ícones dentro do botão, se houver */
   align-items: center;
 }
 
@@ -101,8 +97,48 @@
   transform: scale(1.1);
 }
 
-/* === Battle Scene: mostrar só avatar+nome, opções e sair =========== */
-/* =================================================================== */
-#top-bar.battle-only .top-bar-right > button          { display: none; } /* esconde TODOS */
-#top-bar.battle-only #top-bar-btn-options,            /* …e depois libera só: */
-#top-bar.battle-only #top-bar-btn-logout              { display: flex; } /* (ou inline-flex) */
+
+/* === MODO BATALHA: Mostrar só avatar+nome, opções e sair === */
+/* Aplicado quando #top-bar tem a classe .battle-only */
+#top-bar.battle-only .top-bar-left {
+    /* Opcional: Ocultar ou tornar sutil a parte esquerda na batalha */
+    /* display: none; */
+    /* opacity: 0.7; */
+}
+#top-bar.battle-only .top-bar-right > button {
+    display: none; /* Esconde TODOS os botões por padrão no modo batalha */
+}
+/* Mostra APENAS os botões de opções e logout no modo batalha */
+#top-bar.battle-only #top-bar-btn-options,
+#top-bar.battle-only #top-bar-btn-logout {
+    display: flex; /* Ou inline-flex, dependendo do seu display base */
+}
+
+
+/* === MODO SIMPLIFICADO: Para Setup Inicial (Lore Video, Escolha de Deck) === */
+/* Aplicado quando #top-bar tem a classe .simplified-mode */
+#top-bar.simplified-mode .top-bar-left {
+    /* Mantém visível por padrão, mas você pode optar por esconder: */
+    /* display: none; */
+    opacity: 0.7; /* Exemplo: Deixar mais sutil */
+}
+
+#top-bar.simplified-mode .top-bar-right > button {
+    display: none; /* Esconde TODOS os botões por padrão no modo simplificado */
+}
+
+/* Mostra APENAS o botão de sair (logout) no modo simplificado */
+#top-bar.simplified-mode #top-bar-btn-logout {
+    display: flex; /* Ou inline-flex */
+}
+
+/* Ajuste de espaçamento para o modo simplificado, se necessário */
+#top-bar.simplified-mode .top-bar-right {
+    gap: 10px; /* Gap menor, já que só tem avatar/nome + logout */
+    justify-content: flex-end; /* Opcional: Alinha o conteúdo restante à direita */
+}
+
+/* Garante que o grupo de avatar/nome esteja visível (já deve estar, mas por segurança) */
+#top-bar.simplified-mode .user-info-group {
+    display: flex;
+}

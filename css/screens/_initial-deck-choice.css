@@ -1,0 +1,189 @@
+/* css/screens/_initial-deck-choice.css - Estilos para a Tela de Escolha de Deck Inicial */
+
+.initial-deck-choice-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinha conteúdo no topo */
+    padding: 30px 20px; /* Mais padding vertical */
+    box-sizing: border-box;
+    height: 100%;
+    text-align: center;
+    /* Escolha um fundo. Pode ser uma cor, gradiente ou imagem */
+    background-color: var(--background-color, #2c3e50);
+    background: url('../../assets/images/ui/initial_deck_choice_background.jpg') no-repeat center center;
+    background-size: cover;
+    
+}
+
+.initial-deck-choice-layout h2 {
+    color: var(--title-color, #e0eaf1);
+    margin-bottom: 30px; /* Espaço abaixo do título */
+    font-size: 3em;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Área para seleção inicial dos dois decks */
+.deck-selection-area {
+    display: flex;
+    justify-content: space-around; /* Ou space-between/center */
+    align-items: flex-start; /* Alinha os cards de deck no topo */
+    gap: 30px; /* Espaço entre os decks */
+    width: 900px; /* Limita a largura máxima */
+    margin-bottom: 30px;
+    margin-right: 680px;
+}
+
+.deck-choice-option {
+    flex-basis: 100%; /* Cada opção de deck ocupa quase metade */
+    width: 1000px; /* Largura máxima para cada card de deck */
+    height: 860px;
+    background-color: var(--panel-background, rgba(20, 30, 40, 0.85));
+    border: 2px solid var(--border-color, #4a637a);
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: url(../../assets/images/ui/cursor.png), auto;
+}
+
+.deck-choice-option:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--primary-color, #3498db);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.deck-choice-option img {
+    width: 80%; /* Responsivo dentro do card */
+    max-width: 250px; /* Limita o tamanho máximo da imagem */
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    
+}
+
+.deck-choice-option h3 {
+    color: var(--primary-color, #3498db);
+    margin-top: 15px;
+    margin-bottom: 22px;
+    font-size: 3em;
+    font-weight: bold;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.deck-choice-option p {
+    font-size: 1.4em;
+    color: var(--text-color-secondary, #bdc3c7);
+    line-height: 1.5;
+    min-height: 60px; /* Para alinhar verticalmente mesmo com descrições de tamanhos diferentes */
+    border: 1px solid var(--border-color-light, #5f7e9b);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: justify;
+    margin-top: 40px;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    width: 740px;
+    
+
+}
+
+/* Área para mostrar detalhes do deck selecionado */
+.deck-details-area {
+    width: 100%;
+    width: 1200px; /* Pode ser um pouco menor que a área de seleção */
+    background-color: var(--panel-background, rgba(20, 30, 40, 0.9));
+    border: 1px solid var(--border-color, #4a637a);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex; /* Para controle interno */
+    flex-direction: column;
+    align-items: center;
+    height: 866px;
+    overflow-x: hidden;
+}
+
+.deck-details-area h3#chosen-deck-name {
+    color: var(--accent-color-light, #61dafb); /* Cor de destaque */
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+}
+
+/* Grid para mini-cartas, similar ao da coleção/deck builder */
+#chosen-deck-card-list.card-grid-mini {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-width-mini, 210px), 1fr));
+    gap: 22px;
+    padding: 10px;
+    width: 100%;
+    height: 1400px; /* Limita altura para scroll */
+    overflow-y: auto;
+    background-color: var(--zone-background, rgba(0, 0, 0, 0.25));
+    border: 1px dashed var(--border-color-light, #5f7e9b);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    overflow-x: hidden;
+    
+}
+/* Estilos para o mini-card em si virão de css/components/_cards.css */
+
+
+.deck-choice-actions {
+    display: flex;
+    gap: 20px; /* Espaço entre os botões */
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.deck-choice-actions button {
+    padding: 12px 25px; /* Botões um pouco maiores */
+    font-size: 1em;
+    /* Herda estilos base de botão. Pode precisar de overrides. */
+}
+
+#btn-confirm-deck-choice {
+    background-color: var(--button-play-bg, #28a745); /* Verde para confirmar */
+    color: var(--button-play-text, #fff);
+    border-color: var(--button-play-border, #1f7a34);
+}
+#btn-confirm-deck-choice:hover {
+    background-color: var(--button-play-hover-bg, #218838);
+}
+
+#btn-back-to-deck-selection {
+    background-color: var(--button-secondary-bg, #6c757d);
+    color: var(--text-color, #fff);
+}
+#btn-back-to-deck-selection:hover {
+    background-color: var(--button-secondary-hover-bg, #5a6268);
+}
+
+/* --- Scrollbar para a lista de cartas do deck (opcional, mas bom) --- */
+#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar {
+    width: 8px;
+}
+#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color, #2980b9);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color, #3498db);
+}
+#chosen-deck-card-list.card-grid-mini {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color, #2980b9) rgba(0,0,0,0.1);
+}
