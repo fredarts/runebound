@@ -17,11 +17,17 @@
 
 /* Título */
 .options-layout h2 {
+    text-align: center;
+    margin-top: 20px;
     margin-bottom: 20px;
-    flex-shrink: 0;
+    color: var(--header-color, #d9dce2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-weight: bolder;
-    font-size: 2em;
-    color: #fff;
+    font-size: 3em;
+    flex-shrink: 0;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
     
     /* Herda h2 base */
 }
@@ -48,7 +54,7 @@
     border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 15px 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 /* Legenda do Grupo */

@@ -78,10 +78,12 @@
 .deck-management-layout .profile-section h3 {
     margin-top: 0;
     margin-bottom: 10px;
-    color: var(--accent-color-light, #61dafb); /* Cor fallback */
-    border-bottom: 1px solid var(--border-color, #444);
+    color: var(--text-color); /* Cor fallback */
     padding-bottom: 5px;
     flex-shrink: 0; /* Título não encolhe */
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Lista de Decks */
@@ -94,6 +96,7 @@
     border: 1px solid var(--border-color, #444);
     border-radius: 4px;
     background-color: rgba(10, 10, 10, 0.4); /* Fundo mais escuro */
+    overflow-x: hidden;
 }
 
 /* Item da Lista de Decks */
@@ -175,10 +178,13 @@
 }
 
 #deck-management-list .deck-valid {
-   text-transform: uppercase; 
-   color: #c9c9c9; 
-   font-size: 2em;
-   font-weight: bold;
+    text-transform: uppercase; 
+    color: #c9c9c9; 
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Botões de Ação do Deck (Editar/Excluir) */
@@ -210,8 +216,11 @@
     padding: 15px 30px; /* Padding */
     align-self: center; /* Centraliza o botão */
     flex-shrink: 0; /* Não encolhe */
-    font-size: 1em;
+    font-size: 1.3em;
     font-weight: bold;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
     /* Herda estilos de botão base */
 }
 
@@ -277,7 +286,7 @@
 }
 #deck-management-zoomed-image {
     /* Usa #....-zoomed-image base, mas pode ter overrides */
-     width: 625px; /* Tamanho específico que estava no style.css */
+     width: 550px; /* Tamanho específico que estava no style.css */
      max-width: 90%; /* Garante que não exceda a tela */
      height: auto;
 }
@@ -309,4 +318,5 @@
 #deck-management-collection {
     scrollbar-width: thin;
     scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.2);
+    overflow-x: hidden;
 }

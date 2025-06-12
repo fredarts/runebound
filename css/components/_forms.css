@@ -1,8 +1,30 @@
 /* css/components/_forms.css - Estilização de Formulários */
 
 /* Inputs, Selects e Textareas */
-input[type="text"],
-input[type="password"],
+/* Estilos para campos de texto (input type="text") */
+input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  border-radius: 25px;
+  font-size: 1em;
+  width: 100%;
+}
+
+/* Estilos para campos de senha (input type="password") */
+input[type="password"] {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  border-radius: 25px;
+  margin-bottom: 10px;
+  font-size: 1em;
+  width: 100%;
+}
+
+/* Estilos para elementos select (dropdowns) */
 select {
   padding: 8px 12px;
   border: 1px solid var(--border-color);
@@ -14,6 +36,13 @@ select {
   width: 100%;
 }
 
+select option {
+  background-color: var(--background-color); /* Fundo escuro para as opções do dropdown */
+  color: var(--text-color); /* Texto claro para as opções */
+  padding: 8px 12px; /* Adiciona padding às opções para melhor espaçamento */
+  border-radius: 25px;
+}
+
 input:focus,
 select:focus {
   outline: none;
@@ -23,6 +52,7 @@ select:focus {
 
 input::placeholder {
   color: #bdc3c7;
+  
   opacity: 0.8;
 }
 

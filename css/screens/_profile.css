@@ -15,12 +15,33 @@
 
 /* Título H2 */
 #profile-screen h2 { /* Ou use .profile-layout-single-column h2 se houver wrapper */
-    text-align: left;
-    color: var(--title-color); /* Cor do título */
-    margin-bottom: 0;
-    flex-shrink: 0; /* Não encolhe */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--header-color, #d9dce2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-weight: bolder;
-    font-size: 2em;
+    font-size: 3em;
+    flex-shrink: 0;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+
+
+}
+
+#profile-screen h3 { /* Ou use .profile-layout-single-column h2 se houver wrapper */
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--header-color, #d9dce2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    font-size: 1.3em;
+    flex-shrink: 0;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+
 
 }
 
@@ -217,12 +238,17 @@ font-size:1.2em;color:var(--text-color)}
 .collection-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .collection-topbar h2{    text-align: center;
     margin-top: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: var(--header-color, #d9dce2);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-weight: bolder;
-    font-size: 2em;
-    flex-shrink: 0;}
+    font-size: 3em;
+    flex-shrink: 0;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    
+  }
 .filters{display:flex;gap:8px;margin-bottom:12px}
 #collection-grid {
     /* usa CSS Grid, mas com colunas fixas no tamanho da carta */
@@ -231,7 +257,8 @@ font-size:1.2em;color:var(--text-color)}
     grid-auto-rows: 316px;                             /* 316 px = altura da mini‑card */
     gap: 12px;                                         /* mesmo espaço horiz. e vert. */
     justify-content: center;
-    max-height: 830px;
+    max-height: 810px;
+    
     padding-top: 10px;
     padding-bottom: 16px;
 }
@@ -248,7 +275,7 @@ font-size:1.2em;color:var(--text-color)}
 
 .collection-link{ vertical-align: bottom;}
 
-#search-name{border-radius: 25px; padding: 10px;}
+#search-name{border-radius: 25px; padding: 10px; background-color: var(--background-color); color: var(--text-color);}
 
 #profile-username{position: absolute; margin: 20px 0 0 140px;}
 
@@ -394,12 +421,19 @@ font-size:1.2em;color:var(--text-color)}
 .mastery-layout         { display:flex; flex-direction:column; gap:12px; 
     background:url('../../assets/images/ui/mountain_bg.jpg') center/cover; }
 .mastery-header         { display:flex; justify-content:space-between; align-items:center; }
-.mastery-header h2 {text-align: left;
-  color: var(--title-color);
-  margin-bottom: 0;
-  flex-shrink: 0;
-  font-weight: bolder;
-  font-size: 2em;}
+.mastery-header h2 {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: var(--header-color, #d9dce2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    font-size: 3em;
+    flex-shrink: 0;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
 .mastery-list           { overflow-y:auto; padding-right:4px;  background-color: var(--panel-background); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);}
 .mastery-row            { display:grid; grid-template-columns:80px 100px 1fr; 
     padding:6px 10px; border-bottom:1px solid var(--border-color); }

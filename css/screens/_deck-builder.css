@@ -7,6 +7,7 @@
     height: 100%;
     padding: 15px;
     box-sizing: border-box;
+    background-image: url(../../assets/images/ui/deck_background.jpg);
     /* Fundo pode ser herdado ou definido aqui */
      /* background: url(...) ...; */
 }
@@ -14,9 +15,16 @@
 /* Título */
 .deck-builder-layout h2 { /* Ou use #deck-builder-title */
     text-align: center;
-    margin-bottom: 15px; /* Menos espaço abaixo do título */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--header-color, #d9dce2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    font-size: 3em;
     flex-shrink: 0;
-    /* Herda estilos de h2 base */
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Barra Superior (Nome, Info, Ações) */
@@ -24,9 +32,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 10px; /* Reduzido espaço abaixo da barra */
+    padding-bottom: 5px;
     flex-wrap: wrap; /* Permite quebrar linha */
     gap: 15px;
     flex-shrink: 0;
@@ -41,9 +47,12 @@
 
 .deck-builder-top-bar .form-group label {
     margin-bottom: 0;
-    font-size: 1em;
+    font-size: 2em;
     white-space: nowrap; /* Evita quebra do label */
     flex-shrink: 0;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .deck-builder-top-bar .form-group input {
@@ -102,7 +111,7 @@
     display: flex;
     flex-direction: column; /* Conteúdo empilhado verticalmente */
     overflow: hidden; /* Painel não rola, conteúdo interno sim */
-    max-height: 840px;
+    max-height: 810px;
 }
 
 /* Título H3 dentro dos Painéis */
@@ -115,6 +124,9 @@
     flex-shrink: 0; /* Título não encolhe */
     color: var(--text-color); /* Cor do título no painel */
     font-size: 1.1em; /* Tamanho menor */
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Filtros no Painel da Coleção */
@@ -124,12 +136,12 @@
     gap: 10px;
     margin-bottom: 10px;
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
+    
     flex-shrink: 0;
 }
 
 .filters input[type="text"] {
-    grid-column: 1 / -1; /* Input de nome ocupa linha inteira */
+    padding: 12px 12px;
     width: 100%; /* Garante largura total */
     box-sizing: border-box; /* Inclui padding/border na largura */
 }
@@ -138,6 +150,7 @@
     width: 100%; /* Ocupa largura da coluna do grid */
     margin-bottom: 0;
     box-sizing: border-box;
+    padding: 12px 12px;
 }
 
 /* Lista de Cartas (Coleção ou Deck) */
@@ -201,3 +214,13 @@ body.dragging-from-deck .deck-panel .card-list { /* Quando arrastando do DECK pa
 .deck-builder-layout .card-list::-webkit-scrollbar-thumb { background-color: var(--secondary-color); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
 .deck-builder-layout .card-list::-webkit-scrollbar-thumb:hover { background-color: var(--primary-color); }
 .deck-builder-layout .card-list { scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }
+
+
+.mini-card.no-more-copies {
+    opacity: 0.5;
+    cursor: not-allowed !important; /* Indica que não é arrastável */
+}
+.mini-card.no-more-copies:hover {
+    transform: none; /* Remove efeito de hover */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* Sombra padrão */
+}
