@@ -129,11 +129,13 @@
     background-image: radial-gradient(circle at center, #4a90e2 30%, #1e3c72 100%);
     transition: background-image 0.3s ease-in-out, transform 0.5s cubic-bezier(0.42, 0, 0.58, 1);
     border-radius: 30px;    
-    font-size: 1em;
+    font-size: 1.3em;
     outline: none;
     z-index: 1;
     border: 1px solid rgba(4, 35, 48, 0.8);
-    
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
     
     
   }
