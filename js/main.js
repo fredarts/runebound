@@ -1,4 +1,4 @@
-// js/main.js - ATUALIZADO (v2.7 - UIManager Navigation Integration)
+// js/main.js - ATUALIZADO (v2.9 - Garantir Escolha de Deck)
 
 // --- Imports ---
 // Core Modules
@@ -26,6 +26,8 @@ import { generateSetCollectionHTML } from './ui/html-templates/setCollectionTemp
 import { generateSetMasteryScreenHTML } from './ui/html-templates/setMasteryScreenTemplate.js';
 import { generateStoreScreenHTML } from './ui/html-templates/storeScreenTemplate.js';
 import { generateBoosterOpeningTemplate } from './ui/html-templates/boosterOpeningTemplate.js';
+import { generateLoreVideoScreenHTML } from './ui/html-templates/loreVideoScreenTemplate.js';
+import { generateInitialDeckChoiceScreenHTML } from './ui/html-templates/initialDeckChoiceScreenTemplate.js';
 
 
 // --- Document Ready ---
@@ -63,7 +65,9 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             .append(generateSetCollectionHTML())
             .append(generateSetMasteryScreenHTML())
             .append(generateStoreScreenHTML())
-            .append(generateBoosterOpeningTemplate());
+            .append(generateBoosterOpeningTemplate())
+            .append(generateLoreVideoScreenHTML())
+            .append(generateInitialDeckChoiceScreenHTML());
 
         $body.prepend(generateTopBarHTML());
 
@@ -88,7 +92,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
     try {
         // --- Module Initialization ---
         const cardDatabase = loadCardDefinitions();
-        if (!cardDatabase || Object.keys(cardDatabase).length === 0) { // Checagem adicionada para cardDatabase vazio
+        if (!cardDatabase || Object.keys(cardDatabase).length === 0) {
             const $splashError = $('#splash-screen');
              if ($splashError.length && ($splashError.hasClass('active') || $screensContainer.children().length <= 1)) {
                  $splashError.text('Erro Crítico: Falha ao carregar cartas ou banco de dados de cartas vazio. Recarregue.').css('color', 'salmon');
@@ -112,11 +116,11 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
 
         console.log("MAIN: Setting timeout for screen transition (3000ms)...");
         setTimeout(async () => {
-            console.log("MAIN: Timeout finished. Checking login state...");
+            console.log("MAIN: Splash timeout finished. Checking login state...");
             const $splashScreen = $('#splash-screen');
 
             try {
-                const currentUser = accountManager.getCurrentUser();
+                let currentUser = accountManager.getCurrentUser(); // Pega o usuário da sessão/localStorage
 
                  if ($splashScreen.hasClass('active')) {
                      $splashScreen.removeClass('active loading');
@@ -124,20 +128,28 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                  }
 
                 if (currentUser) {
-                    console.log(`MAIN: User '${currentUser.username}' found. Preparing Home Screen.`);
+                    console.log(`MAIN (Pós-Splash): Usuário ${currentUser.username} encontrado na sessão. InitialSetupComplete: ${currentUser.initialSetupComplete}`);
                     uiManager.showTopBar(currentUser);
                     $('#screens-container').addClass('with-top-bar');
-                    await uiManager.navigateTo('home-screen');
+
+                    // --- LÓGICA CRÍTICA AQUI (PÓS-SPLASH) ---
+                    if (currentUser.initialSetupComplete === false) {
+                        console.log("MAIN (Pós-Splash): Setup inicial INCOMPLETO. Navegando para vídeo de lore.");
+                        await uiManager.navigateTo('lore-video-screen');
+                    } else {
+                        console.log("MAIN (Pós-Splash): Setup inicial COMPLETO. Navegando para home.");
+                        await uiManager.navigateTo('home-screen');
+                    }
+                    // --- FIM DA LÓGICA CRÍTICA ---
                 } else {
-                    console.log("MAIN: No user found. Preparing Title Screen.");
+                    console.log("MAIN (Pós-Splash): Nenhum usuário logado. Preparando Tela de Título.");
                     uiManager.hideTopBar();
                     $('#screens-container').removeClass('with-top-bar');
                     uiManager.navigateTo('title-screen');
                 }
-                console.log("MAIN: Initial screen setup complete via navigateTo.");
+                console.log("MAIN: Initial screen setup complete (after splash).");
             } catch (error) {
-                console.error("MAIN: Error inside setTimeout callback:", error);
-                console.log("MAIN: Fallback - Showing title-screen due to error.");
+                console.error("MAIN: Error inside splash timeout callback:", error);
                  uiManager.hideTopBar();
                  $('#screens-container').removeClass('with-top-bar');
                  if ($splashScreen.hasClass('active')) {
@@ -145,7 +157,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                  }
                 uiManager.navigateTo('title-screen');
             }
-        }, 3000);
+        }, 3000); // Fim do setTimeout do splash
 
 
         // --- Global UI Bindings ---
@@ -186,6 +198,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
         });
         $('#create-account-form button').each((i, btn) => addAudioListeners($(btn)));
 
+        // --- Submissão do Formulário de Login ---
         $('#login-form').on('submit', async (event) => {
             event.preventDefault();
             audioManager.playSFX('buttonClick');
@@ -193,20 +206,36 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             const u = $('#login-username').val().trim();
             const p = $('#login-password').val();
             const $m = $('#login-message');
-            const r = accountManager.login(u, p);
+            const r = accountManager.login(u, p); // r contém { success: boolean, message: string, user?: object }
             $m.text(r.message).css('color', r.success ? 'lightgreen' : 'salmon');
-            if (r.success) {
+
+            if (r.success && r.user) {
                 $form[0].reset();
+                console.log(`MAIN (Login Form): Usuário ${r.user.username} logado com sucesso. InitialSetupComplete: ${r.user.initialSetupComplete}`);
                 uiManager.showTopBar(r.user);
                 $('#screens-container').addClass('with-top-bar');
-                await uiManager.navigateTo('home-screen');
+
+                // --- LÓGICA CRÍTICA AQUI (APÓS LOGIN FORM) ---
+                if (r.user.initialSetupComplete === false) {
+                    console.log("MAIN (Login Form): Setup inicial INCOMPLETO. Navegando para vídeo de lore.");
+                    await uiManager.navigateTo('lore-video-screen');
+                } else {
+                    console.log("MAIN (Login Form): Setup inicial COMPLETO. Navegando para home.");
+                    await uiManager.navigateTo('home-screen');
+                }
+                // --- FIM DA LÓGICA CRÍTICA ---
+
             } else {
-                $form.closest('.form-container')?.addClass('form-shake');
-                setTimeout(() => $form.closest('.form-container')?.removeClass('form-shake'), 600);
+                const $container = $form.closest('.form-container');
+                if ($container.length) {
+                    $container.addClass('form-shake');
+                    setTimeout(() => $container.removeClass('form-shake'), 600);
+                }
                 audioManager.playSFX('loginError');
             }
         });
          $('#login-form button').each((i, btn) => addAudioListeners($(btn)));
+
 
          const $btnOptionsBack = $('#btn-options-back-to-main');
          $btnOptionsBack.on('click', () => uiManager.navigateTo('home-screen'));
@@ -221,19 +250,8 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
          addAudioListeners($btnConnectBack);
 
          const $btnSaveOptions = $('#btn-save-options');
-         $btnSaveOptions.on('click', () => {
-             // A lógica de salvar foi movida para OptionsUI._saveOptions
-             // UIManager.saveOptions() não é mais usado diretamente para salvar.
-             // O evento de clique no botão já está tratado em OptionsUI._bindEvents
-             // que chama OptionsUI._saveOptions.
-             // Apenas para garantir que o som seja tocado se o botão estiver fora do escopo de OptionsUI:
-             audioManager.playSFX('buttonClick');
-             // Em um cenário ideal, OptionsUI lidaria com seu próprio som de clique no botão salvar.
-             // Mas se UIManager gerencia o botão de salvar DE FORA, este som é ok.
-             // Se OptionsUI gerencia o botão, este addAudioListeners pode ser removido.
-             // Pelo código de OptionsUI, ele já tem seu próprio bind para o saveButton.
-         });
-         // addAudioListeners($btnSaveOptions); // Provavelmente não necessário aqui, OptionsUI deve lidar.
+         $btnSaveOptions.on('mouseenter.uisfx', () => audioManager?.playSFX('buttonHover'));
+
 
         // --- Game Initialization Logic & Connect Screen Bindings ---
         let gameInstance = null;
@@ -260,7 +278,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
              console.log(`MAIN: Local Deck '${localDeck.name}' (${localPlayerDeckIds.length} cards) found.`);
 
              let opponentDeckIds = accountManager.getUserData("Opponent_AI")?.decks?.[opponentDeckId]?.cards;
-             if (!opponentDeckIds || opponentDeckIds.length < 30 || opponentDeckIds.length > 40) { // <<< ADICIONADO CHECK DE MAX 40 PARA IA TAMBÉM
+             if (!opponentDeckIds || opponentDeckIds.length < 30 || opponentDeckIds.length > 40) {
                  console.warn(`MAIN: Opponent deck '${opponentDeckId}' invalid or not found (length: ${opponentDeckIds?.length}), using fallback.`);
                  const allCardIds = Object.keys(cardDatabase);
                  const requiredDeckSize = 30;
@@ -285,31 +303,24 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
 
              try {
                  gameInstance = new Game(cardDatabase);
-                 // Player 1 (Local) é 'currentUser'
                  const player1 = gameInstance.addPlayer(currentUser.username, localPlayerDeckIds);
-                 // Player 2 (IA)
-                 const player2_IA = gameInstance.addPlayer(opponentUsername, opponentDeckIds); // opponentUsername é "Opponent_AI"
+                 const player2_IA = gameInstance.addPlayer(opponentUsername, opponentDeckIds);
 
-                 // Validação se ambos os jogadores foram adicionados com sucesso
                  if (!player1 || !player2_IA) {
                      console.error("MAIN: Falha ao adicionar um ou ambos os jogadores à instância do jogo.");
-                     // Log específico para qual jogador falhou
-                     if (!player1) console.error("MAIN: Falha ao adicionar player1 (humano). Deck ou nome inválido?");
-                     if (!player2_IA) console.error("MAIN: Falha ao adicionar player2_IA. Deck ou nome inválido?");
+                     if (!player1) console.error("MAIN: Falha ao adicionar player1 (humano).");
+                     if (!player2_IA) console.error("MAIN: Falha ao adicionar player2_IA.");
                      throw new Error("Falha ao adicionar jogadores ao GameInstance.");
                  }
                  console.log(`MAIN: Player 1 (Human): ${player1.name}, ID: ${player1.id}`);
                  console.log(`MAIN: Player 2 (AI): ${player2_IA.name}, ID: ${player2_IA.id}`);
 
                  uiManager.setGameInstance(gameInstance);
-                 // --- CORREÇÃO CRÍTICA ---
-                 // O jogador local para a UI é player1 (o currentUser)
                  uiManager.setLocalPlayer(player1.id);
-                 // ------------------------
                  console.log(`MAIN: Local player ID set in UIManager: ${player1.id}`);
 
 
-                 if (gameInstance.setupGame()) { // setupGame agora deve ter 2 jogadores
+                 if (gameInstance.setupGame()) {
                      gameInstance.startGame();
                      uiManager.renderInitialGameState();
                      console.log("MAIN: Game started successfully! Showing Battle Screen.");
@@ -317,9 +328,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                      screenManager.showScreen('battle-screen');
                      audioManager.playBGM('battle-screen');
                  } else {
-                     // setupGame falhou, provavelmente porque this.#players.length ainda não é 2.
-                     // Isso indicaria que o erro está em addPlayer não funcionando como esperado
-                     // ou a verificação de !player1 || !player2_IA não capturou o problema.
                      console.error("MAIN: gameInstance.setupGame() returned false. Players in game:", gameInstance.getPlayersForDebug ? gameInstance.getPlayersForDebug() : "N/A");
                      throw new Error("Falha na configuração inicial do jogo (Game.setupGame() falhou).");
                  }
@@ -376,7 +384,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
          });
          addAudioListeners($btnCancelHost);
 
-        console.log("Runebound Clash UI Ready (v2.7 - UIManager Navigation, Game Init Fix Attempt).");
+        console.log("Runebound Clash UI Ready (v2.9 - Ensure Deck Choice).");
 
     } catch (initError) {
         console.error("MAIN: Critical initialization error:", initError);

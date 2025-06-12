@@ -1,10 +1,9 @@
-// js/ui/screens/DeckManagementScreenUI.js - CORREÇÃO: Bind no Render
+// js/ui/screens/DeckManagementScreenUI.js
 
 import CardRenderer from '../helpers/CardRenderer.js';
 import ZoomHandler from '../helpers/ZoomHandler.js';
 
 export default class DeckManagementScreenUI {
-    // --- Core References ---
     #screenManager;
     #accountManager;
     #cardDatabase;
@@ -13,7 +12,6 @@ export default class DeckManagementScreenUI {
     #uiManager;
     #audioManager;
 
-    // --- Elementos da UI (Cache) ---
     #screenElement;
     #deckListElement;
     #collectionElement;
@@ -25,7 +23,14 @@ export default class DeckManagementScreenUI {
     #filterTribeSelect;
     #btnCreateNewDeck;
 
-    _filtersPopulated = false; // Flag para popular filtros apenas uma vez
+    _filtersPopulated = false;
+
+    // Adicionar caminhos para as imagens dos decks iniciais
+    #starterDeckThumbnails = {
+        'ashkar_starter': 'assets/images/store/Ashkar_deck.png', // Mesmo caminho usado na loja/escolha inicial
+        'galadreth_starter': 'assets/images/store/Galadreth_deck.png' // Mesmo caminho
+    };
+    #defaultDeckThumbnail = 'assets/images/ui/card_back_placeholder.png'; // Para decks criados pelo jogador
 
     constructor(screenManager, accountManager, cardDatabase, cardRenderer, zoomHandler, uiManager, audioManager) {
         this.#screenManager = screenManager;
@@ -36,15 +41,16 @@ export default class DeckManagementScreenUI {
         this.#uiManager = uiManager;
         this.#audioManager = audioManager;
 
-        // Cache selectors immediately, but check existence in render/bind
         this._cacheSelectors();
-        // REMOVED _bindEvents() from constructor
         console.log("DeckManagementScreenUI initialized.");
     }
 
     _cacheSelectors() {
         this.#screenElement = $('#deck-management-screen');
-        if (!this.#screenElement.length) { console.warn("DeckMgmt Cache: Root element missing"); return false; }
+        if (!this.#screenElement.length) {
+            console.warn("DeckMgmt Cache Warning: Root element #deck-management-screen not found.");
+            return false;
+        }
         this.#deckListElement = this.#screenElement.find('#deck-management-list');
         this.#collectionElement = this.#screenElement.find('#deck-management-collection');
         this.#collectionCountSpan = this.#screenElement.find('#deck-mgmt-collection-count');
@@ -54,16 +60,19 @@ export default class DeckManagementScreenUI {
         this.#filterCostSelect = this.#screenElement.find('#deck-mgmt-filter-cost');
         this.#filterTribeSelect = this.#screenElement.find('#deck-mgmt-filter-tribe');
         this.#btnCreateNewDeck = this.#screenElement.find('#btn-create-new-deck');
-        return true; // Indicate success or failure? Maybe not needed here.
+
+        if (!this.#deckListElement.length || !this.#collectionElement.length ||
+            !this.#collectionCountSpan.length || !this.#btnCreateNewDeck.length) {
+            console.error("DeckManagementScreenUI Cache Error: One or more essential elements not found!");
+            return false;
+        }
+        return true;
     }
 
-    /** Renderiza a tela buscando dados atuais */
     render() {
         console.log("DeckManagementScreenUI: Rendering...");
-        // Ensure selectors are cached (might be needed if view was destroyed/recreated)
-        if (!this.#screenElement?.length) this._cacheSelectors();
-        if (!this.#screenElement?.length) {
-             console.error("DeckManagementScreenUI Render Error: Root element not found.");
+        if (!this.#screenElement?.length && !this._cacheSelectors()) {
+             console.error("DeckManagementScreenUI Render Error: Root element not found even after re-cache.");
              return;
         }
 
@@ -71,7 +80,7 @@ export default class DeckManagementScreenUI {
 
         const currentUser = this.#accountManager.getCurrentUser();
         if (!currentUser) {
-            console.warn("DeckManagementScreenUI: No user logged in.");
+            console.warn("DeckManagementScreenUI: No user logged in. Redirecting to login.");
             this.#uiManager?.navigateTo('login-screen');
             return;
         }
@@ -80,80 +89,75 @@ export default class DeckManagementScreenUI {
         const uniqueCollectionIds = [...new Set(userFullCollection)];
         const decks = this.#accountManager.loadDecks() || {};
 
-        this._populateFilters(uniqueCollectionIds); // Popula com base nos únicos
-        this._renderDeckList(decks);
+        this._populateFilters(uniqueCollectionIds);
+        this._renderDeckList(decks); // A modificação principal será aqui
         this._renderCollection(uniqueCollectionIds, userFullCollection);
 
-        // --- MOVED BINDING HERE ---
         this._bindEvents();
-        // --------------------------
     }
 
     _bindEvents() {
-        // Check if root element exists before binding
         if (!this.#screenElement || !this.#screenElement.length) {
             console.warn("DeckManagementScreenUI: Cannot bind events, root element missing.");
             return;
         }
         console.log("DeckManagementScreenUI: Binding events...");
         const self = this;
-        const namespace = '.deckmgmt'; // Namespace still useful for targeted unbinding
+        const namespace = '.deckmgmt';
 
-        // --- Clear old listeners using the namespace ---
-        // Clear listeners delegated from the screen element
         this.#screenElement.off(namespace);
-        // Clear listeners directly on specific elements if any (ensure these elements exist)
         this.#btnCreateNewDeck?.off(namespace);
-        $('#deck-management-zoom-overlay')?.off(namespace); // Use optional chaining
+        $('#deck-management-zoom-overlay')?.off(namespace);
 
-        // Helper for audio
-        const addAudio = ($el, click = 'buttonClick', hover = 'buttonHover') => {
-            if (!$el || !$el.length) return; // Don't bind if element doesn't exist
-            $el.off(`click${namespace} mouseenter${namespace}`); // Clear old audio listeners
-            $el.on(`click${namespace}`, () => this.#audioManager?.playSFX(click));
-            $el.on(`mouseenter${namespace}`, () => this.#audioManager?.playSFX(hover));
+        const addAudio = ($el, clickSfx = 'buttonClick', hoverSfx = 'buttonHover') => {
+            if (!$el || !$el.length) return;
+            $el.off(`click${namespace} mouseenter${namespace}`);
+            $el.on(`click${namespace}`, () => self.#audioManager?.playSFX(clickSfx));
+            $el.on(`mouseenter${namespace}`, () => self.#audioManager?.playSFX(hoverSfx));
         };
 
-        // --- Bind new ---
-
-        // Buttons in deck list (delegated from screenElement)
         this.#screenElement.on(`click${namespace}`, '.btn-edit-deck', (event) => {
-            this._handleEditDeck(event);
+            self._handleEditDeck(event);
         });
         this.#screenElement.on(`click${namespace}`, '.btn-delete-deck', (event) => {
-            this._handleDeleteDeck(event);
+            self._handleDeleteDeck(event);
         });
-        this.#screenElement.on(`mouseenter${namespace}`, '.btn-edit-deck, .btn-delete-deck', (event) => {
-             this.#audioManager?.playSFX('buttonHover');
-        });
-
-        // Create New Deck Button
-        addAudio(this.#btnCreateNewDeck); // Bind audio listeners
-        this.#btnCreateNewDeck?.on(`click${namespace}`, this._handleCreateNewDeck.bind(this)); // Bind main click listener
-
-        // Filters
-        this.#screenElement.on(`input${namespace}`, '#deck-mgmt-filter-name', this._handleFilterChange.bind(this));
-        this.#screenElement.on(`change${namespace}`, '#deck-mgmt-filter-type, #deck-mgmt-filter-cost, #deck-mgmt-filter-tribe', (event) => {
-            this.#audioManager?.playSFX('buttonClick');
-            this._handleFilterChange(event);
+        this.#screenElement.on(`mouseenter${namespace}`, '.btn-edit-deck, .btn-delete-deck', () => {
+            self.#audioManager?.playSFX('buttonHover');
         });
 
-        // Zoom (delegated from screenElement)
+        if (this.#btnCreateNewDeck && this.#btnCreateNewDeck.length) {
+            addAudio(this.#btnCreateNewDeck);
+            this.#btnCreateNewDeck.on(`click${namespace}`, this._handleCreateNewDeck.bind(this));
+        }
+
+        if (this.#filterNameInput && this.#filterNameInput.length) {
+            this.#filterNameInput.on(`input${namespace}`, this._handleFilterChange.bind(this));
+        }
+        if (this.#filterTypeSelect && this.#filterCostSelect && this.#filterTribeSelect) {
+            this.#filterTypeSelect.add(this.#filterCostSelect).add(this.#filterTribeSelect)
+                .on(`change${namespace}`, (event) => {
+                    self.#audioManager?.playSFX('buttonClick');
+                    self._handleFilterChange(event);
+                });
+        }
+
         this.#screenElement.on(`contextmenu${namespace}`, '#deck-management-collection .mini-card', (event) => {
             event.preventDefault();
-            this.#zoomHandler.handleZoomClick(event); // Zoom handler deals with its own logic
+            self.#zoomHandler.handleZoomClick(event);
         });
 
-        // Close Zoom Overlay
-        $('#deck-management-zoom-overlay').on(`click${namespace}`, (event) => {
-            if (event.target === event.currentTarget) {
-                this.#zoomHandler.closeZoom();
-            }
-        });
+        const $zoomOverlay = $('#deck-management-zoom-overlay');
+        if ($zoomOverlay.length) {
+            $zoomOverlay.on(`click${namespace}`, (event) => {
+                if (event.target === event.currentTarget) {
+                    self.#zoomHandler.closeZoom();
+                }
+            });
+        }
         console.log("DeckManagementScreenUI: Events rebound.");
     }
 
-    // ... (keep _handleCreateNewDeck, _handleEditDeck, _handleDeleteDeck, _handleFilterChange) ...
     _handleCreateNewDeck() {
         console.log("DeckManagementScreenUI: Create new deck requested.");
         this.#uiManager?.navigateTo('deck-builder-screen');
@@ -182,10 +186,11 @@ export default class DeckManagementScreenUI {
                 console.log(`DeckManagementScreenUI: Deck ${deckId} deleted.`);
                 this._showMessage(`Deck "${deckName}" excluído.`, 'success');
                 this.#audioManager?.playSFX('deckSave');
-                this.render(); // Re-render the list
+                this.render();
             } else {
                 this._showMessage(`Erro ao excluir deck: ${result.message}`, 'error');
                 console.error(`Error deleting deck: ${result.message}`);
+                 this.#audioManager?.playSFX('genericError');
             }
         } else {
             if (!deckId) console.error("DeckManagementScreenUI: Delete failed, no deckId found.");
@@ -195,12 +200,12 @@ export default class DeckManagementScreenUI {
     _handleFilterChange() {
         const userFullCollection = this.#accountManager.getCollection() || [];
         const uniqueCollectionIds = [...new Set(userFullCollection)];
-        this._renderCollection(uniqueCollectionIds, userFullCollection); // Re-render collection only
+        this._renderCollection(uniqueCollectionIds, userFullCollection);
     }
 
-    // --- Métodos de Renderização (Keep as is from previous version) ---
+    // --- MÉTODO MODIFICADO ---
     _renderDeckList(decks) {
-        if (!this.#deckListElement) return;
+        if (!this.#deckListElement || !this.#deckListElement.length) return;
         this.#deckListElement.empty();
         const deckIds = Object.keys(decks || {});
 
@@ -218,34 +223,52 @@ export default class DeckManagementScreenUI {
                  const validityText = isValid ? '' : ` (Inválido: ${cardCount})`;
                  const deckName = deck.name || `Deck ${id.substring(0, 5)}`;
 
+                // --- LÓGICA DA THUMBNAIL ---
+                let thumbnailSrc = this.#defaultDeckThumbnail; // Imagem padrão
+                if (this.#starterDeckThumbnails[id]) { // Verifica se o ID do deck é de um starter deck
+                    thumbnailSrc = this.#starterDeckThumbnails[id];
+                } else if (deck.thumbnail) { // Se o deck tiver uma propriedade thumbnail customizada
+                    thumbnailSrc = deck.thumbnail;
+                }
+                // --- FIM DA LÓGICA DA THUMBNAIL ---
+
+                const thumbnailHTML = `<img src="${thumbnailSrc}" alt="Deck ${deckName}" class="deck-list-thumbnail">`;
+
                 this.#deckListElement.append(`
                     <li data-deck-id="${id}">
-                        <span class="deck-name ${validityClass}">${deckName} (${cardCount} cartas)${validityText}</span>
-                        <span class="deck-buttons">
-                            <button class="btn-edit-deck" title="Editar Deck ${deckName}">✏️</button>
-                            <button class="btn-delete-deck" title="Excluir Deck ${deckName}">🗑️</button>
-                        </span>
+                        ${thumbnailHTML}
+                        <div class="deck-info-container">
+                           <span class="deck-name ${validityClass}">${deckName}${validityText}</span>
+                           <span class="deck-buttons">
+                               <button class="btn-edit-deck" title="Editar Deck ${deckName}">✏️</button>
+                               <button class="btn-delete-deck" title="Excluir Deck ${deckName}">🗑️</button>
+                           </span>
+                        </div>
                     </li>`);
             } else {
                  console.warn(`DeckManagementScreenUI: Deck data invalid for ID ${id}`, deck);
             }
         });
-        // console.log(`DeckManagementScreenUI: Rendered ${deckIds.length} decks.`);
     }
+    // --- FIM DO MÉTODO MODIFICADO ---
 
     _populateFilters(uniqueCollectionIds) {
-        if (this._filtersPopulated) return; // Populate only once
+        if (this._filtersPopulated && this.#filterCostSelect?.children('option').length > 1) {
+            return;
+        }
 
-        if (!this.#filterCostSelect || !this.#filterTribeSelect) {
+        if (!this.#filterCostSelect?.length || !this.#filterTribeSelect?.length || !this.#filterTypeSelect?.length) {
              console.warn("DeckManagementScreenUI: Filter elements missing, cannot populate.");
              return;
         }
 
         this.#filterCostSelect.children('option:not(:first-child)').remove();
         this.#filterTribeSelect.children('option:not(:first-child)').remove();
+        this.#filterTypeSelect.children('option:not(:first-child)').remove();
 
         const costs = new Set();
         const tribes = new Set();
+        const types = new Set();
 
         (uniqueCollectionIds || []).forEach(id => {
              const cd = this.#cardDatabase[id];
@@ -253,6 +276,7 @@ export default class DeckManagementScreenUI {
                  const costVal = cd.cost >= 7 ? '7+' : (cd.cost ?? 0).toString();
                  costs.add(costVal);
                  tribes.add(cd.tribe || 'None');
+                 types.add(cd.type || 'Unknown');
              }
         });
 
@@ -262,12 +286,14 @@ export default class DeckManagementScreenUI {
         [...tribes].sort((a, b) => (a === 'None' ? 1 : b === 'None' ? -1 : a.localeCompare(b)))
             .forEach(t => this.#filterTribeSelect.append(`<option value="${t}">${t === 'None' ? 'Sem Tribo' : t}</option>`));
 
-        this._filtersPopulated = true; // Mark as populated
+        [...types].sort().forEach(t => this.#filterTypeSelect.append(`<option value="${t}">${t}</option>`));
+
+        this._filtersPopulated = true;
         console.log("DeckManagementScreenUI: Filters populated.");
     }
 
     _renderCollection(uniqueCollectionIds, userFullCollection) {
-        if (!this.#collectionElement || !this.#collectionCountSpan) return;
+        if (!this.#collectionElement?.length || !this.#collectionCountSpan?.length) return;
 
         this.#collectionElement.empty();
         const safeUniqueIds = uniqueCollectionIds || [];
@@ -283,7 +309,7 @@ export default class DeckManagementScreenUI {
             cardQuantities[id] = (cardQuantities[id] || 0) + 1;
         });
 
-        const filterName = this.#filterNameInput?.val().toLowerCase() ?? '';
+        const filterName = this.#filterNameInput?.val()?.toLowerCase() ?? '';
         const filterType = this.#filterTypeSelect?.val() ?? '';
         const filterCost = this.#filterCostSelect?.val() ?? '';
         const filterTribe = this.#filterTribeSelect?.val() ?? '';
@@ -314,12 +340,10 @@ export default class DeckManagementScreenUI {
          if (cardsRendered === 0 && safeUniqueIds.length > 0) {
             this.#collectionElement.append('<p class="placeholder-message">(Nenhuma carta corresponde aos filtros)</p>');
         }
-
-        // console.log(`DeckManagementScreenUI: Rendered ${cardsRendered} unique collection cards with quantities.`);
     }
 
     _showMessage(text, type = 'info', duration = 3000) {
-        if (!this.#messageParagraph) return;
+        if (!this.#messageParagraph || !this.#messageParagraph.length) return;
         const colorVar = type === 'success' ? '--success-color' : type === 'error' ? '--error-color' : '--info-color';
         this.#messageParagraph.text(text).css('color', `var(${colorVar}, #ccc)`);
 
@@ -330,23 +354,25 @@ export default class DeckManagementScreenUI {
                 }
             }, duration);
         }
-        if(type === 'error') {
-            this.#audioManager?.playSFX('genericError');
-        }
     }
 
-    // Opcional: Método destroy para limpar listeners
     destroy() {
         console.log("DeckManagementScreenUI: Destroying...");
         const namespace = '.deckmgmt';
-        this.#screenElement?.off(namespace); // Use optional chaining
+        this.#screenElement?.off(namespace);
         this.#btnCreateNewDeck?.off(namespace);
         $('#deck-management-zoom-overlay')?.off(namespace);
-        // Nullify references if needed
+
         this.#screenElement = null;
         this.#deckListElement = null;
         this.#collectionElement = null;
-        // ... nullify other cached elements ...
+        this.#collectionCountSpan = null;
+        this.#messageParagraph = null;
+        this.#filterNameInput = null;
+        this.#filterTypeSelect = null;
+        this.#filterCostSelect = null;
+        this.#filterTribeSelect = null;
+        this.#btnCreateNewDeck = null;
         console.log("DeckManagementScreenUI: Destroy complete.");
     }
 }

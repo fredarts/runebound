@@ -19,12 +19,15 @@
 .deck-management-layout h2 {
     text-align: center;
     margin-top: 20px; /* Menos margem superior que no style.css original */
-    margin-bottom: 30px; /* Menos margem inferior */
+    margin-bottom: 20px; /* Menos margem inferior */
     color: var(--header-color, #d9dce2); /* Cor fallback */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-weight: bolder;
-    font-size: 2em; /* Reduzido ligeiramente */
+    font-size: 3em; /* Reduzido ligeiramente */
     flex-shrink: 0; /* Não encolhe */
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Área Principal com as Colunas */
@@ -123,11 +126,11 @@
 
 .deck-list-thumbnail {
     width: 80px;   /* Adjust size as needed */
-    height: 50px;  /* Adjust size as needed */
+    height: 120px;  /* Adjust size as needed */
     object-fit: cover; /* Crop image nicely */
     border-radius: 4px;
     flex-shrink: 0; /* Prevent image from shrinking */
-    border: 1px solid var(--border-color, #444);
+    
 }
 
 .deck-list-thumbnail-placeholder {
@@ -172,7 +175,10 @@
 }
 
 #deck-management-list .deck-valid {
-   color: var(--valid-color, lightgreen); /* Verde sutil para válido */
+   text-transform: uppercase; 
+   color: #c9c9c9; 
+   font-size: 2em;
+   font-weight: bold;
 }
 
 /* Botões de Ação do Deck (Editar/Excluir) */
@@ -185,7 +191,7 @@
     border: none;
     color: var(--icon-button-color, #aaa); /* Cor fallback */
     cursor: url('../../assets/images/ui/cursor.png'), auto;
-    font-size: 1.1em; /* Tamanho do ícone/emoji */
+    font-size: 2em; /* Tamanho do ícone/emoji */
     padding: 2px 5px;
     margin-left: 5px;
     transition: color 0.2s ease, transform 0.1s ease;
@@ -271,7 +277,7 @@
 }
 #deck-management-zoomed-image {
     /* Usa #....-zoomed-image base, mas pode ter overrides */
-     width: 460px; /* Tamanho específico que estava no style.css */
+     width: 625px; /* Tamanho específico que estava no style.css */
      max-width: 90%; /* Garante que não exceda a tela */
      height: auto;
 }

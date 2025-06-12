@@ -34,6 +34,8 @@
 @import 'screens/_options.css';
 @import 'screens/_store.css';
 @import 'screens/_booster-opening.css';
+@import 'screens/_lore-video.css';
+@import 'screens/_initial-deck-choice.css';
 
 
 /* Utilities */

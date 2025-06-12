@@ -28,6 +28,10 @@ export default class AudioManager {
         'battle-screen': 'assets/audio/bgm_battle.mp3',
         'set-collection-screen': 'assets/audio/bgm_title.mp3',
         'store-screen': 'assets/audio/bgm_bazaar.mp3',
+        'initial-deck-choice-screen': 'assets/audio/bgm_profile.mp3',
+        'login-screen': 'assets/audio/bgm_title.mp3',
+        'create-account-screen': 'assets/audio/bgm_title.mp3',
+        'booster-opening-screen': 'assets/audio/bgm_title.mp3'
     };
 
     #sfxTracks = { // Definir os caminhos corretos
