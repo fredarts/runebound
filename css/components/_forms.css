@@ -1,19 +1,10 @@
 /* css/components/_forms.css - Estilização de Formulários */
 
 /* Inputs, Selects e Textareas */
-/* Estilos para campos de texto (input type="text") */
-input[type="text"] {
-  padding: 8px 12px;
-  border: 1px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  border-radius: 25px;
-  font-size: 1em;
-  width: 100%;
-}
-
-/* Estilos para campos de senha (input type="password") */
-input[type="password"] {
+input[type="text"],
+input[type="password"],
+select,
+textarea { /* Adicionei textarea para cobrir mais casos */
   padding: 8px 12px;
   border: 1px solid var(--border-color);
   background-color: rgba(255, 255, 255, 0.1);
@@ -22,39 +13,112 @@ input[type="password"] {
   margin-bottom: 10px;
   font-size: 1em;
   width: 100%;
-}
-
-/* Estilos para elementos select (dropdowns) */
-select {
-  padding: 8px 12px;
-  border: 1px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  border-radius: 25px;
-  margin-bottom: 10px;
-  font-size: 1em;
-  width: 100%;
+  cursor: none !important; /* <<< ADICIONADO PARA INPUTS E SELECTS */
 }
 
 select option {
-  background-color: var(--background-color); /* Fundo escuro para as opções do dropdown */
-  color: var(--text-color); /* Texto claro para as opções */
-  padding: 8px 12px; /* Adiciona padding às opções para melhor espaçamento */
-  border-radius: 25px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 8px 12px;
+  cursor: none !important; 
+  /* Opções dentro de um select geralmente não herdam o cursor do select pai,
+     mas não custa garantir se você quiser ser extra cuidadoso,
+     embora o 'cursor: none' no body já deva cobrir isso.
+     A principal preocupação é o elemento select em si. */
+  /* cursor: none !important; */
 }
 
 input:focus,
-select:focus {
+select:focus,
+textarea:focus { /* Adicionei textarea */
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  cursor: none !important; 
 }
 
 input::placeholder {
-  color: #bdc3c7;
-  
+  color: var(--text-color-secondary);
   opacity: 0.8;
+  cursor: none !important; 
 }
+
+/* Checkboxes e Radio buttons (se usar) */
+input[type="checkbox"],
+input[type="radio"] {
+    /* A aparência padrão pode variar. Alguns navegadores mostram 'pointer'. */
+    cursor: none !important; /* <<< ADICIONADO PARA CHECKBOXES */
+    /* Você pode precisar de mais estilos para customizar a aparência
+       de checkboxes e radios se quiser que eles se integrem melhor visualmente,
+       mas para o cursor, isso é o principal. */
+    width: 18px; /* Mantendo seu estilo original */
+    height: 18px;
+    flex-shrink: 0;
+    margin-left: auto; /* Mantendo seu estilo original */
+}
+
+/* Range Sliders */
+input[type="range"] {
+    flex-grow: 1;
+    min-width: 150px;
+    margin: 0;
+    cursor: none !important; /* <<< ADICIONADO PARA RANGE SLIDERS */
+}
+
+/* Estilos para o track e thumb do range slider (apenas para manter a estrutura, não são para o cursor) */
+input[type=range] {
+  height: 20px;
+  -webkit-appearance: none;
+  margin: 5px 0;
+  width: 100%;
+  background: transparent;
+  cursor: none !important;
+}
+input[type=range]:focus {
+  outline: none;
+  cursor: none !important;  
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  /* cursor: none !important; /* Aplicado ao input[type="range"] já cobre o track */
+  background: var(--border-color);
+  border-radius: 3px;
+  cursor: none !important;  
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  /* cursor: none !important; */
+  background: var(--border-color);
+  border-radius: 3px;
+  cursor: none !important;  
+}
+input[type=range]::-webkit-slider-thumb {
+  border: 1px solid #000000;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  /* cursor: none !important; /* Aplicado ao input[type="range"] já cobre o thumb */
+  -webkit-appearance: none;
+  margin-top: -5px;
+  cursor: none !important;
+}
+input[type=range]::-moz-range-thumb {
+  border: 1px solid #000000;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: none !important;  
+  /* cursor: none !important; */
+}
+input[type=range]:disabled::-webkit-slider-thumb { background: var(--disabled-color); }
+input[type=range]:disabled::-moz-range-thumb { background: var(--disabled-color); }
+input[type=range]:disabled::-webkit-slider-runnable-track { background: #555; }
+input[type=range]:disabled::-moz-range-track { background: #555; }
+
 
 /* Labels */
 label {
@@ -64,15 +128,19 @@ label {
   font-size: 0.9em;
   font-weight: 500;
   margin-bottom: 12px;
+  cursor: none !important;
+  /* Labels geralmente não mudam o cursor, mas se você tiver algum que muda: */
+  /* cursor: none !important; */
 }
 
-/* Containers de Formulários */
+/* Containers de Formulários (geralmente não interativos diretamente com cursor) */
 .form-container {
   max-width: 400px;
   margin: 20px auto;
   padding: 20px;
   background-color: var(--panel-background);
   border-radius: 5px;
+  cursor: none !important;
 }
 
 /* Grupos de Formulário */
@@ -80,7 +148,7 @@ label {
   margin-bottom: 15px;
 }
 
-/* Ações do Formulário */
+/* Ações do Formulário (já cobertas pelos botões) */
 .form-actions {
   display: flex;
   justify-content: space-around;

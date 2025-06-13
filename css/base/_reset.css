@@ -7,7 +7,26 @@
     padding: 0;
   }
 
-  body, * { /* Apply to the entire body or specific game container */
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
-  }
+
   
+
+  body {
+    /* Esconde o cursor padrão do sistema em todo o corpo do documento */
+    cursor: none !important; /* Use !important para garantir a sobreposição, se necessário */
+}
+
+/* Estilo para o nosso elemento de cursor customizado */
+#custom-cursor {
+    position: fixed; /* Para que ele flutue sobre todo o conteúdo */
+    left: 0;
+    top: 0;
+    width: 32px;  /* Largura do seu sprite de cursor */
+    height: 32px; /* Altura do seu sprite de cursor */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 99999; /* Para garantir que fique acima de tudo */
+    pointer-events: none; /* MUITO IMPORTANTE: Impede que o cursor bloqueie cliques nos elementos abaixo */
+    transform: translate(-10%, -10%); /* Opcional: para centralizar o sprite no ponteiro. Ajuste se seu hotspot não for o canto superior esquerdo. */
+                                      /* Se o hotspot do seu cursor for o canto superior esquerdo, remova o transform ou ajuste os offsets de 'left' e 'top' no JS. */
+}

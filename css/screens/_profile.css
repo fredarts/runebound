@@ -133,7 +133,7 @@
     height: 50px;
     border-radius: 50%;
     border: 2px solid transparent; /* Borda invisível por padrão */
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
     transition: border-color 0.2s ease, transform 0.2s ease;
     object-fit: cover;
 }
@@ -360,7 +360,7 @@ font-size:1.2em;color:var(--text-color)}
     margin-top: 40px;
     margin-bottom: 48px;
     background-image: none;
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
     
   }
 
@@ -372,7 +372,7 @@ font-size:1.2em;color:var(--text-color)}
     margin-top: 40px;
     margin-bottom: 48px;
     background-image: none;
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
   }
   
   /* medalhas / ícones */
@@ -455,5 +455,5 @@ font-size:1.2em;color:var(--text-color)}
 .icon-gems          { width:50px; height:50px; }
 
 /* blocos clicáveis */
-.link-block         { background:none; border:none; padding:0; cursor:pointer; text-align:inherit; color:inherit; }
+.link-block         { background:none; border:none; padding:0; text-align:inherit; color:inherit; }
 .link-block:focus   { outline:2px solid var(--primary-color); }

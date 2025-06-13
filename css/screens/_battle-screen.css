@@ -237,7 +237,7 @@
     border-radius: 4px;
     padding: 2px;
     overflow: hidden;
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .deck-zone::before, .graveyard-zone::before {

@@ -84,7 +84,7 @@
     padding: 10px 15px;
     display: flex;
     gap: 15px;
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
     transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
 }
 
@@ -245,7 +245,7 @@
     color: var(--button-play-text);
     border: 1px solid var(--button-play-border);
     border-radius: 5px;
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
     transition: background-color 0.2s ease, transform 0.1s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     z-index: 10; /* Garante que fique acima da área de conteúdo */
@@ -313,7 +313,7 @@
     text-decoration: none;
     color: #fff; /* Default text color */
     border-radius: 8px; /* Slightly rounded corners */
-    cursor: pointer;
+    
     position: relative; /* For absolute positioning of pseudo-elements */
     overflow: hidden; /* Clip any overflowing pseudo-elements */
     z-index: 1; /* Ensure text is above pseudo-elements */

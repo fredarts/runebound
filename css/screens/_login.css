@@ -50,6 +50,9 @@
     font-size: 2.5em; /* Tamanho grande */
     margin-bottom: 20px; /* Espaço abaixo antes do formulário */
     z-index: 1;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Container do Formulário na Tela de Login */
@@ -78,6 +81,9 @@
 #login-screen .form-container label {
     text-align: center; /* Alinha à esquerda */
     font-size: 0.95em; /* Tamanho ligeiramente maior */
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Ações (botões) dentro do formulário de login */

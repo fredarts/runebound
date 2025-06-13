@@ -5,7 +5,7 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden; /* Previne scroll do body */
-    cursor: url('../../assets/images/ui/cursor.png') 32 32, auto;
+    
     
   }
   

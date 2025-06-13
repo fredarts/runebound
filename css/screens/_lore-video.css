@@ -35,7 +35,7 @@
     color: var(--text-color, #ecf0f1);
     border: 1px solid var(--border-color-light, #555);
     border-radius: 5px;
-    cursor: pointer;
+    
     z-index: 10; /* Acima do vídeo que está em z-index: 1 */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
