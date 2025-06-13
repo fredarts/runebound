@@ -19,8 +19,17 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
     
   }
+
+button:hover,
+.game-button:hover,
+.game-button-blue:hover {
+    cursor: none !important;
+}
   
   .game-button:hover:not(:disabled) {
     background-image: radial-gradient(circle at center, #FFB733 30%, #F39C12 100%);
@@ -40,7 +49,7 @@
     background-image: linear-gradient(to bottom, #888888, #666666);
     color: #aaaaaa;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    cursor: not-allowed;
+    
     opacity: 0.7;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     transform: none;
@@ -54,6 +63,9 @@
     font-weight: bold; /* Keep consistent font weight */
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Slightly adjusted shadow for blue */
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
   
     /* --- Blue Gradient --- */
     background-image: linear-gradient(to bottom, #007bff, #0056b3); /* Light Blue to Darker Blue */
@@ -69,7 +81,6 @@
       0 4px 6px rgba(0, 0, 0, 0.3);
   
     transition: transform 0.5s cubic-bezier(0.42, 0, 0.58, 1);
-    cursor: src="../../assets/images/ui/cursor.png", auto;
     outline: none;
     user-select: none;
     -webkit-user-select: none;
@@ -110,7 +121,7 @@
     background-image: linear-gradient(to bottom, #888888, #666666); /* Grey gradient */
     color: #aaaaaa;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    cursor: not-allowed;
+    
     opacity: 0.7;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     transform: none;

@@ -5,7 +5,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.4;
     color: var(--text-color);
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
   }
   
   /* Estilos para cabeçalhos */

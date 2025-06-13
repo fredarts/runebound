@@ -1,4 +1,4 @@
-// js/main.js - ATUALIZADO (v2.9 - Garantir Escolha de Deck)
+// js/main.js - ATUALIZADO (v2.9 - Garantir Escolha de Deck, Custom Cursor)
 
 // --- Imports ---
 // Core Modules
@@ -8,6 +8,7 @@ import ScreenManager from './ui/ScreenManager.js';
 import AccountManager from './account/AccountManager.js';
 import AudioManager from './audio/AudioManager.js';
 import { loadCardDefinitions } from './utils.js';
+import CustomCursor from './ui/CustomCursor.js'; // <<< --- IMPORT DO CURSOR CUSTOMIZADO
 
 // --- HTML Template Imports ---
 import { generateSplashScreenHTML } from './ui/html-templates/splashScreenTemplate.js';
@@ -34,6 +35,18 @@ import { generateInitialDeckChoiceScreenHTML } from './ui/html-templates/initial
 $(document).ready(async () => { // Marcado como async para permitir awaits internos
     console.log("Runebound Clash - Initializing (Dynamic HTML)...");
 
+    // --- STEP 0: Initialize Custom Cursor EARLY ---
+    let customCursorInstance = null;
+    try {
+        customCursorInstance = new CustomCursor(260); // 100ms por frame (ajuste a velocidade)
+    } catch (cursorError) {
+        console.error("Failed to initialize custom cursor:", cursorError);
+        // Fallback para cursor padrão do CSS se o customizado falhar
+        // Certifique-se que o cursor padrão ainda está definido em algum CSS, ou adicione aqui:
+        $('body').css('cursor', 'url("assets/images/ui/cursor.png"), auto');
+    }
+    // --- END STEP 0 ---
+
     // --- STEP 1: Build HTML Structure Dynamically ---
     console.log("MAIN: Generating HTML structure...");
     const $screensContainer = $('#screens-container'); // Container principal das telas
@@ -41,11 +54,9 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
 
     if (!$screensContainer.length) {
         console.error("CRITICAL ERROR: #screens-container div not found in index.html! Cannot generate UI.");
-        $body.empty().css({
-            'background-color': '#333', 'color': 'red', 'display': 'flex',
-            'justify-content': 'center', 'align-items': 'center', 'height': '100vh',
-            'font-size': '1.5em', 'padding': '20px', 'text-align': 'center'
-        }).html('<h1>Erro Crítico</h1><p>A estrutura base do HTML (index.html) parece estar faltando o elemento <code><div id="screens-container"></div></code>. A aplicação não pode iniciar.</p>');
+        // Limpa o body e exibe a mensagem de erro crítica.
+        document.body.innerHTML = '<div style="color:red; font-weight:bold; text-align:center; padding:20px; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background-color:#333;"><h1>Erro Crítico</h1><p>A estrutura base do HTML (index.html) parece estar faltando o elemento <code><div id="screens-container"></div></code>. A aplicação não pode iniciar.</p></div>';
+        if (customCursorInstance) customCursorInstance.destroy(); // Destroi o cursor customizado se ele foi criado
         return;
     }
 
@@ -82,6 +93,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
          } else {
              $screensContainer.html(`<p style="color:red; font-weight:bold;">Erro Crítico na Geração da UI: ${htmlGenError.message}. Recarregue.</p>`);
          }
+         if (customCursorInstance) customCursorInstance.destroy();
          return;
     }
     // --- END STEP 1 ---
@@ -102,6 +114,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                  $screensContainer.html('<p style="color:red; font-weight:bold;">Erro Crítico: Falha ao carregar cartas ou banco de dados de cartas vazio.</p>');
              }
             console.error("CRITICAL: Failed to load card definitions or card database is empty!");
+            if (customCursorInstance) customCursorInstance.destroy();
             return;
         }
 
@@ -120,7 +133,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             const $splashScreen = $('#splash-screen');
 
             try {
-                let currentUser = accountManager.getCurrentUser(); // Pega o usuário da sessão/localStorage
+                let currentUser = accountManager.getCurrentUser();
 
                  if ($splashScreen.hasClass('active')) {
                      $splashScreen.removeClass('active loading');
@@ -132,7 +145,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                     uiManager.showTopBar(currentUser);
                     $('#screens-container').addClass('with-top-bar');
 
-                    // --- LÓGICA CRÍTICA AQUI (PÓS-SPLASH) ---
                     if (currentUser.initialSetupComplete === false) {
                         console.log("MAIN (Pós-Splash): Setup inicial INCOMPLETO. Navegando para vídeo de lore.");
                         await uiManager.navigateTo('lore-video-screen');
@@ -140,7 +152,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                         console.log("MAIN (Pós-Splash): Setup inicial COMPLETO. Navegando para home.");
                         await uiManager.navigateTo('home-screen');
                     }
-                    // --- FIM DA LÓGICA CRÍTICA ---
                 } else {
                     console.log("MAIN (Pós-Splash): Nenhum usuário logado. Preparando Tela de Título.");
                     uiManager.hideTopBar();
@@ -157,7 +168,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                  }
                 uiManager.navigateTo('title-screen');
             }
-        }, 3000); // Fim do setTimeout do splash
+        }, 3000);
 
 
         // --- Global UI Bindings ---
@@ -198,7 +209,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
         });
         $('#create-account-form button').each((i, btn) => addAudioListeners($(btn)));
 
-        // --- Submissão do Formulário de Login ---
         $('#login-form').on('submit', async (event) => {
             event.preventDefault();
             audioManager.playSFX('buttonClick');
@@ -206,7 +216,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
             const u = $('#login-username').val().trim();
             const p = $('#login-password').val();
             const $m = $('#login-message');
-            const r = accountManager.login(u, p); // r contém { success: boolean, message: string, user?: object }
+            const r = accountManager.login(u, p);
             $m.text(r.message).css('color', r.success ? 'lightgreen' : 'salmon');
 
             if (r.success && r.user) {
@@ -215,7 +225,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                 uiManager.showTopBar(r.user);
                 $('#screens-container').addClass('with-top-bar');
 
-                // --- LÓGICA CRÍTICA AQUI (APÓS LOGIN FORM) ---
                 if (r.user.initialSetupComplete === false) {
                     console.log("MAIN (Login Form): Setup inicial INCOMPLETO. Navegando para vídeo de lore.");
                     await uiManager.navigateTo('lore-video-screen');
@@ -223,8 +232,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
                     console.log("MAIN (Login Form): Setup inicial COMPLETO. Navegando para home.");
                     await uiManager.navigateTo('home-screen');
                 }
-                // --- FIM DA LÓGICA CRÍTICA ---
-
             } else {
                 const $container = $form.closest('.form-container');
                 if ($container.length) {
@@ -384,7 +391,7 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
          });
          addAudioListeners($btnCancelHost);
 
-        console.log("Runebound Clash UI Ready (v2.9 - Ensure Deck Choice).");
+        console.log("Runebound Clash UI Ready (v2.9 - Ensure Deck Choice, Custom Cursor).");
 
     } catch (initError) {
         console.error("MAIN: Critical initialization error:", initError);
@@ -396,5 +403,6 @@ $(document).ready(async () => { // Marcado como async para permitir awaits inter
          } else {
             $screensContainer.html(`<p style="color:red; font-weight:bold;">Erro Crítico de Inicialização: ${initError.message}. Recarregue.</p>`);
          }
+         if (customCursorInstance) customCursorInstance.destroy();
     }
 }); // --- END Document Ready ---

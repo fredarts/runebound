@@ -62,7 +62,6 @@
     border: 1px solid var(--border-color);
     color: var(--text-color);
     border-radius: 5px;
-    cursor: pointer;
     z-index: 10;
     transition: background-color 0.2s ease;
 }
@@ -88,7 +87,7 @@
     border: none;
     border-radius: 10px; /* Aplica aos filhos também */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    cursor: pointer;
+    
 
     /* --- Essencial para a Rotação 3D --- */
     transform-style: preserve-3d;
@@ -155,7 +154,7 @@
 /* --- Interatividade e Hover --- */
 .booster-card:not(.interactive) {
     pointer-events: none;
-    cursor: default;
+    
 }
 
 .booster-card.interactive { cursor: pointer; }

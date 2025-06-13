@@ -19,7 +19,7 @@
     transition: opacity 0.25s ease, visibility 0s linear 0.25s; /* Transição suave */
     padding: 20px; /* Espaçamento interno */
     box-sizing: border-box; /* Inclui padding no tamanho total */
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
 }
 
 /* --- Estado Ativo --- */
@@ -28,7 +28,7 @@
     opacity: 1;
     visibility: visible;
     transition: opacity 0.25s ease, visibility 0s linear 0s;
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
 }
 
 /* --- Imagem Ampliada (Zoom) --- */
@@ -49,7 +49,7 @@
     border-radius: 10px; /* Bordas arredondadas */
     margin-top: 60px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* Sombra para destaque */
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
 }
 
 /* Deck Management: Dimensão específica se necessário */
@@ -66,7 +66,7 @@
     border: 2px solid var(--primary-color);
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-    cursor: url('../../assets/images/ui/cursor.png'), auto;
+    
 }
 
 #game-over-message {
