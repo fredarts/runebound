@@ -2,46 +2,65 @@
 
 export default class CustomCursor {
     #cursorElement = null;
-    #spritePath = 'assets/images/ui/cursor/'; // Caminho para seus sprites
+    #spritePath = 'assets/images/ui/cursor/';
     #spriteFiles = ['01.png', '02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png'];
-    #frameCount = 8; // Número total de frames na sua animação
+    #frameCount = 8;
     #currentFrame = 0;
     #animationIntervalId = null;
-    #animationSpeed = 60; // Milissegundos por frame (ajuste para a velocidade desejada)
+    #animationSpeed = 100; // Velocidade da animação do cursor
 
-    constructor(animationSpeed = 60) {
+    // --- Novas propriedades para o Mouse Trail ---
+    #trailContainer = null; // Opcional: um container para as partículas
+    #trailParticleCount = 0;
+    #maxTrailParticles = 30; // Limite para evitar sobrecarga
+    #trailParticleBaseSize = 10; // Tamanho base das partículas em pixels
+    #trailParticleSizeVariance = 5; // Variação no tamanho
+    #trailAnimationDuration = 800; // ms, deve corresponder à animação CSS 'dissipate'
+    // --------------------------------------------
+
+    constructor(animationSpeed = 100) {
         this.#animationSpeed = animationSpeed;
         this._createCursorElement();
+        this._createTrailContainer(); // <<< NOVO
         this._bindEvents();
         this.startAnimation();
-        console.log("CustomCursor initialized.");
+        console.log("CustomCursor with Trail initialized.");
     }
 
     _createCursorElement() {
         this.#cursorElement = document.createElement('div');
         this.#cursorElement.id = 'custom-cursor';
-        // A primeira imagem é definida no startAnimation
         document.body.appendChild(this.#cursorElement);
     }
 
-    _bindEvents() {
-        // Atualizar a posição do cursor customizado quando o mouse se mover
-        document.addEventListener('mousemove', (e) => {
-            if (this.#cursorElement) {
-                // Ajuste de offsetX e offsetY para o hotspot do cursor.
-                // Se você removeu o 'transform: translate(-50%, -50%)' do CSS,
-                // e o hotspot do seu cursor é o canto superior esquerdo, use:
-                // this.#cursorElement.style.left = `${e.clientX}px`;
-                // this.#cursorElement.style.top = `${e.clientY}px`;
+    // --- NOVO: Criar container para o rastro ---
+    _createTrailContainer() {
+        this.#trailContainer = document.createElement('div');
+        this.#trailContainer.id = 'mouse-trail-container';
+        // Estilos para o container (opcional, mas pode ajudar na organização)
+        // this.#trailContainer.style.position = 'fixed';
+        // this.#trailContainer.style.top = '0';
+        // this.#trailContainer.style.left = '0';
+        // this.#trailContainer.style.width = '100%';
+        // this.#trailContainer.style.height = '100%';
+        // this.#trailContainer.style.pointerEvents = 'none';
+        // this.#trailContainer.style.zIndex = '99997'; // Abaixo do cursor, acima de tudo
+        document.body.appendChild(this.#trailContainer);
+    }
+    // -----------------------------------------
 
-                // Se você manteve o transform no CSS para centralizar,
-                // ou se o hotspot é o centro do sprite:
-                this.#cursorElement.style.left = `${e.pageX}px`; // Usar pageX/pageY para consistência com scroll
-                this.#cursorElement.style.top = `${e.pageY}px`;
+    _bindEvents() {
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.pageX;
+            const mouseY = e.pageY;
+
+            if (this.#cursorElement) {
+                this.#cursorElement.style.left = `${mouseX}px`;
+                this.#cursorElement.style.top = `${mouseY}px`;
             }
+            this._createTrailParticle(mouseX, mouseY); // <<< NOVO: Criar partícula no movimento
         });
 
-        // Opcional: Esconder o cursor customizado se o mouse sair da janela
         document.addEventListener('mouseout', (e) => {
             if (this.#cursorElement && !e.relatedTarget && !e.toElement) {
                 // this.#cursorElement.style.display = 'none';
@@ -61,14 +80,57 @@ export default class CustomCursor {
         this.#cursorElement.style.backgroundImage = `url('${this.#spritePath}${nextImageFile}')`;
     }
 
+    // --- NOVO: Lógica para criar partículas do rastro ---
+    _createTrailParticle(x, y) {
+        if (this.#trailParticleCount >= this.#maxTrailParticles) {
+            // Opcional: remover a partícula mais antiga se o limite for atingido
+            const oldestParticle = this.#trailContainer.firstChild;
+            if (oldestParticle) {
+                oldestParticle.remove();
+                this.#trailParticleCount--;
+            } else {
+                return; // Não deveria acontecer se a contagem estiver correta
+            }
+        }
+
+        const particle = document.createElement('div');
+        particle.classList.add('mouse-trail-particle');
+
+        const size = this.#trailParticleBaseSize + Math.random() * this.#trailParticleSizeVariance;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        // Posiciona a partícula. O CSS 'transform: translate(-50%, -50%)' na classe da partícula
+        // ajudará a centralizá-la no ponto (x, y).
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+
+        // Adiciona ao container do rastro ou diretamente ao body
+        // (usar um container pode ser melhor para gerenciamento futuro)
+        if (this.#trailContainer) {
+            this.#trailContainer.appendChild(particle);
+        } else {
+            document.body.appendChild(particle); // Fallback se o container não existir
+        }
+
+        this.#trailParticleCount++;
+
+        // Remover a partícula do DOM após a animação CSS
+        setTimeout(() => {
+            particle.remove();
+            this.#trailParticleCount--;
+        }, this.#trailAnimationDuration); // Deve ser igual ou um pouco maior que a duração da animação CSS
+    }
+    // ---------------------------------------------------
+
     startAnimation() {
         if (this.#animationIntervalId) {
             clearInterval(this.#animationIntervalId);
         }
-        // Define o frame inicial
         if (this.#cursorElement && this.#spriteFiles.length > 0) {
              this.#cursorElement.style.backgroundImage = `url('${this.#spritePath}${this.#spriteFiles[0]}')`;
         }
+        console.log("CustomCursor: Starting animation with speed", this.#animationSpeed);
         this.#animationIntervalId = setInterval(() => {
             this._updateFrame();
         }, this.#animationSpeed);
@@ -84,9 +146,9 @@ export default class CustomCursor {
     destroy() {
         this.stopAnimation();
         this.#cursorElement?.remove();
+        this.#trailContainer?.remove(); // <<< NOVO: Remover container do rastro
         this.#cursorElement = null;
-        // Remover event listeners do document se necessário (geralmente não é,
-        // pois a instância CustomCursor será destruída junto com a aplicação ou ao trocar de lógica de cursor)
-        console.log("CustomCursor destroyed.");
+        this.#trailContainer = null;
+        console.log("CustomCursor with Trail destroyed.");
     }
 }

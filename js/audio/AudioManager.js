@@ -31,7 +31,8 @@ export default class AudioManager {
         'initial-deck-choice-screen': 'assets/audio/bgm_profile.mp3',
         'login-screen': 'assets/audio/bgm_title.mp3',
         'create-account-screen': 'assets/audio/bgm_title.mp3',
-        'booster-opening-screen': 'assets/audio/bgm_title.mp3'
+        'booster-opening-screen': 'assets/audio/bgm_title.mp3',
+        'lore-video-screen': 'assets/audio/lore_video.mp3'
     };
 
     #sfxTracks = { // Definir os caminhos corretos

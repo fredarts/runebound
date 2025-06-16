@@ -1,15 +1,13 @@
 // js/ui/html-templates/createAccountScreenTemplate.js
 
-/**
- * Gera a string HTML para a Tela de Criação de Conta.
- * @returns {string} HTML da tela de criação de conta.
- */
 export function generateCreateAccountScreenHTML() {
     return `
         <div id="create-account-screen" class="screen">
-        <img class="create-account-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
-            <h2>CRIAR CONTA NOVA</h2>
+            
+            <img class="create-account-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo">
+            
             <form id="create-account-form" class="form-container">
+                <h2>CRIAR CONTA NOVA</h2> 
                 <div class="form-group">
                     <label for="create-username">Nome de Usuário</label>
                     <input type="text" id="create-username" name="username" required minlength="3">
@@ -17,11 +15,11 @@ export function generateCreateAccountScreenHTML() {
                 <div class="form-group">
                     <label for="create-password">Senha</label>
                     <input type="password" id="create-password" name="password" required>
-                    <!-- Poderia adicionar confirmação de senha se desejado -->
-                    <!--
+                </div>
+               
+                <div class="form-group">
                     <label for="create-confirm-password">Confirmar Senha</label>
                     <input type="password" id="create-confirm-password" name="confirm_password" required>
-                    -->
                 </div>
                 <div class="form-actions">
                     <button type="submit">Criar Conta</button>
@@ -29,6 +27,7 @@ export function generateCreateAccountScreenHTML() {
                 </div>
             </form>
             <p id="create-account-message" class="message"></p>
+            
             
         </div>
     `;

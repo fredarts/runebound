@@ -1,6 +1,6 @@
 /* ====================================================================== */
 /*  css/screens/_booster-opening.css                                      */
-/*  Tela de Abertura de Booster – REFINADO para Flip Correto              */
+/*  Tela de Abertura de Booster – REFINADO para Flip Correto com translateZ */
 /* ====================================================================== */
 
 .booster-opening-layout {
@@ -15,6 +15,8 @@
     overflow: hidden;
     /* Adiciona perspectiva ao container PAI para melhor efeito 3D */
     perspective: 1500px; /* Ajuste o valor conforme necessário */
+    background: url('../../assets/images/ui/booster_opening_background.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .booster-opening-layout h2 {
@@ -23,7 +25,11 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     flex-shrink: 0;
     position: absolute;
-    top: 20px;
+    top: 50px;
+    font-size: 3em;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 #booster-card-container {
@@ -55,8 +61,8 @@
 
 .btn-skip {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 100px;
+    right: 60px;
     padding: 8px 15px;
     background-color: var(--button-secondary-bg);
     border: 1px solid var(--border-color);
@@ -70,102 +76,121 @@
 
 /* --- Container do Card Individual --- */
 .booster-card {
-    /* Variáveis CSS para posição/rotação da pilha (mantidas) */
+    /* Variáveis CSS para posição/rotação da pilha */
     --offX: -50%;
     --offY: -50%;
     --stackRot: 0deg;
 
-    width: 200px;  /* Exemplo de tamanho */
-    height: 280px; /* Exemplo de tamanho */
+    width: 410px;  /* Ajuste conforme o tamanho desejado da carta */
+    height: 610px; /* Ajuste conforme o tamanho desejado da carta */
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Transform inicial: Posição + Rotação da pilha + Rotação Y (0 graus = verso visível) */
+    
+    /* Transform inicial: Posição da pilha + Rotação da pilha + Rotação Y (0 graus = verso visível) */
     transform: translate(var(--offX), var(--offY)) rotate(var(--stackRot)) rotateY(0deg);
 
-    background-color: transparent; /* Container não tem cor */
+    background-color: transparent; /* Container não tem cor de fundo */
     border: none;
-    border-radius: 10px; /* Aplica aos filhos também */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    border-radius: 20px; /* Aplica às faces filhas também se elas usarem 'inherit' */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
     
 
     /* --- Essencial para a Rotação 3D --- */
-    transform-style: preserve-3d;
-    /* A perspectiva no container pai (.booster-opening-layout) já ajuda */
+    transform-style: preserve-3d; 
+    /* perspective no .booster-opening-layout já define o ponto de fuga */
 
-    /* --- Transição para o Flip --- */
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Easing suave */
-    will-change: transform; /* Otimização */
+    /* --- Transição para o Flip e outras transformações --- */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Easing suave para o flip */
+    will-change: transform; /* Otimização para navegador */
 }
 
-/* --- Estado Virado (Aplica Rotação ao Container) --- */
+/* --- Estado Virado (Aplica Rotação e AFASTAMENTO AO CONTAINER) --- */
 .booster-card.flipped {
-    /* Gira o CONTAINER em 180 graus no eixo Y */
-    transform: translate(var(--offX), var(--offY)) rotate(var(--stackRot)) rotateY(180deg);
+    /*
+      Ordem das transformações:
+      1. translate(var(--offX), var(--offY)): Mantém a posição base na pilha 2D.
+      2. translateZ(100px): "Levanta" o card para fora da tela/pilha ao longo do eixo Z.
+         Ajuste este valor (ex: 80px, 120px) conforme necessário para evitar o clipping.
+         Um valor maior afasta mais.
+      3. rotate(var(--stackRot)): Aplica a rotação "fanning" da pilha.
+      4. rotateY(180deg): Finalmente, gira o card para mostrar a face.
+    */
+    transform: translate(var(--offX), var(--offY)) translateZ(100px) rotate(var(--stackRot)) rotateY(180deg);
 }
 
 /* --- Estilos Comuns para as Faces (Frente e Verso) --- */
 .booster-card .card-face,
 .booster-card .card-back {
-    position: absolute; /* Crucial para sobreposição */
+    position: absolute; /* Crucial para sobreposição dentro do .booster-card */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: inherit; /* Herda bordas arredondadas */
+    border-radius: inherit; /* Herda as bordas arredondadas do .booster-card */
     background-size: cover;
     background-position: center;
-    border: 1px solid rgba(180, 180, 180, 0.5); /* Borda opcional */
+    border: 1px solid rgba(180, 180, 180, 0.5); /* Borda sutil opcional */
 
-    /* --- Essencial para o Flip --- */
-    backface-visibility: hidden;         /* Esconde a face de trás */
+    /* --- Essencial para o Efeito de Flip --- */
+    backface-visibility: hidden;         /* Esconde a face de trás durante a rotação */
     -webkit-backface-visibility: hidden; /* Prefixo para Safari/iOS */
-    transform-style: preserve-3d;        /* Garante participação na 3D */
+    transform-style: preserve-3d;        /* Garante que as faces participem corretamente da transformação 3D do pai */
 }
 
 /* --- Verso da Carta (Card Back) --- */
 .booster-card .card-back {
     background-image: url('../../assets/images/ui/card_back_placeholder.png');
-    /* O verso começa virado para o usuário (0 graus) */
+    /* O verso começa virado para o usuário (0 graus de rotação Y) */
     transform: rotateY(0deg);
-    /* Z-index ligeiramente maior pode ajudar em alguns casos, mas não é estritamente necessário com backface-visibility */
-    z-index: 2;
+    z-index: 2; /* Opcional, pode ajudar a garantir que o verso esteja "acima" no início */
 }
 
 /* --- Frente da Carta (Card Face) --- */
 .booster-card .card-face {
-    /* A frente começa virada para longe do usuário (180 graus) */
+    /* A frente começa virada para longe do usuário (180 graus de rotação Y) */
     transform: rotateY(180deg);
-    /* Background é definido dinamicamente via JS/template */
+    /* O background-image da face será definido dinamicamente via JS/template */
     background-color: #eee; /* Cor fallback caso a imagem não carregue */
-    z-index: 1;
+    z-index: 1; /* Abaixo do verso inicialmente */
 }
 
 /* --- Animação de Dispensar (Dismissing) --- */
 .booster-card.dismissing {
-    /* Mantém a rotação Y de 180 graus (se estava virado) e aplica outros transforms */
+    /*
+      Se a carta foi virada (.flipped), ela já terá translateZ(100px) e rotateY(180deg).
+      Ao adicionar .dismissing, queremos que ela mantenha essa orientação e altura ao sair.
+      Por isso, o transform de .dismissing também deve incluir o translateZ se desejado,
+      ou o rotateY(180deg) se for para dispensar sempre como se estivesse virada.
+      Para este exemplo, vamos assumir que ela é dispensada como está (já virada).
+    */
     transform: translate(var(--offX), -150%) scale(0.8) rotate(var(--stackRot)) rotateY(180deg); 
     opacity: 0;
     pointer-events: none;
-    /* Ajuste a duração/easing se necessário */
-    transition: transform 0.4s ease-in, opacity 0.3s ease-in;
+    /* Ajuste a duração/easing se necessário, mas a transição base do .booster-card já cobre o transform.
+       A opacidade pode ter sua própria transição se quiser um fade out separado.
+    */
+    transition: transform 0.4s ease-in, opacity 0.3s ease-in; /* Transição específica para dispensar */
 }
 
 /* --- Interatividade e Hover --- */
 .booster-card:not(.interactive) {
-    pointer-events: none;
-    
+    pointer-events: none; /* Cartas não interativas não respondem a eventos de mouse */
 }
 
-.booster-card.interactive { cursor: pointer; }
+.booster-card.interactive { 
+    cursor: pointer; /* Mostra cursor de "clicável" */
+}
 
 /* Efeito hover (opcional, pode precisar ajustar transforms se usar scale) */
 .booster-card.interactive:hover:not(.flipped) {
-    transform: translate(var(--offX), var(--offY)) scale(1.03) rotate(var(--stackRot)) rotateY(0deg);
+    /* Levanta um pouco a carta não virada no hover para indicar interatividade */
+    transform: translate(var(--offX), var(--offY)) translateZ(20px) scale(1.03) rotate(var(--stackRot)) rotateY(0deg);
     box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
 }
 
 .booster-card.interactive.flipped:hover {
-    transform: translate(var(--offX), var(--offY)) scale(1.03) rotate(var(--stackRot)) rotateY(180deg);
+    /* Mantém o translateZ de quando está virada e aplica o scale do hover */
+    transform: translate(var(--offX), var(--offY)) translateZ(100px) scale(1.03) rotate(var(--stackRot)) rotateY(180deg);
     box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
 }

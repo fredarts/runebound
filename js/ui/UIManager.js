@@ -1,4 +1,4 @@
-// js/ui/UIManager.js
+// js/ui/UIManager.js - CORRIGIDO PARA FLUXO PÓS-SPLASH E LOGIN (v-login-flow-fix-v2)
 
 // Import UI Modules
 import ProfileScreenUI from './screens/ProfileScreenUI.js';
@@ -7,7 +7,7 @@ import BattleScreenUI from './screens/BattleScreenUI.js';
 import OptionsUI from './screens/OptionsUI.js';
 import HomeScreenUI from './screens/HomeScreenUI.js';
 import DeckManagementScreenUI from './screens/DeckManagementScreenUI.js';
-import TitlescreenUi from './screens/titlescreenUi.js';
+import TitlescreenUi from './screens/titlescreenUi.js'; // Assume que TitlescreenUi pode precisar do AccountManager
 import SetCollectionScreenUI from './screens/SetCollectionScreenUI.js';
 import SetMasteryScreenUI from './screens/SetMasteryScreenUI.js';
 import StoreScreenUI from './screens/StoreScreenUI.js';
@@ -18,8 +18,6 @@ import InitialDeckChoiceScreenUI from './screens/InitialDeckChoiceScreenUI.js';
 // Import Helpers
 import CardRenderer from './helpers/CardRenderer.js';
 import ZoomHandler from './helpers/ZoomHandler.js';
-
-// AudioManager is injected
 
 export default class UIManager {
     #screenManager;
@@ -57,32 +55,32 @@ export default class UIManager {
         this.#cardRenderer = new CardRenderer();
         this.#zoomHandler = new ZoomHandler(this.#cardDatabase);
 
-        this.#titlescreenUI = new TitlescreenUi(this.#screenManager, this, this.#audioManager);
+        // Passando 'this' (UIManager) e 'accountManager' para TitlescreenUi se ela precisar deles.
+        // Se TitlescreenUi não precisar do accountManager diretamente, você pode omiti-lo.
+        this.#titlescreenUI = new TitlescreenUi(this.#screenManager, this, this.#audioManager, this.#accountManager);
         this.#homeUI = new HomeScreenUI(this.#screenManager, this, this.#audioManager);
         this.#optionsUI = new OptionsUI(this.#audioManager);
         this.#profileUI = new ProfileScreenUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this, this.#audioManager);
         this.#deckManagementUI = new DeckManagementScreenUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this, this.#audioManager);
-        this.#deckBuilderUI = new DeckBuilderUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this, this.#audioManager); // Passando UIManager e AudioManager
+        this.#deckBuilderUI = new DeckBuilderUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this, this.#audioManager);
         this.#battleUI = new BattleScreenUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this.#audioManager, this);
         this.#setMasteryUI = new SetMasteryScreenUI(this.#screenManager, this.#accountManager, this, this.#audioManager);
-        this.#setCollectionUI = new SetCollectionScreenUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#zoomHandler, this, this.#audioManager); // Passando UIManager e AudioManager
+        this.#setCollectionUI = new SetCollectionScreenUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#zoomHandler, this, this.#audioManager);
         this.#storeUI = new StoreScreenUI(this.#screenManager, this.#accountManager, this.#audioManager, this);
         this.#boosterOpeningUI = new BoosterOpeningScreenUI(this.#screenManager, this.#accountManager, this.#audioManager, this, this.#cardRenderer);
         this.#loreVideoUI = new LoreVideoScreenUI(this, this.#audioManager);
         this.#initialDeckChoiceUI = new InitialDeckChoiceScreenUI(this, this.#accountManager, this.#audioManager, this.#cardDatabase);
 
         this._bindPermanentUIActions();
-        console.log("UIManager (Coordinator) initialized.");
+        console.log("UIManager (Coordinator) initialized (v-login-flow-fix-v2).");
     }
 
     setGameInstance(gameInstance) {
         this.#gameInstance = gameInstance;
-        console.log("UI Coordinator: Game instance set.");
         this.#battleUI.setGameInstance(gameInstance);
     }
     setLocalPlayer(playerId) {
         this.#localPlayerId = playerId;
-        console.log(`UI Coordinator: Local player set: ${playerId}`);
         this.#battleUI.setLocalPlayer(playerId);
     }
 
@@ -98,28 +96,24 @@ export default class UIManager {
             } else {
                  console.warn("UIManager: Avatar img element (.top-bar-avatar img) not found.");
             }
-            $topBar.addClass('active'); // Mostra a top bar
-             // Atualiza as moedas aqui também
             this.updateCurrenciesDisplay(userData.wallet?.gold, userData.wallet?.gems);
-            console.log("UIManager: Top Bar shown for", userData.username);
+            $topBar.addClass('active');
         } else {
-            console.warn("UIManager: showTopBar called without user data.");
-            $topBar.removeClass('active'); // Esconde se não houver dados
+            console.warn("UIManager: showTopBar called without user data. Hiding top bar.");
+            $topBar.removeClass('active');
         }
     }
+
     hideTopBar() {
-        $('#top-bar').removeClass('active');
-        console.log("UIManager: Top Bar hidden.");
+        $('#top-bar').removeClass('active simplified-mode battle-only'); // Remove todas as classes de estado
+        // A classe with-top-bar no #screens-container será gerenciada em navigateTo
     }
 
     #cleanupActiveUI(newUiInstance = null) {
         if (this.#activeScreenUI && this.#activeScreenUI !== newUiInstance) {
             if (typeof this.#activeScreenUI.destroy === 'function') {
-                console.log(`UIManager: Destroying previous UI: ${this.#activeScreenUI.constructor.name}`);
                 try { this.#activeScreenUI.destroy(); }
                 catch (error) { console.error(`UIManager: Error destroying ${this.#activeScreenUI.constructor.name}`, error); }
-            } else {
-                // console.log(`UIManager: Previous UI ${this.#activeScreenUI.constructor.name} has no destroy method.`);
             }
         }
         this.#activeScreenUI = null;
@@ -132,12 +126,13 @@ export default class UIManager {
         this.#cleanupActiveUI(this.#titlescreenUI);
         if (this.#titlescreenUI?.init) {
             try {
-                this.#titlescreenUI.init($screenElement[0]);
+                // Passa accountManager para que TitlescreenUi possa verificar o estado do usuário
+                this.#titlescreenUI.init($screenElement[0], this.#accountManager);
                 this.#activeScreenUI = this.#titlescreenUI;
             } catch(error) { console.error("UIManager: Erro ao inicializar TitlescreenUI", error); }
         }
     }
-
+    // ... (outros métodos render... permanecem os mesmos)
     async renderHomeScreen(args) {
         this.#cleanupActiveUI(this.#homeUI);
         if(this.#homeUI) {
@@ -230,7 +225,17 @@ export default class UIManager {
             try {
                 this.#battleUI.renderInitialState();
                 this.#activeScreenUI = this.#battleUI;
-            } catch(error) { console.error("UIManager: Erro ao renderizar BattleScreenUI initial state", error); }
+                // A navegação para 'battle-screen' e BGM são feitos aqui agora
+                console.log("UIManager: Requesting ScreenManager to show 'battle-screen' after initial game state render.");
+                this.#screenManager.showScreen('battle-screen');
+                this.#audioManager?.playBGM('battle-screen');
+            } catch(error) {
+                console.error("UIManager: Erro ao renderizar BattleScreenUI initial state", error);
+                this.navigateTo('home-screen');
+            }
+        } else {
+            console.error("UIManager: BattleScreenUI ou seu método renderInitialState não encontrado.");
+            this.navigateTo('home-screen');
         }
     }
 
@@ -295,51 +300,79 @@ export default class UIManager {
     async navigateTo(screenId, args = null) {
         console.log(`UIManager: Attempting navigation to '${screenId}' with args:`, args);
         const $topBar = $('#top-bar');
-
+        const $screensContainer = $('#screens-container');
         const currentUser = this.#accountManager.getCurrentUser();
+
+        const screensWithoutTopBar = [
+            'splash-screen', 'title-screen', 'login-screen',
+            'create-account-screen', 'lore-video-screen', 'initial-deck-choice-screen'
+        ];
         const requiresLogin = [
             'home-screen', 'profile-screen', 'deck-management-screen', 'deck-builder-screen',
             'connect-screen', 'battle-screen', 'set-mastery-screen', 'set-collection-screen',
             'store-screen', 'booster-opening-screen'
-            // 'options-screen' é acessível mesmo deslogado, se o usuário chegar lá (ex: da tela de título)
-            // 'lore-video-screen' e 'initial-deck-choice-screen' são parte do fluxo de login/setup, não requerem login *prévio* estrito
         ];
-        const restrictedWhenLoggedIn = ['login-screen', 'create-account-screen', 'title-screen'];
+        // 'title-screen' foi removido de restrictedWhenLoggedIn para permitir que o main.js navegue para ela inicialmente.
+        // A própria TitlescreenUI agora pode ter lógica para redirecionar se um usuário já estiver logado e com setup completo.
+        const restrictedWhenLoggedIn = ['login-screen', 'create-account-screen'];
 
+        // --- GERENCIAMENTO DA TOP BAR E LAYOUT DO CONTAINER ---
+        if (screensWithoutTopBar.includes(screenId)) {
+            this.hideTopBar(); // Esconde e remove classes como .active, .simplified-mode, .battle-only
+            $screensContainer.removeClass('with-top-bar');
+        } else if (currentUser) {
+            this.showTopBar(currentUser); // Mostra e atualiza dados, adiciona .active
+            $screensContainer.addClass('with-top-bar');
+            if (screenId === 'battle-screen') {
+                $topBar.addClass('battle-only').removeClass('simplified-mode');
+            } else {
+                $topBar.removeClass('simplified-mode battle-only');
+            }
+        } else { // Não é uma tela "sem top bar" e não há usuário logado (ex: options acessada do title)
+            this.hideTopBar();
+            $screensContainer.removeClass('with-top-bar');
+        }
+        // --- FIM DO GERENCIAMENTO DA TOP BAR ---
+
+        // --- VALIDAÇÃO DE ACESSO ---
+        // Caso 1: Usuário NÃO está logado
         if (!currentUser) {
-            if (requiresLogin.includes(screenId) && screenId !== 'options-screen' && screenId !== 'lore-video-screen' && screenId !== 'initial-deck-choice-screen') {
-                console.warn(`UIManager: Access Denied - Screen '${screenId}' requires login. Redirecting to title screen.`);
+            if (requiresLogin.includes(screenId)) {
+                console.warn(`UIManager: Access Denied (not logged in) - Screen '${screenId}'. Redirecting to title.`);
                 this.#audioManager?.playSFX('genericError');
-                if (this.#screenManager.getActiveScreenId() !== 'title-screen') {
-                    await this.navigateTo('title-screen'); // Chama recursivamente, mas para uma tela permitida
+                // Evita loop se já estiver tentando ir para title-screen ou se o destino já for title-screen
+                if (this.#screenManager.getActiveScreenId() !== 'title-screen' && screenId !== 'title-screen') {
+                    await this.navigateTo('title-screen'); // Usa await aqui
                 }
-                return;
+                return; // Impede a continuação da navegação original
             }
-        } else { // Usuário está logado
-            if (restrictedWhenLoggedIn.includes(screenId)) {
-                console.warn(`UIManager: Access Denied - Logged-in user cannot access '${screenId}'. Staying or redirecting to home.`);
-                this.#audioManager?.playSFX('genericError');
-                const currentActiveScreen = this.#screenManager.getActiveScreenId();
-                if (!currentActiveScreen || restrictedWhenLoggedIn.includes(currentActiveScreen) || currentActiveScreen === screenId) {
-                    console.log("UIManager: Redirecting logged-in user to home screen from restricted area.");
-                    await this.navigateTo('home-screen'); // Chama recursivamente
-                }
-                return;
-            }
-        }
-
-        console.log(`UIManager: Access granted to '${screenId}'. Proceeding with navigation...`);
-
-        // --- LÓGICA DE CLASSE DA TOP BAR ---
-        if (screenId === 'initial-deck-choice-screen' || screenId === 'lore-video-screen') {
-            $topBar.addClass('simplified-mode').removeClass('battle-only');
-        } else if (screenId === 'battle-screen') {
-            $topBar.addClass('battle-only').removeClass('simplified-mode');
+        // Caso 2: Usuário ESTÁ logado
         } else {
-            $topBar.removeClass('simplified-mode battle-only');
+            // Se o destino é uma tela restrita para usuários logados (login, criar conta)
+            if (restrictedWhenLoggedIn.includes(screenId)) {
+                console.warn(`UIManager: Access Denied (logged in) - Screen '${screenId}'. Redirecting to home.`);
+                this.#audioManager?.playSFX('genericError');
+                if (this.#screenManager.getActiveScreenId() !== 'home-screen') {
+                     await this.navigateTo('home-screen');
+                }
+                return;
+            }
+            // Se logado e setup incompleto, e o destino não é uma tela de setup ou opções
+            if (currentUser.initialSetupComplete === false &&
+                screenId !== 'lore-video-screen' &&
+                screenId !== 'initial-deck-choice-screen' &&
+                screenId !== 'options-screen' &&
+                screenId !== 'title-screen') { // Permite voltar para title-screen mesmo com setup incompleto (ex: logout)
+                console.warn(`UIManager: User ${currentUser.username} has not completed initial setup. Current target: ${screenId}. Redirecting to lore video.`);
+                if (screenId !== 'lore-video-screen') { // Evita loop se já estiver indo para o lore
+                    await this.navigateTo('lore-video-screen');
+                }
+                return;
+            }
         }
-        // --- FIM DA LÓGICA DE CLASSE DA TOP BAR ---
+        // --- FIM DA VALIDAÇÃO DE ACESSO ---
 
+        console.log(`UIManager: Access granted to '${screenId}'. Proceeding with render/show...`);
         let renderPromise = Promise.resolve();
 
         switch (screenId) {
@@ -359,10 +392,10 @@ export default class UIManager {
             case 'initial-deck-choice-screen': renderPromise = this.renderInitialDeckChoiceScreen(args); break;
             case 'connect-screen':          renderPromise = this.renderConnectScreen(args); break;
             case 'battle-screen':
-                console.warn("UIManager: Use 'renderInitialGameState' for battle screen setup, not navigateTo.");
+                console.warn("UIManager: 'battle-screen' should be shown via renderInitialGameState(), not navigateTo() directly from external calls.");
                 return;
             default:
-                console.error(`UIManager: Unknown screenId for navigation: ${screenId}`);
+                console.error(`UIManager: Unknown screenId for render mapping: ${screenId}`);
                 renderPromise = Promise.reject(new Error(`Unknown screenId: ${screenId}`));
         }
 
@@ -371,44 +404,50 @@ export default class UIManager {
 
             const finalCurrentUser = this.#accountManager.getCurrentUser();
             let finalIsStillAllowed = false;
-            if (!finalCurrentUser) { // Se deslogado
-                 finalIsStillAllowed = !requiresLogin.includes(screenId) || screenId === 'options-screen' || screenId === 'lore-video-screen' || screenId === 'initial-deck-choice-screen';
-            } else { // Se logado
-                 finalIsStillAllowed = !restrictedWhenLoggedIn.includes(screenId);
+
+            // Se a tela alvo for uma das que não requer login ou não tem restrições de setup, permite.
+            if (screenId === 'title-screen' || screenId === 'login-screen' || screenId === 'create-account-screen' ||
+                screenId === 'splash-screen' || screenId === 'options-screen' ||
+                screenId === 'lore-video-screen' || screenId === 'initial-deck-choice-screen') {
+                finalIsStillAllowed = true;
+            } else if (!finalCurrentUser) { // Se para outras telas o usuário deslogou
+                 finalIsStillAllowed = !requiresLogin.includes(screenId);
+            } else { // Usuário ainda logado para telas que requerem login
+                 finalIsStillAllowed = !restrictedWhenLoggedIn.includes(screenId); // login/create não devem ser mostradas
+                 if (finalIsStillAllowed && finalCurrentUser.initialSetupComplete === false) {
+                     // Se ainda logado, setup incompleto, e não é uma tela de setup, não permite
+                     if (screenId !== 'lore-video-screen' && screenId !== 'initial-deck-choice-screen') {
+                         finalIsStillAllowed = false;
+                     }
+                 }
             }
 
-
             if (finalIsStillAllowed) {
-                console.log(`UIManager: Requesting ScreenManager to show '${screenId}'.`);
+                // console.log(`UIManager: Requesting ScreenManager to show '${screenId}'.`);
                 this.#screenManager.showScreen(screenId);
-                // BGM deve ser tocado aqui para garantir que só toque para a tela final
                 this.#audioManager?.playBGM(screenId);
                 console.log(`UIManager: Navigation to '${screenId}' complete.`);
             } else {
-                console.warn(`UIManager: Login state changed or access rule violation during render/await for '${screenId}'. Aborting final screen show.`);
-                const fallbackScreen = finalCurrentUser ? 'home-screen' : 'title-screen';
-                if (this.#screenManager.getActiveScreenId() !== fallbackScreen) {
-                    // Não chama navigateTo diretamente aqui para evitar loop infinito se o fallback também falhar.
-                    // Apenas mostra a tela de fallback diretamente.
-                    this.#screenManager.showScreen(fallbackScreen);
-                    this.#audioManager?.playBGM(fallbackScreen);
+                console.warn(`UIManager: Access to '${screenId}' became invalid post-render or during re-check. Redirecting.`);
+                const fallbackScreen = finalCurrentUser && finalCurrentUser.initialSetupComplete ? 'home-screen' :
+                                       finalCurrentUser && !finalCurrentUser.initialSetupComplete ? 'lore-video-screen' :
+                                       'title-screen';
+                if (this.#screenManager.getActiveScreenId() !== fallbackScreen && screenId !== fallbackScreen) {
+                    await this.navigateTo(fallbackScreen);
+                } else if (this.#screenManager.getActiveScreenId() === fallbackScreen) {
+                    console.log(`UIManager: Already on fallback screen '${fallbackScreen}'. No further navigation needed for invalid post-render access.`);
                 }
             }
         } catch (error) {
-            console.error(`UIManager: Failed navigation process to '${screenId}':`, error);
+            console.error(`UIManager: Error during render/navigation to '${screenId}':`, error);
             const fallbackCurrentUser = this.#accountManager.getCurrentUser();
-            const fallbackScreen = fallbackCurrentUser ? 'home-screen' : 'title-screen';
-            if (this.#screenManager.getActiveScreenId() !== fallbackScreen) {
-                 this.#screenManager.showScreen(fallbackScreen); // Mostrar diretamente
-                 this.#audioManager?.playBGM(fallbackScreen);
+            const fallbackScreenOnError = fallbackCurrentUser && fallbackCurrentUser.initialSetupComplete ? 'home-screen' :
+                                   fallbackCurrentUser && !fallbackCurrentUser.initialSetupComplete ? 'lore-video-screen' :
+                                   'title-screen';
+            if (this.#screenManager.getActiveScreenId() !== fallbackScreenOnError && screenId !== fallbackScreenOnError) {
+                 await this.navigateTo(fallbackScreenOnError);
             }
         }
-    }
-
-    saveOptions() {
-        // OptionsUI agora lida com o salvamento e chama audioManager.updateSettings()
-        // UIManager não precisa mais de um método saveOptions.
-        console.warn("UIManager.saveOptions() é obsoleto. OptionsUI lida com isso.");
     }
 
     updateCurrenciesDisplay(gold, gems) {
@@ -425,9 +464,8 @@ export default class UIManager {
     }
 
     _bindPermanentUIActions() {
-        console.log("UI Coordinator: Binding permanent UI actions (Top Bar, global)...");
         const self = this;
-        const namespace = '.uimanagerglobal'; // Namespace para listeners globais da UIManager
+        const namespace = '.uimanagerglobal';
 
         const addTopBarHoverAudio = ($element, sfxHover = 'buttonHover') => {
             $element.off(`mouseenter${namespace}`).on(`mouseenter${namespace}`, () => {
@@ -469,22 +507,22 @@ export default class UIManager {
             self.#audioManager?.playSFX('buttonClick');
             self.#audioManager?.stopBGM();
             self.#accountManager.logout();
-            self.hideTopBar();
-            $('#screens-container').removeClass('with-top-bar'); // Remove classe que ajusta margin-top
-            $('#top-bar').removeClass('simplified-mode battle-only'); // Garante que top bar volte ao normal
             self.navigateTo('title-screen');
         }).each((i, btn) => addTopBarHoverAudio($(btn)));
 
         $(document).off(`keydown${namespace}`).on(`keydown${namespace}`, (e) => {
             if (e.key === "Escape") {
-                 // O ZoomHandler já lida com o fechamento do zoom em ESC.
-                 // Se outras modais/popups forem adicionadas, podem ser tratadas aqui.
+                // O ZoomHandler lida com o fechamento do zoom
             }
         });
-        console.log("UI Coordinator: Permanent UI actions bound.");
     }
 
     getCardDatabase() {
         return this.#cardDatabase;
+    }
+
+    // Método para TitlescreenUi acessar o AccountManager (se necessário para redirecionamento)
+    getAccountManager() {
+        return this.#accountManager;
     }
 }

@@ -9,9 +9,10 @@ export function generateLoginScreenHTML() {
     return `
         <div id="login-screen" class="screen">
             <img class="login-logo" src="assets/images/ui/runebound_logo.png" alt="Runebound Clash Logo" class="title-logo">
-            <h2>LOGIN</h2>
+            
 
             <form id="login-form" class="form-container">
+            <h2> LOGIN</h2>
                 <div class="form-group">
                     <label for="login-username">Nome de Usuário</label>
                     <input type="text" id="login-username" name="username" required>

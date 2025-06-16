@@ -1,6 +1,17 @@
-.store-layout      { display:flex; flex-direction:column; gap:12px; background: url(../../assets/images/ui/store_bg.jpg) center / cover;}
+/* css/screens/_store.css */
+
+.store-layout { 
+    display:flex; 
+    flex-direction:column; 
+    gap:12px; 
+    background: url(../../assets/images/ui/store_bg.jpg) center / cover;
+    height: 100%; 
+    box-sizing: border-box;
+    padding: 15px;
+}
+
 .store-layout h2 {
-text-align: center;
+    text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
     color: var(--header-color, #d9dce2);
@@ -10,59 +21,204 @@ text-align: center;
     flex-shrink: 0;
     font-family: "Germania One", system-ui;
     font-weight: 400;
-    font-style: normal;}
-.store-grid        { display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
-                     overflow-y:auto; padding-right:4px; }
-.store-item        { background:var(--panel-background); border:1px solid var(--border-color);
-                     border-radius:6px; text-align:center; padding:8px; position:relative;
-                     display:flex; flex-direction:column; gap:6px; box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4); align-items: center;}
-.store-item.owned  { filter:grayscale(1) opacity(.45); }
-.store-item img    { width:40%; height:auto; }
-.price-buttons     { display:flex; gap:6px; justify-content:center; margin-bottom: 20px;
-    margin-top: 20px;}
-.btn-price-gold,
-.btn-price-gems    { flex:1; font-size:.8em; width: 120px;}
-.store-detail-overlay { position:fixed; inset:0; background:rgba(0,0,0,.8);
-                        display:none; align-items:center; justify-content:center; z-index:1000; }
-.store-detail-overlay.active { display:flex; }
-.detail-card       { background:var(--background-color); padding:40px; border-radius:10px;
-                     width:460px; display:flex; flex-direction:column; gap:10px; border: 1px solid var(--border-color); box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);}
-.detail-actions    { display:flex; gap:10px; }
+    font-style: normal;
+    margin-left: 20px;
+}
 
-.store-item-image-container {
-    width: 280px;            /* largura fixa desejada */
-    height: 160px;           /* altura fixa desejada */
-    margin: 0 auto;         /* centraliza horizontalmente */
-    overflow: hidden;       /* corta excesso */
-    display: flex;
+.store-grid { 
+    display: grid;
+    /* MUDANÇA: Configura para 6 colunas */
+    grid-template-columns: repeat(6, 1fr); /* 6 colunas de largura igual */
+    gap: 12px; /* Espaçamento entre os itens (horizontal e vertical) */
+    overflow-y:auto; 
+    padding: 10px; 
+    flex-grow: 1; 
+    background-color: rgba(0,0,0,0.1); 
+    border-radius: 6px;
+    align-content: start;
+}
+
+.store-item { 
+    background:var(--panel-background); 
+    border:1px solid var(--border-color);
+    border-radius:6px; 
+    text-align:center; 
+    padding: 10px; /* Padding interno do item */
+    position:relative;
+    display:flex; 
+    flex-direction:column; 
+    gap:6px; /* Espaço entre os elementos internos do item */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); /* Sombra um pouco mais sutil */
+    align-items: center;
+    justify-content: space-between; 
+    /* MUDANÇA: Definir uma altura máxima ou altura fixa para os itens se desejar uniformidade,
+       ou deixar que o conteúdo dite a altura (pode levar a alturas variáveis se o texto diferir muito).
+       Para "mais baixos", vamos tentar com uma max-height. Ajuste conforme necessário. */
+    max-height: 280px; /* Exemplo de altura máxima, ajuste este valor! */
+                       /* Se quiser altura fixa: height: 250px; */
+}
+
+.store-item.owned { 
+    filter:grayscale(1) opacity(.45); 
+}
+
+.store-item .store-item-image-container {
+width: 145%;
+    height: 162px;
+    display: flex
+;
     align-items: center;
     justify-content: center;
-  }
-  
-.store-item-image-container img {
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.store-item img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain;    /* mantém aspect ratio sem distorcer */
- }
+    object-fit: contain; 
+    border-radius: 4px;
+}
+
+.store-item h4 {
+    margin: 4px 0;
+    font-size: 1.3em; /* Fonte um pouco menor para o título do item */
+    color: var(--text-color);
+    white-space: nowrap; /* Evita quebra de linha no título se for muito longo */
+    overflow: hidden;    /* Esconde o excesso */
+    text-overflow: ellipsis; /* Adiciona "..." se o texto for cortado */
+    width: 100%; /* Garante que o text-overflow funcione */
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+.store-item .item-short {
+    font-size: 0.8em; /* Fonte menor para a descrição curta */
+    color: var(--text-color-secondary);
+    flex-grow: 1; 
+    margin-bottom: 8px;
+    /* Limitar o número de linhas para a descrição curta para controlar altura */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Mostra no máximo 2 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.4em; /* Aproximadamente 2 linhas de altura (0.8em * 1.5 line-height * 2) - ajuste */
+}
+
+.price-buttons { 
+    display:flex; 
+    gap:6px; 
+    justify-content:center; 
+    width: 100%; 
+    margin-top: auto; /* Empurra os botões para o final do flex container (.store-item) */
+}
+
+/* --- ESTILOS PARA OS BOTÕES DE COMPRA NA LOJA (Ajustados) --- */
+.store-item .price-buttons button,
+.detail-card .detail-actions .btn-price-gold,
+.detail-card .detail-actions .btn-price-gems {
+    font-size: 1.3em;     /* Fonte ainda menor para os botões */
+    padding: 4px 8px;      /* Padding ainda menor */
+    line-height: 1.1;      
+    min-width: unset;       
+    flex-grow: 1;           
+    flex-basis: 0;
+    margin-bottom: 4px;          
+}
+
+/* Estilo ESPECÍFICO para o botão de compra com OURO */
+.store-item .btn-price-gold,
+.detail-card .detail-actions .btn-price-gold {
+    color: #ffffff !important; 
+    font-weight: bold;
+    /* Herda .game-button */
+}
+.store-item .btn-price-gold:hover:not(:disabled),
+.detail-card .detail-actions .btn-price-gold:hover:not(:disabled) {
+    color: #ffffff !important;
+    /* Herda .game-button:hover */
+}
+
+/* Estilo ESPECÍFICO para o botão de compra com GEMAS */
+.store-item .btn-price-gems,
+.detail-card .detail-actions .btn-price-gems {
+    color: white !important; 
+    font-weight: bold;
+    /* Herda .game-button-blue */
+}
+.store-item .btn-price-gems:hover:not(:disabled),
+.detail-card .detail-actions .btn-price-gems:hover:not(:disabled) {
+    /* Herda .game-button-blue:hover */
+}
+
+/* --- Fim dos estilos dos botões de compra --- */
+
+/* Estilos do overlay de detalhes permanecem os mesmos, 
+   pois você não pediu para alterá-los especificamente em largura/altura.
+   Se precisar, pode ajustar .detail-card max-width, padding, etc. */
+
+.store-detail-overlay { 
+    position:fixed; inset:0; background:rgba(0,0,0,.85); 
+    display:none; align-items:center; justify-content:center; 
+    z-index:1000; padding: 20px; box-sizing: border-box;
+}
+.store-detail-overlay.active { display:flex; }
+
+.detail-card { 
+    background:var(--panel-background); padding:25px; border-radius:10px;
+    width:100%; max-width:480px; display:flex; flex-direction:column; 
+    gap:15px; border: 1px solid var(--border-color); 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+.detail-card img#store-detail-image { 
+    width: 60%; max-height: 250px; object-fit: contain;
+    align-self: center; border-radius: 6px;
+    
+}
+.detail-card h3#store-detail-name {
+    font-size: 1.5em; color: var(--primary-color);
+    text-align: center; margin-bottom: 0;
+        font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+.detail-card p#store-detail-desc {
+    font-size: 1em; color: var(--text-color-secondary);
+    line-height: 1.5; text-align: center; min-height: 60px;
+}
+.detail-actions { display:flex; gap:10px; margin-top: 10px;}
+.detail-actions .button-back { 
+    background-color: var(--button-secondary-bg) !important; 
+    color: white !important;
+}
+.detail-actions .button-back:hover:not(:disabled) {
+    background-color: var(--button-secondary-hover-bg) !important;
+}
 
 .store-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 }
-
 .store-currency {
     display: flex;
-    gap: 14px;
+    gap: 20px;
+    align-items: center;
 }
-
-.gold-wrapper,
-.gems-wrapper {
+.gold-wrapper, .gems-wrapper {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-weight: bold;
+  font-size: 2.2em;
+  color: var(--text-color);
+  font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
-
-
-
+.gold-wrapper img, .gems-wrapper img {
+    width: 28px;
+    height: 28px;
+}

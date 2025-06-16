@@ -1,115 +1,167 @@
 /* css/screens/_login.css - Estilos para a Tela de Login */
 
+.login-logo{
+    display: block;
+    position: absolute;
+    margin-left: -1400px;
+    margin-top: -500px;
+    max-width: 400px;
+    width: 0%;
+    height: auto;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4));
+    z-index: -1;
+}
+
+
 #login-screen {
-    /* Layout Geral */
-    display: flex; /* Usado no .screen base, mas pode ser reafirmado */
-    justify-content: center; /* Centraliza o form-container horizontalmente */
-    align-items: center; /* Centraliza o form-container verticalmente */
+    /* ... (seu CSS existente para #login-screen - fundo, etc.) ... */
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
     text-align: center;
     padding: 20px;
-    /* Herdará width, height, position, etc. de .screen */
-
-    /* Fundo */
-    background: url('../../assets/images/ui/login_background.jpg') no-repeat center center;
+    background: url('../../assets/images/ui/login_background.jpg') no-repeat center center; /* Garanta que o caminho está correto */
     background-size: cover;
-
-    /* Garante que o conteúdo dentro possa ser posicionado absolutamente */
-    position: relative;
+    position: relative; /* Para posicionar absolutamente o form-container se necessário */
 }
 
-/* Logo Específica da Tela de Login */
-.login-logo {
-    display: block; /* Garante que seja um bloco para margin/position */
-    position: absolute; /* Posicionamento específico para esta tela */
-    /* Ajuste as margens/top/left/right conforme necessário para o posicionamento exato */
-    margin-top: -500px; /* Exemplo: Puxa para cima */
-    margin-left: 1300px; /* Exemplo: Empurra para a direita */
-    /* OU use top/left/right/bottom: */
-    /* top: 10vh; */
-    /* right: 10vw; */
-    max-width: 400px; /* Tamanho máximo da logo */
-    width: 65%; /* Largura relativa (ajuste conforme necessário) */
-    height: auto; /* Mantém proporção */
-    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4)); /* Sombra */
-    z-index: 1; /* Garante que fique acima do fundo, mas abaixo do form se necessário */
-}
-
-
-/* Título H2 Específico da Tela de Login */
-#login-screen h2 {
-    position: absolute; /* Posicionamento específico */
-    /* Ajuste as margens/top/left/right */
-    margin-top: 325px; /* Exemplo: Abaixo da logo */
-    /* Precisa centralizar ou posicionar explicitamente, pois o pai tem display:flex */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%; /* Para garantir que a centralização funcione */
-
-    color: var(--text-color); /* Cor clara */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Sombra forte */
-    font-size: 2.5em; /* Tamanho grande */
-    margin-bottom: 20px; /* Espaço abaixo antes do formulário */
-    z-index: 1;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
-}
-
-/* Container do Formulário na Tela de Login */
+/* --- Estilo do Formulário de Login --- */
 #login-screen .form-container {
-    /* Herda max-width de .form-container, mas aplica overrides */
-    position: absolute; /* Posicionamento específico */
-    /* Ajuste as margens/top/left/right */
-    margin-top: 700px; /* Exemplo: Abaixo do título */
-     left: 50%;
-     transform: translateX(-50%);
+    background-color: rgba(10, 15, 25, 0.85); /* Fundo azul escuro, quase preto, translúcido */
+    padding: 30px 35px; /* Mais padding interno */
+    border-radius: 12px; /* Bordas um pouco menos arredondadas, mais "sólidas" */
+    border: 1px solid rgba(128, 70, 0, 0.7); /* Borda sutil cor de brasa/âmbar */
+    box-shadow: 
+        0 0 25px rgba(255, 100, 0, 0.25), /* Brilho externo suave cor de fogo */
+        0 5px 15px rgba(0, 0, 0, 0.6);   /* Sombra projetada mais escura */
+    width: 100%;
+    max-width: 420px; /* Um pouco mais largo se necessário */
+    z-index: 2; /* Para ficar sobre a imagem de fundo, se houver logo atrás */
 
-    width: 100%; /* Garante que max-width funcione */
-    max-width: 400px; /* Largura máxima */
-    background-color: rgba(10, 20, 30, 0.85); /* Fundo escuro e translúcido */
-    border: 1px solid var(--border-color); /* Borda sutil */
-   
-    padding: 25px; /* Espaçamento interno maior */
-    border-radius: 30px; /* Herda, mas pode ser reafirmado */
-    z-index: 2; /* Garante que fique acima da logo/fundo */
-    margin-left: 0; /* Reseta margem auto do .form-container base */
-    margin-right: 0;
-    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5); /* Subtle initial shadow */
+    /* Removido posicionamento absoluto para centralizar com flex do #login-screen */
+    /* position: absolute; */
+    /* margin-top: ...; */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
 }
 
-/* Labels dentro do formulário de login */
+/* Título "LOGIN" dentro do form-container (se o H2 "LOGIN" estiver dentro dele)
+   Se o H2 estiver fora, estilize #login-screen h2 como você já faz. */
+#login-screen .form-container h2, /* Se o H2 estiver DENTRO do form */
+#login-screen h2.form-title-outside { /* Se o H2 estiver FORA mas relacionado */
+    color: #FFB74D; /* Laranja/Âmbar claro para o título */
+    font-family: "Germania One", serif; /* Sua fonte temática */
+    text-transform: uppercase;
+    font-size: 2.2em; /* Tamanho do título */
+    margin-bottom: 25px; /* Espaço abaixo do título */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7), 0 0 10px rgba(255,120,0,0.4);
+    letter-spacing: 1px;
+    
+}
+
+/* Grupos de formulário (label + input) */
+#login-screen .form-group {
+    margin-bottom: 20px; /* Mais espaço entre os campos */
+}
+
+/* Labels */
 #login-screen .form-container label {
-    text-align: center; /* Alinha à esquerda */
-    font-size: 0.95em; /* Tamanho ligeiramente maior */
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
+    display: block; /* Faz o label ocupar a linha inteira */
+    text-align: left; /* Alinha o texto do label à esquerda */
+    color: #FFCC80; /* Cor laranja/âmbar mais clara para os labels */
+    font-family: "Segoe UI", Tahoma, sans-serif; /* Fonte mais legível para labels */
+    font-size: 0.9em;
+    margin-bottom: 8px; /* Espaço entre o label e o input */
+    font-weight: 500;
 }
 
-/* Ações (botões) dentro do formulário de login */
+/* Inputs */
+#login-screen .form-container input[type="text"],
+#login-screen .form-container input[type="password"] {
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo do input escuro e translúcido */
+    border: 1px solid rgba(128, 70, 0, 0.6); /* Borda sutil cor de brasa */
+    color: #FFF3E0; /* Cor do texto do input (creme) */
+    padding: 12px 15px; /* Padding interno do input */
+    border-radius: 6px; /* Bordas levemente arredondadas */
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#login-screen .form-container input[type="text"]::placeholder,
+#login-screen .form-container input[type="password"]::placeholder {
+    color: rgba(255, 204, 128, 0.6); /* Cor do placeholder */
+}
+
+#login-screen .form-container input[type="text"]:focus,
+#login-screen .form-container input[type="password"]:focus {
+    outline: none;
+    border-color: #FFA726; /* Cor da borda em foco (laranja mais brilhante) */
+    box-shadow: 0 0 10px rgba(255, 130, 0, 0.5); /* Brilho sutil em foco */
+}
+
+/* Ações do formulário (botões) */
 #login-screen .form-container .form-actions {
-    gap: 15px; /* Espaçamento maior entre botões */
-     /* justify-content: space-around; Herda de .form-actions */
+    margin-top: 30px; /* Mais espaço acima dos botões */
+    display: flex;
+    gap: 15px; /* Espaço entre botões */
+    justify-content: space-between; /* Para Entrar e Voltar ficarem nas pontas */
 }
 
-/* Botões específicos dentro do formulário de login */
+/* Estilo geral para botões DENTRO do form-container do login */
 #login-screen .form-container .form-actions button {
-    font-size: 1em; /* Tamanho padrão ou ligeiramente maior */
-    padding: 10px 15px; /* Padding padrão */
-    font-weight: bold;
-    /* flex-basis: 45%; Herda de .form-actions */
+    flex-grow: 1; /* Faz os botões dividirem o espaço */
+    padding: 10px 15px;
+    font-family: "Germania One", serif; /* Sua fonte temática para botões */
+    font-size: 1.1em;
+    text-transform: uppercase;
+    border-radius: 6px; /* Bordas consistentes com os inputs */
+    border: 1px solid; /* Borda será definida por tipo de botão */
+    cursor: none !important;
+    transition: background-image 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
-/* Mensagem de feedback específica para login */
+/* Botão "Entrar" (Primário) */
+#login-screen .form-container .form-actions button[type="submit"] {
+    background-image: radial-gradient(circle at center, #FFB74D 30%, #E65100 100%); /* Gradiente Laranja/Fogo */
+    color: #1A237E; /* Azul escuro, quase preto, para contraste forte com o laranja */
+    border-color: #BF360C; /* Borda laranja escura */
+    text-shadow: 1px 1px 1px rgba(255,224,178,0.3); /* Sombra clara sutil no texto */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,204,178,0.2);
+}
+#login-screen .form-container .form-actions button[type="submit"]:hover:not(:disabled) {
+    background-image: radial-gradient(circle at center, #FFA726 30%, #F57C00 100%); /* Mais brilhante no hover */
+    box-shadow: 0 0 15px rgba(255,167,38,0.6), 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,224,178,0.3);
+    transform: translateY(-1px);
+    color: black;
+}
+#login-screen .form-container .form-actions button[type="submit"]:active:not(:disabled) {
+    background-image: radial-gradient(circle at center, #E65100 30%, #BF360C 100%); /* Mais escuro no active */
+    transform: translateY(0px);
+}
+
+/* Botão "Voltar" (Secundário) */
+#login-screen .form-container .form-actions button[type="button"]#btn-login-back-to-title {
+    background-image: linear-gradient(to bottom, #424242, #212121); /* Cinza escuro */
+    color: #BDBDBD; /* Cinza claro para o texto */
+    border-color: #000000;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+#login-screen .form-container .form-actions button[type="button"]#btn-login-back-to-title:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #616161, #424242); /* Cinza um pouco mais claro */
+    color: #ffffff;
+    border-color: #111111;
+    box-shadow: 0 0 10px rgba(100,100,100,0.3), 0 2px 4px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+}
+
+/* Mensagem de feedback */
 #login-message {
-    /* Herda .message, mas pode ter overrides */
-    position: absolute; /* Posiciona abaixo do form */
-    bottom: 20px; /* Exemplo: fixa na parte inferior da tela */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 400px;
-    margin-top: 18px; /* Espaço acima */
-    font-size: 1em; /* Tamanho da fonte */
-    min-height: 1.2em; /* Evita pulos no layout */
+    margin-top: 20px;
+    font-size: 0.95em;
+    min-height: 1.2em;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    /* A cor é definida pelo JS (verde para sucesso, vermelho para erro) */
 }

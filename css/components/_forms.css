@@ -1,161 +1,181 @@
-/* css/components/_forms.css - Estilização de Formulários */
+/* ====================================================================== */
+/*  css/screens/_booster-opening.css                                      */
+/*  Tela de Abertura de Booster – v3 com foco em contexto de empilhamento */
+/* ====================================================================== */
 
-/* Inputs, Selects e Textareas */
-input[type="text"],
-input[type="password"],
-select,
-textarea { /* Adicionei textarea para cobrir mais casos */
-  padding: 8px 12px;
-  border: 1px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  border-radius: 25px;
-  margin-bottom: 10px;
-  font-size: 1em;
-  width: 100%;
-  cursor: none !important; /* <<< ADICIONADO PARA INPUTS E SELECTS */
+.booster-opening-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #1a202c;
+    /* overflow: hidden; /* TEMPORARIAMENTE REMOVA OU COMENTE PARA TESTAR SE ESTÁ CAUSANDO CLIPPING */
+    perspective: 1500px;
+    background: url('../../assets/images/ui/booster_opening_background.jpg') no-repeat center center;
+    background-size: cover;
 }
 
-select option {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  padding: 8px 12px;
-  cursor: none !important; 
-  /* Opções dentro de um select geralmente não herdam o cursor do select pai,
-     mas não custa garantir se você quiser ser extra cuidadoso,
-     embora o 'cursor: none' no body já deva cobrir isso.
-     A principal preocupação é o elemento select em si. */
-  /* cursor: none !important; */
-}
-
-input:focus,
-select:focus,
-textarea:focus { /* Adicionei textarea */
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-  cursor: none !important; 
-}
-
-input::placeholder {
-  color: var(--text-color-secondary);
-  opacity: 0.8;
-  cursor: none !important; 
-}
-
-/* Checkboxes e Radio buttons (se usar) */
-input[type="checkbox"],
-input[type="radio"] {
-    /* A aparência padrão pode variar. Alguns navegadores mostram 'pointer'. */
-    cursor: none !important; /* <<< ADICIONADO PARA CHECKBOXES */
-    /* Você pode precisar de mais estilos para customizar a aparência
-       de checkboxes e radios se quiser que eles se integrem melhor visualmente,
-       mas para o cursor, isso é o principal. */
-    width: 18px; /* Mantendo seu estilo original */
-    height: 18px;
+.booster-opening-layout h2 {
+    margin-bottom: 15px;
+    color: var(--title-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     flex-shrink: 0;
-    margin-left: auto; /* Mantendo seu estilo original */
+    position: absolute;
+    top: 50px;
+    font-size: 3em;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
-/* Range Sliders */
-input[type="range"] {
+#booster-card-container {
     flex-grow: 1;
-    min-width: 150px;
-    margin: 0;
-    cursor: none !important; /* <<< ADICIONADO PARA RANGE SLIDERS */
+    width: 100%;
+    max-width: 90vh; /* Ou um valor fixo como 600px se preferir */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 60px;
+    margin-bottom: 80px;
+    min-height: 300px; /* Altura mínima para o container */
+    transform-style: preserve-3d; /* Essencial para os filhos 3D */
 }
 
-/* Estilos para o track e thumb do range slider (apenas para manter a estrutura, não são para o cursor) */
-input[type=range] {
-  height: 20px;
-  -webkit-appearance: none;
-  margin: 5px 0;
-  width: 100%;
-  background: transparent;
-  cursor: none !important;
-}
-input[type=range]:focus {
-  outline: none;
-  cursor: none !important;  
-}
-input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 6px;
-  /* cursor: none !important; /* Aplicado ao input[type="range"] já cobre o track */
-  background: var(--border-color);
-  border-radius: 3px;
-  cursor: none !important;  
-}
-input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 6px;
-  /* cursor: none !important; */
-  background: var(--border-color);
-  border-radius: 3px;
-  cursor: none !important;  
-}
-input[type=range]::-webkit-slider-thumb {
-  border: 1px solid #000000;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  /* cursor: none !important; /* Aplicado ao input[type="range"] já cobre o thumb */
-  -webkit-appearance: none;
-  margin-top: -5px;
-  cursor: none !important;
-}
-input[type=range]::-moz-range-thumb {
-  border: 1px solid #000000;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  cursor: none !important;  
-  /* cursor: none !important; */
-}
-input[type=range]:disabled::-webkit-slider-thumb { background: var(--disabled-color); }
-input[type=range]:disabled::-moz-range-thumb { background: var(--disabled-color); }
-input[type=range]:disabled::-webkit-slider-runnable-track { background: #555; }
-input[type=range]:disabled::-moz-range-track { background: #555; }
-
-
-/* Labels */
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--text-color);
-  font-size: 0.9em;
-  font-weight: 500;
-  margin-bottom: 12px;
-  cursor: none !important;
-  /* Labels geralmente não mudam o cursor, mas se você tiver algum que muda: */
-  /* cursor: none !important; */
+.booster-instructions {
+    text-align: center;
+    color: var(--text-color-secondary);
+    font-size: 0.9em;
+    position: absolute;
+    bottom: 60px;
+    width: 100%;
+    left: 0;
 }
 
-/* Containers de Formulários (geralmente não interativos diretamente com cursor) */
-.form-container {
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: var(--panel-background);
-  border-radius: 5px;
-  cursor: none !important;
+.booster-instructions p { margin: 2px 0; }
+
+.btn-skip {
+    position: absolute;
+    bottom: 100px;
+    right: 60px;
+    padding: 8px 15px;
+    background-color: var(--button-secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 5px;
+    z-index: 2000; /* Alto para ficar acima de tudo, exceto talvez o cursor */
+    transition: background-color 0.2s ease;
 }
 
-/* Grupos de Formulário */
-.form-group {
-  margin-bottom: 15px;
+.btn-skip:hover { background-color: var(--button-secondary-hover-bg); }
+
+/* --- Container do Card Individual --- */
+.booster-card {
+    --offX: -50%;
+    --offY: -50%;
+    --stackRot: 0deg;
+
+    width: 410px;
+    height: 610px;
+    position: absolute; /* Essencial para empilhamento no container */
+    top: 50%;
+    left: 50%;
+    
+    transform: translate(var(--offX), var(--offY)) rotate(var(--stackRot)) rotateY(0deg);
+    background-color: transparent;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    
+    transform-style: preserve-3d; /* Para as faces internas */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0s linear 0.3s; /* Transiciona z-index sem delay para o flip */
+    will-change: transform, z-index;
+    z-index: 1; /* z-index base, será alterado pelo JS para a carta do topo */
 }
 
-/* Ações do Formulário (já cobertas pelos botões) */
-.form-actions {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  gap: 10px;
+/* Carta do topo, interativa */
+.booster-card.interactive { 
+    cursor: none !important; /* Seu cursor customizado */
+    /* z-index maior para a carta do topo, o JS pode gerenciar isso melhor */
 }
 
-.form-actions button {
-  flex-basis: 45%;
+/* Estado Virado */
+.booster-card.flipped {
+    /*
+      Ordem da transformação:
+      1. Mover para a posição na pilha (já está assim por padrão).
+      2. Afastar DO OBSERVADOR (e da pilha) usando translateZ.
+      3. Aplicar rotação da pilha (fanning).
+      4. Girar a carta.
+    */
+    transform: translate(var(--offX), var(--offY)) translateZ(150px) rotate(var(--stackRot)) rotateY(180deg);
+    /* Aumentar z-index durante o flip para garantir que fique na frente */
+    /* A transição de z-index é imediata (delay 0.3s é quando o transform termina) */
+    /* z-index: 1500; /* z-index muito alto durante o flip */
+}
+
+/* Efeito de Hover */
+.booster-card.interactive:hover:not(.flipped) {
+    transform: translate(var(--offX), var(--offY)) translateZ(30px) scale(1.03) rotate(var(--stackRot)) rotateY(0deg);
+    box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+    /* z-index: 1000; /* z-index alto no hover */
+}
+
+.booster-card.interactive.flipped:hover {
+    /* Mantém o translateZ do estado flipped e aplica o scale do hover */
+    transform: translate(var(--offX), var(--offY)) translateZ(150px) scale(1.03) rotate(var(--stackRot)) rotateY(180deg);
+    box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+    /* z-index: 1550; /* Ainda maior no hover quando já flipado */
+}
+
+/* --- Faces da Carta --- */
+.booster-card .card-face,
+.booster-card .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(180, 180, 180, 0.5);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d; /* Importante se as faces tiverem elementos 3D filhos */
+}
+
+.booster-card .card-back {
+    background-image: url('../../assets/images/ui/card_back_placeholder.png');
+    transform: rotateY(0deg);
+    z-index: 2; /* Frente sobre o verso por padrão dentro do card */
+}
+
+.booster-card .card-face {
+    transform: rotateY(180deg);
+    background-color: #eee;
+    z-index: 1;
+}
+
+/* --- Animação de Dispensar --- */
+.booster-card.dismissing {
+    transform: translate(var(--offX), -150%) translateZ(50px) scale(0.8) rotate(var(--stackRot)) rotateY(180deg);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.4s ease-in, opacity 0.3s ease-in;
+    /* z-index: 500; /* Mantém um z-index razoável ao sair */
+}
+
+/* --- Garante que cartas não interativas não tenham hover --- */
+.booster-card:not(.interactive):hover {
+    transform: translate(var(--offX), var(--offY)) rotate(var(--stackRot)) rotateY(0deg); /* Reseta para o estado base */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra base */
+}
+
+#login-username input{
+
+  background-color: #1a202c;
 }

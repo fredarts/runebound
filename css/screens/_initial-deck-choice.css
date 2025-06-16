@@ -75,6 +75,9 @@
     font-family: "Germania One", system-ui;
     font-weight: 400;
     font-style: normal;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .deck-choice-option p {
@@ -108,13 +111,17 @@
     align-items: center;
     height: 866px;
     overflow-x: hidden;
+    
 }
 
 .deck-details-area h3#chosen-deck-name {
     color: var(--accent-color-light, #61dafb); /* Cor de destaque */
     margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.6em;
+    margin-bottom: 10px;
+    font-size: 2.6em;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Grid para mini-cartas, similar ao da coleção/deck builder */
@@ -152,7 +159,7 @@
 #btn-confirm-deck-choice {
     background-color: var(--button-play-bg, #28a745); /* Verde para confirmar */
     color: var(--button-play-text, #fff);
-    border-color: var(--button-play-border, #1f7a34);
+    
 }
 #btn-confirm-deck-choice:hover {
     background-color: var(--button-play-hover-bg, #218838);

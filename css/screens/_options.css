@@ -159,7 +159,15 @@ input[type=range]:disabled::-moz-range-track { background: #555; }
     width: auto; /* Largura baseada no conteúdo */
     flex-grow: 1; /* Ocupa espaço */
     min-width: 150px; /* Largura mínima */
-    /* Herda estilos de select base */
+    padding: 10px 0px 10px 10px;
+    border-radius: 30px;
+    background-color: var(--background-color);
+    color: white;
+    font-size: 1em;
+    font-family: "Germania One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    cursor: none !important; ;
 }
 
 /* Valor do Volume (Span) */

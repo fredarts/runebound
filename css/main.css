@@ -15,6 +15,7 @@
 @import 'components/_navigation.css'; /* Ex: Top Bar */
 @import 'components/_overlays.css';   /* Ex: Zoom, Game Over */
 @import 'components/_images.css';    /* Opcional, se criou para .logo etc */
+@import 'components/_custom-cursor.css';
 
 
 /* Animations */
@@ -36,6 +37,7 @@
 @import 'screens/_booster-opening.css';
 @import 'screens/_lore-video.css';
 @import 'screens/_initial-deck-choice.css';
+
 
 
 /* Utilities */

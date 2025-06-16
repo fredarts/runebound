@@ -1,0 +1,51 @@
+.mouse-trail-particle {
+    position: fixed; /* Para flutuar sobre o conteúdo */
+    margin-left: 18px;
+    margin-top: 18px;
+    border-radius: 50%; /* Partículas redondas */
+    pointer-events: none; /* Não devem interceptar cliques */
+    z-index: 99998; /* Logo abaixo do cursor principal, mas acima de outros elementos */
+    opacity: 0.6; /* Opacidade inicial */
+
+    /* Gradiente para simular energia */
+    background: radial-gradient(circle,
+        rgba(120, 255, 120, 0.2) 0%,  /* Verde brilhante no centro */
+        rgba(50, 220, 50, 0.4) 40%,   /* Verde médio */
+        rgba(20, 150, 20, 0.2) 70%,   /* Verde escuro translúcido */
+        rgba(10, 80, 10, 0) 100%      /* Transparente nas bordas */
+    );
+
+    /* Animação de dissipação */
+    animation: dissipate 0.8s ease-out forwards;
+
+    /* Sombra para um brilho sutil */
+    box-shadow: 0 0 8px rgba(58, 187, 58, 0.466),
+                0 0 12px rgba(30, 148, 30, 0.3);
+}
+
+@keyframes dissipate {
+    0% {
+        transform: scale(1) translate(-50%, -50%); /* Começa no tamanho normal */
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0.2) translate(-50%, -50%); /* Diminui e talvez se mova um pouco */
+        opacity: 0;
+    }
+}
+
+/* Estilo para o nosso elemento de cursor customizado */
+#custom-cursor {
+    position: fixed; /* Para que ele flutue sobre todo o conteúdo */
+    left: 0;
+    top: 0;
+    width: 32px;  /* Largura do seu sprite de cursor */
+    height: 32px; /* Altura do seu sprite de cursor */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 99999; /* Para garantir que fique acima de tudo */
+    pointer-events: none; /* MUITO IMPORTANTE: Impede que o cursor bloqueie cliques nos elementos abaixo */
+    transform: translate(-10%, -10%); /* Opcional: para centralizar o sprite no ponteiro. Ajuste se seu hotspot não for o canto superior esquerdo. */
+                                      /* Se o hotspot do seu cursor for o canto superior esquerdo, remova o transform ou ajuste os offsets de 'left' e 'top' no JS. */
+}
