@@ -415,135 +415,113 @@ export default class BattleScreenUI {
         this.#battleRenderer.updateCurrentPlayerIndicator(text);
     }
 
-        _updateTurnControls() {
+            /**
+     * Atualiza a visibilidade / habilitação dos botões de turno.
+     * Chame sempre que algo no estado da partida ou nos modos de interação mudar.
+     */
+    /**
+ * Atualiza a visibilidade / habilitação dos botões de turno.
+ * Chame sempre que algo no estado da partida ou nos modos de interação mudar.
+ */
+    _updateTurnControls() {
         const game = this.#gameInstance;
         if (!game) return;
-        const phase = game.getCurrentPhase();
+
+        const phase        = game.getCurrentPhase();
         const activePlayer = game.getCurrentPlayer();
         if (!activePlayer) return;
-        const isMyTurn = activePlayer.id === this.#localPlayerId;
 
-        const interactionMgr = this.#battleInteractionManager;
-        if (!interactionMgr) return;
+        const isMyTurn     = activePlayer.id === this.#localPlayerId;
+        const interaction  = this.#battleInteractionManager;
+        if (!interaction) return;
 
-        // Não precisamos mais de 'blockMode' diretamente para a visibilidade do 'Passar Fase' do defensor
-        // const blockMode = interactionMgr.isAssigningBlockers();
-        const atkMode = interactionMgr.isDeclaringAttackers();
-        const discardManaMode = interactionMgr.isSelectingDiscardMana?.() ?? false;
-        const isSelectingTarget = interactionMgr.isSelectingTarget?.() ?? false;
-        const combatMgrState = game.getCombatManager()?.state;
+        const combatState  = game.getCombatManager()?.state;
 
-        // --- Flags Padrão ---
-        let passPhaseVisible = false;
-        let passPhaseDisabled = true;
-        let endTurnVisible = false;
-        let endTurnDisabled = true;
-        let confirmAttackVisible = false;
-        let confirmAttackDisabled = true;
-        let confirmBlocksVisible = false;
-        let confirmBlocksDisabled = true;
-        let discardManaVisible = false;
-        let discardManaDisabled = true;
-        let cancelDiscardVisible = discardManaMode || isSelectingTarget;
+        // ─── Flags padrão ─────────────────────────────────────────────────────
+        let passPhaseVis = false, passPhaseDis = true;
+        let endTurnVis   = false, endTurnDis   = true;
+        let confirmAtkVis = false, confirmAtkDis = true;
+        let confirmBlkVis = false, confirmBlkDis = true;
+        let discardManaVis = false, discardManaDis = true;
+        const cancelDiscardVis = (interaction.isSelectingDiscardMana?.() ?? false)
+                            || (interaction.isSelectingTarget?.()      ?? false);
 
-        // --- Lógica de Visibilidade e Habilitação ---
+        // ─── Meu turno ────────────────────────────────────────────────────────
         if (isMyTurn) {
-            // ... (lógica para o turno do jogador local - mantém como estava) ...
-            passPhaseVisible = true;
-            passPhaseDisabled = false;
-            endTurnVisible = true;
-            endTurnDisabled = false;
+            passPhaseVis = true;  passPhaseDis = false;
+            endTurnVis   = true;  endTurnDis   = false;
 
-            if (phase === 'main' && !activePlayer.hasDiscardedForMana && activePlayer.maxMana < 10 && activePlayer.hand.getSize() > 0) {
-                discardManaVisible = true;
-                discardManaDisabled = false;
+            // descartar para mana
+            if (phase === 'main' &&
+                !activePlayer.hasDiscardedForMana &&
+                activePlayer.maxMana < 10 &&
+                activePlayer.hand.getSize() > 0) {
+                discardManaVis = true;  discardManaDis = false;
             }
 
+            // declarar atacantes
             if (phase === 'attack') {
+                const atkMode = interaction.isDeclaringAttackers();
                 if (atkMode) {
-                    const hasSelection = interactionMgr.getSelectedAttackerIds().size > 0;
-                    confirmAttackVisible  = true;
-                    confirmAttackDisabled = !hasSelection;
-                    passPhaseDisabled = hasSelection;
-                    endTurnDisabled   = hasSelection;
-                } else if (combatMgrState === 'none' || combatMgrState === 'resolving') {
-                    // Combate resolvido ou sem ataque, pode passar/finalizar.
-                } else if (combatMgrState === 'declare_blockers') {
-                    // Oponente (IA) está declarando bloqueadores, jogador local espera.
-                    passPhaseDisabled = true;
-                    endTurnDisabled = true;
-                    discardManaVisible = false;
+                    const anySel = interaction.getSelectedAttackerIds().size > 0;
+
+                    /* — NOVA LÓGICA ———————
+                    Botão só aparece se houver ao menos um atacante.
+                    */
+                    confirmAtkVis = anySel;
+                    confirmAtkDis = !anySel;
+
+                    // se há atacantes selecionados, jogador deve confirmar ou limpar
+                    passPhaseDis  = anySel;
+                    endTurnDis    = anySel;
+                } else if (combatState === 'declare_blockers') {
+                    passPhaseDis = true;
+                    endTurnDis   = true;
+                    discardManaVis = false;
                 }
             }
 
-            if (discardManaMode || isSelectingTarget || interactionMgr.getPendingEOTDiscardCount() > 0) {
-                passPhaseDisabled = true;
-                endTurnDisabled = true;
-                discardManaDisabled = true;
+            // sobreposição de modos especiais
+            if (cancelDiscardVis || interaction.getPendingEOTDiscardCount() > 0) {
+                passPhaseDis   = true;
+                endTurnDis     = true;
+                discardManaDis = true;
             }
-            if (interactionMgr.getPendingEOTDiscardCount() > 0) {
-                 passPhaseVisible = false;
-                 endTurnVisible = false;
-                 discardManaVisible = false;
-                 cancelDiscardVisible = false;
-                 confirmAttackVisible = false;
-                 confirmBlocksVisible = false;
+            if (interaction.getPendingEOTDiscardCount() > 0) {
+                // durante descarte obrigatório escondemos quase tudo
+                passPhaseVis = endTurnVis = discardManaVis =
+                confirmAtkVis = confirmBlkVis = false;
             }
 
-        } else { // É o turno do oponente
-            // Verifica se o jogador local está no modo de DEFENDER um ataque
-            // AGORA, O BOTÃO PASSAR FASE APARECE ASSIM QUE O OPONENTE ATACA (cmState === 'declare_blockers')
-            if (phase === 'attack' && combatMgrState === 'declare_blockers') {
-                passPhaseVisible = true;
-                passPhaseDisabled = false;
+        // ─── Turno do oponente (eu bloqueio) ──────────────────────────────────
+        } else {
+            if (phase === 'attack' && combatState === 'declare_blockers') {
+                passPhaseVis = true;  passPhaseDis = false;
 
-                // Botão "Confirmar Bloqueios" ainda pode aparecer se o jogador decidir interagir
-                // A variável blockMode (interactionMgr.isAssigningBlockers()) ainda é útil aqui.
-                const blockMode = interactionMgr.isAssigningBlockers();
-                if (blockMode) { // Ou seja, o jogador já clicou em algo para iniciar o bloqueio
-                    confirmBlocksVisible  = true;
-                    const assignmentsMade = Object.keys(interactionMgr.getBlockerAssignmentsUI()).length > 0;
-                    // Poderia deixar confirmBlocksDisabled = false sempre, para permitir confirmar 0 bloqueios após entrar no modo
-                    // Ou manter a lógica que exige uma seleção/atribuição
-                    const attackerSelectedForBlocking = interactionMgr.getSelectedAttackerForBlocking() !== null;
-                    confirmBlocksDisabled = !assignmentsMade && !attackerSelectedForBlocking; // Habilita se houver atribuições OU um atacante selecionado para bloquear
-                } else {
-                    // Se o jogador ainda não interagiu para bloquear, o botão Confirmar Bloqueios pode ficar oculto
-                    // ou visível mas desabilitado. Por agora, oculto.
-                    confirmBlocksVisible = false;
-                    confirmBlocksDisabled = true;
+                if (interaction.isAssigningBlockers()) {
+                    const assignmentsMade =
+                        Object.keys(interaction.getBlockerAssignmentsUI()).length > 0;
+
+                    /* — regra já aplicada ——— */
+                    confirmBlkVis = assignmentsMade;
+                    confirmBlkDis = !assignmentsMade;
+
+                    if (assignmentsMade) passPhaseDis = true;
                 }
-
-                endTurnVisible = false;
-                discardManaVisible = false;
-                confirmAttackVisible = false;
-                cancelDiscardVisible = false;
-            } else {
-                // Turno do oponente, mas não estamos no cenário de declarar bloqueadores.
-                passPhaseVisible = false;
-                endTurnVisible = false;
-                discardManaVisible = false;
-                confirmAttackVisible = false;
-                confirmBlocksVisible = false;
-                cancelDiscardVisible = false;
             }
         }
 
-        const $btnPassPhase      = this.#battleScreenElement.find('#btn-pass-phase');
-        const $btnEndTurn        = this.#battleScreenElement.find('#btn-end-turn');
-        const $btnConfirmAttack  = this.#battleScreenElement.find('#btn-confirm-attack');
-        const $btnConfirmBlocks  = this.#battleScreenElement.find('#btn-confirm-blocks');
-        const $btnDiscardMana    = this.#battleScreenElement.find('#btn-discard-mana');
-        const $btnCancelDiscard  = this.#battleScreenElement.find('#btn-cancel-discard');
+        // ─── Aplica no DOM ────────────────────────────────────────────────────
+        const $ = this.#battleScreenElement;
+        $.find('#btn-pass-phase')     .toggle(passPhaseVis)  .prop('disabled', passPhaseDis);
+        $.find('#btn-end-turn')       .toggle(endTurnVis)    .prop('disabled', endTurnDis);
+        $.find('#btn-confirm-attack') .toggle(confirmAtkVis) .prop('disabled', confirmAtkDis);
+        $.find('#btn-confirm-blocks') .toggle(confirmBlkVis) .prop('disabled', confirmBlkDis);
+        $.find('#btn-discard-mana')   .toggle(discardManaVis).prop('disabled', discardManaDis);
+        $.find('#btn-cancel-discard') .toggle(cancelDiscardVis);
 
-        console.log(`_updateTurnControls: isMyTurn=${isMyTurn}, phase=${phase}, cmState=${combatMgrState}, isAssigningBlockers=${interactionMgr.isAssigningBlockers()}, passVisible=${passPhaseVisible}, passDisabled=${passPhaseDisabled}, confirmBlocksVisible=${confirmBlocksVisible}, confirmBlocksDisabled=${confirmBlocksDisabled}`);
-
-        $btnPassPhase.toggle(passPhaseVisible).prop('disabled', passPhaseDisabled);
-        $btnEndTurn.toggle(endTurnVisible).prop('disabled', endTurnDisabled);
-        $btnConfirmAttack.toggle(confirmAttackVisible).prop('disabled', confirmAttackDisabled);
-        $btnConfirmBlocks.toggle(confirmBlocksVisible).prop('disabled', confirmBlocksDisabled);
-        $btnDiscardMana.toggle(discardManaVisible).prop('disabled', discardManaDisabled);
-        $btnCancelDiscard.toggle(cancelDiscardVisible);
+        console.log(`_updateTurnControls: phase=${phase}, cmState=${combatState},`
+            + ` confirmAtkVis=${confirmAtkVis}, confirmBlkVis=${confirmBlkVis}`);
     }
 
 
