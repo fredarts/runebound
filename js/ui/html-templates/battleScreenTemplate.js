@@ -72,6 +72,7 @@ export function generateBattleScreenHTML() {
                         <button id="btn-pass-phase">Passar Fase</button>
                         <button id="btn-end-turn">Finalizar Turno</button>
                         <button id="btn-discard-mana">Descartar p/ Mana</button>
+                        <button id="btn-cancel-discard" style="display:none">Cancelar</button>
                         <button id="btn-confirm-attack" style="display: none;">Confirmar Ataque</button>
                         <button id="btn-confirm-blocks" style="display: none;">Confirmar Bloqueios</button>
                     </div>

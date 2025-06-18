@@ -118,7 +118,11 @@ export default class ZoomHandler {
         // Fallback para fechar todos, caso o estado se perca (menos provável agora)
         else if ($('.image-zoom-overlay.active').length > 0) {
             console.warn("ZoomHandler: Closing zoom overlay without activeOverlayId set. Closing all.");
-            $('.image-zoom-overlay').removeClass('active');
+            $('.image-zoom-overlay').on('click', e => {
+            if (e.target.classList.contains('image-zoom-overlay')) {
+                $(e.currentTarget).removeClass('active');
+            }
+            });
             $('.image-zoom-overlay img').attr('src', '');
         }
     }

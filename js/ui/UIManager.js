@@ -1,4 +1,4 @@
-// js/ui/UIManager.js - CORRIGIDO PARA FLUXO PÓS-SPLASH E LOGIN (v-login-flow-fix-v2)
+// js/ui/UIManager.js - CORRIGIDO PARA FLUXO PÓS-SPLASH E LOGIN (v-lore-fix)
 
 // Import UI Modules
 import ProfileScreenUI from './screens/ProfileScreenUI.js';
@@ -7,7 +7,7 @@ import BattleScreenUI from './screens/BattleScreenUI.js';
 import OptionsUI from './screens/OptionsUI.js';
 import HomeScreenUI from './screens/HomeScreenUI.js';
 import DeckManagementScreenUI from './screens/DeckManagementScreenUI.js';
-import TitlescreenUi from './screens/titlescreenUi.js'; // Assume que TitlescreenUi pode precisar do AccountManager
+import TitlescreenUi from './screens/titlescreenUi.js';
 import SetCollectionScreenUI from './screens/SetCollectionScreenUI.js';
 import SetMasteryScreenUI from './screens/SetMasteryScreenUI.js';
 import StoreScreenUI from './screens/StoreScreenUI.js';
@@ -55,8 +55,6 @@ export default class UIManager {
         this.#cardRenderer = new CardRenderer();
         this.#zoomHandler = new ZoomHandler(this.#cardDatabase);
 
-        // Passando 'this' (UIManager) e 'accountManager' para TitlescreenUi se ela precisar deles.
-        // Se TitlescreenUi não precisar do accountManager diretamente, você pode omiti-lo.
         this.#titlescreenUI = new TitlescreenUi(this.#screenManager, this, this.#audioManager, this.#accountManager);
         this.#homeUI = new HomeScreenUI(this.#screenManager, this, this.#audioManager);
         this.#optionsUI = new OptionsUI(this.#audioManager);
@@ -72,7 +70,7 @@ export default class UIManager {
         this.#initialDeckChoiceUI = new InitialDeckChoiceScreenUI(this, this.#accountManager, this.#audioManager, this.#cardDatabase);
 
         this._bindPermanentUIActions();
-        console.log("UIManager (Coordinator) initialized (v-login-flow-fix-v2).");
+        console.log("UIManager (Coordinator) initialized (v-lore-fix).");
     }
 
     setGameInstance(gameInstance) {
@@ -105,8 +103,7 @@ export default class UIManager {
     }
 
     hideTopBar() {
-        $('#top-bar').removeClass('active simplified-mode battle-only'); // Remove todas as classes de estado
-        // A classe with-top-bar no #screens-container será gerenciada em navigateTo
+        $('#top-bar').removeClass('active simplified-mode battle-only');
     }
 
     #cleanupActiveUI(newUiInstance = null) {
@@ -126,13 +123,12 @@ export default class UIManager {
         this.#cleanupActiveUI(this.#titlescreenUI);
         if (this.#titlescreenUI?.init) {
             try {
-                // Passa accountManager para que TitlescreenUi possa verificar o estado do usuário
                 this.#titlescreenUI.init($screenElement[0], this.#accountManager);
                 this.#activeScreenUI = this.#titlescreenUI;
             } catch(error) { console.error("UIManager: Erro ao inicializar TitlescreenUI", error); }
         }
     }
-    // ... (outros métodos render... permanecem os mesmos)
+
     async renderHomeScreen(args) {
         this.#cleanupActiveUI(this.#homeUI);
         if(this.#homeUI) {
@@ -225,7 +221,6 @@ export default class UIManager {
             try {
                 this.#battleUI.renderInitialState();
                 this.#activeScreenUI = this.#battleUI;
-                // A navegação para 'battle-screen' e BGM são feitos aqui agora
                 console.log("UIManager: Requesting ScreenManager to show 'battle-screen' after initial game state render.");
                 this.#screenManager.showScreen('battle-screen');
                 this.#audioManager?.playBGM('battle-screen');
@@ -305,69 +300,79 @@ export default class UIManager {
 
         const screensWithoutTopBar = [
             'splash-screen', 'title-screen', 'login-screen',
-            'create-account-screen', 'lore-video-screen', 'initial-deck-choice-screen'
+            'create-account-screen',
+            'lore-video-screen', // Assegura que a TopBar não aparece aqui
+            'initial-deck-choice-screen'
         ];
         const requiresLogin = [
             'home-screen', 'profile-screen', 'deck-management-screen', 'deck-builder-screen',
             'connect-screen', 'battle-screen', 'set-mastery-screen', 'set-collection-screen',
             'store-screen', 'booster-opening-screen'
+            // 'lore-video-screen' e 'initial-deck-choice-screen' são parte do fluxo pós-login.
         ];
-        // 'title-screen' foi removido de restrictedWhenLoggedIn para permitir que o main.js navegue para ela inicialmente.
-        // A própria TitlescreenUI agora pode ter lógica para redirecionar se um usuário já estiver logado e com setup completo.
         const restrictedWhenLoggedIn = ['login-screen', 'create-account-screen'];
 
         // --- GERENCIAMENTO DA TOP BAR E LAYOUT DO CONTAINER ---
         if (screensWithoutTopBar.includes(screenId)) {
-            this.hideTopBar(); // Esconde e remove classes como .active, .simplified-mode, .battle-only
+            this.hideTopBar();
             $screensContainer.removeClass('with-top-bar');
         } else if (currentUser) {
-            this.showTopBar(currentUser); // Mostra e atualiza dados, adiciona .active
+            this.showTopBar(currentUser);
             $screensContainer.addClass('with-top-bar');
             if (screenId === 'battle-screen') {
                 $topBar.addClass('battle-only').removeClass('simplified-mode');
             } else {
                 $topBar.removeClass('simplified-mode battle-only');
             }
-        } else { // Não é uma tela "sem top bar" e não há usuário logado (ex: options acessada do title)
+        } else {
             this.hideTopBar();
             $screensContainer.removeClass('with-top-bar');
         }
         // --- FIM DO GERENCIAMENTO DA TOP BAR ---
 
         // --- VALIDAÇÃO DE ACESSO ---
-        // Caso 1: Usuário NÃO está logado
-        if (!currentUser) {
+        if (!currentUser) { // Usuário NÃO está logado
             if (requiresLogin.includes(screenId)) {
                 console.warn(`UIManager: Access Denied (not logged in) - Screen '${screenId}'. Redirecting to title.`);
                 this.#audioManager?.playSFX('genericError');
-                // Evita loop se já estiver tentando ir para title-screen ou se o destino já for title-screen
                 if (this.#screenManager.getActiveScreenId() !== 'title-screen' && screenId !== 'title-screen') {
-                    await this.navigateTo('title-screen'); // Usa await aqui
+                    await this.navigateTo('title-screen');
                 }
-                return; // Impede a continuação da navegação original
+                return;
             }
-        // Caso 2: Usuário ESTÁ logado
-        } else {
-            // Se o destino é uma tela restrita para usuários logados (login, criar conta)
+        } else { // Usuário ESTÁ logado
+            // Se logado e tentando ir para login/create (que são restrictedWhenLoggedIn)...
             if (restrictedWhenLoggedIn.includes(screenId)) {
-                console.warn(`UIManager: Access Denied (logged in) - Screen '${screenId}'. Redirecting to home.`);
+                console.warn(`UIManager: Access Denied (already logged in) - Screen '${screenId}'. Redirecting based on setup state.`);
                 this.#audioManager?.playSFX('genericError');
-                if (this.#screenManager.getActiveScreenId() !== 'home-screen') {
-                     await this.navigateTo('home-screen');
+                // Se está logado, não deve ver login/create. Redireciona com base no setup.
+                const nextScreen = currentUser.initialSetupComplete === false ? 'lore-video-screen' : 'home-screen';
+                if (this.#screenManager.getActiveScreenId() !== nextScreen) {
+                    await this.navigateTo(nextScreen);
                 }
                 return;
             }
-            // Se logado e setup incompleto, e o destino não é uma tela de setup ou opções
-            if (currentUser.initialSetupComplete === false &&
-                screenId !== 'lore-video-screen' &&
-                screenId !== 'initial-deck-choice-screen' &&
-                screenId !== 'options-screen' &&
-                screenId !== 'title-screen') { // Permite voltar para title-screen mesmo com setup incompleto (ex: logout)
-                console.warn(`UIManager: User ${currentUser.username} has not completed initial setup. Current target: ${screenId}. Redirecting to lore video.`);
-                if (screenId !== 'lore-video-screen') { // Evita loop se já estiver indo para o lore
-                    await this.navigateTo('lore-video-screen');
+
+            // Se logado e setup INCOMPLETO...
+            if (currentUser.initialSetupComplete === false) {
+                // E o destino NÃO É uma das telas permitidas durante o setup incompleto...
+                const allowedDuringIncompleteSetup = [
+                    'lore-video-screen',
+                    'initial-deck-choice-screen',
+                    'options-screen', // Permitir acesso às opções
+                    'title-screen',   // Permitir voltar para o título (ex: para logout)
+                    'login-screen',   // Permitir ir para tela de login (embora já logado, o usuário pode ter chegado aqui de forma estranha)
+                    'create-account-screen' // Similar ao login
+                ];
+
+                if (!allowedDuringIncompleteSetup.includes(screenId)) {
+                    console.warn(`UIManager: User ${currentUser.username} has not completed initial setup. Target: ${screenId}. Redirecting to lore video.`);
+                    // Evita loop se já estiver tentando ir para 'lore-video-screen'
+                    if (this.#screenManager.getActiveScreenId() !== 'lore-video-screen' && screenId !== 'lore-video-screen') {
+                        await this.navigateTo('lore-video-screen');
+                    }
+                    return;
                 }
-                return;
             }
         }
         // --- FIM DA VALIDAÇÃO DE ACESSO ---
@@ -402,48 +407,46 @@ export default class UIManager {
         try {
             await renderPromise;
 
+            // Revalidação final antes de mostrar a tela.
             const finalCurrentUser = this.#accountManager.getCurrentUser();
             let finalIsStillAllowed = false;
 
-            // Se a tela alvo for uma das que não requer login ou não tem restrições de setup, permite.
-            if (screenId === 'title-screen' || screenId === 'login-screen' || screenId === 'create-account-screen' ||
-                screenId === 'splash-screen' || screenId === 'options-screen' ||
-                screenId === 'lore-video-screen' || screenId === 'initial-deck-choice-screen') {
+            const alwaysAllowedScreens = [ // Telas que podem ser acessadas logado ou não, e independente do setup
+                'splash-screen', 'title-screen', 'login-screen', 'create-account-screen', 'options-screen'
+            ];
+            const setupFlowScreens = ['lore-video-screen', 'initial-deck-choice-screen'];
+
+            if (alwaysAllowedScreens.includes(screenId)) {
                 finalIsStillAllowed = true;
-            } else if (!finalCurrentUser) { // Se para outras telas o usuário deslogou
-                 finalIsStillAllowed = !requiresLogin.includes(screenId);
-            } else { // Usuário ainda logado para telas que requerem login
-                 finalIsStillAllowed = !restrictedWhenLoggedIn.includes(screenId); // login/create não devem ser mostradas
-                 if (finalIsStillAllowed && finalCurrentUser.initialSetupComplete === false) {
-                     // Se ainda logado, setup incompleto, e não é uma tela de setup, não permite
-                     if (screenId !== 'lore-video-screen' && screenId !== 'initial-deck-choice-screen') {
-                         finalIsStillAllowed = false;
-                     }
-                 }
+            } else if (!finalCurrentUser) { // Usuário deslogou durante o render
+                // Se a tela requer login ou é parte do fluxo de setup, não é permitida
+                finalIsStillAllowed = !requiresLogin.includes(screenId) && !setupFlowScreens.includes(screenId);
+            } else { // Usuário ainda logado
+                if (restrictedWhenLoggedIn.includes(screenId)) { // Tentando ir para login/create estando logado
+                    finalIsStillAllowed = false; // Não deveria acontecer devido à validação anterior, mas é uma segurança
+                } else if (finalCurrentUser.initialSetupComplete === false) { // Setup incompleto
+                    // Permite telas de setup ou options, caso contrário não
+                    finalIsStillAllowed = setupFlowScreens.includes(screenId) || screenId === 'options-screen';
+                } else { // Setup completo
+                    finalIsStillAllowed = true; // Permite qualquer outra tela que não seja 'restrictedWhenLoggedIn'
+                }
             }
 
             if (finalIsStillAllowed) {
-                // console.log(`UIManager: Requesting ScreenManager to show '${screenId}'.`);
                 this.#screenManager.showScreen(screenId);
                 this.#audioManager?.playBGM(screenId);
                 console.log(`UIManager: Navigation to '${screenId}' complete.`);
             } else {
-                console.warn(`UIManager: Access to '${screenId}' became invalid post-render or during re-check. Redirecting.`);
-                const fallbackScreen = finalCurrentUser && finalCurrentUser.initialSetupComplete ? 'home-screen' :
-                                       finalCurrentUser && !finalCurrentUser.initialSetupComplete ? 'lore-video-screen' :
-                                       'title-screen';
+                console.warn(`UIManager: Access to '${screenId}' became invalid post-render or during re-check. User: ${finalCurrentUser?.username}, SetupComplete: ${finalCurrentUser?.initialSetupComplete}. Redirecting.`);
+                const fallbackScreen = finalCurrentUser ? (finalCurrentUser.initialSetupComplete ? 'home-screen' : 'lore-video-screen') : 'title-screen';
                 if (this.#screenManager.getActiveScreenId() !== fallbackScreen && screenId !== fallbackScreen) {
                     await this.navigateTo(fallbackScreen);
-                } else if (this.#screenManager.getActiveScreenId() === fallbackScreen) {
-                    console.log(`UIManager: Already on fallback screen '${fallbackScreen}'. No further navigation needed for invalid post-render access.`);
                 }
             }
         } catch (error) {
             console.error(`UIManager: Error during render/navigation to '${screenId}':`, error);
             const fallbackCurrentUser = this.#accountManager.getCurrentUser();
-            const fallbackScreenOnError = fallbackCurrentUser && fallbackCurrentUser.initialSetupComplete ? 'home-screen' :
-                                   fallbackCurrentUser && !fallbackCurrentUser.initialSetupComplete ? 'lore-video-screen' :
-                                   'title-screen';
+            const fallbackScreenOnError = fallbackCurrentUser ? (fallbackCurrentUser.initialSetupComplete ? 'home-screen' : 'lore-video-screen') : 'title-screen';
             if (this.#screenManager.getActiveScreenId() !== fallbackScreenOnError && screenId !== fallbackScreenOnError) {
                  await this.navigateTo(fallbackScreenOnError);
             }
@@ -521,7 +524,6 @@ export default class UIManager {
         return this.#cardDatabase;
     }
 
-    // Método para TitlescreenUi acessar o AccountManager (se necessário para redirecionamento)
     getAccountManager() {
         return this.#accountManager;
     }

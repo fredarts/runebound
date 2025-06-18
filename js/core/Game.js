@@ -176,6 +176,16 @@ export default class Game {
 
         if (this.#state !== 'discarding') this.#state = 'playing';
 
+        if (phase === 'mana' || phase === 'draw') {
+            this.emitEvent('banner', { text: phase === 'mana'
+                ? `${player.name} gerou mana.`
+                : `${player.name} comprou uma carta.` });
+
+            // pular para a próxima fase depois de 300 ms
+            setTimeout(() => this.passPhase(), 300);
+            return;       // nada a fazer aqui
+        }
+
         const aiController = this.#aiControllers.get(player.id);
         if (aiController && this.getCurrentPlayer()?.id === player.id &&
             (this.#state === 'playing' || (this.#state === 'discarding' && this.#pendingDiscard?.playerId === player.id))) {

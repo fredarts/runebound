@@ -79,34 +79,50 @@ export default class CreatureCard extends Card { // Using export default
 
     // --- Combat and State ---
     canAttack() {
-        return this.location === 'battlefield'
+        let gameInstanceForLog = null;
+        if (typeof window !== 'undefined' && window.currentGameInstance) {
+            gameInstanceForLog = window.currentGameInstance;
+        }
+
+        const can = this.location === 'battlefield'
             && !this.#isTapped
             && !this.#summoningSickness
             && this.attack > 0
             && !this.hasStatusEffect('cant_attack')
-            && !this.hasStatusEffect('silenced'); // Added silence check
+            && !this.hasStatusEffect('silenced');
+
+        if (gameInstanceForLog) {
+            const localPlayer = gameInstanceForLog.getPlayer(gameInstanceForLog.localPlayerId);
+            if (this.ownerId === localPlayer?.id) {
+                 console.log(`DEBUG ${this.name} (Owner: ${this.ownerId}) canAttack(): ${can}`, {
+                    location: this.location,
+                    isTapped: this.#isTapped,
+                    summoningSickness: this.#summoningSickness,
+                    calculatedAttack: this.attack,
+                    baseAttack: this.#attack,
+                    has_cant_attack: this.hasStatusEffect('cant_attack'),
+                    has_silenced: this.hasStatusEffect('silenced')
+                });
+            }
+        }
+        return can;
     }
     canBlock() {
-        // TODO: Add check for flying/reach interaction if relevant
         return this.location === 'battlefield'
             && !this.#isTapped
             && !this.hasStatusEffect('cant_block');
     }
 
-    /** Explicitly taps the creature */
     tap() {
         if (!this.#isTapped) {
             this.#isTapped = true;
             console.log(`Creature: ${this.name} tapped.`);
-            // Game should emit event AFTER calling this
         }
     }
-    /** Explicitly untaps the creature */
     untap() {
         if (this.#isTapped) {
             this.#isTapped = false;
             console.log(`Creature: ${this.name} untapped.`);
-            // Game should emit event AFTER calling this
         }
     }
 
@@ -114,17 +130,19 @@ export default class CreatureCard extends Card { // Using export default
         if (amount <= 0 || this.location !== 'battlefield') return;
         if (this.hasStatusEffect('shielded') || this.hasStatusEffect('prevent_damage')) {
             console.log(`Creature: ${this.name} damage prevented.`);
-            if(this.hasStatusEffect('shielded')) this.removeStatusEffect('shielded'); // Shield is usually one-time
-            game.emitEvent('damagePrevented', { target: this.getRenderData(), amount, source: source?.getRenderData() });
+            if(this.hasStatusEffect('shielded')) this.removeStatusEffect('shielded');
+            if (game && typeof game.emitEvent === 'function') {
+                game.emitEvent('damagePrevented', { target: this.getRenderData(), amount, source: source?.getRenderData() });
+            }
             return;
         }
 
         this.#currentToughness -= amount;
         console.log(`Creature: ${this.name} took ${amount} damage. Toughness: ${this.#currentToughness}/${this.toughness}`);
-        // Emit individual update for toughness
-        game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: { currentToughness: this.#currentToughness } });
-        // Emit specific damage event
-        game.emitEvent('creatureTookDamage', { creature: this.getRenderData(), amount, source: source?.getRenderData() });
+        if (game && typeof game.emitEvent === 'function') {
+            game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: { currentToughness: this.#currentToughness } });
+            game.emitEvent('creatureTookDamage', { creature: this.getRenderData(), amount, source: source?.getRenderData() });
+        }
 
         if (this.#currentToughness <= 0) {
             this.die(game);
@@ -132,105 +150,217 @@ export default class CreatureCard extends Card { // Using export default
     }
 
     heal(amount, game) {
-        if(amount <= 0 || this.location !== 'battlefield') return;
-        const maxToughness = this.toughness; // Use calculated max toughness
-        if (this.#currentToughness >= maxToughness) return; // Already full
+        if (amount <= 0 || this.location !== 'battlefield') {
+            console.log(`CreatureCard ${this.name}: Heal preconditions not met (amount: ${amount}, location: ${this.location}).`);
+            return false; // Retorna false se a cura não pôde ser aplicada
+        }
+        const maxToughness = this.toughness; // Máxima resistência atual (considerando buffs/debuffs)
+        if (this.#currentToughness >= maxToughness) {
+            console.log(`CreatureCard ${this.name}: Already at max toughness (${this.#currentToughness}/${maxToughness}). No heal needed for ${amount}.`);
+            return false; // Não curou
+        }
 
         const actualHeal = Math.min(amount, maxToughness - this.#currentToughness);
+        if (actualHeal <= 0) { // Se por algum motivo actualHeal for 0 (ex: maxToughness mudou e currentToughness já é >=)
+             console.log(`CreatureCard ${this.name}: Actual heal amount is ${actualHeal}. No effective heal.`);
+             return false;
+        }
+        
         this.#currentToughness += actualHeal;
-        console.log(`Creature: ${this.name} healed ${actualHeal}. Toughness: ${this.#currentToughness}/${maxToughness}`);
-        game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: { currentToughness: this.#currentToughness } });
-        game.emitEvent('creatureHealed', { creature: this.getRenderData(), amount: actualHeal });
+        console.log(`CreatureCard ${this.name}: Healed ${actualHeal}. New Toughness: ${this.#currentToughness}/${maxToughness}. Emitting update.`);
+
+        if (game && typeof game.emitEvent === 'function') {
+            game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: { currentToughness: this.#currentToughness } });
+            game.emitEvent('creatureHealed', { creature: this.getRenderData(), amount: actualHeal });
+        } else {
+            console.warn(`CreatureCard.heal: 'game' instance or 'emitEvent' is undefined for ${this.name}. Cannot emit events for heal.`);
+        }
+        return true; // Curou
     }
+
 
     die(game) {
-        if (this.location !== 'battlefield') return; // Already dead/gone
+        if (this.location !== 'battlefield') return;
         console.log(`Creature: ${this.name} is dying.`);
-        const moved = game.moveCardToZone(this.uniqueId, this.ownerId, 'battlefield', 'graveyard');
-        if (moved) {
-             this.onDeath(game); // Trigger death effects AFTER moving
+        if (game && typeof game.moveCardToZone === 'function') {
+            const moved = game.moveCardToZone(this.uniqueId, this.ownerId, 'battlefield', 'graveyard');
+            if (moved) {
+                 this.onDeath(game);
+            } else {
+                console.error(`Creature: Failed to move ${this.name} to graveyard.`);
+            }
         } else {
-            console.error(`Creature: Failed to move ${this.name} to graveyard.`);
+            console.error(`CreatureCard.die: 'game' instance or 'moveCardToZone' is undefined for ${this.name}. Cannot move to graveyard.`);
         }
     }
 
-    endTurnCleanup(isOwnTurn) {
-        if (isOwnTurn) {
-            this.#summoningSickness = false; // Wears off after controller's turn ends
-        }
-        const changed = this.#tickDownEffects(); // Tick down effects
-        // TODO: If changed is true, trigger a 'creatureUpdate' event from Game?
-        // Game's endTurnCleanup loop should probably do this.
-    }
+    /**
+     * Handles end-of-turn cleanup for the creature.
+     * - Removes summoning sickness if it's the owner's turn.
+     * - Heals 1 toughness if damaged.
+     * - Ticks down temporary effects.
+     * - Emits a 'creatureUpdate' event with the full render data if any state changed.
+     * @param {boolean} isOwnTurn - True if it's the creature owner's turn.
+     * @param {Game} game - The game instance.
+     */
+    endTurnCleanup(isOwnTurn, game) {
+        console.log(`CreatureCard ${this.name}: Starting endTurnCleanup. isOwnTurn: ${isOwnTurn}, currentToughness: ${this.#currentToughness}, maxToughness: ${this.toughness}`);
+        
+        let stateChanged = false;
 
-    // --- Status Effects & Boosts ---
-    applyStatusEffect(effectName, duration) { // duration -1 for permanent
-        this.#statusEffects.set(effectName, duration);
-        console.log(`Creature: ${this.name} gained '${effectName}' (${duration < 0 ? 'Permanent' : duration + ' ticks'})`);
-        // Game should emit update
-    }
-    removeStatusEffect(effectName) {
-        const existed = this.#statusEffects.delete(effectName);
-        if (existed) console.log(`Creature: ${this.name} lost '${effectName}'.`);
-        // Game should emit update
-        return existed;
-    }
-    applyTemporaryBoost(boost, duration) {
-        this.#tempBoosts.push({ boost: { ...boost }, duration });
-        if (boost.toughness && boost.toughness > 0) this.#currentToughness += boost.toughness;
-        console.log(`Creature: ${this.name} gained boost ${JSON.stringify(boost)} (${duration} ticks)`);
-        // Game should emit update
-    }
-
-    #tickDownEffects() {
-        let changed = false;
-        // Boosts
-        const previousMaxToughness = this.toughness;
-        this.#tempBoosts = this.#tempBoosts.filter(b => {
-            b.duration--;
-            if (b.duration <= 0) { changed = true; return false; } // Remove expired
-            return true;
-        });
-        // Adjust current toughness if max toughness decreased
-        const newMaxToughness = this.toughness;
-        if (newMaxToughness < previousMaxToughness) {
-            this.#currentToughness = Math.min(this.#currentToughness, newMaxToughness);
+        if (isOwnTurn && this.#summoningSickness) {
+            this.#summoningSickness = false;
+            stateChanged = true;
+            console.log(`CreatureCard ${this.name}: Summoning sickness removed.`);
         }
 
-        // Status Effects
-        for (const [effect, duration] of this.#statusEffects.entries()) {
-            if (duration > 0) { // Only tick down timed effects
-                 const newDuration = duration - 1;
-                 if (newDuration <= 0) { this.#statusEffects.delete(effect); changed = true; }
-                 else { this.#statusEffects.set(effect, newDuration); }
+        if (this.#currentToughness < this.toughness) {
+            console.log(`CreatureCard ${this.name}: Attempting to heal 1 point (current: ${this.#currentToughness}, max: ${this.toughness}).`);
+            if (this.heal(1, game)) { // heal() já emite seu próprio evento 'creatureUpdate' para currentToughness
+                stateChanged = true; // Marcar que a cura (uma mudança) ocorreu
+            }
+        } else {
+            console.log(`CreatureCard ${this.name}: No heal needed (current: ${this.#currentToughness}, max: ${this.toughness}).`);
+        }
+
+        // #tickDownEffects pode modificar currentToughness (clamp), attack, maxToughness (getters), e statusEffects
+        // Ele retorna true se QUALQUER efeito temporário (buff/status) mudou de duração ou expirou.
+        // Também considera se currentToughness foi clamped.
+        if (this.#tickDownEffects(game)) {
+            stateChanged = true;
+            console.log(`CreatureCard ${this.name}: Temporary effects changed.`);
+        }
+
+        // Se qualquer estado da criatura mudou (summoning sickness, cura, ou efeitos temporários),
+        // emita um evento com o estado completo atualizado.
+        // O evento de heal() já terá atualizado a currentToughness na UI.
+        // Este evento garante que outras mudanças (attack, maxToughness dos getters, statusEffects) sejam refletidas.
+        if (stateChanged) {
+            if (game && typeof game.emitEvent === 'function') {
+                console.log(`CreatureCard ${this.name}: State changed during endTurnCleanup. Emitting full creatureUpdate.`);
+                game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: this.getRenderData() });
             }
         }
-        // TODO: Need a way for Game to know 'changed' happened to emit update
+    }
+
+
+    // --- Status Effects & Boosts ---
+    applyStatusEffect(effectName, duration, game) {
+        this.#statusEffects.set(effectName, duration);
+        console.log(`Creature: ${this.name} gained '${effectName}' (${duration < 0 ? 'Permanent' : duration + ' ticks'})`);
+        if (game && typeof game.emitEvent === 'function') {
+            game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: this.getRenderData() });
+        }
+    }
+    removeStatusEffect(effectName, game) {
+        const existed = this.#statusEffects.delete(effectName);
+        if (existed) console.log(`Creature: ${this.name} lost '${effectName}'.`);
+        if (existed && game && typeof game.emitEvent === 'function') {
+            game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: this.getRenderData() });
+        }
+        return existed;
+    }
+    applyTemporaryBoost(boost, duration, game) {
+        this.#tempBoosts.push({ boost: { ...boost }, duration });
+        if (boost.toughness && boost.toughness > 0) {
+             this.#currentToughness += boost.toughness; // Aumenta current toughness também quando um buff de +X/+toughness é aplicado
+             console.log(`CreatureCard ${this.name}: Applied toughness boost, currentToughness now ${this.#currentToughness}.`);
+        }
+        console.log(`Creature: ${this.name} gained boost ${JSON.stringify(boost)} (${duration} ticks)`);
+        if (game && typeof game.emitEvent === 'function') {
+            game.emitEvent('creatureUpdate', { cardUniqueId: this.uniqueId, updates: this.getRenderData() });
+        }
+    }
+
+    /**
+     * Decrements duration of temporary boosts and status effects.
+     * Adjusts currentToughness if max toughness changes due to expiring boosts.
+     * @param {Game} game - The game instance.
+     * @returns {boolean} True if any effect changed (expired or duration ticked).
+     */
+    #tickDownEffects(game) {
+        let changed = false;
+        const previousCalculatedMaxToughness = this.toughness; // Max toughness ANTES de remover buffs
+
+        // Tick down temporary boosts
+        this.#tempBoosts = this.#tempBoosts.filter(b => {
+            b.duration--;
+            if (b.duration <= 0) {
+                changed = true;
+                console.log(`CreatureCard ${this.name}: Temp boost ${JSON.stringify(b.boost)} expired.`);
+                // Se o boost que expirou era de toughness, e currentToughness era maior que
+                // a nova toughness (sem esse boost), currentToughness precisa ser ajustada.
+                // Esta lógica é movida para DEPOIS que todos os boosts foram processados.
+                return false; // Remove o boost
+            }
+            return true; // Mantém o boost
+        });
+
+        const newCalculatedMaxToughness = this.toughness; // Max toughness DEPOIS de remover buffs
+
+        // Se a toughness máxima calculada diminuiu (ex: buff de toughness expirou)
+        // e a currentToughness atual é maior que essa nova máxima, ajuste (clamp).
+        if (newCalculatedMaxToughness < previousCalculatedMaxToughness) {
+            if (this.#currentToughness > newCalculatedMaxToughness) {
+                const diff = this.#currentToughness - newCalculatedMaxToughness;
+                this.#currentToughness = newCalculatedMaxToughness;
+                changed = true; // O estado da currentToughness mudou
+                console.log(`CreatureCard ${this.name}: Max toughness reduced due to expiring buff. currentToughness clamped from ${this.#currentToughness + diff} to ${this.#currentToughness}.`);
+            }
+        }
+
+        // Tick down status effects
+        for (const [effect, duration] of this.#statusEffects.entries()) {
+            if (duration > 0) { // Apenas decrementa se não for permanente (-1)
+                 const newDuration = duration - 1;
+                 if (newDuration <= 0) {
+                     this.#statusEffects.delete(effect);
+                     changed = true;
+                     console.log(`CreatureCard ${this.name}: Status effect '${effect}' expired.`);
+                 }
+                 else {
+                     this.#statusEffects.set(effect, newDuration);
+                     // Não marca 'changed = true' aqui, pois a simples mudança de duração
+                     // pode não precisar de um re-render completo se a UI não mostrar durações.
+                     // Mas, se o status em si for removido, 'changed' já será true.
+                 }
+            }
+        }
         return changed;
     }
 
+
     // --- Triggered Abilities (Placeholders) ---
     onEnterBattlefield(game, player) {
-        if (this.abilities.includes('ETB: Draw a card')) { player.drawCards(1, game); }
+        if (!game || !player) return;
+        if (this.abilities.includes('ETB: Draw a card')) {
+            player.drawCards(1, game);
+            if (typeof game.emitEvent === 'function') {
+                game.emitEvent('gameLog', { message: `${player.name} comprou uma carta com ETB de ${this.name}.` });
+            }
+        }
     }
     onDeath(game) {
+         if (!game) return;
          if (this.abilities.includes('Deathrattle: Deal 1 damage to opponent')) {
              const opp = game.getOpponent(this.ownerId);
              if(opp) opp.takeDamage(1, this, game);
+             if (typeof game.emitEvent === 'function') {
+                 game.emitEvent('gameLog', { message: `${this.name} causou 1 de dano ao oponente ao morrer.` });
+             }
          }
     }
 
     // --- Rendering ---
     getRenderData() {
-        // Ensure all relevant calculated properties are included
         return {
             ...super.getRenderData(),
             baseAttack: this.baseAttack, baseToughness: this.baseToughness,
-            attack: this.attack, toughness: this.toughness, // Calculated max toughness
-            currentToughness: this.currentToughness,
+            attack: this.attack, toughness: this.toughness, // Estes são os getters que calculam com buffs
+            currentToughness: this.currentToughness, // Este é o valor atual de vida
             tribe: this.tribe, isTapped: this.isTapped, hasSummoningSickness: this.hasSummoningSickness,
             canAttack: this.canAttack(), canBlock: this.canBlock(),
-            statusEffects: Object.fromEntries(this.#statusEffects)
+            statusEffects: Object.fromEntries(this.#statusEffects) // Envia os status para a UI
         };
     }
 }

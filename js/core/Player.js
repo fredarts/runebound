@@ -73,7 +73,7 @@ export default class Player { // Using export default
         // Tick down temporary effects on battlefield cards
         this.#battlefield.getAllCards().forEach(c => {
              if (typeof c.tickDown === 'function') c.tickDown(game); // For Runebindings, etc.
-             if (typeof c.endTurnCleanup === 'function') c.endTurnCleanup(true); // For Creatures (summoning sickness)
+             if (typeof c.endTurnCleanup === 'function') c.endTurnCleanup(true, game); // <<<< CORRIGIDO: Passar 'game'
         });
         console.log(`Player ${this.#name}: End of turn cleanup completed.`);
         this.checkHandSize(game); // Check hand size limit AFTER cleanup

@@ -18,7 +18,7 @@ export default class BattleScreenUI {
 
     // --- Componentes de UI da Batalha ---
     #battleRenderer;
-    #battleInteractionManager = null;
+    #battleInteractionManager = null; // <<< THIS LINE IS NOW UNCOMMENTED
 
     // --- Estado do Jogo (Recebido) ---
     #gameInstance = null;
@@ -404,133 +404,94 @@ export default class BattleScreenUI {
     }
 
     _updateTurnControls() {
-        const interactionMgr = this.#battleInteractionManager;
-        if (!this.#gameInstance || !this.#battleScreenElement?.hasClass('active') || !interactionMgr) {
-            this.#battleRenderer.updateTurnControlsUI({ /* ... desabilita tudo ... */ });
-            return;
+        /* ─────────────────────────── referências úteis ────────────────────────── */
+        const game            = this.#gameInstance;
+        if (!game) return;
+        const phase           = game.getCurrentPhase();
+        const activePlayer    = game.getCurrentPlayer();
+        if (!activePlayer) return;
+        const isMyTurn        = activePlayer.id === this.#localPlayerId;
+
+        const interactionMgr  = this.#battleInteractionManager;
+        if (!interactionMgr) return;
+        const atkMode         = interactionMgr.isDeclaringAttackers();
+        const blockMode       = interactionMgr.isAssigningBlockers();
+        const discardManaMode = interactionMgr.isSelectingDiscardMana?.() ?? false;
+
+        /* ────────────────────────── flags default (visíveis) ──────────────────── */
+        let passPhaseVisible        = isMyTurn;
+        let passPhaseDisabled       = false;
+
+        let endTurnVisible          = isMyTurn;
+        let endTurnDisabled         = false; // <<< PONTO PRINCIPAL DA MUDANÇA
+
+        let confirmAttackVisible    = false;
+        let confirmAttackDisabled   = true;
+
+        let confirmBlocksVisible    = false;
+        let confirmBlocksDisabled   = true;
+
+        let discardManaVisible      = isMyTurn && phase === 'main' && !activePlayer.hasDiscardedForMana && activePlayer.maxMana < 10 && activePlayer.hand.getSize() > 0;
+        let discardManaDisabled     = false;
+
+        let cancelDiscardVisible    = discardManaMode;
+
+        /* ──────────────── lógica especial p/ declarar ATACANTES ───── */
+        if (phase === 'attack' && atkMode) { // Jogador está no modo de declarar atacantes
+            const hasSelection = interactionMgr.getSelectedAttackerIds().size > 0;
+
+            confirmAttackVisible  = true;
+            confirmAttackDisabled = !hasSelection;
+
+            // Durante a escolha de atacantes:
+            // - Pode passar de fase (se não selecionar nada). Desabilita se já selecionou.
+            // - Pode finalizar o turno (se não selecionar nada). Desabilita se já selecionou.
+            passPhaseDisabled = hasSelection;
+            endTurnDisabled   = hasSelection; // <<< MODIFICAÇÃO: Só desabilita se houver seleção
         }
 
-        const localPlayer = this.#gameInstance.getPlayer(this.#localPlayerId);
-        const isLocalTurn = this.#gameInstance.getCurrentPlayer()?.id === this.#localPlayerId;
-        const currentPhase = this.#gameInstance.getCurrentPhase();
-        const cmState = this.#gameInstance.getCombatManager().state; // 'none', 'declare_attackers', 'declare_blockers', 'resolving'
-        const gameState = this.#gameInstance.state;
+        /* ──────────────── lógica especial p/ atribuir BLOQUEIOS ──────── */
+        if (game.getCombatManager()?.state === 'declare_blockers' && !isMyTurn && blockMode) { // Player local é o defensor
+            passPhaseVisible = true; // Defensor pode passar (não bloquear)
+            passPhaseDisabled = false;
+            endTurnVisible = false; // Defensor não pode encerrar turno do atacante
+            confirmBlocksVisible  = true;
+            confirmBlocksDisabled = Object.keys(interactionMgr.getBlockerAssignmentsUI()).length === 0;
+        }
 
-        let passPhaseDisabled = true;
-        let endTurnDisabled = true;
-        let discardManaDisabled = true;
-        let confirmAttackVisible = false;
-        let confirmAttackDisabled = true;
-        let confirmBlocksVisible = false;
-        let confirmBlocksDisabled = true; // Default para desabilitado
+        // Se estiver no modo de descarte obrigatório (EOT)
+        if (interactionMgr.getPendingEOTDiscardCount() > 0) {
+            passPhaseVisible = false;
+            endTurnVisible = false;
+            discardManaVisible = false;
+            cancelDiscardVisible = false;
+            confirmAttackVisible = false;
+            confirmBlocksVisible = false;
+        }
 
-        if (isLocalTurn && gameState === 'playing') {
-            // --- Lógica para botões GERAIS de turno (Passar, Finalizar, Descartar por Mana) ---
-            // Estes botões só estão ativos se NENHUM modo de interação específico (alvo, ataque, bloqueio) estiver ativo
-            // E não houver descarte obrigatório pendente.
-            const noSpecificInteractionMode = !interactionMgr.isSelectingTarget() &&
-                                           !interactionMgr.isDeclaringAttackers() &&
-                                           !interactionMgr.isAssigningBlockers() && // Não deve ser relevante no turno local, mas por segurança
-                                           !interactionMgr.isSelectingDiscardMana() && // Se já está selecionando, não pode clicar de novo
-                                           interactionMgr.getPendingEOTDiscardCount() === 0;
-
-            if (noSpecificInteractionMode) {
-                passPhaseDisabled = false;
-                endTurnDisabled = false;
-                discardManaDisabled = (localPlayer?.hasDiscardedForMana ?? true) ||
-                                      (localPlayer?.maxMana ?? 10) >= 10 ||
-                                      (localPlayer?.hand.getSize() ?? 0) === 0;
-            } else {
-                // Se um modo específico está ativo, desabilita os botões gerais,
-                // EXCETO se for o modo de declaração de ataque (tratado abaixo).
-                passPhaseDisabled = true;
-                endTurnDisabled = true;
-                discardManaDisabled = true;
-            }
-
-            // --- Lógica para Botão "Confirmar Ataque" ---
-            if (currentPhase === 'attack' && cmState === 'none') {
-                // Se estamos na fase de ataque e o CombatManager está pronto para receber atacantes (state 'none')
-                // o jogador DEVE estar no modo de declaração de atacantes ou ter a opção de entrar nele.
-                // _enterAttackerDeclarationMode é chamado em _handleAttackPhaseStart.
-                if (interactionMgr.isDeclaringAttackers()) {
-                    confirmAttackVisible = true;
-                    confirmAttackDisabled = interactionMgr.getSelectedAttackerIds().size === 0;
-                    // Enquanto declara atacantes, desabilita Passar Fase e Finalizar Turno
-                    // para forçar uma decisão de ataque ou o uso explícito de "Passar Fase" se ele desistir.
-                    // NOVO: "Passar Fase" é a saída se não quiser atacar.
-                    passPhaseDisabled = false; // PERMITE PASSAR A FASE MESMO ESTANDO NO MODO DE DECLARAR ATACANTES
-                    endTurnDisabled = true;    // Finalizar Turno ainda não é permitido diretamente daqui
-                }
-                // Se não estiver em isDeclaringAttackers, mas for fase de ataque e cmState 'none',
-                // significa que o jogador pode iniciar a declaração (o botão de "Declarar Ataque" se existisse, ou o primeiro clique em criatura).
-                // Mas como não temos botão "Declarar Ataque", o modo é entrado automaticamente.
-                // A visibilidade do botão de confirmação é controlada por isDeclaringAttackers.
-            }
-
-            // --- Lógica para Botão "Descartar por Mana" (se já não desabilitado acima) ---
-            // Se está no modo de selecionar descarte por mana, o próprio botão de iniciar o descarte fica desabilitado.
-            if (interactionMgr.isSelectingDiscardMana()) {
-                discardManaDisabled = true;
-                passPhaseDisabled = true; // Não pode passar fase enquanto escolhe descarte por mana
-                endTurnDisabled = true;   // Nem finalizar turno
-            }
-            
-            // Se estiver selecionando alvo para uma carta.
-            if (interactionMgr.isSelectingTarget()){
-                passPhaseDisabled = true;
-                endTurnDisabled = true;
-                discardManaDisabled = true;
-            }
-
-            // Se estiver pendente descarte de fim de turno
-            if (interactionMgr.getPendingEOTDiscardCount() > 0) {
-                passPhaseDisabled = true;
-                endTurnDisabled = true;
-                discardManaDisabled = true;
-            }
-
-
-        } else if (!isLocalTurn && gameState === 'playing') { // Turno do Oponente
-            // --- Lógica para Botão "Confirmar Bloqueios" ---
-            if (currentPhase === 'attack' && cmState === 'declare_blockers') {
-                // Se é o turno do oponente, ele atacou, e o jogador local está no modo de atribuir bloqueadores
-                if (interactionMgr.isAssigningBlockers()) {
-                    confirmBlocksVisible = true;
-                    confirmBlocksDisabled = false; // Sempre habilitado para poder confirmar 0 bloqueios
-                    // Enquanto atribui bloqueadores, outros botões (que não seriam do jogador local de qualquer forma) ficam desabilitados.
-                    passPhaseDisabled = true;
-                    endTurnDisabled = true;
-                    discardManaDisabled = true;
-                }
-            }
-             // Geralmente, todos os botões de ação do jogador local estão desabilitados no turno do oponente.
-             // A lógica acima já trata isso com isLocalTurn.
+        // Se estiver no modo de descarte por mana ou seleção de alvo
+        if (discardManaMode || interactionMgr.isSelectingTarget()) {
+            passPhaseVisible = false;
+            endTurnVisible = false;
         }
 
 
-        // Caso especial: Se o jogador local acabou de declarar seus atacantes,
-        // o cmState vai para 'declare_blockers', mas AINDA é o turno do jogador local.
-        // Neste ponto, ele não deve poder passar fase ou finalizar turno até o oponente responder.
-        if (isLocalTurn && currentPhase === 'attack' && cmState === 'declare_blockers') {
-            passPhaseDisabled = true;
-            endTurnDisabled = true;
-            discardManaDisabled = true; // Não faz sentido descartar por mana aqui
-            confirmAttackVisible = false; // Já confirmou o ataque
-        }
+        /* ─────────────────── aplica no DOM / componentes UI ───────────────────── */
+        const $btnPassPhase      = this.#battleScreenElement.find('#btn-pass-phase');
+        const $btnEndTurn        = this.#battleScreenElement.find('#btn-end-turn');
+        const $btnConfirmAttack  = this.#battleScreenElement.find('#btn-confirm-attack');
+        const $btnConfirmBlocks  = this.#battleScreenElement.find('#btn-confirm-blocks');
+        const $btnDiscardMana    = this.#battleScreenElement.find('#btn-discard-mana');
+        const $btnCancelDiscard  = this.#battleScreenElement.find('#btn-cancel-discard');
 
-
-        const controlsState = {
-            passPhaseDisabled,
-            endTurnDisabled,
-            discardManaDisabled,
-            confirmAttackVisible,
-            confirmAttackDisabled,
-            confirmBlocksVisible,
-            confirmBlocksDisabled
-        };
-        this.#battleRenderer.updateTurnControlsUI(controlsState);
+        $btnPassPhase.toggle(passPhaseVisible).prop('disabled', passPhaseDisabled);
+        $btnEndTurn.toggle(endTurnVisible).prop('disabled', endTurnDisabled);
+        $btnConfirmAttack.toggle(confirmAttackVisible).prop('disabled', confirmAttackDisabled);
+        $btnConfirmBlocks.toggle(confirmBlocksVisible).prop('disabled', confirmBlocksDisabled);
+        $btnDiscardMana.toggle(discardManaVisible).prop('disabled', discardManaDisabled);
+        $btnCancelDiscard.toggle(cancelDiscardVisible);
     }
+
 
     // _checkIfValidTarget é crucial para BattleInteractionManager
     _checkIfValidTarget(targetId, targetOwnerId, actionPendingTarget) {
