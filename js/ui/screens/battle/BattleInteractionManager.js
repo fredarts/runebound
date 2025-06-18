@@ -19,9 +19,10 @@ export default class BattleInteractionManager {
     #btnDiscardMana;
     #btnConfirmAttack;
     #btnConfirmBlocks;
+    #btnCancelDiscard;
 
     // --- Estado Interno da Interação ---
-    #isSelectingDiscardMana = false; // First (and now only) declaration
+    #isSelectingDiscardMana = false;
     #isSelectingTarget = false;
     #actionPendingTarget = null;
     #isDeclaringAttackers = false;
@@ -29,19 +30,17 @@ export default class BattleInteractionManager {
     #isAssigningBlockers = false;
     #blockerAssignmentsUI = {};
     #pendingEOTDiscardCount = 0;
-    #selectedAttackerForBlocking = null; // ID do atacante inimigo selecionado para bloqueio
-    // #isSelectingDiscardMana = false; // <<< DUPLICATE REMOVED
+    #selectedAttackerForBlocking = null;
+
 
     constructor(game, battleScreenUI, battleRenderer, audioManager, zoomHandler) {
         if (!game || !battleScreenUI || !battleRenderer || !audioManager || !zoomHandler) {
-            // Permite que a construção aconteça mesmo se 'game' for null inicialmente,
-            // mas lança erro se as outras dependências de UI estiverem faltando.
             if (!battleScreenUI || !battleRenderer || !audioManager || !zoomHandler) {
                 throw new Error("BattleInteractionManager: Missing critical UI dependencies (battleScreenUI, battleRenderer, audioManager, or zoomHandler).");
             }
             console.warn("BattleInteractionManager: 'gameInstance' is null during construction. It should be set later via setGameInstance.");
         }
-        this.#gameInstance = game; // Pode ser null inicialmente
+        this.#gameInstance = game;
         this.#battleScreenUI = battleScreenUI;
         this.#battleRenderer = battleRenderer;
         this.#audioManager = audioManager;
@@ -51,16 +50,6 @@ export default class BattleInteractionManager {
         if (!this.#battleScreenElement || !this.#battleScreenElement.length) {
             console.error("BattleInteractionManager Error: #battle-screen element not found during caching!");
         }
-        // Drag-and-drop para jogar
-        this.#playerHandElement.on('dragstart', '.card', e => {
-            e.originalEvent.dataTransfer.setData('cardId',
-                $(e.target).data('card-unique-id'));
-        });
-        this.#playerBattlefieldElement.on('dragover', e => e.preventDefault());
-        this.#playerBattlefieldElement.on('drop', e => {
-            const id = e.originalEvent.dataTransfer.getData('cardId');
-            if (id) this._playCardFromHand(id);
-        });
         console.log("BattleInteractionManager initialized.");
     }
 
@@ -68,7 +57,6 @@ export default class BattleInteractionManager {
         this.#localPlayerId = id;
     }
 
-    // Métodos para BattleScreenUI gerenciar o estado de descarte obrigatório
     setPendingEOTDiscardCount(count) {
         this.#pendingEOTDiscardCount = Math.max(0, count);
     }
@@ -76,13 +64,13 @@ export default class BattleInteractionManager {
         return this.#pendingEOTDiscardCount;
     }
 
-    // --- GETTERS PÚBLICOS PARA ESTADOS DE INTERAÇÃO ---
     isSelectingDiscardMana() { return this.#isSelectingDiscardMana; }
     isSelectingTarget() { return this.#isSelectingTarget; }
     isDeclaringAttackers() { return this.#isDeclaringAttackers; }
     isAssigningBlockers() { return this.#isAssigningBlockers; }
     getSelectedAttackerIds() { return new Set(this.#selectedAttackerIds); }
     getBlockerAssignmentsUI() { return { ...this.#blockerAssignmentsUI }; }
+    getSelectedAttackerForBlocking() { return this.#selectedAttackerForBlocking; }
 
 
     refreshVisualHighlights() {
@@ -95,11 +83,10 @@ export default class BattleInteractionManager {
             this.#pendingEOTDiscardCount > 0 ? "Pending EOT Discard" : "None"
         );
 
-        // Limpa todos os destaques anteriores para evitar acúmulo
         this.#battleRenderer.clearAllCardHighlights();
         this.#playerBattlefieldElement?.find('.can-attack-visual, .can-block-visual').removeClass('can-attack-visual can-block-visual');
         this.#opponentBattlefieldElement?.find('.targetable-for-block-assignment, .attacker-selected-for-blocking').removeClass('targetable-for-block-assignment attacker-selected-for-blocking');
-        this.#playerHandElement?.find('.card').removeClass('targetable'); // Para descarte
+        this.#playerHandElement?.find('.card').removeClass('targetable');
 
         if (this.#isDeclaringAttackers) {
             const localPlayer = this.#gameInstance.getPlayer(this.#localPlayerId);
@@ -108,7 +95,6 @@ export default class BattleInteractionManager {
                     const cardEl = this.#playerBattlefieldElement.find(`.card[data-card-unique-id="${c.uniqueId}"]`);
                     this.#battleRenderer.highlightTargetableCards(cardEl, true);
                     cardEl.addClass('can-attack-visual');
-                    // Reaplicar .selected-attacker se já estava selecionado
                     if (this.#selectedAttackerIds.has(c.uniqueId)) {
                         this.#battleRenderer.highlightAttackerSelection(cardEl, true);
                     }
@@ -121,10 +107,8 @@ export default class BattleInteractionManager {
                     const cardEl = this.#playerBattlefieldElement.find(`.card[data-card-unique-id="${c.uniqueId}"]`);
                     this.#battleRenderer.highlightTargetableCards(cardEl, true);
                     cardEl.addClass('can-block-visual');
-                    // Reaplicar .selected-blocker se já estava bloqueando algo
                     for (const attackerId in this.#blockerAssignmentsUI) {
                         if (this.#blockerAssignmentsUI[attackerId].includes(c.uniqueId)) {
-                            // Encontrar o elemento do atacante para passar para highlightBlockerAssignment
                             const attackerEl = this.#opponentBattlefieldElement.find(`.card[data-card-unique-id="${attackerId}"]`);
                             this.#battleRenderer.highlightBlockerAssignment(attackerEl, cardEl, this.#blockerAssignmentsUI);
                             break;
@@ -142,34 +126,6 @@ export default class BattleInteractionManager {
         } else if (this.#isSelectingDiscardMana || this.#pendingEOTDiscardCount > 0) {
             this.#battleRenderer.setPlayerHandSelectingMode(true, this.#pendingEOTDiscardCount > 0);
         }
-        // Não precisa chamar _updateTurnControls aqui, pois o estado dos botões não deve ter mudado.
-    }
-
-    _playCardFromHand(cardId) {
-    const player = this.#gameInstance.getPlayer(this.#localPlayerId);
-    if (player.playCard(cardId, null, this.#gameInstance)) {
-        this.#audioManager.playSFX('playCreature');
-    }
-    }
-
-    _enterDiscardManaSelectionMode() {
-    this.#isSelectingDiscardMana = true;
-
-    // mostra o botão "Cancelar" e liga o click
-    $('#btn-cancel-discard').show()
-        .off('click')                       // remove handlers antigos
-        .on('click', () => this._exitDiscardManaSelectionMode());
-
-    // destaque visual nas cartas da mão etc.
-    this.refreshVisualHighlights();
-}
-
-    _exitDiscardManaSelectionMode() {
-        this.#isSelectingDiscardMana = false;
-        $('#btn-cancel-discard').hide();        // esconde o botão
-
-        this.refreshVisualHighlights();
-        // opcional: restaurar cursores, tooltips…
     }
 
     _cacheSelectors() {
@@ -184,6 +140,7 @@ export default class BattleInteractionManager {
         this.#btnDiscardMana = this.#battleScreenElement.find('#btn-discard-mana');
         this.#btnConfirmAttack = this.#battleScreenElement.find('#btn-confirm-attack');
         this.#btnConfirmBlocks = this.#battleScreenElement.find('#btn-confirm-blocks');
+        this.#btnCancelDiscard = this.#battleScreenElement.find('#btn-cancel-discard');
     }
 
     bindGameActions() {
@@ -191,12 +148,12 @@ export default class BattleInteractionManager {
             console.error("BattleInteractionManager: Cannot bind actions, root element not found.");
             return;
         }
-        console.log("BattleInteractionManager: Binding game actions...");
+        console.log("BattleInteractionManager: Binding game actions (with drag-and-drop)...");
         this._unbindGameActions();
 
         const addAudio = ($element, sfxClick = 'buttonClick', sfxHover = 'buttonHover') => {
              if (!$element || !$element.length) return;
-             $element.off('click.battleinteract_audio mouseenter.battleinteract_audio') // Limpa listeners de áudio anteriores
+             $element.off('click.battleinteract_audio mouseenter.battleinteract_audio')
                      .on('click.battleinteract_audio', () => this.#audioManager?.playSFX(sfxClick))
                      .on('mouseenter.battleinteract_audio', () => this.#audioManager?.playSFX(sfxHover));
         };
@@ -211,6 +168,9 @@ export default class BattleInteractionManager {
         addAudio(this.#btnConfirmAttack, 'playCreature');
         this.#btnConfirmBlocks.on('click.battleinteract', this._handleConfirmBlockersClick.bind(this));
         addAudio(this.#btnConfirmBlocks, 'playCreature');
+        this.#btnCancelDiscard.on('click.battleinteract', this._handleCancelDiscardClick.bind(this));
+        addAudio(this.#btnCancelDiscard);
+
 
         this.#playerHandElement.on('click.battleinteract', '.card', this._handleHandCardClick.bind(this));
         this.#playerBattlefieldElement.on('click.battleinteract', '.card', this._handleBattlefieldCardClick.bind(this));
@@ -221,12 +181,54 @@ export default class BattleInteractionManager {
             this.#zoomHandler.handleZoomClick(e, this.#gameInstance);
         });
 
-        this.#playerHandElement.off('mouseenter.battleinteract_cardaudio') // Limpa antes de adicionar
+        this.#playerHandElement.off('mouseenter.battleinteract_cardaudio')
                                .on('mouseenter.battleinteract_cardaudio', '.card', () => this.#audioManager?.playSFX('cardDraw'));
         this.#playerBattlefieldElement.off('mouseenter.battleinteract_cardaudio')
                                     .on('mouseenter.battleinteract_cardaudio', '.card', () => this.#audioManager?.playSFX('buttonHover'));
         this.#opponentBattlefieldElement.off('mouseenter.battleinteract_cardaudio')
                                       .on('mouseenter.battleinteract_cardaudio', '.card', () => this.#audioManager?.playSFX('buttonHover'));
+
+        this.#playerHandElement.on('dragstart.battleinteract_dnd', '.card', (e) => {
+            const cardUniqueId = $(e.currentTarget).data('card-unique-id');
+            if (cardUniqueId && this._canInteract(true)) {
+                e.originalEvent.dataTransfer.setData('text/plain', cardUniqueId);
+                e.originalEvent.dataTransfer.effectAllowed = "move";
+                $(e.currentTarget).addClass('dragging-card');
+                this.#audioManager?.playSFX('cardDraw');
+            } else {
+                e.preventDefault();
+            }
+        });
+
+        this.#playerHandElement.on('dragend.battleinteract_dnd', '.card', (e) => {
+            $(e.currentTarget).removeClass('dragging-card');
+        });
+
+        this.#playerBattlefieldElement
+            .on('dragover.battleinteract_dnd', (e) => {
+                if (this._canInteract(true)) {
+                    const cardBeingDragged = e.originalEvent.dataTransfer.types.includes('text/plain');
+                    if (cardBeingDragged) { 
+                        e.preventDefault();
+                        e.originalEvent.dataTransfer.dropEffect = "move";
+                        this.#playerBattlefieldElement.addClass('drop-target-active');
+                    }
+                }
+            })
+            .on('dragleave.battleinteract_dnd', (e) => {
+                this.#playerBattlefieldElement.removeClass('drop-target-active');
+            })
+            .on('drop.battleinteract_dnd', (e) => {
+                e.preventDefault();
+                this.#playerBattlefieldElement.removeClass('drop-target-active');
+                if (this._canInteract(true)) {
+                    const cardUniqueId = e.originalEvent.dataTransfer.getData('text/plain');
+                    if (cardUniqueId) {
+                        this._handleCardDropOnBattlefield(cardUniqueId);
+                    }
+                }
+            });
+
         console.log("BattleInteractionManager: Game actions bound.");
     }
 
@@ -235,24 +237,70 @@ export default class BattleInteractionManager {
         const namespace = '.battleinteract';
         const audioNs = '.battleinteract_audio';
         const cardAudioNs = '.battleinteract_cardaudio';
+        const dndNs = '.battleinteract_dnd';
 
         this.#btnEndTurn?.off(namespace + audioNs);
         this.#btnPassPhase?.off(namespace + audioNs);
         this.#btnDiscardMana?.off(namespace + audioNs);
         this.#btnConfirmAttack?.off(namespace + audioNs);
         this.#btnConfirmBlocks?.off(namespace + audioNs);
+        this.#btnCancelDiscard?.off(namespace + audioNs);
 
-        this.#playerHandElement?.off(namespace + cardAudioNs);
-        this.#playerBattlefieldElement?.off(namespace + cardAudioNs);
+        this.#playerHandElement?.off(namespace + cardAudioNs + dndNs);
+        this.#playerBattlefieldElement?.off(namespace + cardAudioNs + dndNs);
         this.#opponentBattlefieldElement?.off(namespace + cardAudioNs);
         this.#battleScreenElement?.off(namespace);
     }
 
-    _canInteract(needsActiveTurn = true) {
+    _handleCardDropOnBattlefield(cardUniqueId) {
+        console.log(`BattleInteractionManager: Card ${cardUniqueId} dropped on battlefield.`);
+        const player = this.#gameInstance.getPlayer(this.#localPlayerId);
+        if (!player) return;
+
+        const cardInstance = player.hand.getCard(cardUniqueId);
+        if (!cardInstance) {
+            console.warn(`BattleInteractionManager: Dropped card ${cardUniqueId} not found in hand.`);
+            return;
+        }
+
+        if (!cardInstance.canPlay(player, this.#gameInstance)) {
+            this.#battleRenderer.updateActionFeedback(`Não é possível jogar ${cardInstance.name} agora.`);
+            this.#battleRenderer.showCardFeedback(this.#playerHandElement.find(`.card[data-card-unique-id="${cardUniqueId}"]`), 'shake');
+            this.#audioManager?.playSFX('genericError');
+            return;
+        }
+
+        if (cardInstance.requiresTarget()) {
+            this._enterTargetSelectionMode({
+                cardUniqueId: cardInstance.uniqueId,
+                targetType: cardInstance.targetType,
+                cardName: cardInstance.name
+            });
+            this.#battleRenderer.updateActionFeedback(`Jogado ${cardInstance.name}. Selecione um alvo.`);
+        } else {
+            if (player.playCard(cardUniqueId, null, this.#gameInstance)) {
+                this.#battleRenderer.updateActionFeedback(`${cardInstance.name} jogado.`);
+            } else {
+                this.#audioManager?.playSFX('genericError');
+            }
+        }
+        this.#playerBattlefieldElement.removeClass('drop-target-active');
+        this.#playerHandElement.find(`.card[data-card-unique-id="${cardUniqueId}"]`).removeClass('dragging-card');
+    }
+
+    _canInteract(needsActiveTurn = true, isDefendingAction = false) {
         if (!this.#gameInstance || !this.#localPlayerId) return false;
         if (this.#gameInstance.state !== 'playing') return false;
-        if (needsActiveTurn && this.#gameInstance.getCurrentPlayer()?.id !== this.#localPlayerId) return false;
-        if (this.#pendingEOTDiscardCount > 0) return false;
+        
+        const isMyTurn = this.#gameInstance.getCurrentPlayer()?.id === this.#localPlayerId;
+
+        if (isDefendingAction) {
+            // Permite interação se NÃO for meu turno E estou no modo de bloqueio
+            return !isMyTurn && this.#isAssigningBlockers && this.#gameInstance.getCombatManager().state === 'declare_blockers';
+        }
+
+        if (needsActiveTurn && !isMyTurn) return false;
+        if (this.#pendingEOTDiscardCount > 0 && !this.#isSelectingDiscardMana) return false; // Bloqueia outras ações se EOT discard estiver pendente, a menos que esteja especificamente no modo de descarte de mana.
         return true;
     }
 
@@ -263,14 +311,6 @@ export default class BattleInteractionManager {
         }
     }
 
-    _onDiscardManaClicked() {
-    // Se já estamos escolhendo carta para descartar, não faz nada
-    if (this.#isSelectingDiscardMana) return;
-
-    // Entra no modo de seleção (mostra botão “Cancelar” etc.)
-    this._enterDiscardManaSelectionMode();
-}
-
     _resetInteractionModes() {
         this.#isSelectingDiscardMana = false;
         this.#isSelectingTarget = false;
@@ -280,19 +320,19 @@ export default class BattleInteractionManager {
         this.#isAssigningBlockers = false;
         this.#blockerAssignmentsUI = {};
         this.#selectedAttackerForBlocking = null;
-        // pendingEOTDiscardCount é controlado por setPendingEOTDiscardCount
 
         this.#battleRenderer.setPlayerHandSelectingMode(false);
         this.#battleRenderer.clearAllCardHighlights();
         this.#battleRenderer.updateActionFeedback('');
         console.log("BattleInteractionManager: All interaction modes reset.");
         this.#battleScreenUI._updateTurnControls();
+        this.#btnCancelDiscard.hide();
     }
 
     _enterDiscardRequiredMode(count) {
         this.setPendingEOTDiscardCount(count);
         this.#battleRenderer.updateActionFeedback(`Mão cheia! Descarte ${count} carta(s).`);
-        this.#battleRenderer.setPlayerHandSelectingMode(true, true); // (isSelecting, isRequired)
+        this.#battleRenderer.setPlayerHandSelectingMode(true, true);
         this._disableAllGameActions(true);
         this.#battleScreenUI._updateTurnControls();
     }
@@ -311,6 +351,7 @@ export default class BattleInteractionManager {
         this.#battleRenderer.setPlayerHandSelectingMode(true);
         this._disableAllGameActions(true);
         this.#battleScreenUI._updateTurnControls();
+        this.#btnCancelDiscard.show();
     }
     _exitDiscardManaSelectionMode() {
         if (!this.#isSelectingDiscardMana) return;
@@ -318,6 +359,7 @@ export default class BattleInteractionManager {
         this.#battleRenderer.updateActionFeedback('');
         this.#battleRenderer.setPlayerHandSelectingMode(false);
         this.#battleScreenUI._updateTurnControls();
+        this.#btnCancelDiscard.hide();
     }
 
     _enterTargetSelectionMode(actionInfo) {
@@ -326,13 +368,10 @@ export default class BattleInteractionManager {
         this.#isSelectingTarget = true;
         this.#actionPendingTarget = actionInfo;
         this.#battleRenderer.updateActionFeedback(`Selecione um alvo (${actionInfo.targetType}) para ${actionInfo.cardName}.`);
-        // O BattleScreenUI tem o método _checkIfValidTarget, mas o destaque é feito pelo BattleRenderer.
-        // Idealmente, BattleRenderer teria um método para destacar baseado no targetType.
-        // Por ora, vamos assumir que BattleRenderer._highlightValidTargets (se existir) ou
-        // BattleScreenUI._highlightValidTargets é chamado externamente ou o renderer o faz.
         this.#battleRenderer.setBattlefieldTargetingMode(actionInfo.targetType, true);
         this._disableAllGameActions(true);
         this.#battleScreenUI._updateTurnControls();
+        this.#btnCancelDiscard.show();
     }
     _exitTargetSelectionMode() {
         if (!this.#isSelectingTarget) return;
@@ -341,47 +380,33 @@ export default class BattleInteractionManager {
         this.#battleRenderer.updateActionFeedback('');
         this.#battleRenderer.setBattlefieldTargetingMode(null, false);
         this.#battleScreenUI._updateTurnControls();
+        this.#btnCancelDiscard.hide();
     }
 
-_enterAttackerDeclarationMode() {
-    // Se já estamos no modo de declaração, não faz nada
-    if (this.#isDeclaringAttackers) return;
-
-    // ─── NOVO: verifica se há criaturas aptas a atacar ────────────────────────
-    const localPlayer = this.#gameInstance?.getPlayer(this.#localPlayerId);
-    const possibleAttackers = localPlayer?.battlefield
-        .getCreatures()
-        .filter(c => c.canAttack()) || [];
-
-    if (possibleAttackers.length === 0) {
-        console.log("Nenhum atacante disponível – passando fase de ataque automaticamente.");
-        this.#gameInstance.passPhase();      // Avança para a próxima fase
-        return;                              // Não entra em modo de ataque
+    _enterAttackerDeclarationMode() {
+        if (this.#isDeclaringAttackers) return;
+        const localPlayer = this.#gameInstance?.getPlayer(this.#localPlayerId);
+        const possibleAttackers = localPlayer?.battlefield.getCreatures().filter(c => c.canAttack()) || [];
+        if (possibleAttackers.length === 0) {
+            console.log("Nenhum atacante disponível – passando fase de ataque automaticamente.");
+            this.#gameInstance.passPhase();
+            return;
+        }
+        this._exitAllInteractionModes();
+        this.#isDeclaringAttackers = true;
+        this.#selectedAttackerIds.clear();
+        this.#battleRenderer.updateActionFeedback('Selecione suas criaturas para atacar e clique em "Confirmar Ataque".');
+        possibleAttackers.forEach(c => {
+            const cardEl = this.#playerBattlefieldElement.find(`.card[data-card-unique-id="${c.uniqueId}"]`);
+            this.#battleRenderer.highlightTargetableCards(cardEl, true);
+            cardEl.addClass('can-attack-visual');
+        });
+        this._disableAllGameActions(true);
+        this.#battleScreenUI._updateTurnControls();
     }
-    // ──────────────────────────────────────────────────────────────────────────
-
-    this._exitAllInteractionModes();
-    this.#isDeclaringAttackers = true;
-    this.#selectedAttackerIds.clear();
-    this.#battleRenderer.updateActionFeedback(
-        'Selecione suas criaturas para atacar e clique em "Confirmar Ataque".'
-    );
-
-    // Destaca visualmente quem pode atacar
-    possibleAttackers.forEach(c => {
-        const cardEl = this.#playerBattlefieldElement
-            .find(`.card[data-card-unique-id="${c.uniqueId}"]`);
-        this.#battleRenderer.highlightTargetableCards(cardEl, true);
-        cardEl.addClass('can-attack-visual');
-    });
-
-    this._disableAllGameActions(true);
-    this.#battleScreenUI._updateTurnControls();
-}
     _exitAttackerDeclarationMode() {
         if (!this.#isDeclaringAttackers) return;
         this.#isDeclaringAttackers = false;
-        // this.#selectedAttackerIds.clear(); // Feito ao entrar no modo
         this.#battleRenderer.updateActionFeedback('');
         this.#battleRenderer.clearAllCardHighlights();
         this.#playerBattlefieldElement?.find('.card.can-attack-visual').removeClass('can-attack-visual');
@@ -399,7 +424,7 @@ _enterAttackerDeclarationMode() {
         localPlayer?.battlefield.getCreatures().forEach(c => {
             if (c.canBlock()) {
                  const cardEl = this.#playerBattlefieldElement.find(`.card[data-card-unique-id="${c.uniqueId}"]`);
-                 this.#battleRenderer.highlightTargetableCards(cardEl, true); // Adiciona .targetable
+                 this.#battleRenderer.highlightTargetableCards(cardEl, true);
                  cardEl.addClass('can-block-visual');
             }
         });
@@ -410,7 +435,6 @@ _enterAttackerDeclarationMode() {
     _exitBlockerAssignmentMode() {
         if (!this.#isAssigningBlockers) return;
         this.#isAssigningBlockers = false;
-        // this.#blockerAssignmentsUI = {}; // Limpo ao entrar
         this.#selectedAttackerForBlocking = null;
         this.#battleRenderer.updateActionFeedback('');
         this.#battleRenderer.clearAllCardHighlights();
@@ -425,13 +449,12 @@ _enterAttackerDeclarationMode() {
         this._exitTargetSelectionMode();
         this._exitAttackerDeclarationMode();
         this._exitBlockerAssignmentMode();
-        // Não sair do _exitDiscardRequiredMode aqui
     }
 
     _handleEndTurnClick() {
         if (this._canInteract(true)) {
-            if (this.#isSelectingDiscardMana) {
-                this.#battleRenderer.updateActionFeedback("Finalize o descarte por mana ou cancele (ESC).");
+            if (this.#isSelectingDiscardMana || this.#isSelectingTarget) {
+                this.#battleRenderer.updateActionFeedback("Finalize a ação atual ou cancele (ESC).");
                 this.#battleRenderer.showCardFeedback(this.#playerHandElement, 'shake');
                 return;
             }
@@ -443,18 +466,30 @@ _enterAttackerDeclarationMode() {
     }
 
     _handlePassPhaseClick() {
-        if (this._canInteract(true)) {
-             if (this.#isSelectingDiscardMana) {
-                this.#battleRenderer.updateActionFeedback("Finalize o descarte por mana ou cancele (ESC).");
+        const isDefendingMode = this.#isAssigningBlockers &&
+                                this.#gameInstance?.getCombatManager().state === 'declare_blockers' &&
+                                this.#gameInstance?.getCurrentPlayer()?.id !== this.#localPlayerId;
+
+        if (this._canInteract(true) || (this._canInteract(false, true) && isDefendingMode) ) {
+             if (this.#isSelectingDiscardMana || this.#isSelectingTarget) {
+                this.#battleRenderer.updateActionFeedback("Finalize a ação atual ou cancele (ESC).");
                 this.#battleRenderer.showCardFeedback(this.#playerHandElement, 'shake');
                 return;
             }
-            console.log("InteractionManager: Player requested Pass Phase.");
-            this.#gameInstance.passPhase();
+
+            if (isDefendingMode) {
+                console.log("InteractionManager: Defending player chose to Pass Phase (not block).");
+                this.#gameInstance.confirmBlockDeclaration(this.#localPlayerId, {}); 
+                this._exitBlockerAssignmentMode(); 
+            } else {
+                console.log("InteractionManager: Player requested Pass Phase.");
+                this.#gameInstance.passPhase();
+            }
         } else {
             this.#battleRenderer.updateActionFeedback("Não é possível passar a fase agora.");
         }
     }
+
 
     _handleDiscardForManaClick() {
         const player = this.#gameInstance?.getPlayer(this.#localPlayerId);
@@ -470,6 +505,14 @@ _enterAttackerDeclarationMode() {
             else if (player?.maxMana >= 10) this.#battleRenderer.updateActionFeedback("Mana máxima (10) já atingida.");
             else if (player?.hand.getSize() === 0) this.#battleRenderer.updateActionFeedback("Sua mão está vazia.");
             else this.#battleRenderer.updateActionFeedback("Não é possível descartar por mana agora.");
+        }
+    }
+
+    _handleCancelDiscardClick() {
+        if (this.#isSelectingDiscardMana) {
+            this._exitDiscardManaSelectionMode();
+        } else if (this.#isSelectingTarget) {
+            this._exitTargetSelectionMode();
         }
     }
 
@@ -502,26 +545,23 @@ _enterAttackerDeclarationMode() {
             this.#battleRenderer.showCardFeedback($cardElement, 'shake');
             return;
         }
-        if (!this._canInteract(true)) return;
+       
+        if (!this._canInteract(true)) {
+            console.log("BattleInteractionManager: Cannot interact (not player's turn or game state invalid).");
+            return;
+        }
 
         const cardInstance = localPlayer.hand.getCard(cardUniqueId);
         if (!cardInstance) return;
 
-        if (!cardInstance.canPlay(localPlayer, this.#gameInstance)) {
-            this.#battleRenderer.updateActionFeedback(`Não é possível jogar ${cardInstance.name} agora.`);
-            this.#battleRenderer.showCardFeedback($cardElement, 'shake');
-            return;
-        }
-        if (cardInstance.requiresTarget()) {
-            this._enterTargetSelectionMode({
-                cardUniqueId: cardInstance.uniqueId,
-                targetType: cardInstance.targetType,
-                cardName: cardInstance.name
-            });
-        } else {
-            localPlayer.playCard(cardUniqueId, null, this.#gameInstance);
-        }
+        // REMOVIDA A LÓGICA DE JOGAR A CARTA COM O CLIQUE
+        console.log(`BattleInteractionManager: Card ${cardInstance.name} na mão clicado. O jogador deve arrastar para jogar.`);
+        // Opcional: adicionar feedback de "selecionado para arrastar"
+        // this.#playerHandElement.find('.card.selected-for-drag').removeClass('selected-for-drag');
+        // $cardElement.addClass('selected-for-drag');
+        // this.#battleRenderer.updateActionFeedback(`Arraste ${cardInstance.name} para o campo para jogar.`);
     }
+
 
     _handleBattlefieldCardClick(event) {
         const $cardElement = $(event.currentTarget);
@@ -537,7 +577,11 @@ _enterAttackerDeclarationMode() {
         if (this.#isSelectingTarget) {
             if (this.#battleScreenUI._checkIfValidTarget(cardUniqueId, ownerId, this.#actionPendingTarget)) {
                 const action = this.#actionPendingTarget;
-                localPlayer.playCard(action.cardUniqueId, cardUniqueId, this.#gameInstance);
+                if (localPlayer.playCard(action.cardUniqueId, cardUniqueId, this.#gameInstance)) {
+                    // Sucesso
+                } else {
+                    this.#audioManager?.playSFX('genericError');
+                }
                 this._exitTargetSelectionMode();
             } else {
                 this.#battleRenderer.showCardFeedback($cardElement, 'invalid-target');
@@ -560,7 +604,7 @@ _enterAttackerDeclarationMode() {
                     this.#selectedAttackerIds.add(cardUniqueId);
                     this.#battleRenderer.highlightAttackerSelection($cardElement, true);
                 }
-                this.#battleScreenUI._updateTurnControls(); // <<< ADICIONAR ESTA CHAMADA
+                this.#battleScreenUI._updateTurnControls();
             } else {
                 this.#battleRenderer.showCardFeedback($cardElement, 'shake');
                 this.#battleRenderer.updateActionFeedback("Esta criatura não pode atacar.");
@@ -570,12 +614,12 @@ _enterAttackerDeclarationMode() {
 
         if (this.#isAssigningBlockers) {
             const clickedCardIsLocal = ownerId === this.#localPlayerId;
-            if (!clickedCardIsLocal) { // Clicou em um ATACANTE inimigo
+            if (!clickedCardIsLocal) {
                 this.#opponentBattlefieldElement.find('.card.attacker-selected-for-blocking').removeClass('attacker-selected-for-blocking');
                 this.#selectedAttackerForBlocking = cardUniqueId;
                 $cardElement.addClass('attacker-selected-for-blocking');
                 this.#battleRenderer.updateActionFeedback(`Atacante ${$cardElement.data('card-name') || cardUniqueId} selecionado. Clique em sua criatura para bloquear.`);
-            } else { // Clicou em uma de SUAS criaturas (potencial bloqueador)
+            } else {
                 if (!this.#selectedAttackerForBlocking) {
                     this.#battleRenderer.updateActionFeedback("Primeiro, clique no atacante inimigo que deseja bloquear.");
                     this.#battleRenderer.showCardFeedback($cardElement, 'shake');
@@ -584,16 +628,12 @@ _enterAttackerDeclarationMode() {
                 const blockerInstance = localPlayer.battlefield.getCard(cardUniqueId);
                 if (blockerInstance?.type === 'Creature' && blockerInstance.canBlock()) {
                     this._assignBlockerToAttack(this.#selectedAttackerForBlocking, cardUniqueId);
-                    this.#battleRenderer.highlightBlockerAssignment(
-                        this.#opponentBattlefieldElement.find(`.card[data-card-unique-id="${this.#selectedAttackerForBlocking}"]`),
-                        null,
-                        this.#blockerAssignmentsUI
-                    );
                     const attackerCardEl = this.#opponentBattlefieldElement.find(`.card[data-card-unique-id="${this.#selectedAttackerForBlocking}"]`);
+                    // A chamada a highlightBlockerAssignment foi movida para dentro de _assignBlockerToAttack ou refreshVisualHighlights
                     this.#battleRenderer.updateActionFeedback(`${blockerInstance.name} bloqueará ${attackerCardEl.data('card-name')}.`);
-                    attackerCardEl.removeClass('attacker-selected-for-blocking');
-                    this.#selectedAttackerForBlocking = null;
-                    this.#battleScreenUI._updateTurnControls();
+                    attackerCardEl.removeClass('attacker-selected-for-blocking'); 
+                    this.#selectedAttackerForBlocking = null; 
+                    this.#battleScreenUI._updateTurnControls(); 
                 } else {
                     this.#battleRenderer.showCardFeedback($cardElement, 'shake');
                     this.#battleRenderer.updateActionFeedback("Esta criatura não pode bloquear.");
@@ -606,30 +646,37 @@ _enterAttackerDeclarationMode() {
 
     _assignBlockerToAttack(attackerId, blockerId) {
         if (!this.#isAssigningBlockers) return;
-        this.#blockerAssignmentsUI[attackerId] = [blockerId];
-        console.log(`InteractionManager: Assigned blocker ${blockerId} to attacker ${attackerId}`);
+        if (this.#blockerAssignmentsUI[attackerId] && this.#blockerAssignmentsUI[attackerId].includes(blockerId)) {
+            this.#blockerAssignmentsUI[attackerId] = this.#blockerAssignmentsUI[attackerId].filter(id => id !== blockerId);
+            if (this.#blockerAssignmentsUI[attackerId].length === 0) {
+                delete this.#blockerAssignmentsUI[attackerId];
+            }
+            console.log(`InteractionManager: Unassigned blocker ${blockerId} from attacker ${attackerId}`);
+        } else {
+            this.#blockerAssignmentsUI[attackerId] = [blockerId]; 
+            console.log(`InteractionManager: Assigned blocker ${blockerId} to attacker ${attackerId}`);
+        }
+        this.refreshVisualHighlights(); 
+        this.#battleScreenUI._updateTurnControls(); 
     }
+
 
     _handleConfirmAttackersClick() {
         if (this.#isDeclaringAttackers) {
             if (this.#selectedAttackerIds.size === 0) {
                 this.#battleRenderer.updateActionFeedback("Selecione criaturas para atacar ou passe a fase.");
                 return;
-        }
-        // Guarda os atacantes antes de sair do modo, pois o Game pode precisar deles
+            }
             const attackersToConfirm = [...this.#selectedAttackerIds];
-            this._exitAttackerDeclarationMode(); // Sai do modo de declaração da UI primeiro
-
-        // Envia a declaração para o jogo
+            this._exitAttackerDeclarationMode();
             this.#gameInstance.confirmAttackDeclaration(this.#localPlayerId, attackersToConfirm);
-
-        // IMPORTANTE: Após confirmar o ataque, o jogador humano NÃO deve poder
-        // passar a fase ou finalizar o turno imediatamente. A UI deve esperar a IA.
-        // _updateTurnControls em BattleScreenUI deve ser chamado pelo evento 'attackersDeclared'
-        // para desabilitar os botões do jogador humano enquanto espera a IA.
-            this.#battleRenderer.updateActionFeedback("Aguardando oponente declarar bloqueadores...");
-        // BattleScreenUI._updateTurnControls() será chamado pelo evento 'attackersDeclared',
-        // e ele deve desabilitar os botões do jogador humano.
+            // A mensagem "Aguardando oponente..." é agora condicional, baseada no estado do CombatManager
+            // após a declaração.
+            if (this.#gameInstance.getCombatManager().state === 'declare_blockers') {
+                 this.#battleRenderer.updateActionFeedback("Aguardando oponente declarar bloqueadores...");
+            } else {
+                 this.#battleRenderer.updateActionFeedback("Ataque declarado."); // Ou outra mensagem apropriada
+            }
         }
     }
 
@@ -653,16 +700,14 @@ _enterAttackerDeclarationMode() {
         else if (this.#isSelectingDiscardMana) { this._exitDiscardManaSelectionMode(); modeExited = true; }
         else if (this.#pendingEOTDiscardCount > 0) {
             this.#battleRenderer.updateActionFeedback(`Mão cheia! Descarte ${this.#pendingEOTDiscardCount} carta(s).`);
-            // Não sai do modo de descarte obrigatório com ESC
         }
         else if (this.#isDeclaringAttackers) { this._exitAttackerDeclarationMode(); modeExited = true; }
         else if (this.#isAssigningBlockers) { this._exitBlockerAssignmentMode(); modeExited = true; }
         else {
-            this.#zoomHandler.closeZoom(); // Se nenhum modo ativo, fecha o zoom
+            this.#zoomHandler.closeZoom();
         }
-
         if (modeExited) {
-            this.refreshVisualHighlights(); // Reaplicar destaques do modo anterior, se houver um "nível acima"
+            this.refreshVisualHighlights();
         }
     }
 
@@ -671,13 +716,11 @@ _enterAttackerDeclarationMode() {
         this._exitDiscardManaSelectionMode();
         this._exitAttackerDeclarationMode();
         this._exitBlockerAssignmentMode();
-        // O pendingEOTDiscardCount persiste.
         this.#battleScreenUI._updateTurnControls();
     }
 
     handleTurnChange() {
         this._resetInteractionModes();
-        // pendingEOTDiscardCount é resetado no Game ou setado por onDiscardRequired
     }
 
     onDiscardRequired(count) {
@@ -685,9 +728,6 @@ _enterAttackerDeclarationMode() {
     }
 
     onDiscardResolved() {
-        // Se o contador em InteractionManager chegou a zero, o modo é saído.
-        // Game.resolvePlayerDiscard decrementa o contador. O evento 'discardResolved'
-        // sinaliza que a contagem global chegou a zero.
         if (this.#pendingEOTDiscardCount === 0 && this.#gameInstance.state === 'playing') {
              this._exitDiscardRequiredMode();
         }

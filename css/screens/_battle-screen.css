@@ -410,7 +410,7 @@
 }
 #btn-confirm-attack, #btn-confirm-blocks {
     background-color: var(--button-play-bg);
-    border-color: var(--button-play-border);
+    
     display: none; /* Gerenciado por JS */
 }
 #btn-confirm-attack:hover, #btn-confirm-blocks:hover {
@@ -427,6 +427,18 @@
     font-size: 0.9em;
     width: 100%;
     max-width: 400px;
+}
+
+#player-hand .card.dragging-card {
+    opacity: 0.5;
+    transform: scale(0.95); /* Opcional: encolher um pouco */
+    /* Pode adicionar uma borda ou sombra diferente */
+}
+
+#player-battlefield.drop-target-active {
+    background-color: rgba(0, 255, 0, 0.1); /* Fundo verde sutil */
+    outline: 2px dashed var(--valid-color, lightgreen);
+    outline-offset: -2px;
 }
 
 /* --- Estilos de Cartas na Batalha (já existentes, mantidos) --- */

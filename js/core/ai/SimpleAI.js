@@ -18,21 +18,13 @@ export default class SimpleAI {
         console.log(`SimpleAI: Controlador inicializado para jogador ${this.#player.name}`);
     }
 
-    /**
-     * Cancela qualquer ação de IA pendente (ex: se o turno mudar abruptamente).
-     */
     cancelPendingActions() {
         if (this.#aiActionTimeout) {
             clearTimeout(this.#aiActionTimeout);
             this.#aiActionTimeout = null;
-            // console.log(`SimpleAI (${this.#player.name}): Ações pendentes canceladas.`); // Pode ser muito verboso
         }
     }
 
-    /**
-     * Executa a lógica de ação da IA.
-     * @param {string} actionContext - 'active_turn' ou 'defense_response'
-     */
     async performAction(actionContext = 'active_turn') {
         this.cancelPendingActions();
 
@@ -61,7 +53,6 @@ export default class SimpleAI {
         
         await this._delay(700 + Math.random() * 600);
 
-        // Re-checa condições após o delay
         if (actionContext === 'active_turn') {
             if (this.#game.getCurrentPlayer()?.id !== this.#player.id || (this.#game.state !== 'playing' && !(this.#game.state === 'discarding' && this.#game.getPendingDiscardInfo()?.playerId === this.#player.id))) {
                 console.log(`SimpleAI (${this.#player.name}): [active_turn] Estado mudou durante o delay. Ação cancelada para fase ${currentPhase}.`);
@@ -103,38 +94,41 @@ export default class SimpleAI {
 
         if (actionContext === 'active_turn') {
             switch (currentPhase) {
-                case 'mana': // IA não descarta mais para mana aqui com a Opção B
+                case 'mana':
                     console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase Mana. Passando.`);
                     await this._delay(300);
-                    this.#game.passPhase();
+                    if (this.#game.getCurrentPlayer()?.id === this.#player.id && this.#game.getCurrentPhase() === 'mana') this.#game.passPhase();
                     break;
                 case 'draw':
                     console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase Draw. Passando.`);
                     await this._delay(300);
-                    this.#game.passPhase();
+                    if (this.#game.getCurrentPlayer()?.id === this.#player.id && this.#game.getCurrentPhase() === 'draw') this.#game.passPhase();
                     break;
                 case 'main':
-                    await this._performMainPhaseActions(); // passPhase é chamado dentro dele
+                    await this._performMainPhaseActions();
                     break;
                 case 'attack':
-                    if (cmState === 'none') {
+                    if (cmState === 'none') { // Se a IA ainda não declarou atacantes
                         this._performAttackDeclaration();
-                    } else if (cmState === 'none') { // Combate resolvido ou não houve ataque da IA
-                        console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase Ataque, combate já resolvido ou sem ataque. Passando para End.`);
+                    } else if (cmState === 'resolving' || (cmState === 'none' && this.#game.getCombatManager().getAttackers().length > 0) ) {
+                        // Se o combate da IA já foi resolvido (CM resetou para 'none' mas houve ataque) OU está resolvendo
+                        console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase Ataque, combate da IA resolvido ou em resolução. Passando para End.`);
                         await this._delay(300);
-                        this.#game.passPhase();
+                         if (this.#game.getCurrentPlayer()?.id === this.#player.id && this.#game.getCurrentPhase() === 'attack') this.#game.passPhase();
                     } else {
                         console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase Ataque, estado CM: ${cmState}. Aguardando resolução do combate ou ação do oponente.`);
+                        // IA não deve ficar presa aqui se o oponente for humano e estiver demorando
+                        // Uma verificação adicional de timeout pode ser necessária no Game.js ou aqui
                     }
                     break;
                 case 'end':
                     console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase Final. Encerrando turno...`);
                     await this._delay(500);
-                    this.#game.endTurn();
+                    if (this.#game.getCurrentPlayer()?.id === this.#player.id && this.#game.getCurrentPhase() === 'end') this.#game.endTurn();
                     break;
                 default:
                     console.warn(`SimpleAI (${this.#player.name}): [active_turn] Fase desconhecida '${currentPhase}'. Encerrando turno.`);
-                    this.#game.endTurn();
+                    if (this.#game.getCurrentPlayer()?.id === this.#player.id) this.#game.endTurn();
                     break;
             }
         } else if (actionContext === 'defense_response') {
@@ -146,25 +140,17 @@ export default class SimpleAI {
         }
     }
 
-    /**
-     * Lógica para a IA realizar ações na Fase Principal.
-     * Inclui tentativa de descarte por mana e tentativa de jogar uma criatura.
-     */
     async _performMainPhaseActions() {
         console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase Principal. Mana: ${this.#player.mana}, MaxMana: ${this.#player.maxMana}`);
 
-        // --- 1. TENTATIVA DE DESCARTAR POR MANA (Opção B) ---
         if (!this.#player.hasDiscardedForMana && this.#player.maxMana < 10 && this.#player.hand.getSize() > 0) {
             let cardToDiscardInstance = this._chooseCardForManaDiscard();
             if (cardToDiscardInstance) {
                 console.log(`SimpleAI (${this.#player.name}): Decidiu descartar ${cardToDiscardInstance.name} por +1 Mana Máx. (na Fase Principal).`);
-                // Importante: Player.discardCardForMana verifica se é a fase principal E se é o turno do jogador
                 if (this.#player.discardCardForMana(cardToDiscardInstance.uniqueId, this.#game)) {
                     this.#game.emitEvent('gameLog', { message: `${this.#player.name} descartou ${cardToDiscardInstance.name} por +1 Mana Máx.` });
-                    // Após o descarte, a mana atual NÃO é recarregada imediatamente.
-                    // A mana máxima aumenta, e a mana atual será recarregada no próximo Player.prepareForTurn().
                     console.log(`SimpleAI (${this.#player.name}): Mana Máx agora: ${this.#player.maxMana}. Mana atual: ${this.#player.mana}.`);
-                    await this._delay(400 + Math.random() * 200); // Pequeno delay após ação de descarte
+                    await this._delay(400 + Math.random() * 200);
                 } else {
                     console.warn(`SimpleAI (${this.#player.name}): Tentativa de descarte por mana falhou (Player.discardCardForMana retornou false).`);
                 }
@@ -174,21 +160,25 @@ export default class SimpleAI {
         } else {
              console.log(`SimpleAI (${this.#player.name}): Condições para descarte por mana na Fase Principal não atendidas (Já descartou: ${this.#player.hasDiscardedForMana}, MaxMana: ${this.#player.maxMana}, Mão: ${this.#player.hand.getSize()}).`);
         }
+        
+        // Re-checa se ainda é a fase principal e turno da IA antes de jogar criaturas
+        if (this.#game.getCurrentPlayer()?.id !== this.#player.id || this.#game.getCurrentPhase() !== 'main') {
+            console.log(`SimpleAI (${this.#player.name}): Fase mudou ou não é mais meu turno antes de jogar criatura. Saindo da fase principal.`);
+            return;
+        }
 
-        // --- 2. TENTATIVA DE JOGAR CRIATURA ---
-        // Reavalia a mana disponível, pois ela NÃO muda após o descarte por mana (só maxMana muda)
         console.log(`SimpleAI (${this.#player.name}): Procurando criatura para jogar... Mana ATUAL: ${this.#player.mana}`);
         const playableCreatures = this.#player.hand.getCards()
-            .filter(card => card.type === 'Creature' && card.canPlay(this.#player, this.#game)) // canPlay verifica mana atual
-            .sort((a, b) => b.cost - a.cost); // Tenta jogar a mais cara que pode pagar
+            .filter(card => card.type === 'Creature' && card.canPlay(this.#player, this.#game))
+            .sort((a, b) => b.cost - a.cost);
 
         if (playableCreatures.length > 0) {
-            const cardToPlay = playableCreatures[0]; // Pega a criatura de maior custo que pode pagar
+            const cardToPlay = playableCreatures[0];
             console.log(`SimpleAI (${this.#player.name}): Tentando jogar ${cardToPlay.name}. Mana atual: ${this.#player.mana}, Custo: ${cardToPlay.cost}`);
             if (this.#player.playCard(cardToPlay.uniqueId, null, this.#game)) {
                 this.#game.emitEvent('gameLog', { message: `${this.#player.name} jogou ${cardToPlay.name}.` });
                 console.log(`SimpleAI (${this.#player.name}): Jogou ${cardToPlay.name}. Mana restante: ${this.#player.mana}.`);
-                await this._delay(600 + Math.random() * 400); // Delay após jogar criatura
+                await this._delay(600 + Math.random() * 400);
             } else {
                 console.log(`SimpleAI (${this.#player.name}): Falhou ao jogar ${cardToPlay.name} (playCard retornou false).`);
             }
@@ -196,66 +186,59 @@ export default class SimpleAI {
             console.log(`SimpleAI (${this.#player.name}): Nenhuma criatura jogável com a mana atual (${this.#player.mana}).`);
         }
         
-        // --- 3. PASSAR A FASE ---
-        console.log(`SimpleAI (${this.#player.name}): Concluindo ações da Fase Principal e passando.`);
-        await this._delay(300);
-        this.#game.passPhase();
+        // Re-checa novamente antes de passar a fase
+        if (this.#game.getCurrentPlayer()?.id === this.#player.id && this.#game.getCurrentPhase() === 'main') {
+            console.log(`SimpleAI (${this.#player.name}): Concluindo ações da Fase Principal e passando.`);
+            await this._delay(300);
+            this.#game.passPhase();
+        } else {
+            console.log(`SimpleAI (${this.#player.name}): Não é mais meu turno/fase principal após tentativas de ação. Não passando a fase.`);
+        }
     }
 
 
-    /**
-     * Escolhe qual carta descartar para ganhar mana.
-     * A IA tentará manter cartas que pode jogar se ganhar +1 de mana.
-     */
     _chooseCardForManaDiscard() {
         const potentialMaxManaAfterDiscard = this.#player.maxMana + 1;
         const cardsInHand = this.#player.hand.getCards();
         if (cardsInHand.length === 0) return null;
 
-        // Filtra cartas que se tornariam jogáveis com +1 mana MÁXIMA
-        // (considera que a mana ATUAL será recarregada para a nova MÁXIMA no próximo turno)
         const playableWithMoreMaxMana = cardsInHand.filter(card => card.cost <= potentialMaxManaAfterDiscard);
 
         if (playableWithMoreMaxMana.length > 0) {
-            // Tenta descartar uma carta que NÃO seja uma dessas e seja de baixo custo.
             let cheapestCardToDiscard = null;
             let minCost = Infinity;
             for (const card of cardsInHand) {
-                // Verifica se a carta NÃO está na lista das que seriam jogáveis E tem custo menor
                 if (!playableWithMoreMaxMana.find(c => c.uniqueId === card.uniqueId) && card.cost < minCost) {
                     minCost = card.cost;
                     cheapestCardToDiscard = card;
                 }
             }
             if (cheapestCardToDiscard) return cheapestCardToDiscard;
-
-            // Se todas as cartas que não são as "desejadas" têm custo alto,
-            // ou se só tem as "desejadas" e há mais de uma carta na mão,
-            // descarta a de menor custo geral (que não seja uma "desejada" se possível).
             if (cardsInHand.length > 1) {
-                 // Prioriza descartar uma não desejada
                  const nonTargetCards = cardsInHand.filter(card => !playableWithMoreMaxMana.find(c => c.uniqueId === card.uniqueId));
                  if (nonTargetCards.length > 0) {
                      return nonTargetCards.sort((a,b) => a.cost - b.cost)[0];
                  }
-                 // Se só sobraram "desejadas", descarta a mais barata delas (se tiver mais de uma)
                  return playableWithMoreMaxMana.sort((a,b) => a.cost - b.cost)[0];
             }
-            // Não descarta se a única carta na mão é uma que se tornaria jogável
             return null;
         }
 
-        // Se não há uma carta "alvo" para o próximo turno, mas ainda pode aumentar a mana.
-        // Descarta a de menor custo se tiver várias cartas (ex: mais de 2 para evitar ficar sem opções).
         if (cardsInHand.length > 2) {
             return cardsInHand.sort((a,b) => a.cost - b.cost)[0];
         }
-        return null; // Não descarta
+        return null;
     }
 
 
     _performAttackDeclaration() {
         console.log(`SimpleAI (${this.#player.name}): [active_turn] Fase de Ataque (Atacante). Declarando...`);
+        // Adiciona verificação para garantir que ainda é o turno da IA e a fase de ataque
+        if (this.#game.getCurrentPlayer()?.id !== this.#player.id || this.#game.getCurrentPhase() !== 'attack') {
+            console.log(`SimpleAI (${this.#player.name}): Não é mais meu turno ou fase de ataque. Abortando declaração de ataque.`);
+            return;
+        }
+
         const attackers = [];
         this.#player.battlefield.getCreatures().forEach(creature => {
             if (creature.canAttack()) {
@@ -268,82 +251,94 @@ export default class SimpleAI {
             this.#game.confirmAttackDeclaration(this.#player.id, attackers);
         } else {
             console.log(`SimpleAI (${this.#player.name}): Nenhuma criatura para atacar. Passando fase de ataque.`);
-            this.#game.passPhase();
+            // Garante que a IA só passa a fase se ainda for sua vez e na fase de ataque
+             if (this.#game.getCurrentPlayer()?.id === this.#player.id && this.#game.getCurrentPhase() === 'attack') {
+                this.#game.passPhase();
+            }
         }
     }
 
     async _performBlockerDeclaration() {
         console.log(`SimpleAI (${this.#player.name}): [defense_response] Fase de Ataque (Defensor). Avaliando bloqueios...`);
         const combatManager = this.#game.getCombatManager();
-        const attackingCreatures = combatManager.getAttackers();
-        const assignments = {};
+        const attackingCreatures = combatManager.getAttackers(); // Já retorna um array de CreatureCard
+        const assignments = {}; // Objeto para enviar para confirmBlockDeclaration
 
-        if (!attackingCreatures || attackingCreatures.length === 0) {
-            console.log(`SimpleAI (${this.#player.name}): Nenhum atacante declarado contra mim. Confirmando 0 bloqueios.`);
-            this.#game.confirmBlockDeclaration(this.#player.id, assignments);
+        // Adiciona verificação para garantir que ainda é a fase de ataque e o estado de declarar bloqueadores
+        if (this.#game.getCurrentPhase() !== 'attack' || combatManager.state !== 'declare_blockers') {
+            console.log(`SimpleAI (${this.#player.name}): Fase/Estado mudou. Abortando declaração de bloqueadores.`);
             return;
         }
 
-        let availableBlockers = this.#player.battlefield.getCreatures().filter(c => c.canBlock() && !c.isTapped);
-        const sortedAttackers = [...attackingCreatures].sort((a, b) => b.attack - a.attack); // Prioriza bloquear os mais fortes
+        // Se não há atacantes, ou o jogador humano passou a fase, a IA não precisa fazer nada aqui,
+        // pois o CombatManager já deve ter resolvido, ou o estado mudado.
+        // Esta função é chamada pelo Game.js quando é a vez da IA responder.
+        if (!attackingCreatures || attackingCreatures.length === 0) {
+            console.log(`SimpleAI (${this.#player.name}): Nenhum atacante válido para bloquear ou estado mudou.`);
+            // Se não há atacantes, a IA apenas confirma 0 bloqueios
+            this.#game.confirmBlockDeclaration(this.#player.id, {});
+            return;
+        }
+
+        let availableBlockers = this.#player.battlefield.getCreatures().filter(c => c.canBlock());
+
+        // >>> INÍCIO DA CORREÇÃO/MELHORIA <<<
+        if (availableBlockers.length === 0) {
+            console.log(`SimpleAI (${this.#player.name}): Nenhum bloqueador disponível. Confirmando 0 bloqueios.`);
+            this.#game.confirmBlockDeclaration(this.#player.id, {});
+            return;
+        }
+        // >>> FIM DA CORREÇÃO/MELHORIA <<<
+
+        const sortedAttackers = [...attackingCreatures].sort((a, b) => b.attack - a.attack);
 
         for (const attacker of sortedAttackers) {
             if (!attacker || attacker.currentToughness <= 0 || availableBlockers.length === 0) continue;
 
             let bestBlockerForThisAttacker = null;
-            // Lógica de decisão de bloqueio (pode ser aprimorada):
-            // 1. Bloqueador que destrói o atacante e sobrevive.
-            // 2. Bloqueador que troca (ambos morrem).
-            // 3. Bloqueador que sobrevive mas não destrói (se o dano do atacante for alto).
             for (const blocker of availableBlockers) {
                 if (!blocker || blocker.currentToughness <= 0) continue;
 
                 const canDestroy = blocker.attack >= attacker.currentToughness;
                 const survives = blocker.currentToughness > attacker.attack;
 
-                if (canDestroy && survives) { // Melhor caso: destrói e sobrevive
+                if (canDestroy && survives) {
                     bestBlockerForThisAttacker = blocker;
-                    break; // Pega o primeiro que satisfaz
+                    break;
                 }
-                if (canDestroy && !bestBlockerForThisAttacker) { // Segundo melhor: troca
+                if (canDestroy && !bestBlockerForThisAttacker) {
                     bestBlockerForThisAttacker = blocker;
                 }
-                // Poderia adicionar lógica para "chump block" se o dano do atacante for muito alto
             }
 
             if (bestBlockerForThisAttacker) {
                 console.log(`SimpleAI (${this.#player.name}): Decide bloquear ${attacker.name} com ${bestBlockerForThisAttacker.name}.`);
                 assignments[attacker.uniqueId] = [bestBlockerForThisAttacker.uniqueId];
-                // Remove o bloqueador da lista de disponíveis para este turno de combate
                 availableBlockers = availableBlockers.filter(b => b.uniqueId !== bestBlockerForThisAttacker.uniqueId);
             } else {
                 console.log(`SimpleAI (${this.#player.name}): Decide NÃO bloquear ${attacker.name}.`);
             }
         }
+
         await this._delay(300 + Math.random() * 300);
-        this.#game.confirmBlockDeclaration(this.#player.id, assignments);
+        // Re-verifica o estado antes de confirmar, pois o jogador humano pode ter passado a fase
+        if (this.#game.getCurrentPhase() === 'attack' && this.#game.getCombatManager().state === 'declare_blockers') {
+            this.#game.confirmBlockDeclaration(this.#player.id, assignments);
+        } else {
+            console.log(`SimpleAI (${this.#player.name}): Estado mudou antes de confirmar bloqueadores. Bloqueio cancelado.`);
+        }
     }
 
     _chooseCardToDiscardFromHandEOT() {
         const hand = this.#player.hand.getCards();
         if (hand.length === 0) return null;
-        return hand.sort((a, b) => b.cost - a.cost)[0]; // Descarta a de maior custo
+        return hand.sort((a, b) => b.cost - a.cost)[0];
     }
 
     _delay(ms) {
         return new Promise(resolve => {
-            const isMyTurn = this.#game.getCurrentPlayer()?.id === this.#player.id;
-            const isDefending = this.#game.getCurrentPhase() === 'attack' && 
-                                this.#game.getCombatManager().state === 'declare_blockers' && 
-                                !isMyTurn;
-
-            if (!isMyTurn && !isDefending) {
-                // console.log(`SimpleAI (${this.#player.name}): Delay interrompido, não é mais minha vez de agir (nem defendendo).`);
-                resolve();
-            } else {
-                this.cancelPendingActions();
-                this.#aiActionTimeout = setTimeout(resolve, ms);
-            }
+            this.cancelPendingActions(); // Cancela qualquer timeout anterior da IA
+            this.#aiActionTimeout = setTimeout(resolve, ms);
         });
     }
 }
