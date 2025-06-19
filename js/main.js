@@ -203,7 +203,6 @@ $(document).ready(async () => {
          $('#login-form button').each((i, btn) => addAudioListeners($(btn)));
 
          const $btnOptionsBack = $('#btn-options-back-to-main');
-         $btnOptionsBack.on('click', () => uiManager.navigateTo('home-screen'));
          addAudioListeners($btnOptionsBack);
 
          const $btnDeckBuilderBack = $('#btn-deck-builder-back');

@@ -1,10 +1,10 @@
-// js/ui/UIManager.js - CORRIGIDO PARA FLUXO PÓS-SPLASH E LOGIN (v-lore-fix)
+// js/ui/UIManager.js - ATUALIZADO (v2.7 - Retorno Inteligente da Batalha)
 
 // Import UI Modules
 import ProfileScreenUI from './screens/ProfileScreenUI.js';
 import DeckBuilderUI from './screens/DeckBuilderUI.js';
 import BattleScreenUI from './screens/BattleScreenUI.js';
-import OptionsUI from './screens/OptionsUI.js';
+import OptionsUI from './screens/OptionsUI.js'; // <--- OptionsUI já está aqui
 import HomeScreenUI from './screens/HomeScreenUI.js';
 import DeckManagementScreenUI from './screens/DeckManagementScreenUI.js';
 import TitlescreenUi from './screens/titlescreenUi.js';
@@ -57,7 +57,8 @@ export default class UIManager {
 
         this.#titlescreenUI = new TitlescreenUi(this.#screenManager, this, this.#audioManager, this.#accountManager);
         this.#homeUI = new HomeScreenUI(this.#screenManager, this, this.#audioManager);
-        this.#optionsUI = new OptionsUI(this.#audioManager);
+        // MODIFICADO: Passar screenManager e this (uiManager) para OptionsUI
+        this.#optionsUI = new OptionsUI(this.#audioManager, this.#screenManager, this);
         this.#profileUI = new ProfileScreenUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this, this.#audioManager);
         this.#deckManagementUI = new DeckManagementScreenUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this, this.#audioManager);
         this.#deckBuilderUI = new DeckBuilderUI(this.#screenManager, this.#accountManager, this.#cardDatabase, this.#cardRenderer, this.#zoomHandler, this, this.#audioManager);
@@ -70,7 +71,7 @@ export default class UIManager {
         this.#initialDeckChoiceUI = new InitialDeckChoiceScreenUI(this, this.#accountManager, this.#audioManager, this.#cardDatabase);
 
         this._bindPermanentUIActions();
-        console.log("UIManager (Coordinator) initialized (v-lore-fix).");
+        console.log("UIManager (Coordinator) initialized (v2.7 - Retorno Inteligente da Batalha).");
     }
 
     setGameInstance(gameInstance) {
@@ -84,6 +85,7 @@ export default class UIManager {
 
     showTopBar(userData) {
         const $topBar = $('#top-bar');
+        const $screensContainer = $('#screens-container'); // Adicionado para gerenciar classe
         if (userData) {
             $topBar.find('#top-bar-username').text(userData.username);
             const avatarFile = userData.avatar || 'default.png';
@@ -96,14 +98,17 @@ export default class UIManager {
             }
             this.updateCurrenciesDisplay(userData.wallet?.gold, userData.wallet?.gems);
             $topBar.addClass('active');
+            $screensContainer.addClass('with-top-bar'); // Adiciona classe ao container de telas
         } else {
             console.warn("UIManager: showTopBar called without user data. Hiding top bar.");
             $topBar.removeClass('active');
+            $screensContainer.removeClass('with-top-bar'); // Remove classe do container de telas
         }
     }
 
     hideTopBar() {
         $('#top-bar').removeClass('active simplified-mode battle-only');
+        $('#screens-container').removeClass('with-top-bar'); // Remove classe do container de telas
     }
 
     #cleanupActiveUI(newUiInstance = null) {
@@ -113,9 +118,11 @@ export default class UIManager {
                 catch (error) { console.error(`UIManager: Error destroying ${this.#activeScreenUI.constructor.name}`, error); }
             }
         }
-        this.#activeScreenUI = null;
+        this.#activeScreenUI = null; // Será definido após o render da nova tela
     }
 
+    // ... (métodos renderTitlescreen, renderHomeScreen, etc., permanecem os mesmos) ...
+    // Apenas o método renderOptionsScreen precisa ser atualizado para chamar init se for a primeira vez
     async renderTitlescreen(args) {
         const screenId = 'title-screen';
         const $screenElement = $(`#${screenId}`);
@@ -123,7 +130,7 @@ export default class UIManager {
         this.#cleanupActiveUI(this.#titlescreenUI);
         if (this.#titlescreenUI?.init) {
             try {
-                this.#titlescreenUI.init($screenElement[0], this.#accountManager);
+                this.#titlescreenUI.init($screenElement[0], this.#accountManager); // Passa AccountManager
                 this.#activeScreenUI = this.#titlescreenUI;
             } catch(error) { console.error("UIManager: Erro ao inicializar TitlescreenUI", error); }
         }
@@ -152,7 +159,7 @@ export default class UIManager {
     async renderSetMasteryScreen(args) {
         this.#cleanupActiveUI(this.#setMasteryUI);
         if (this.#setMasteryUI) {
-             if (typeof this.#setMasteryUI.init === 'function') await this.#setMasteryUI.init();
+             if (typeof this.#setMasteryUI.init === 'function') await this.#setMasteryUI.init(); // Garantir init
              this.#setMasteryUI.render(args?.setCode || 'ELDRAEM');
              this.#activeScreenUI = this.#setMasteryUI;
         }
@@ -191,15 +198,21 @@ export default class UIManager {
         }
     }
 
-    renderOptionsScreen(args) {
+    async renderOptionsScreen(args) { // Tornar async para aguardar init se necessário
        this.#cleanupActiveUI(this.#optionsUI);
-        if (this.#optionsUI?.render) {
-            try {
-                this.#optionsUI.render();
-                this.#activeScreenUI = this.#optionsUI;
-            } catch(error) { console.error("UIManager: Erro ao renderizar OptionsUI", error); }
+        if (this.#optionsUI) {
+            if (typeof this.#optionsUI.init === 'function' && !this.#optionsUI._initialized) { // Assuming _initialized flag
+                await this.#optionsUI.init();
+            }
+            if (typeof this.#optionsUI.render === 'function') {
+                try {
+                    this.#optionsUI.render();
+                    this.#activeScreenUI = this.#optionsUI;
+                } catch(error) { console.error("UIManager: Erro ao renderizar OptionsUI", error); }
+            }
         }
     }
+
 
     async renderStoreScreen(args) {
          this.#cleanupActiveUI(this.#storeUI);
@@ -271,7 +284,8 @@ export default class UIManager {
 
      async renderSetCollectionScreen(args) {
         this.#cleanupActiveUI(this.#setCollectionUI);
-        if (this.#setCollectionUI?.render) {
+        if (this.#setCollectionUI) {
+            if (typeof this.#setCollectionUI.init === 'function') await this.#setCollectionUI.init(); // Garantir init
             this.#setCollectionUI.render(args?.setCode || 'ELDRAEM');
             this.#activeScreenUI = this.#setCollectionUI;
         } else {
@@ -292,46 +306,70 @@ export default class UIManager {
         }
     }
 
+
     async navigateTo(screenId, args = null) {
         console.log(`UIManager: Attempting navigation to '${screenId}' with args:`, args);
         const $topBar = $('#top-bar');
         const $screensContainer = $('#screens-container');
         const currentUser = this.#accountManager.getCurrentUser();
 
+        // --- LÓGICA DE RETORNO À BATALHA ---
+        if (screenId === 'battle-screen' && args?.isReturning) {
+            console.log(`UIManager: Returning to existing battle screen.`);
+            // Se o jogo ainda não existe ou não há jogador local, algo deu muito errado.
+            if (!this.#gameInstance || !this.#localPlayerId) {
+                console.error("UIManager: Tentativa de retornar à batalha, mas a instância do jogo ou jogador local não existe. Indo para home.");
+                await this.navigateTo('home-screen'); // Fallback seguro
+                return;
+            }
+            this.#screenManager.showScreen('battle-screen');
+            this.#audioManager?.playBGM('battle-screen'); // Garante que a música da batalha toque
+            this.#activeScreenUI = this.#battleUI;       // Garante que a UI de batalha seja a ativa
+
+            // Garante que a TopBar esteja correta para a batalha
+            if (currentUser) {
+                this.showTopBar(currentUser); // Mostra e atualiza a TopBar
+                $topBar.addClass('battle-only').removeClass('simplified-mode');
+            } else {
+                this.hideTopBar(); // Esconde se o usuário deslogou de alguma forma
+            }
+            $screensContainer.addClass('with-top-bar'); // Garante layout correto
+            console.log("UIManager: Navigation to 'battle-screen' (returning) complete.");
+            return; // Pula o fluxo normal de renderização/limpeza
+        }
+        // --- FIM DA LÓGICA DE RETORNO À BATALHA ---
+
+
         const screensWithoutTopBar = [
             'splash-screen', 'title-screen', 'login-screen',
             'create-account-screen',
-            'lore-video-screen', // Assegura que a TopBar não aparece aqui
+            'lore-video-screen',
             'initial-deck-choice-screen'
         ];
         const requiresLogin = [
             'home-screen', 'profile-screen', 'deck-management-screen', 'deck-builder-screen',
             'connect-screen', 'battle-screen', 'set-mastery-screen', 'set-collection-screen',
-            'store-screen', 'booster-opening-screen'
-            // 'lore-video-screen' e 'initial-deck-choice-screen' são parte do fluxo pós-login.
+            'store-screen', 'booster-opening-screen', 'options-screen' // Opções agora requer login para saber de onde voltar
         ];
         const restrictedWhenLoggedIn = ['login-screen', 'create-account-screen'];
 
-        // --- GERENCIAMENTO DA TOP BAR E LAYOUT DO CONTAINER ---
         if (screensWithoutTopBar.includes(screenId)) {
             this.hideTopBar();
-            $screensContainer.removeClass('with-top-bar');
         } else if (currentUser) {
             this.showTopBar(currentUser);
-            $screensContainer.addClass('with-top-bar');
-            if (screenId === 'battle-screen') {
+            if (screenId === 'battle-screen') { // Para INICIAR uma batalha
                 $topBar.addClass('battle-only').removeClass('simplified-mode');
-            } else {
+            } else if (['lore-video-screen', 'initial-deck-choice-screen'].includes(screenId)) {
+                $topBar.addClass('simplified-mode').removeClass('battle-only');
+            }
+            else {
                 $topBar.removeClass('simplified-mode battle-only');
             }
         } else {
             this.hideTopBar();
-            $screensContainer.removeClass('with-top-bar');
         }
-        // --- FIM DO GERENCIAMENTO DA TOP BAR ---
 
-        // --- VALIDAÇÃO DE ACESSO ---
-        if (!currentUser) { // Usuário NÃO está logado
+        if (!currentUser) {
             if (requiresLogin.includes(screenId)) {
                 console.warn(`UIManager: Access Denied (not logged in) - Screen '${screenId}'. Redirecting to title.`);
                 this.#audioManager?.playSFX('genericError');
@@ -340,12 +378,10 @@ export default class UIManager {
                 }
                 return;
             }
-        } else { // Usuário ESTÁ logado
-            // Se logado e tentando ir para login/create (que são restrictedWhenLoggedIn)...
+        } else {
             if (restrictedWhenLoggedIn.includes(screenId)) {
                 console.warn(`UIManager: Access Denied (already logged in) - Screen '${screenId}'. Redirecting based on setup state.`);
                 this.#audioManager?.playSFX('genericError');
-                // Se está logado, não deve ver login/create. Redireciona com base no setup.
                 const nextScreen = currentUser.initialSetupComplete === false ? 'lore-video-screen' : 'home-screen';
                 if (this.#screenManager.getActiveScreenId() !== nextScreen) {
                     await this.navigateTo(nextScreen);
@@ -353,21 +389,18 @@ export default class UIManager {
                 return;
             }
 
-            // Se logado e setup INCOMPLETO...
             if (currentUser.initialSetupComplete === false) {
-                // E o destino NÃO É uma das telas permitidas durante o setup incompleto...
                 const allowedDuringIncompleteSetup = [
                     'lore-video-screen',
                     'initial-deck-choice-screen',
-                    'options-screen', // Permitir acesso às opções
-                    'title-screen',   // Permitir voltar para o título (ex: para logout)
-                    'login-screen',   // Permitir ir para tela de login (embora já logado, o usuário pode ter chegado aqui de forma estranha)
-                    'create-account-screen' // Similar ao login
+                    'options-screen',
+                    'title-screen',
+                    'login-screen',
+                    'create-account-screen'
                 ];
 
                 if (!allowedDuringIncompleteSetup.includes(screenId)) {
                     console.warn(`UIManager: User ${currentUser.username} has not completed initial setup. Target: ${screenId}. Redirecting to lore video.`);
-                    // Evita loop se já estiver tentando ir para 'lore-video-screen'
                     if (this.#screenManager.getActiveScreenId() !== 'lore-video-screen' && screenId !== 'lore-video-screen') {
                         await this.navigateTo('lore-video-screen');
                     }
@@ -375,7 +408,6 @@ export default class UIManager {
                 }
             }
         }
-        // --- FIM DA VALIDAÇÃO DE ACESSO ---
 
         console.log(`UIManager: Access granted to '${screenId}'. Proceeding with render/show...`);
         let renderPromise = Promise.resolve();
@@ -392,12 +424,19 @@ export default class UIManager {
             case 'deck-builder-screen':     renderPromise = this.renderDeckBuilderScreen(args?.deckIdToEdit); break;
             case 'booster-opening-screen':  renderPromise = this.renderBoosterOpeningScreen(args); break;
             case 'set-collection-screen':   renderPromise = this.renderSetCollectionScreen(args); break;
-            case 'options-screen':          renderPromise = this.renderOptionsScreen(args); break;
+            case 'options-screen':          renderPromise = this.renderOptionsScreen(args); break; // renderOptions já chama init se necessário
             case 'lore-video-screen':       renderPromise = this.renderLoreVideoScreen(args); break;
             case 'initial-deck-choice-screen': renderPromise = this.renderInitialDeckChoiceScreen(args); break;
             case 'connect-screen':          renderPromise = this.renderConnectScreen(args); break;
             case 'battle-screen':
-                console.warn("UIManager: 'battle-screen' should be shown via renderInitialGameState(), not navigateTo() directly from external calls.");
+                // ESTE CASO SÓ DEVE SER ATINGIDO SE FOR PARA *INICIAR* UMA NOVA BATALHA.
+                // O RETORNO À BATALHA JÁ FOI TRATADO ACIMA.
+                console.warn("UIManager: 'battle-screen' foi chamado em navigateTo. Isso é para iniciar uma nova batalha, não para retornar. Use renderInitialGameState() para novas batalhas.");
+                // Se uma nova batalha está sendo iniciada via navigateTo (o que não é ideal),
+                // precisamos garantir que o jogo seja configurado.
+                // No entanto, a melhor prática é que `renderInitialGameState` seja o único ponto de entrada para novas batalhas.
+                // Por segurança, podemos apenas mostrar um erro ou tentar ir para home.
+                await this.navigateTo('home-screen'); // Ou logar um erro e não fazer nada
                 return;
             default:
                 console.error(`UIManager: Unknown screenId for render mapping: ${screenId}`);
@@ -407,28 +446,25 @@ export default class UIManager {
         try {
             await renderPromise;
 
-            // Revalidação final antes de mostrar a tela.
             const finalCurrentUser = this.#accountManager.getCurrentUser();
             let finalIsStillAllowed = false;
 
-            const alwaysAllowedScreens = [ // Telas que podem ser acessadas logado ou não, e independente do setup
+            const alwaysAllowedScreens = [
                 'splash-screen', 'title-screen', 'login-screen', 'create-account-screen', 'options-screen'
             ];
             const setupFlowScreens = ['lore-video-screen', 'initial-deck-choice-screen'];
 
             if (alwaysAllowedScreens.includes(screenId)) {
                 finalIsStillAllowed = true;
-            } else if (!finalCurrentUser) { // Usuário deslogou durante o render
-                // Se a tela requer login ou é parte do fluxo de setup, não é permitida
+            } else if (!finalCurrentUser) {
                 finalIsStillAllowed = !requiresLogin.includes(screenId) && !setupFlowScreens.includes(screenId);
-            } else { // Usuário ainda logado
-                if (restrictedWhenLoggedIn.includes(screenId)) { // Tentando ir para login/create estando logado
-                    finalIsStillAllowed = false; // Não deveria acontecer devido à validação anterior, mas é uma segurança
-                } else if (finalCurrentUser.initialSetupComplete === false) { // Setup incompleto
-                    // Permite telas de setup ou options, caso contrário não
+            } else {
+                if (restrictedWhenLoggedIn.includes(screenId)) {
+                    finalIsStillAllowed = false;
+                } else if (finalCurrentUser.initialSetupComplete === false) {
                     finalIsStillAllowed = setupFlowScreens.includes(screenId) || screenId === 'options-screen';
-                } else { // Setup completo
-                    finalIsStillAllowed = true; // Permite qualquer outra tela que não seja 'restrictedWhenLoggedIn'
+                } else {
+                    finalIsStillAllowed = true;
                 }
             }
 
@@ -452,6 +488,7 @@ export default class UIManager {
             }
         }
     }
+
 
     updateCurrenciesDisplay(gold, gems) {
         $('#top-bar-gold').text(gold ?? 0);
@@ -503,7 +540,7 @@ export default class UIManager {
 
         $('#top-bar-btn-options').off(`click${namespace}`).on(`click${namespace}`, () => {
             self.#audioManager?.playSFX('buttonClick');
-            self.navigateTo('options-screen');
+            self.navigateTo('options-screen'); // Não precisa de args especiais aqui
         }).each((i, btn) => addTopBarHoverAudio($(btn)));
 
         $('#top-bar-btn-logout').off(`click${namespace}`).on(`click${namespace}`, () => {
@@ -516,6 +553,7 @@ export default class UIManager {
         $(document).off(`keydown${namespace}`).on(`keydown${namespace}`, (e) => {
             if (e.key === "Escape") {
                 // O ZoomHandler lida com o fechamento do zoom
+                // A OptionsUI poderia ter um handler de ESC para voltar também
             }
         });
     }

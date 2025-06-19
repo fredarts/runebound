@@ -1,7 +1,9 @@
-// js/ui/screens/OptionsUI.js - ATUALIZADO (v2.6 - Volume Sliders Fix)
+// js/ui/screens/OptionsUI.js - ATUALIZADO (v2.7 - Retorno Inteligente da Batalha)
 
 export default class OptionsUI {
-    #audioManager; // <<<=== Referência para AudioManager
+    #audioManager;
+    #screenManager; // Adicionado para obter a tela anterior
+    #uiManager;     // Adicionado para navegação
 
     // --- Elementos da UI (Cache) ---
     #optionsScreenElement;
@@ -17,10 +19,11 @@ export default class OptionsUI {
     #textSizeSelect;
     #highContrastCheckbox;
     #saveButton;
+    #backButton; // Adicionado para cache explícito
     #saveMessageParagraph;
 
     // --- Estado Interno ---
-    #options = { // Default options
+    #options = {
         musicVolume: 60,
         sfxVolume: 80,
         isMusicMuted: false,
@@ -33,17 +36,19 @@ export default class OptionsUI {
     };
     #OPTIONS_STORAGE_KEY = 'runebound_clash_options';
 
-    constructor(audioManager) { // <<<=== Recebe AudioManager
-        this.#audioManager = audioManager; // <<<=== Armazena AudioManager
+    constructor(audioManager, screenManager, uiManager) { // <<<=== Parâmetros do construtor atualizados
+        this.#audioManager = audioManager;
+        this.#screenManager = screenManager; // <<<=== Armazena ScreenManager
+        this.#uiManager = uiManager;         // <<<=== Armazena UIManager
+
         this._cacheSelectors();
         if (!this.#optionsScreenElement || !this.#optionsScreenElement.length) {
             console.error("OptionsUI Error: #options-screen element not found!");
             return;
         }
-        this._loadOptions(); // Carrega opções salvas
-        this._bindEvents();  // Vincula eventos
-        console.log("OptionsUI initialized.");
-        // Não chama render() aqui, UIManager chama quando a tela é mostrada
+        this._loadOptions();
+        this._bindEvents();
+        console.log("OptionsUI initialized (v2.7 - Retorno Inteligente da Batalha).");
     }
 
     _cacheSelectors() {
@@ -60,6 +65,7 @@ export default class OptionsUI {
         this.#textSizeSelect = this.#optionsScreenElement.find('#opt-text-size');
         this.#highContrastCheckbox = this.#optionsScreenElement.find('#opt-high-contrast');
         this.#saveButton = this.#optionsScreenElement.find('#btn-save-options');
+        this.#backButton = this.#optionsScreenElement.find('#btn-options-back-to-main'); // Cache do botão voltar
         this.#saveMessageParagraph = this.#optionsScreenElement.find('#options-save-message');
     }
 
@@ -67,11 +73,8 @@ export default class OptionsUI {
         console.log("OptionsUI: Rendering options screen controls.");
         if (!this.#optionsScreenElement.length) return;
 
-        // Recarrega as opções mais recentes antes de renderizar os controles
-        // Isso garante que se o usuário saiu e voltou, os valores corretos são mostrados
         this._loadOptions();
 
-        // Define valores dos controles com base nas opções carregadas/padrão
         this.#musicVolumeSlider.val(this.#options.musicVolume);
         this.#musicVolumeValueSpan.text(`${this.#options.musicVolume}%`);
         this.#musicMuteCheckbox.prop('checked', this.#options.isMusicMuted);
@@ -88,55 +91,82 @@ export default class OptionsUI {
         this.#textSizeSelect.val(this.#options.textSize);
         this.#highContrastCheckbox.prop('checked', this.#options.highContrast);
 
-        this._applyVisualOptions(); // Aplica opções que afetam a aparência imediatamente
-        this.#saveMessageParagraph.text(''); // Limpa mensagem de salvar
+        this._applyVisualOptions();
+        this.#saveMessageParagraph.text('');
     }
 
     _bindEvents() {
         console.log("OptionsUI: Binding events...");
-        const self = this; // Para usar dentro dos handlers
+        const self = this;
+        const namespace = '.options_ui'; // Namespace para os eventos
 
-        // --- Sliders de Volume (ATUALIZADO) ---
-        this.#musicVolumeSlider.off('input.options').on('input.options', function() {
+        this.#optionsScreenElement.off(namespace); // Limpa listeners antigos no elemento raiz para evitar duplicação geral
+
+        // Sliders de Volume
+        this.#musicVolumeSlider.off(`input${namespace}`).on(`input${namespace}`, function() {
             const volumeValue = parseInt($(this).val(), 10);
             self.#musicVolumeValueSpan.text(`${volumeValue}%`);
-            // Chama o AudioManager para definir o volume imediatamente (0.0 a 1.0)
             self.#audioManager?.setMusicVolume(volumeValue / 100);
         });
-        this.#sfxVolumeSlider.off('input.options').on('input.options', function() {
+        this.#sfxVolumeSlider.off(`input${namespace}`).on(`input${namespace}`, function() {
             const volumeValue = parseInt($(this).val(), 10);
             self.#sfxVolumeValueSpan.text(`${volumeValue}%`);
-             // Chama o AudioManager para definir o volume imediatamente (0.0 a 1.0)
             self.#audioManager?.setSfxVolume(volumeValue / 100);
         });
-        // --- FIM DA ATUALIZAÇÃO DOS SLIDERS ---
 
-        // Checkboxes de Mute (já estavam corretos, chamando AudioManager imediatamente)
-        this.#musicMuteCheckbox.off('change.options').on('change.options', (event) => {
+        // Checkboxes de Mute
+        this.#musicMuteCheckbox.off(`change${namespace}`).on(`change${namespace}`, (event) => {
             const isMuted = $(event.currentTarget).is(':checked');
             this.#musicVolumeSlider.prop('disabled', isMuted);
             this.#audioManager?.setMusicMuted(isMuted);
             this.#audioManager?.playSFX('buttonClick');
         });
-        this.#sfxMuteCheckbox.off('change.options').on('change.options', (event) => {
+        this.#sfxMuteCheckbox.off(`change${namespace}`).on(`change${namespace}`, (event) => {
             const isMuted = $(event.currentTarget).is(':checked');
             this.#sfxVolumeSlider.prop('disabled', isMuted);
             this.#audioManager?.setSfxMuted(isMuted);
             this.#audioManager?.playSFX('buttonClick');
         });
 
-        // Botão Salvar (continua chamando _saveOptions que salva e chama updateSettings)
-        this.#saveButton.off('click.options').on('click.options', this._saveOptions.bind(this));
-
-        // Listeners para aplicar opções visuais imediatamente (exemplo: alto contraste)
-        this.#highContrastCheckbox.off('change.options').on('change.options', (event) => {
-             $('body').toggleClass('contrast-high', $(event.currentTarget).is(':checked'));
-             this.#audioManager?.playSFX('buttonClick'); // Som ao marcar/desmarcar
+        // Botão Salvar
+        this.#saveButton.off(`click${namespace}`).on(`click${namespace}`, () => {
+            self.#audioManager?.playSFX('deckSave'); // Som de salvar
+            self._saveOptions();
+            // Após salvar, decide para onde voltar
+            const prevScreen = self.#screenManager.getPreviousScreenId();
+            if (prevScreen === 'battle-screen') {
+                self.#uiManager.navigateTo('battle-screen', { isReturning: true });
+            } else {
+                self.#uiManager.navigateTo(prevScreen || 'home-screen'); // Ou tela principal como fallback
+            }
         });
-        this.#textSizeSelect.off('change.options').on('change.options', (event) => {
+        this.#saveButton.off(`mouseenter${namespace}`).on(`mouseenter${namespace}`, () => self.#audioManager?.playSFX('buttonHover'));
+
+
+        // Botão Voltar (MODIFICADO PARA NAVEGAÇÃO INTELIGENTE)
+        this.#backButton.off(`click${namespace}`).on(`click${namespace}`, () => {
+            self.#audioManager?.playSFX('buttonClick');
+            const prevScreen = self.#screenManager.getPreviousScreenId();
+            console.log("OptionsUI: Botão Voltar clicado. Tela anterior:", prevScreen);
+            if (prevScreen === 'battle-screen') {
+                self.#uiManager.navigateTo('battle-screen', { isReturning: true });
+            } else {
+                // Se a tela anterior não for a de batalha, ou não houver tela anterior, volta para home.
+                self.#uiManager.navigateTo(prevScreen || 'home-screen');
+            }
+        });
+        this.#backButton.off(`mouseenter${namespace}`).on(`mouseenter${namespace}`, () => self.#audioManager?.playSFX('buttonHover'));
+
+
+        // Listeners para aplicar opções visuais imediatamente
+        this.#highContrastCheckbox.off(`change${namespace}`).on(`change${namespace}`, (event) => {
+             $('body').toggleClass('contrast-high', $(event.currentTarget).is(':checked'));
+             this.#audioManager?.playSFX('buttonClick');
+        });
+        this.#textSizeSelect.off(`change${namespace}`).on(`change${namespace}`, (event) => {
              const newSize = $(event.currentTarget).val();
              $('body').removeClass('text-small text-normal text-large').addClass(`text-${newSize}`);
-             this.#audioManager?.playSFX('buttonClick'); // Som ao mudar seleção
+             this.#audioManager?.playSFX('buttonClick');
         });
     }
 
@@ -145,9 +175,7 @@ export default class OptionsUI {
             const storedOptions = localStorage.getItem(this.#OPTIONS_STORAGE_KEY);
             if (storedOptions) {
                 const loaded = JSON.parse(storedOptions);
-                // Mescla para garantir todas as chaves e valores default
                 this.#options = { ...this.#options, ...loaded };
-                 // Garante booleanos para mute
                 this.#options.isMusicMuted = !!this.#options.isMusicMuted;
                 this.#options.isSfxMuted = !!this.#options.isSfxMuted;
                 console.log("OptionsUI: Options loaded from localStorage:", this.#options);
@@ -156,20 +184,13 @@ export default class OptionsUI {
             }
         } catch (e) {
             console.error("OptionsUI: Error loading options from localStorage:", e);
-            // Resetar para defaults em caso de erro de parse
-            // this.#options = { ...DEFAULT_OPTIONS }; // Defina DEFAULT_OPTIONS se necessário
         }
-        // Aplica estado inicial carregado ao AudioManager (importante!)
-        // Não chama updateSettings aqui, pois ele recarregaria do localStorage de novo.
-        // Apenas define o estado inicial mutado/desmutado. O volume será setado no render()
         this.#audioManager?.setMusicMuted(this.#options.isMusicMuted);
         this.#audioManager?.setSfxMuted(this.#options.isSfxMuted);
     }
 
-    // Este método é chamado pelo UIManager ou pelo botão Salvar internamente
     _saveOptions() {
         console.log("OptionsUI: Attempting to save options...");
-        // Lê os valores atuais dos controles da UI
         this.#options.musicVolume = parseInt(this.#musicVolumeSlider.val(), 10);
         this.#options.sfxVolume = parseInt(this.#sfxVolumeSlider.val(), 10);
         this.#options.isMusicMuted = this.#musicMuteCheckbox.is(':checked');
@@ -184,37 +205,23 @@ export default class OptionsUI {
             localStorage.setItem(this.#OPTIONS_STORAGE_KEY, JSON.stringify(this.#options));
             console.log("OptionsUI: Options saved to localStorage:", this.#options);
             this._showMessage('Opções salvas com sucesso!', 'success');
-            this._applyVisualOptions(); // Aplica opções visuais salvas
-
-            // Informa o AudioManager para recarregar TODAS as configurações salvas
-            // Isso garante que o AudioManager esteja sincronizado com o localStorage
-            this.#audioManager?.updateSettings(); // <<<=== Chama updateSettings para garantir sincronia total
-
-            // Toca SFX de salvar (som de clique já foi tocado ao clicar no botão)
-            // this.#audioManager?.playSFX('deckSave'); // Opcional, pode ser redundante
-
+            this._applyVisualOptions();
+            this.#audioManager?.updateSettings();
         } catch (e) {
             console.error("OptionsUI: Error saving options to localStorage:", e);
             this._showMessage('Erro ao salvar opções.', 'error');
-             this.#audioManager?.playSFX('genericError'); // Som de erro
+             this.#audioManager?.playSFX('genericError');
         }
     }
 
     _applyVisualOptions() {
-        // console.log("OptionsUI: Applying visual options...");
-        // Aplica tamanho de texto e contraste
         $('body')
             .removeClass('text-small text-normal text-large contrast-high')
             .addClass(`text-${this.#options.textSize || 'normal'}`)
             .toggleClass('contrast-high', this.#options.highContrast);
-
-        // Aplica estado desabilitado aos sliders baseado no mute
         this.#musicVolumeSlider.prop('disabled', this.#options.isMusicMuted);
         this.#sfxVolumeSlider.prop('disabled', this.#options.isSfxMuted);
-
-        // Aplica outras opções visuais
         $('body').toggleClass('disable-card-animations', !this.#options.cardAnimations);
-        // TODO: Lógica para qualidade gráfica, etc.
     }
 
     _showMessage(text, type = 'info', duration = 3000) {
@@ -229,4 +236,12 @@ export default class OptionsUI {
         }
     }
 
-} // End class OptionsUI
+    destroy() {
+        console.log("OptionsUI: Destroying...");
+        const namespace = '.options_ui';
+        this.#optionsScreenElement?.off(namespace); // Limpa todos os listeners no elemento raiz
+        // Os listeners específicos dos botões também são cobertos se eles forem filhos de #optionsScreenElement.
+        // Caso contrário, precisaria de this.#saveButton?.off(namespace), etc.
+        this.#saveMessageParagraph?.text('');
+    }
+}
