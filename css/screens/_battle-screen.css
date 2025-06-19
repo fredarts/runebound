@@ -474,3 +474,40 @@
 .battle-screen-layout .battlefield,
 .battle-screen-layout .hand
 { scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }
+
+
+/* Estilo base para a borda de par de bloqueio */
+.blocking-pair-border {
+    border-width: 3px !important; /* Mais grosso para destaque */
+    border-style: solid !important;
+    box-shadow: 0 0 8px 3px currentColor !important; /* Sombra da cor da borda */
+    outline: none !important; /* Remove outros outlines para não conflitar */
+    transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+/* Cores específicas para os pares - adicione quantas precisar */
+.blocking-pair-lime { border-color: lime !important; }
+.blocking-pair-cyan { border-color: cyan !important; }
+.blocking-pair-magenta { border-color: magenta !important; }
+.blocking-pair-gold { border-color: gold !important; } /* 'yellow' pode ser difícil de ver */
+.blocking-pair-orange { border-color: orange !important; }
+.blocking-pair-blueviolet { border-color: blueviolet !important; }
+
+/* Mantém o estilo para o atacante que está *ativamente* selecionado para bloqueio (antes de um bloqueador ser escolhido para ele) */
+.attacker-selected-for-blocking {
+    outline: 3px solid darkorange !important; /* Destaque forte para o atacante ativo */
+    box-shadow: 0 0 12px 4px darkorange !important;
+}
+
+/* Ajuste para criaturas que podem bloquear (antes de serem designadas) */
+.card.can-block-visual {
+    outline: 2px dashed skyblue; /* Mantém o feedback de que pode bloquear */
+    outline-offset: 1px;
+}
+
+/* Quando uma criatura local É designada como bloqueadora (além da borda colorida do par) */
+.card.selected-blocker {
+    /* A borda colorida do par já é o principal. Poderia adicionar um leve scale ou outra sombra aqui se necessário,
+       mas pode ficar muito poluído. Vamos focar na borda colorida. */
+    /* Exemplo: transform: scale(1.03); */
+}

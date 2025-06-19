@@ -23,8 +23,7 @@ export function generateBattleScreenHTML() {
                         <div class="resource life">
                             ❤️ <span id="opponent-life">20</span>
                         </div>
-                        <div class="resource mana">
-                            💧 <span id="opponent-mana">0</span>/<span id="opponent-max-mana">0</span>
+                        <div class="resource mana">💎<span id="opponent-mana">0</span>/<span id="opponent-max-mana">0</span>
                         </div>
                     </div>
                     <div class="player-zones">
@@ -102,8 +101,7 @@ export function generateBattleScreenHTML() {
                         <div class="resource life">
                             ❤️ <span id="player-life">20</span>
                         </div>
-                        <div class="resource mana">
-                            💧 <span id="player-mana">0</span>/<span id="player-max-mana">0</span>
+                        <div class="resource mana">💎<span id="player-mana">0</span>/<span id="player-max-mana">0</span>
                         </div>
                     </div>
                     <div class="player-zones">

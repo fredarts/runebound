@@ -1,17 +1,15 @@
 // js/core/Player.js
-import { Deck } from './Deck.js'; // Named import
-import { Hand } from './Hand.js'; // Named import
-import { Battlefield } from './Battlefield.js'; // Named import
-import { Graveyard } from './Graveyard.js'; // Named import
-import { generateUniqueId } from '../utils.js'; // Named import
-// Card base/subclasses might be needed for instanceof checks later
+import { Deck } from './Deck.js';
+import { Hand } from './Hand.js';
+import { Battlefield } from './Battlefield.js'; // Certifique-se que está importado
+import { Graveyard } from './Graveyard.js';
+import { generateUniqueId } from '../utils.js';
 import Card from './Card.js';
 import CreatureCard from './CreatureCard.js';
 import { RunebindingCard } from './RunebindingCard.js';
 import { InstantCard } from './InstantCard.js';
 
-
-export default class Player { // Using export default
+export default class Player {
     #id;
     #name;
     #life = 20;
@@ -21,16 +19,20 @@ export default class Player { // Using export default
     #hand;
     #battlefield;
     #graveyard;
-    #hasDiscardedForMana = false; // Flag to track if mana discard was used this turn
-    isActivePlayer = false; // Track if it's currently this player's turn (managed by Game)
+    #hasDiscardedForMana = false;
+    isActivePlayer = false;
 
     constructor(name, deckCardIds, cardDatabase) {
         this.#id = generateUniqueId('player');
         this.#name = name;
-        // Instantiate zones with error handling
-        try { this.#deck = new Deck(deckCardIds, cardDatabase, this.#id); } catch (e) { throw new Error(`Player ${name} deck init failed: ${e.message}`); }
+
+        try {
+            this.#deck = new Deck(deckCardIds, cardDatabase, this.#id);
+        } catch (e) {
+            throw new Error(`Player ${name} deck init failed: ${e.message}`);
+        }
         this.#hand = new Hand();
-        this.#battlefield = new Battlefield();
+        this.#battlefield = new Battlefield(this.#id, this.#name); // Passa o ID e nome do jogador
         this.#graveyard = new Graveyard();
         this.resetStats();
         console.log(`Player: ${this.#name} (ID: ${this.#id}) created.`);
@@ -46,263 +48,287 @@ export default class Player { // Using export default
     get hand() { return this.#hand; }
     get battlefield() { return this.#battlefield; }
     get graveyard() { return this.#graveyard; }
-    get hasDiscardedForMana() { return this.#hasDiscardedForMana; } // Allow checking the flag
+    get hasDiscardedForMana() { return this.#hasDiscardedForMana; }
 
 
     // --- Methods Called by Game ---
     shuffleDeck() { this.#deck.shuffle(); }
-    drawCard() { const c = this.#deck.draw(); if(c) { this.#hand.addCard(c); c.location = 'hand'; } return c; } // Set location on draw
-    drawCards(count, game) { let d=[]; for(let i=0;i<count;i++){const c=game?._drawCard(this); if(c)d.push(c); else break;} return d; } // Game handles events
 
-    /** Prepares the player for the start of their turn. */
+    drawCard() { // Este método é chamado internamente ou pela IA. O Game tem _drawCard para jogadores.
+        const cardInstance = this.#deck.draw();
+        if (cardInstance) {
+            this.#hand.addCard(cardInstance);
+            cardInstance.location = 'hand'; // Atualiza a localização da carta
+        }
+        return cardInstance;
+    }
+
+    drawCards(count, game) { // Chamado por efeitos de carta, etc.
+        let drawnCards = [];
+        for (let i = 0; i < count; i++) {
+            // Usa o método _drawCard do Game para garantir que os eventos sejam emitidos
+            const cardInstance = game?._drawCard(this);
+            if (cardInstance) {
+                drawnCards.push(cardInstance);
+            } else {
+                // Se game._drawCard retorna null, significa que o deck está vazio ou houve um problema.
+                // O próprio game._drawCard já deve ter lidado com gameOver se o deck esvaziou.
+                break;
+            }
+        }
+        return drawnCards;
+    }
+
     prepareForTurn() {
         this.isActivePlayer = true;
-        this.#hasDiscardedForMana = false; // <<<--- RESET the flag here at the START of the turn
-        this.#mana = this.#maxMana; // Refill current mana based on max mana
-        this.#battlefield.untapAll(); // Untap creatures
-        // Apply start-of-turn effects from battlefield cards (if any)
+        this.#hasDiscardedForMana = false;
+        this.#mana = this.#maxMana; // Refil de mana
+        this.#battlefield.untapAll(); // Destapa todas as criaturas no campo
+        // Aplicar quaisquer efeitos de "no início do seu turno" das cartas em campo
         this.#battlefield.getAllCards().forEach(card => {
-             if (typeof card.onTurnStart === 'function') card.onTurnStart(game);
+            if (typeof card.onTurnStart === 'function') {
+                // Precisa da instância do jogo para onTurnStart interagir com outras partes
+                // Se o jogo não for passado como parâmetro aqui, onTurnStart precisará ser adaptado
+                // ou essa lógica movida para Game.js onde a instância do jogo está disponível.
+                // Por ora, assumimos que 'game' pode não estar disponível aqui.
+                // card.onTurnStart(game); // Descomente se 'game' for passado ou acessível
+            }
         });
         console.log(`Player ${this.#name}: Prepared for turn. Mana: ${this.#mana}/${this.#maxMana}. Discard flag reset.`);
     }
 
-    /** Cleans up effects and checks hand size at the end of the turn. */
-    endTurnCleanup(game) {
+    endTurnCleanup(game) { // game instance é crucial aqui
         this.isActivePlayer = false;
-        // Tick down temporary effects on battlefield cards
-        this.#battlefield.getAllCards().forEach(c => {
-             if (typeof c.tickDown === 'function') c.tickDown(game); // For Runebindings, etc.
-             if (typeof c.endTurnCleanup === 'function') c.endTurnCleanup(true, game); // <<<< CORRIGIDO: Passar 'game'
+        const battlefieldCards = this.#battlefield.getAllCards(); // Pega a lista UMA VEZ para evitar problemas com modificação durante a iteração
+
+        console.log(`PLAYER_ETC_START [${this.#name}]: Iniciando endTurnCleanup. Campo de batalha tem ${battlefieldCards.length} cartas. IDs: ${battlefieldCards.map(c => c.uniqueId).join(', ')}`);
+
+        battlefieldCards.forEach(cardInstance => {
+            console.log(`PLAYER_ETC_PROCESSING [${this.#name}]: Processando carta ${cardInstance.name} (${cardInstance.uniqueId}) para endTurnCleanup.`);
+            // Chama o método de limpeza de fim de turno da própria carta (se existir)
+            // Passa 'true' indicando que é o turno do dono da carta (para summoning sickness)
+            // e a instância do jogo para que a carta possa emitir eventos ou interagir.
+            if (typeof cardInstance.endTurnCleanup === 'function') {
+                cardInstance.endTurnCleanup(true, game);
+            }
         });
-        console.log(`Player ${this.#name}: End of turn cleanup completed.`);
-        this.checkHandSize(game); // Check hand size limit AFTER cleanup
+        console.log(`Player ${this.#name}: End of turn cleanup completed on battlefield cards.`);
+        this.checkHandSize(game); // Verifica o limite de cartas na mão
     }
 
-    /** Moves a card between zones and updates its location property. Returns the card if successful, null otherwise. */
     moveCardBetweenZones(cardUniqueId, fromZoneName, toZoneName) {
         const fromZone = this.#getZoneObject(fromZoneName);
         const toZone = this.#getZoneObject(toZoneName);
+
         if (!fromZone || !toZone) {
-            console.error(`Player ${this.#name}: Invalid zone(s) in moveCardBetweenZones (${fromZoneName} -> ${toZoneName})`);
+            console.error(`PLAYER_MOVE_FAIL [${this.name}]: Zona(s) inválida(s) em moveCardBetweenZones ('${fromZoneName}' -> '${toZoneName}')`);
             return null;
         }
+
         const card = fromZone.removeCard(cardUniqueId);
+        console.log(`PLAYER_MOVE_ATTEMPT [${this.name}]: Removido ${card?.name || 'N/A'} (${cardUniqueId}) de ${fromZoneName}. Instância da carta:`, card ? {...card.getRenderData()} : null);
+
         if (card) {
-            if (toZone.addCard(card)) { // Ensure the destination zone successfully adds the card
-                 card.location = toZoneName.toLowerCase(); // Update the card's internal location tracker
-                 // Reset creature state when moving off battlefield
-                 if (fromZoneName === 'battlefield' && card instanceof CreatureCard) {
-                    card.resetCombatState?.(); // Add a reset method if needed
-                 }
-                 return card;
+            console.log(`PLAYER_MOVE_ATTEMPT [${this.name}]: Tentando adicionar ${card.name} (${card.uniqueId}) para ${toZoneName}.`);
+            const addedToDestination = toZone.addCard(card);
+
+            if (addedToDestination) {
+                card.location = toZoneName.toLowerCase(); // Atualiza a localização na carta
+                console.log(`PLAYER_MOVE_SUCCESS [${this.name}]: ${card.name} (${card.uniqueId}) adicionado com sucesso para ${toZoneName}. Localização atualizada para ${card.location}.`);
+                // Resetar estado de combate da criatura se ela saiu do campo
+                if (fromZoneName === 'battlefield' && card instanceof CreatureCard) {
+                    // Adicione um método para resetar estados como 'isTapped', 'attacking', etc.
+                    // card.resetCombatState?.(); // Exemplo, se tal método existir
+                }
+                return card;
             } else {
-                 console.error(`Player ${this.#name}: Failed to add card ${cardUniqueId} to zone ${toZoneName}. Reverting.`);
-                 fromZone.addCard(card); // Attempt to put it back
-                 return null;
+                console.error(`PLAYER_MOVE_FAIL [${this.name}]: Falha ao adicionar ${card.name} (${card.uniqueId}) para ${toZoneName}. Tentando reverter para ${fromZoneName}.`);
+                // Tenta readicionar à zona de origem para evitar perda da carta
+                if (!fromZone.addCard(card)) { // Adiciona de volta à zona de origem
+                    console.error(`PLAYER_MOVE_CRITICAL_FAIL [${this.name}]: FALHA CRÍTICA ao readicionar ${card.name} para ${fromZoneName} após falha de destino.`);
+                }
+                return null;
             }
         }
-        console.warn(`Player ${this.#name}: Card ${cardUniqueId} not found in zone ${fromZoneName}.`);
+        console.warn(`PLAYER_MOVE_WARN [${this.name}]: Carta ${cardUniqueId} não encontrada em ${fromZoneName} para iniciar a movimentação.`);
         return null;
     }
 
-    /** Gets the zone object based on its name. */
     #getZoneObject(zoneName) {
         switch(zoneName?.toLowerCase()) {
             case 'deck': return this.#deck;
             case 'hand': return this.#hand;
             case 'battlefield': return this.#battlefield;
             case 'graveyard': return this.#graveyard;
-            default: console.error(`Player ${this.#name}: Invalid zone name requested: ${zoneName}`); return null;
+            default:
+                console.error(`Player ${this.#name}: Zona inválida solicitada: ${zoneName}`);
+                return null;
         }
     }
 
-    /** Checks hand size at end of turn and requests discard if needed. */
-    checkHandSize(game) {
+    checkHandSize(game) { // game instance é necessária para requestPlayerDiscard
         if (this.#hand.isOverLimit()) {
             const discardCount = this.#hand.getSize() - this.#hand.getMaxSize();
-            console.log(`Player ${this.#name}: Hand size over limit (${this.#hand.getSize()}/${this.#hand.getMaxSize()}). Requesting discard of ${discardCount}.`);
+            console.log(`Player ${this.#name}: Mão acima do limite (${this.#hand.getSize()}/${this.#hand.getMaxSize()}). Solicitando descarte de ${discardCount}.`);
             game.requestPlayerDiscard(this.id, discardCount);
         }
     }
 
-    // --- Player Actions ---
-
-    /** Attempts to play a card from hand. */
     playCard(cardUniqueId, targetId = null, game) {
-        if (!game) { console.error("Player.playCard needs game instance!"); return false; }
+        if (!game) {
+            console.error("Player.playCard ERRO: Instância do jogo (game) não fornecida!");
+            return false;
+        }
         const card = this.#hand.getCard(cardUniqueId);
-        if (!card) { console.warn(`${this.name}: Card ${cardUniqueId} not in hand.`); return false; }
+        if (!card) {
+            console.warn(`Player ${this.name}: Carta ${cardUniqueId} não encontrada na mão.`);
+            return false;
+        }
 
-        // Use the card's specific canPlay method first (checks cost, phase, etc.)
+        // A própria carta verifica se pode ser jogada (custo, fase, etc.)
         if (!card.canPlay(this, game)) {
-             console.log(`Player ${this.name}: Cannot play ${card.name} now (checked by card.canPlay).`);
+             console.log(`Player ${this.name}: Não pode jogar ${card.name} agora (verificado por card.canPlay).`);
              game.emitEvent('gameLog', { message: `Não pode jogar ${card.name} agora.` });
              return false;
         }
 
-        // Validate target if required BEFORE spending mana
+        // Se a carta requer um alvo, mas nenhum foi fornecido (ou é inválido)
         if (card.requiresTarget()) {
             if (!targetId) {
-                 console.warn(`Player ${this.name}: Card ${card.name} requires a target, but none provided.`);
+                 console.warn(`Player ${this.name}: Carta ${card.name} requer um alvo, mas nenhum foi fornecido.`);
                  game.emitEvent('gameLog', { message: `A carta ${card.name} requer um alvo.` });
                  return false;
             }
-            const target = game.findCardInstance(targetId); // Or getPlayer if targetType is player
-            if (!target /* || !isValidTargetType(target, card.targetType()) */) { // Add target type validation if needed
-                 console.warn(`Player ${this.name}: Invalid or missing target (${targetId}) for ${card.name}.`);
-                 game.emitEvent('gameLog', { message: `Alvo inválido para ${card.name}.` });
-                 return false;
-            }
-            // TODO: Implement more robust isValidTargetType check in Game or Player
+            // A validação do tipo de alvo e existência é feita pelo Game.resolveEffect ou pela própria carta.
+            // Aqui, apenas passamos o targetId para a carta.
         }
 
-
-        // Spend Mana FIRST
+        // Gasta mana PRIMEIRO
         if (!this.spendMana(card.cost)) {
-             console.error(`${this.name}: Mana spend failed unexpectedly after canPlay check.`);
-             // This case should ideally not happen if canPlay works correctly.
+             // Este caso não deveria acontecer se card.canPlay() foi bem sucedido,
+             // mas é uma verificação de segurança.
+             console.error(`Player ${this.name}: Falha ao gastar mana para ${card.name} após canPlay ter sido verdadeiro.`);
              return false;
         }
-        game.emitEvent('playerStatsChanged', { playerId: this.id, updates: { mana: this.mana }}); // Notify UI mana changed
+        game.emitEvent('playerStatsChanged', { playerId: this.id, updates: { mana: this.mana }}); // Notifica UI
 
-
-        // --- Let the CARD instance handle its play logic ---
-        // The card's play method should call game.moveCardToZone and apply effects
+        // Deixa a CARTA lidar com sua lógica de "play"
+        // O método play da carta deve chamar game.moveCardToZone e aplicar seus efeitos (via game.resolveEffect)
         const playSuccess = card.play(this, game, targetId);
 
         if (playSuccess) {
-             // Emit base cardPlayed event from Game AFTER card.play resolves successfully
-             // Card.play can emit more specific events (e.g., 'creatureEntered', 'spellResolved')
+            // Game emite um evento genérico de carta jogada. A carta específica pode ter emitido outros.
              game.emitEvent('cardPlayed', { player: this.getRenderData(), card: card.getRenderData(), targetId });
         } else {
-            // If card.play itself failed AFTER mana was spent (e.g., target invalid at resolution)
-            console.warn(`Player ${this.name}: Card ${card.name}'s play method reported failure.`);
-            // Card's play() method should handle moving to graveyard on failure if necessary.
+            // Se card.play() falhou APÓS a mana ser gasta (ex: alvo se tornou inválido no último instante)
+            console.warn(`Player ${this.name}: Método play da carta ${card.name} reportou falha.`);
+            // A carta deveria ter se movido para o cemitério se o efeito falhou (lógica em InstantCard.play, por ex.)
         }
 
         return playSuccess;
     }
 
-    /**
-     * Discards a card from hand to gain +1 Max Mana (up to 10).
-     * Can only be done once per turn.
-     * @param {string} cardUniqueId - The unique ID of the card to discard.
-     * @param {Game} game - The main game instance.
-     * @returns {boolean} True if the discard was successful, false otherwise.
-     */
     discardCardForMana(cardUniqueId, game) {
-        console.log(`Player ${this.name}: Attempting discardCardForMana for ${cardUniqueId}`);
+        console.log(`Player ${this.name}: Tentando descartar por mana a carta ${cardUniqueId}`);
         if (!game) {
-            console.error("Player.discardCardForMana needs game instance!");
+            console.error("Player.discardCardForMana ERRO: Instância do jogo (game) não fornecida!");
             return false;
         }
 
-        // --- Validation Checks ---
         if (this.#hasDiscardedForMana) {
-            console.log(`Discard failed - already discarded this turn.`);
+            console.log(`Player ${this.name}: Descarte por mana falhou - já descartou neste turno.`);
             game.emitEvent('gameLog', { message: `Você já descartou por mana neste turno.`, type: 'error' });
             return false;
         }
         if (this.#maxMana >= 10) {
-            console.log(`Discard failed - max mana (10) reached.`);
+            console.log(`Player ${this.name}: Descarte por mana falhou - mana máxima (10) atingida.`);
             game.emitEvent('gameLog', { message: `Mana máxima (10) já atingida.`, type: 'feedback' });
             return false;
         }
         const card = this.#hand.getCard(cardUniqueId);
         if (!card) {
-             console.warn(`Discard failed - card ${cardUniqueId} not in hand.`);
-             // Don't emit log here, UI handles "select a card" feedback
+             console.warn(`Player ${this.name}: Descarte por mana falhou - carta ${cardUniqueId} não está na mão.`);
              return false;
         }
-        // Optional: Check if it's the player's turn (Game/UI usually enforces this)
-        if (!this.isActivePlayer) {
-             console.warn(`Discard failed - not ${this.name}'s turn.`);
+        if (!this.isActivePlayer) { // Verifica se é o turno ativo do jogador
+             console.warn(`Player ${this.name}: Descarte por mana falhou - não é o turno de ${this.name}.`);
              game.emitEvent('gameLog', { message: `Não é seu turno para descartar por mana.`, type: 'error' });
              return false;
         }
 
-        console.log(`Attempting to move card ${card.name} (${cardUniqueId}) from hand to graveyard.`);
-        // Game's moveCardToZone handles the actual move and emits 'cardMoved'
+        console.log(`Player ${this.name}: Tentando mover ${card.name} (${cardUniqueId}) da mão para o cemitério para ganhar mana.`);
         const moved = game.moveCardToZone(cardUniqueId, this.id, 'hand', 'graveyard');
 
         if (moved) {
-            // --- Update Player State ---
             this.#maxMana++;
-            // Mana only refills at turn start. Do NOT update current mana here.
-            this.#hasDiscardedForMana = true; // Set the flag AFTER successful discard
+            // A mana ATUAL NÃO é aumentada aqui, apenas a MÁXIMA. A mana atual é preenchida no início do turno.
+            this.#hasDiscardedForMana = true; // Define a flag APÓS o descarte bem-sucedido
 
             const logMsg = `${this.name} descartou ${card.name} para ganhar +1 Mana Máx.`;
-            console.log(`Discard SUCCESSFUL. ${logMsg} Max Mana now: ${this.#maxMana}.`);
+            console.log(`Player ${this.name}: SUCESSO no descarte por mana. ${logMsg} Mana Máx agora: ${this.#maxMana}.`);
 
-            // --- Emit Events ---
             game.emitEvent('gameLog', { message: logMsg, type: 'action' });
-            // Emit stats change AFTER updating maxMana
-            // IMPORTANT: Only emit the change for maxMana.
+            // Emite a mudança de stats APÓS maxMana ser atualizado
             game.emitEvent('playerStatsChanged', { playerId: this.id, updates: { maxMana: this.#maxMana } });
 
-            return true; // Indicate success
+            return true;
         } else {
-            console.error(`Discard FAILED - game.moveCardToZone returned false for ${cardUniqueId}.`);
+            console.error(`Player ${this.name}: FALHA no descarte por mana - game.moveCardToZone retornou false para ${cardUniqueId}.`);
             game.emitEvent('gameLog', { message: `Erro ao mover ${card.name} para o cemitério.`, type: 'error' });
-            return false; // Indicate failure
+            return false;
         }
     }
 
-    /** Spends mana if available. Returns true if successful, false otherwise. */
     spendMana(amount) {
         if (amount < 0) return false;
-        if (amount <= this.#mana) {
+        if (this.#mana >= amount) {
             this.#mana -= amount;
-            console.log(`Player ${this.#name}: Spent ${amount} mana. Remaining: ${this.#mana}`);
+            console.log(`Player ${this.#name}: Gastou ${amount} mana. Restante: ${this.#mana}`);
             return true;
         }
-        console.log(`Player ${this.#name}: Not enough mana to spend ${amount}. Have: ${this.#mana}`);
+        console.log(`Player ${this.#name}: Mana insuficiente para gastar ${amount}. Possui: ${this.#mana}`);
         return false;
     }
 
-    /** Increases player's life total. */
     gainLife(amount, game) {
         if (amount <= 0) return;
         this.#life += amount;
-        console.log(`Player ${this.#name}: Gained ${amount} life. Total: ${this.#life}`);
+        console.log(`Player ${this.#name}: Ganhou ${amount} vida. Total: ${this.#life}`);
         game?.emitEvent('playerStatsChanged', { playerId: this.id, updates: { life: this.#life }});
-        game?.emitEvent('gameLog', { message: `${this.name} ganhou ${amount} vida.` });
+        game?.emitEvent('gameLog', { message: `${this.name} ganhou ${amount} de vida.` });
     }
 
-    /** Decreases player's life total. Checks for game over. */
     takeDamage(amount, source, game) {
         if (amount <= 0) return;
         this.#life -= amount;
-        console.log(`DEBUG_PLAYER_TAKE_DAMAGE: ${this.#name} took ${amount}. New life: ${this.#life}. Player ID: ${this.id}`);
+        console.log(`DEBUG_PLAYER_TAKE_DAMAGE: ${this.#name} levou ${amount} de dano. Nova vida: ${this.#life}. Player ID: ${this.id}`);
         game?.emitEvent('playerStatsChanged', { playerId: this.id, updates: { life: this.#life }});
-        game?.emitEvent('gameLog', { message: `${this.name} levou ${amount} dano.` });
+        game?.emitEvent('gameLog', { message: `${this.name} levou ${amount} de dano.` });
+
         if (this.#life <= 0) {
-            console.log(`Player ${this.#name} has been defeated.`);
-            game?.gameOver(game.getOpponent(this.id));
+            console.log(`Player ${this.#name} foi derrotado.`);
+            game?.gameOver(game.getOpponent(this.id)); // Notifica o jogo que este jogador perdeu
         }
     }
 
-    /** Resets player stats to initial values (e.g., for game start). */
     resetStats() {
         this.#life = 20;
         this.#mana = 0;
-        this.#maxMana = 0; // Start with 0 max mana
+        this.#maxMana = 0; // Começa com 0 de mana máxima
         this.#hasDiscardedForMana = false;
         this.isActivePlayer = false;
-        console.log(`Player ${this.#name}: Stats reset.`);
+        console.log(`Player ${this.#name}: Stats resetados.`);
     }
 
-    // --- Combat Related Helpers ---
-    canDeclareAttackers() { return this.battlefield.getCreatures().some(c => c.canAttack()); }
-    canDeclareBlockers(attacker) {
-        // Add specific logic if needed (e.g., checking for flying)
-        return this.battlefield.getCreatures().some(c => c.canBlock());
+    canDeclareAttackers() {
+        return this.#battlefield.getCreatures().some(c => c.canAttack());
     }
 
-     // --- Rendering Helper ---
-     getRenderData() {
-        // Provides a safe snapshot for UI/Events, excluding sensitive info or complex objects
+    canDeclareBlockers(attacker) { // O parâmetro 'attacker' pode ser usado para lógicas mais complexas (ex: flying)
+        return this.#battlefield.getCreatures().some(c => c.canBlock());
+    }
+
+    getRenderData() {
         return {
             id: this.id,
             name: this.name,
@@ -312,7 +338,8 @@ export default class Player { // Using export default
             handSize: this.hand.getSize(),
             deckSize: this.deck.getSize(),
             graveyardSize: this.graveyard.getSize()
-            // Note: hasDiscardedForMana is internal state, UI usually infers from button state
+            // hasDiscardedForMana não é enviado, pois a UI geralmente deduz isso
+            // pela habilitação/desabilitação do botão de descarte.
         };
-     }
+    }
 }

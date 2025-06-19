@@ -17,14 +17,14 @@ export default class BattleScreenUI {
 
     // --- Componentes de UI da Batalha ---
     #battleRenderer;
-    #battleInteractionManager = null; 
+    #battleInteractionManager = null;
 
     // --- Estado do Jogo (Recebido) ---
     #gameInstance = null;
     #localPlayerId = null;
 
     #permanentEventsBound = false;
-    #zoomObserver = null; 
+    #zoomObserver = null;
 
     // --- Elementos da UI (Apenas os que BattleScreenUI gerencia diretamente) ---
     #battleScreenElement;
@@ -40,7 +40,7 @@ export default class BattleScreenUI {
         this.#uiManager = uiManager;
 
         this.#battleRenderer = new BattleRenderer(cardRendererMaster, this.#accountManager);
-        
+
         this._cacheEssentialSelectors();
         if (!this.#battleScreenElement || !this.#battleScreenElement.length) {
             console.error("BattleScreenUI Error: #battle-screen element not found!");
@@ -145,7 +145,7 @@ export default class BattleScreenUI {
             this.#gameInstance = null;
             this.#battleInteractionManager?._unbindGameActions();
             this.#battleInteractionManager = null;
-            if (this.#zoomObserver) { this.#zoomObserver.disconnect(); this.#zoomObserver = null; } 
+            if (this.#zoomObserver) { this.#zoomObserver.disconnect(); this.#zoomObserver = null; }
             this.#uiManager?.navigateTo('profile-screen');
             $('#top-bar').removeClass('battle-only');
         });
@@ -157,7 +157,7 @@ export default class BattleScreenUI {
             }
         });
 
-        const zoomOverlayNode = document.getElementById('battle-image-zoom-overlay'); 
+        const zoomOverlayNode = document.getElementById('battle-image-zoom-overlay');
         if (zoomOverlayNode) {
             const observerCallback = (mutationsList, observer) => {
                 for (const mutation of mutationsList) {
@@ -315,7 +315,7 @@ export default class BattleScreenUI {
         this.#battleRenderer.clearAllCardHighlights();
         this.#battleInteractionManager?._exitBlockerAssignmentMode();
         this.#battleInteractionManager?._exitAttackerDeclarationMode();
-        this.#battleInteractionManager?.refreshVisualHighlights(); 
+        this.#battleInteractionManager?.refreshVisualHighlights();
         this._updateTurnControls(); // Atualiza botões após o combate
         this.#battleRenderer.addLogMessage("Combate resolvido.", "system");
     }
@@ -332,10 +332,10 @@ export default class BattleScreenUI {
         const name = this.#gameInstance?.getPlayer(e.detail.playerId)?.name || 'Jogador';
         this.#battleRenderer.addLogMessage(`${name} não pode comprar cartas!`, 'error');
     }
-    _handleGameStarted(e) { 
+    _handleGameStarted(e) {
         // A primeira chamada a _updateTurnControls acontece em renderInitialState
         // Mas pode ser útil chamar aqui também se houver alguma lógica de estado que muda no gameStarted
-        setTimeout(() => this._updateTurnControls(), 50); 
+        setTimeout(() => this._updateTurnControls(), 50);
     }
 
     _handleDiscardRequired(e) {
@@ -381,7 +381,7 @@ export default class BattleScreenUI {
         const { defendingPlayerId, declaredBlockers } = e.detail; // defendingPlayerId é quem declarou
         console.log(`BattleScreenUI: Blockers declared by ${defendingPlayerId}.`);
         this.#battleRenderer.clearAllCardHighlights();
-        
+
         // Visualizar os bloqueadores
         declaredBlockers.forEach(info => {
             const $card = this.#battleScreenElement.find(`.card[data-card-unique-id="${info.blockerId}"]`);
@@ -395,7 +395,7 @@ export default class BattleScreenUI {
 
         // Se foi o jogador local quem declarou os bloqueios, ele sai do modo.
         if (defendingPlayerId === this.#localPlayerId) {
-            this.#battleInteractionManager?._exitBlockerAssignmentMode(); 
+            this.#battleInteractionManager?._exitBlockerAssignmentMode();
         }
         // O combate será resolvido pelo CombatManager, que emitirá 'combatResolved'.
         // _updateTurnControls será chamado por 'combatResolved'.
@@ -415,14 +415,10 @@ export default class BattleScreenUI {
         this.#battleRenderer.updateCurrentPlayerIndicator(text);
     }
 
-            /**
+    /**
      * Atualiza a visibilidade / habilitação dos botões de turno.
      * Chame sempre que algo no estado da partida ou nos modos de interação mudar.
      */
-    /**
- * Atualiza a visibilidade / habilitação dos botões de turno.
- * Chame sempre que algo no estado da partida ou nos modos de interação mudar.
- */
     _updateTurnControls() {
         const game = this.#gameInstance;
         if (!game) return;
@@ -464,20 +460,17 @@ export default class BattleScreenUI {
                 const atkMode = interaction.isDeclaringAttackers();
                 if (atkMode) {
                     const anySel = interaction.getSelectedAttackerIds().size > 0;
-
-                    /* — NOVA LÓGICA ———————
-                    Botão só aparece se houver ao menos um atacante.
-                    */
-                    confirmAtkVis = anySel;
-                    confirmAtkDis = !anySel;
-
-                    // se há atacantes selecionados, jogador deve confirmar ou limpar
-                    passPhaseDis  = anySel;
+                    confirmAtkVis = anySel; // Botão só aparece se houver ao menos um atacante selecionado
+                    confirmAtkDis = !anySel; // E habilitado se houver
+                    passPhaseDis  = anySel; // Se atacantes selecionados, jogador deve confirmar ou limpar
                     endTurnDis    = anySel;
                 } else if (combatState === 'declare_blockers') {
+                    // Oponente (IA) está bloqueando, ou esperando resposta de bloqueio do humano
+                    // Se o combate ainda está em declare_blockers, o jogador atacante (humano)
+                    // não deveria poder passar a fase aqui, ele espera a resolução.
                     passPhaseDis = true;
                     endTurnDis   = true;
-                    discardManaVis = false;
+                    discardManaVis = false; // Não pode descartar para mana durante o combate do oponente
                 }
             }
 
@@ -494,19 +487,26 @@ export default class BattleScreenUI {
             }
 
         // ─── Turno do oponente (eu bloqueio) ──────────────────────────────────
-        } else {
+        } else { // Not my turn
             if (phase === 'attack' && combatState === 'declare_blockers') {
-                passPhaseVis = true;  passPhaseDis = false;
+                // O jogador local (defensor) PODE passar a fase, o que significa não bloquear
+                // ou confirmar os bloqueios parciais que já fez.
+                passPhaseVis = true;
+                passPhaseDis = false; // "Passar Fase" deve estar HABILITADO
 
+                // Verifica se o modo de interação de designar bloqueadores está ativo
                 if (interaction.isAssigningBlockers()) {
                     const assignmentsMade =
                         Object.keys(interaction.getBlockerAssignmentsUI()).length > 0;
 
-                    /* — regra já aplicada ——— */
-                    confirmBlkVis = assignmentsMade;
-                    confirmBlkDis = !assignmentsMade;
-
-                    if (assignmentsMade) passPhaseDis = true;
+                    // O botão "Confirmar Bloqueios" só fica habilitado se houver bloqueios feitos.
+                    confirmBlkVis = true; // Botão é visível durante a atribuição de bloqueios
+                    confirmBlkDis = !assignmentsMade; // Habilitado apenas se há bloqueios
+                } else {
+                    // Se não estiver no modo de atribuir bloqueadores (pode ter saído ou ainda não entrado),
+                    // o botão "Confirmar Bloqueios" deve estar desabilitado.
+                    confirmBlkVis = false; // Ou true se quiser mostrar sempre, mas desabilitado
+                    confirmBlkDis = true;
                 }
             }
         }
@@ -520,7 +520,8 @@ export default class BattleScreenUI {
         $.find('#btn-discard-mana')   .toggle(discardManaVis).prop('disabled', discardManaDis);
         $.find('#btn-cancel-discard') .toggle(cancelDiscardVis);
 
-        console.log(`_updateTurnControls: phase=${phase}, cmState=${combatState},`
+        console.log(`_updateTurnControls: phase=${phase}, isMyTurn=${isMyTurn}, cmState=${combatState},`
+            + ` passPhaseVis=${passPhaseVis}, passPhaseDis=${passPhaseDis},`
             + ` confirmAtkVis=${confirmAtkVis}, confirmBlkVis=${confirmBlkVis}`);
     }
 

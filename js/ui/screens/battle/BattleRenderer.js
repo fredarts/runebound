@@ -1,14 +1,12 @@
-// js/ui/battle/BattleRenderer.js
+// js/ui/screens/battle/BattleRenderer.js
 
-import CardRenderer from '../../helpers/CardRenderer.js';
+import CardRenderer from '../../helpers/CardRenderer.js'; // Ajuste o caminho se necessário
 
 export default class BattleRenderer {
-    // --- Referências Injetadas ---
     #cardRenderer;
     #accountManager;
     #localPlayerId;
 
-    // --- Elementos da UI (Cache) ---
     #battleScreenElement;
     #playerHandElement; #playerBattlefieldElement; #opponentHandElement; #opponentBattlefieldElement;
     #playerDeckCountElement; #playerGraveyardCountElement; #opponentDeckCountElement; #opponentGraveyardCountElement;
@@ -16,16 +14,22 @@ export default class BattleRenderer {
     #opponentLifeElement; #opponentManaElement; #opponentMaxManaElement; #opponentNameElement; #opponentAvatarElement;
     #opponentHandCountElement; #gameLogElement; #gameLogContainerElement;
     #actionFeedbackElement;
-    #gameOverOverlayElement; #gameOverMessageElement; #btnConfirmAttack; #btnConfirmBlocks;
+    #gameOverOverlayElement; #gameOverMessageElement;
+    // Botões de controle de turno não são mais gerenciados diretamente aqui para visibilidade/disable,
+    // BattleScreenUI ou BattleInteractionManager lidam com a lógica, este apenas os cacheia se precisar de referência
+    #btnConfirmAttack; #btnConfirmBlocks;
     #btnPassPhase; #btnEndTurn; #btnDiscardMana;
+
     #playerDeckImgElement; #playerGraveyardImgElement; #opponentDeckImgElement; #opponentGraveyardImgElement;
     #graveyardPlaceholderSrc = 'assets/images/ui/graveyard.png';
 
-    // --- Elementos para o Turn Info Banner ---
     #turnInfoElement;
     #turnNumberElement;
     #phaseIndicatorElement;
     #currentPlayerIndicatorElement;
+
+    #pairingColorClasses = ['blocking-pair-lime', 'blocking-pair-cyan', 'blocking-pair-magenta', 'blocking-pair-gold', 'blocking-pair-orange', 'blocking-pair-blueviolet'];
+
 
     constructor(cardRendererInstance, accountManagerInstance) {
         this.#cardRenderer = cardRendererInstance;
@@ -34,8 +38,11 @@ export default class BattleRenderer {
         if (!this.#battleScreenElement || !this.#battleScreenElement.length) {
             console.error("BattleRenderer Error: #battle-screen element not found during construction!");
         } else {
+            // Adiciona a classe para o estilo do banner de turno.
+            // Isso pode ser feito aqui ou quando o primeiro update do banner ocorrer.
             this.#turnInfoElement?.addClass('turn-info-banner-styled');
         }
+        console.log("BattleRenderer initialized (v_blocker_colors_final).");
     }
 
     setLocalPlayerId(id) {
@@ -45,7 +52,8 @@ export default class BattleRenderer {
     _cacheSelectors() {
         this.#battleScreenElement = $('#battle-screen');
         if (!this.#battleScreenElement.length) {
-            return false;
+            console.error("BattleRenderer Cache Error: Root element #battle-screen not found.");
+            return false; // Indica falha no cache
         }
 
         this.#playerHandElement = this.#battleScreenElement.find('#player-hand');
@@ -82,11 +90,15 @@ export default class BattleRenderer {
         this.#actionFeedbackElement = this.#battleScreenElement.find('#action-feedback');
         this.#gameOverOverlayElement = this.#battleScreenElement.find('#game-over-overlay');
         this.#gameOverMessageElement = this.#battleScreenElement.find('#game-over-message');
+
+        // Cache dos botões de controle de turno
         this.#btnConfirmAttack = this.#battleScreenElement.find('#btn-confirm-attack');
         this.#btnConfirmBlocks = this.#battleScreenElement.find('#btn-confirm-blocks');
         this.#btnPassPhase = this.#battleScreenElement.find('#btn-pass-phase');
         this.#btnEndTurn = this.#battleScreenElement.find('#btn-end-turn');
         this.#btnDiscardMana = this.#battleScreenElement.find('#btn-discard-mana');
+
+        // Cache das imagens de deck/cemitério
         this.#playerDeckImgElement = this.#battleScreenElement.find('#player-deck-img');
         this.#playerGraveyardImgElement = this.#battleScreenElement.find('#player-graveyard-img');
         this.#opponentDeckImgElement = this.#battleScreenElement.find('#opponent-deck-img');
@@ -137,8 +149,8 @@ export default class BattleRenderer {
         const avatarEl = isLocal ? this.#playerAvatarElement : this.#opponentAvatarElement;
 
         nameEl?.text(player.name);
-        this.updatePlayerStats(player);
-        const userData = this.#accountManager?.getUserData(player.name);
+        this.updatePlayerStats(player); // Atualiza vida, mana, maxMana
+        const userData = this.#accountManager?.getUserData(player.name); // Pega dados do AccountManager
         const avatarSrc = `assets/images/avatars/${userData?.avatar || 'default.png'}`;
         avatarEl?.attr('src', avatarSrc).attr('alt', `${player.name} Avatar`);
     }
@@ -147,12 +159,10 @@ export default class BattleRenderer {
         if (!cardData || !this.#playerHandElement) return;
         const $cardElement = this.#cardRenderer.renderCard(cardData, 'hand');
         if ($cardElement) {
-            // >>> ADICIONADO draggable="true" <<<
-            $cardElement.attr('draggable', true);
-            // >>> FIM DA ADIÇÃO <<<
+            $cardElement.attr('draggable', true); // Para arrastar da mão para o campo
             this.#playerHandElement.append($cardElement);
-            $cardElement.addClass('draw-animation');
-            setTimeout(() => $cardElement.removeClass('draw-animation'), 400);
+            $cardElement.addClass('draw-animation'); // Aplica animação de compra
+            setTimeout(() => $cardElement.removeClass('draw-animation'), 400); // Remove classe após animação
         }
     }
 
@@ -160,7 +170,7 @@ export default class BattleRenderer {
         if (!this.#playerHandElement) return;
         this.#playerHandElement.empty();
         player.hand.getCards().forEach(card => {
-            this.addCardToHandUI(card.getRenderData()); // addCardToHandUI já adiciona draggable
+            this.addCardToHandUI(card.getRenderData());
         });
     }
 
@@ -170,7 +180,6 @@ export default class BattleRenderer {
         const handSize = opponent.hand.getSize();
         this.#opponentHandCountElement.text(handSize);
         for (let i = 0; i < handSize; i++) {
-            // Cartas do oponente não são draggable pelo jogador local
             this.#opponentHandElement.append($('<div class="card card-back"></div>'));
         }
     }
@@ -183,9 +192,6 @@ export default class BattleRenderer {
 
         const $cardElement = this.#cardRenderer.renderCard(cardData, 'battlefield');
         if ($cardElement) {
-            // Cartas no campo de batalha geralmente não são draggable para jogar,
-            // mas podem ser para outros propósitos (ex: selecionar para efeito).
-            // Para jogar da mão, o draggable é na mão.
             $container.append($cardElement);
             $cardElement.addClass('play-animation');
             setTimeout(() => $cardElement.removeClass('play-animation'), 300);
@@ -199,6 +205,7 @@ export default class BattleRenderer {
 
         $container.empty();
         battlefield.getAllCards().forEach(card => {
+            // Passa o ownerId da carta para addCardToBattlefieldUI
             this.addCardToBattlefieldUI(card.getRenderData(), card.ownerId);
         });
     }
@@ -217,22 +224,29 @@ export default class BattleRenderer {
 
     _animateTurnInfoUpdate(updateTextCallback) {
         if (!this.#turnInfoElement || !this.#turnInfoElement.length) {
+            // Se o elemento não existe, apenas executa o callback para atualizar os dados internos (se houver)
             if (typeof updateTextCallback === 'function') updateTextCallback();
             return;
         }
         
+        // Garante que a classe base do estilo está presente
         this.#turnInfoElement.addClass('turn-info-banner-styled');
+        // Remove 'show' para iniciar o fade out (ou preparar para fade in se já estiver oculto)
         this.#turnInfoElement.removeClass('show');
 
+        // Espera o fade-out (definido no CSS como 0.3s) terminar antes de mudar o texto e fazer o fade-in
         setTimeout(() => {
             if (typeof updateTextCallback === 'function') {
-                updateTextCallback();
+                updateTextCallback(); // Atualiza o conteúdo do texto
             }
+            // Garante que o elemento ainda está no DOM antes de tentar adicionar a classe 'show'
+            // Isso previne erros se a tela for destruída durante o timeout
             if (this.#turnInfoElement && this.#turnInfoElement.closest('body').length) {
+                // Força um reflow para garantir que a transição do fade-in ocorra
                 void this.#turnInfoElement[0].offsetWidth;
-                this.#turnInfoElement.addClass('show');
+                this.#turnInfoElement.addClass('show'); // Adiciona 'show' para iniciar o fade-in
             }
-        }, 300);
+        }, 300); // Corresponde à duração da transição de opacity em _animations.css
     }
 
     updatePhaseIndicator(currentPhaseText) {
@@ -242,25 +256,27 @@ export default class BattleRenderer {
     }
 
     updateCurrentPlayerIndicator(indicatorText) {
-        this._animateTurnInfoUpdate(() => {
+         this._animateTurnInfoUpdate(() => {
             this.#currentPlayerIndicatorElement?.text(indicatorText);
         });
     }
 
     updateTurnNumber(turnNumber) {
-        this._animateTurnInfoUpdate(() => {
+         this._animateTurnInfoUpdate(() => {
             this.#turnNumberElement?.text(turnNumber);
         });
     }
 
     addLogMessage(message, type = 'system') {
         if (!message || !this.#gameLogElement?.length) return;
-        const logClass = `log-${type}`;
+        const logClass = `log-${type}`; // Ex: log-system, log-damage, log-heal
         const $logEntry = $(`<li class="${logClass}"></li>`).text(message);
-        this.#gameLogElement.prepend($logEntry);
+        this.#gameLogElement.prepend($logEntry); // Adiciona no topo
+        // Limita o número de entradas no log
         if (this.#gameLogElement.children().length > 50) {
             this.#gameLogElement.children().last().remove();
         }
+        // Scroll para o topo do log
         this.#gameLogContainerElement?.scrollTop(0);
     }
 
@@ -271,7 +287,7 @@ export default class BattleRenderer {
         const $imgElement = isLocal ? this.#playerDeckImgElement : this.#opponentDeckImgElement;
         const count = player.deck.getSize();
         $countElement?.text(count);
-        $imgElement?.toggle(count > 0);
+        $imgElement?.toggle(count > 0); // Esconde a imagem do deck se estiver vazio
     }
 
     updateGraveyardDisplay(player) {
@@ -283,6 +299,7 @@ export default class BattleRenderer {
         const count = graveyardCards.length;
         $countElement?.text(count);
         if (count > 0) {
+            // Mostra a imagem da última carta adicionada ao cemitério
             const topCardData = graveyardCards[count - 1].getRenderData();
             $imgElement?.attr('src', topCardData.imageSrc || this.#graveyardPlaceholderSrc)
                        .attr('alt', `Cemitério: ${topCardData.name}`)
@@ -302,12 +319,18 @@ export default class BattleRenderer {
         this.#gameOverMessageElement?.text(message);
         this.#gameOverOverlayElement?.addClass('active');
     }
-
     hideGameOver() {
         this.#gameOverOverlayElement?.removeClass('active');
     }
 
+    /**
+     * Atualiza a UI dos botões de controle de turno.
+     * Este método não decide QUAIS botões mostrar, apenas aplica o estado.
+     * A lógica de decisão está no BattleInteractionManager ou BattleScreenUI.
+     * @param {object} controlsState - Um objeto definindo a visibilidade e estado desabilitado dos botões.
+     */
     updateTurnControlsUI(controlsState) {
+        // Recacheia se necessário (pouco provável que seja, mas por segurança)
         if (!this.#battleScreenElement?.length && !this._cacheSelectors()) {
              console.error("BattleRenderer: updateTurnControlsUI - Elementos não cacheados.");
              return;
@@ -320,6 +343,8 @@ export default class BattleRenderer {
         this.#btnConfirmBlocks?.toggle(controlsState.confirmBlocksVisible).prop('disabled', controlsState.confirmBlocksDisabled);
     }
 
+    // --- Métodos de Destaque de Cartas ---
+
     highlightTargetableCards(selectorOrElement, addClass = true) {
         const $elements = (selectorOrElement instanceof jQuery) ? selectorOrElement : this.#battleScreenElement?.find(selectorOrElement);
         if (!$elements?.length) return;
@@ -331,19 +356,30 @@ export default class BattleRenderer {
         cardElement?.toggleClass('selected-attacker', isSelected);
     }
 
-    highlightBlockerAssignment(attackerElement, /* blockerElements - não usado diretamente aqui */ assignments) {
-        if (!this.#battleScreenElement) return;
-        this.#battleScreenElement.find('.card.attacker-selected-for-blocking, .card.selected-blocker').removeClass('attacker-selected-for-blocking selected-blocker');
-        attackerElement?.addClass('attacker-selected-for-blocking');
-        Object.values(assignments || {}).flat().forEach(blockerId => {
-             this.#playerBattlefieldElement?.find(`.card[data-card-unique-id="${blockerId}"]`).addClass('selected-blocker');
-        });
+    /**
+     * Aplica ou remove um destaque de par de bloqueio a um elemento de carta.
+     * @param {jQuery} cardElement - O elemento jQuery da carta.
+     * @param {string} color - A classe de cor CSS (ex: 'lime', 'cyan').
+     * @param {boolean} isAttacker - (Opcional, não usado para estilo diferencial aqui)
+     */
+    applyPairHighlight(cardElement, color, isAttacker = false) {
+        if (!cardElement || !cardElement.length || !color) return;
+        // Remove outras cores de par primeiro
+        this.#pairingColorClasses.forEach(cls => cardElement.removeClass(cls));
+        // Adiciona a classe base da borda e a classe da cor específica
+        cardElement.addClass('blocking-pair-border').addClass(`blocking-pair-${color}`);
     }
 
     clearAllCardHighlights() {
-        this.#battleScreenElement?.find('.card').removeClass(
-            'targetable selected-attacker selected-blocker targetable-attacker attacking blocking can-attack-visual can-block-visual attacker-selected-for-blocking targetable-for-block-assignment'
-        );
+        const classesToRemove = [
+            'targetable', 'selected-attacker', 'selected-blocker',
+            'targetable-attacker', 'attacking', 'blocking',
+            'can-attack-visual', 'can-block-visual',
+            'attacker-selected-for-blocking', 'targetable-for-block-assignment',
+            'blocking-pair-border', // Classe base do par
+            ...this.#pairingColorClasses // Classes de cores específicas do par
+        ];
+        this.#battleScreenElement?.find('.card').removeClass(classesToRemove.join(' '));
     }
 
     setCardAttackingVisual(cardElement, isAttacking) {
@@ -351,21 +387,31 @@ export default class BattleRenderer {
     }
 
     setCardBlockingVisual(cardElement, isBlocking) {
-        cardElement?.toggleClass('blocking', isBlocking);
+        // Esta classe pode ser menos relevante agora com os pares coloridos.
+        // Mantida caso queira um estilo base adicional para bloqueadores designados.
+        // cardElement?.toggleClass('blocking', isBlocking);
     }
 
     showCardFeedback(cardElement, feedbackType, value = '') {
         if (!cardElement || !cardElement.length) return;
+        // Remove todas as classes de feedback antes de adicionar a nova para evitar acumulação
         cardElement.removeClass('feedback-shake feedback-invalid-target feedback-damage feedback-heal');
+        // Força reflow para reiniciar a animação CSS
         void cardElement[0].offsetWidth;
+
         switch(feedbackType) {
-            case 'shake': cardElement.addClass('feedback-shake'); break;
-            case 'invalid-target': cardElement.addClass('feedback-invalid-target'); break;
+            case 'shake':
+                cardElement.addClass('feedback-shake');
+                break;
+            case 'invalid-target':
+                cardElement.addClass('feedback-invalid-target');
+                break;
             case 'damage-flash':
                 cardElement.addClass('feedback-damage');
+                // Opcional: mostrar o número do dano sobre a carta
                 const $dmgNum = $(`<span class="feedback-number damage">${value}</span>`);
                 cardElement.append($dmgNum);
-                setTimeout(() => $dmgNum.remove(), 600);
+                setTimeout(() => $dmgNum.remove(), 600); // Remove após a animação
                 break;
             case 'heal-flash':
                 cardElement.addClass('feedback-heal');
@@ -379,7 +425,7 @@ export default class BattleRenderer {
     setPlayerHandSelectingMode(isSelecting, isRequired = false) {
         this.#playerHandElement?.toggleClass('selecting-discard', isSelecting);
         this.#playerHandElement?.toggleClass('required-discard', isSelecting && isRequired);
-        // APENAS ADICIONA targetable ÀS CARTAS NA MÃO DO JOGADOR LOCAL
+        // Adiciona/remove a classe 'targetable' das cartas na mão do jogador local
         if (isSelecting) {
             this.#playerHandElement?.find('.card').addClass('targetable');
         } else {
@@ -389,18 +435,29 @@ export default class BattleRenderer {
 
     setBattlefieldTargetingMode(targetType, enable) {
         if (!this.#battleScreenElement) return;
+
+        // Limpa destaques anteriores de alvo se estiver desabilitando ou mudando de alvo
+        if (!enable || (this._currentBattlefieldTargetType && this._currentBattlefieldTargetType !== targetType)) {
+            this.#battleScreenElement.find('#player-battlefield .card, #opponent-battlefield .card').removeClass('targetable');
+        }
+        this._currentBattlefieldTargetType = enable ? targetType : null; // Guarda o tipo de alvo atual
+
         if (enable && targetType) {
             let selector = '';
             switch (targetType) {
-                case 'creature': selector = '.card[data-card-id^="CR"], .card[data-card-id^="card_CR"]'; break;
-                case 'opponent_creature': selector = '#opponent-battlefield .card[data-card-id^="CR"], #opponent-battlefield .card[data-card-id^="card_CR"]'; break;
-                case 'own_creature': selector = '#player-battlefield .card[data-card-id^="CR"], #player-battlefield .card[data-card-id^="card_CR"]'; break;
-                case 'runebinding': selector = '.card[data-card-id^="RB"], .card[data-card-id^="card_RB"]'; break;
+                case 'creature': selector = '.card[data-card-id^="CR"]'; break; // Assume IDs CRxxx
+                case 'opponent_creature': selector = '#opponent-battlefield .card[data-card-id^="CR"]'; break;
+                case 'own_creature': selector = '#player-battlefield .card[data-card-id^="CR"]'; break;
+                case 'runebinding': selector = '.card[data-card-id^="RB"]'; break; // Assume IDs RBxxx
+                // Adicione mais casos conforme necessário
             }
-            if (selector) this.#battleScreenElement.find(selector).addClass('targetable');
-            else console.warn(`BattleRenderer: setBattlefieldTargetingMode - targetType '${targetType}' não tem seletor definido.`);
-        } else {
-            this.clearAllCardHighlights(); // Limpa todos se não for para habilitar ou targetType for nulo
+            if (selector) {
+                this.#battleScreenElement.find(selector).addClass('targetable');
+            } else {
+                console.warn(`BattleRenderer: setBattlefieldTargetingMode - targetType '${targetType}' não tem seletor definido.`);
+            }
         }
     }
+    // Guardar o tipo de alvo atual para limpar corretamente
+    _currentBattlefieldTargetType = null;
 }
