@@ -98,7 +98,7 @@
     background-color: rgba(0, 0, 0, 0.6);
     padding: 2px 6px;
     border-radius: 8px;
-    font-size: 2em;
+    font-size: 1.9em;
     white-space: nowrap;
 }
 .resource.life { color: var(--accent-color); }

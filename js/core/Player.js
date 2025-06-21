@@ -98,6 +98,7 @@ export default class Player {
     }
 
     endTurnCleanup(game) { // game instance é crucial aqui
+        console.error(`DEBUG: Player ${this.#name} está começando endTurnCleanup AGORA!`);
         this.isActivePlayer = false;
         const battlefieldCards = this.#battlefield.getAllCards(); // Pega a lista UMA VEZ para evitar problemas com modificação durante a iteração
 

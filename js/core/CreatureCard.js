@@ -204,6 +204,7 @@ export default class CreatureCard extends Card { // Using export default
      * @param {Game} game - The game instance.
      */
     endTurnCleanup(isOwnTurn, game) {
+        console.warn(`DEBUG_CREATURE_CLEANUP: ${this.name} (owner: ${this.ownerId}) iniciando cleanup. isOwnTurn: ${isOwnTurn}, summoningSickness: ${this.#summoningSickness}`);
         console.log(`CreatureCard ${this.name}: Starting endTurnCleanup. isOwnTurn: ${isOwnTurn}, currentToughness: ${this.#currentToughness}, maxToughness: ${this.toughness}`);
         
         let stateChanged = false;
@@ -211,7 +212,7 @@ export default class CreatureCard extends Card { // Using export default
         if (isOwnTurn && this.#summoningSickness) {
             this.#summoningSickness = false;
             stateChanged = true;
-            console.log(`CreatureCard ${this.name}: Summoning sickness removed.`);
+            console.error(`DEBUG: Criatura ${this.name} PERDEU o enjoo de invocação!`); 
         }
 
         if (this.#currentToughness < this.toughness) {
