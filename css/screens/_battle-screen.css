@@ -209,18 +209,12 @@
     gap: 8px;
 }
 .player-area.opponent .player-zones {
-    /* Removido position absolute, pois já está no fluxo do player-info */
-    order: 4; /* Mantém na direita se player-info for flex row */
-    margin-top: 100px; /* Ajuste conforme necessário se player-info for column */
-    /* Se player-info é column, e as zonas estão abaixo dos stats: */
-    /* flex-direction: row; /* Para colocar deck e cemitério lado a lado */
-    /* justify-content: center; /* Centraliza eles */
-    /* gap: 10px; */
+    order: 4; 
+    margin-top: 100px; 
 }
 .player-area.local-player .player-zones {
     order: 0;
     margin-top: 100px;
-    /* Similar ao opponent, ajuste se player-info for column */
 }
 
 /* Estilo da Zona (Deck ou Cemitério) */
@@ -237,7 +231,6 @@
     border-radius: 4px;
     padding: 2px;
     overflow: hidden;
-    
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .deck-zone::before, .graveyard-zone::before {
@@ -293,9 +286,7 @@
     box-sizing: border-box;
 }
 .graveyard-image.is-placeholder {
-    
     background-color: #2a2a2a;
-    
 }
 
 
@@ -303,30 +294,28 @@
 .center-area {
     background-color: rgba(0, 0, 0, 0.55);
     border-radius: 5px;
-    padding: 10px; /* Espaço interno geral */
-    display: flex; /* ATIVA FLEXBOX */
-    flex-direction: row; /* Log à esquerda, conteúdo central à direita */
-    justify-content: space-between; /* Ou flex-start e usar margin no log */
-    align-items: stretch; /* Para que ambas as colunas tenham a mesma altura se possível */
-    gap: 15px; /* Espaço entre o log e o conteúdo central */
-    flex-basis: auto; /* Altura baseada no conteúdo, ou um valor como 21% do anterior */
-    min-height: 130px; /* Altura mínima para acomodar os elementos */
-    /* overflow: hidden; /* Removido, cada coluna interna gerencia seu overflow */
+    padding: 10px; 
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: stretch; 
+    gap: 15px; 
+    flex-basis: auto; 
+    min-height: 130px;
 }
 
 /* Coluna Esquerda: Log do Jogo */
 .game-log-container {
-    width: 500px; /* LARGURA FIXA PARA O LOG */
-    flex-shrink: 0; /* Impede que o log encolha */
-    height: 200px; /* Ocupa toda a altura da .center-area */
-    
+    width: 500px; 
+    flex-shrink: 0; 
+    height: 200px; 
     overflow-y: auto;
     background-color: rgba(0, 0, 0, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 5px 8px;
     font-size: 0.85em;
-    box-sizing: border-box; /* Para padding não aumentar a largura */
+    box-sizing: border-box;
 }
 .game-log { list-style: none; padding: 0; margin: 0; }
 .game-log li {
@@ -343,27 +332,27 @@
 .log-player-local { font-weight: 500; color: #e0eaf1;}
 .log-player-opponent { font-weight: 500; color: #f1e0e0;}
 
-/* Coluna Direita: Informações de Turno e Controles (Novo Wrapper) */
+/* Coluna Direita: Informações de Turno e Controles */
 .center-column-content {
-    flex-grow: 1; /* Ocupa o espaço restante */
+    flex-grow: 1; 
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza horizontalmente o banner, botões, feedback */
-    justify-content: center; /* Centraliza verticalmente se houver espaço extra */
-    gap: 8px; /* Espaço entre banner, botões e feedback */
-    min-height: 100%; /* Tenta ocupar a altura da .center-area */
-    padding: 0 5px; /* Pequeno padding lateral */
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px; 
+    min-height: 100%; 
+    padding: 0 5px; 
     box-sizing: border-box;
-    margin-right: 460px;
+    margin-right: 460px; /* This seems quite large, verify it's what you intend */
 }
 
 /* Informações de Turno/Fase (Banner Estilizado) */
 #turn-info.turn-info-banner-styled {
     background-image: radial-gradient(circle at center, #FFA500 30%, #E67E00 100%);
-    color: #1d1d1d; /* Cinza escuro para o texto */
+    color: #1d1d1d; 
     padding: 10px 20px;
-    border-radius: 30px;
-    border: 1px solid #ab7905; /* Borda um pouco mais escura */
+    border-radius: 30px; /* Banner can be more rounded */
+    border: 1px solid #ab7905; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     font-size: 1.15em;
     font-weight: 600;
@@ -373,48 +362,48 @@
     min-width: 530px;
     max-width: 90%;
     margin: 10px 0 10px 0;
-    /* align-self: center; /* Já é feito pelo align-items do .center-column-content */
     opacity: 0;
-    transform: scale(0.95) translateY(0); /* Começa um pouco menor, sem translateY para cima */
+    transform: scale(0.95) translateY(0); 
     visibility: hidden;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s linear 0.3s;
     will-change: opacity, transform;
-    /* z-index: 10; /* Para garantir que fique acima de outros elementos na coluna central, se necessário */
 }
 #turn-info.turn-info-banner-styled.show {
     opacity: 1;
     visibility: visible;
     transform: scale(1) translateY(0);
-    transition-delay: 0s, 0s, 0s; /* Reseta o delay da visibilidade */
+    transition-delay: 0s, 0s, 0s; 
 }
 #turn-info.turn-info-banner-styled #phase-indicator {
-    color: #D32F2F;
+    color: #D32F2F; /* Reddish for phase */
     font-weight: bold;
 }
 #turn-info.turn-info-banner-styled #current-player-indicator {
-    color: #1976D2;
+    color: #1976D2; /* Bluish for player */
     font-style: normal;
 }
 
 /* Controles do Turno (Botões) */
 .turn-controls {
     display: flex;
-    gap: 8px;
+    gap: 8px; /* Smaller gap for these buttons */
     justify-content: center;
     flex-wrap: wrap;
-    /* flex-shrink: 0; */ /* Não mais necessário aqui diretamente */
 }
+
+/* Specific sizing and ensure new button styles from _buttons.css apply correctly */
 .turn-controls button {
-    padding: 5px 10px;
-    font-size: 0.85em;
+    padding: 6px 10px; /* Specific smaller padding */
+    font-size: 0.85em; /* Specific smaller font size */
+    /* border-radius: 6px; will be inherited from .button-battle-base */
+    /* font-family, text-transform will be inherited from .button-battle-base */
+    /* Colors and backgrounds will come from .button-battle-* specific classes */
 }
+/* Ensure hover/active/disabled states from _buttons.css are not overly overridden */
+
+/* Display logic for confirm buttons is handled by JS/BattleScreenUI */
 #btn-confirm-attack, #btn-confirm-blocks {
-    background-color: var(--button-play-bg);
-    
-    display: none; /* Gerenciado por JS */
-}
-#btn-confirm-attack:hover, #btn-confirm-blocks:hover {
-    background-color: var(--button-play-hover-bg);
+    display: none; 
 }
 
 /* Área de Feedback de Ação */
@@ -429,27 +418,25 @@
     max-width: 400px;
 }
 
+/* Drag and Drop States */
 #player-hand .card.dragging-card {
     opacity: 0.5;
-    transform: scale(0.95); /* Opcional: encolher um pouco */
-    /* Pode adicionar uma borda ou sombra diferente */
+    transform: scale(0.95); 
 }
-
 #player-battlefield.drop-target-active {
-    background-color: rgba(0, 255, 0, 0.1); /* Fundo verde sutil */
+    background-color: rgba(0, 255, 0, 0.1); 
     outline: 2px dashed var(--valid-color, lightgreen);
     outline-offset: -2px;
 }
 
-/* --- Estilos de Cartas na Batalha (já existentes, mantidos) --- */
+/* Estilos de Cartas na Batalha (Highlighting) */
 .card.can-attack-visual { outline: 2px dashed limegreen; outline-offset: 1px; }
 .card.selected-attacker { box-shadow: 0 0 10px 3px red, inset 0 0 0 2px red; transform: scale(1.05); }
 .card.can-block-visual { outline: 2px dashed skyblue; outline-offset: 1px; }
 .card.attacker-selected-for-blocking { box-shadow: 0 0 12px 4px orange !important; border: 2px solid orange !important; }
 .card.selected-blocker { box-shadow: 0 0 10px 3px cornflowerblue, inset 0 0 0 2px cornflowerblue; transform: scale(1.05); }
 
-
-/* --- Scrollbar (já existentes, mantidos) --- */
+/* Scrollbar Styles */
 .battle-screen-layout .game-log-container::-webkit-scrollbar,
 .battle-screen-layout .battlefield::-webkit-scrollbar,
 .battle-screen-layout .hand::-webkit-scrollbar
@@ -475,39 +462,37 @@
 .battle-screen-layout .hand
 { scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }
 
-
 /* Estilo base para a borda de par de bloqueio */
 .blocking-pair-border {
-    border-width: 3px !important; /* Mais grosso para destaque */
+    border-width: 3px !important; 
     border-style: solid !important;
-    box-shadow: 0 0 8px 3px currentColor !important; /* Sombra da cor da borda */
-    outline: none !important; /* Remove outros outlines para não conflitar */
+    box-shadow: 0 0 8px 3px currentColor !important; 
+    outline: none !important; 
     transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 }
 
-/* Cores específicas para os pares - adicione quantas precisar */
+/* Cores específicas para os pares */
 .blocking-pair-lime { border-color: lime !important; }
 .blocking-pair-cyan { border-color: cyan !important; }
 .blocking-pair-magenta { border-color: magenta !important; }
-.blocking-pair-gold { border-color: gold !important; } /* 'yellow' pode ser difícil de ver */
+.blocking-pair-gold { border-color: gold !important; } 
 .blocking-pair-orange { border-color: orange !important; }
 .blocking-pair-blueviolet { border-color: blueviolet !important; }
 
-/* Mantém o estilo para o atacante que está *ativamente* selecionado para bloqueio (antes de um bloqueador ser escolhido para ele) */
+/* Mantém o estilo para o atacante que está ativamente selecionado para bloqueio */
 .attacker-selected-for-blocking {
-    outline: 3px solid darkorange !important; /* Destaque forte para o atacante ativo */
+    outline: 3px solid darkorange !important;
     box-shadow: 0 0 12px 4px darkorange !important;
 }
 
 /* Ajuste para criaturas que podem bloquear (antes de serem designadas) */
 .card.can-block-visual {
-    outline: 2px dashed skyblue; /* Mantém o feedback de que pode bloquear */
+    outline: 2px dashed skyblue; 
     outline-offset: 1px;
 }
 
-/* Quando uma criatura local É designada como bloqueadora (além da borda colorida do par) */
+/* Quando uma criatura local É designada como bloqueadora */
 .card.selected-blocker {
-    /* A borda colorida do par já é o principal. Poderia adicionar um leve scale ou outra sombra aqui se necessário,
-       mas pode ficar muito poluído. Vamos focar na borda colorida. */
+    /* A borda colorida do par já é o principal. */
     /* Exemplo: transform: scale(1.03); */
 }

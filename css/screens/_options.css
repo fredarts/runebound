@@ -1,68 +1,68 @@
 /* css/screens/_options.css - Estilos para a Tela de Opções */
 
+/* ---------- Layout Geral da Tela (como Login/Create Account) ---------- */
 .options-layout {
-    /* Layout */
-    display: flex; /* Herdado de .screen */
-    flex-direction: column; /* Título, Container, Ações */
-    align-items: center; /* Centraliza horizontalmente */
-    justify-content: center; /* Centraliza verticalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
     height: 100%;
     box-sizing: border-box;
-
-    /* Fundo */
+    /* Mesmo fundo da tela de login */
     background: url('../../assets/images/ui/options_background.jpg') no-repeat center center;
     background-size: cover;
 }
 
-/* Título */
+/* ---------- Título H2 (como Login/Create Account) ---------- */
 .options-layout h2 {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: var(--header-color, #d9dce2);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-    font-weight: bolder;
-    font-size: 3em;
+    color: #FFB74D; /* Laranja/Âmbar claro para o título */
+    font-family: "Germania One", serif; /* Sua fonte temática */
+    text-transform: uppercase;
+    font-size: 2.2em; /* Tamanho do título ajustado para consistência */
+    margin-bottom: 25px; /* Espaço abaixo do título */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7), 0 0 10px rgba(255,120,0,0.4);
+    letter-spacing: 1px;
+    text-align: center; /* Assegurar centralização */
     flex-shrink: 0;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
-    
-    /* Herda h2 base */
 }
 
-/* Container Principal das Opções (com scroll) */
+/* ---------- Container Principal das Opções (como .form-container de Login/Create) ---------- */
 .options-container {
-    max-width: 600px;
+    background-color: rgba(10, 15, 25, 0.85); /* Fundo azul escuro, quase preto, translúcido */
+    padding: 30px 35px; /* Mais padding interno */
+    border-radius: 12px; /* Bordas um pouco menos arredondadas */
+    border: 1px solid rgba(128, 70, 0, 0.7); /* Borda sutil cor de brasa/âmbar */
+    box-shadow: 
+        0 0 25px rgba(255, 100, 0, 0.25), /* Brilho externo suave cor de fogo */
+        0 5px 15px rgba(0, 0, 0, 0.6);   /* Sombra projetada mais escura */
+    
+    max-width: 700px; /* Um pouco maior que o formulário de login para acomodar mais opções */
     width: 95%;
-    overflow-y: auto; /* Permite scroll se o conteúdo for maior */
-    padding: 10px 20px 20px 20px; /* Ajustado padding */
-    background: var(--panel-background);
-    border-radius: 8px;
+    overflow-y: auto;
     margin-bottom: 20px;
-    border: 1px solid var(--border-color);
-    /* overflow: hidden; REMOVIDO - Precisa de overflow-y: auto */
-    max-height: calc(100% - 150px); /* Altura máxima antes de rolar (ajuste 150px conforme necessário) */
+    max-height: calc(100% - 200px); /* Ajuste para não cobrir título e botões */
     box-sizing: border-box;
-    flex-shrink: 1; /* Permite encolher se necessário */
-    box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.5);
+    flex-shrink: 1;
 }
 
-/* Grupo de Opções (Fieldset) */
+/* ---------- Grupo de Opções (Fieldset) ---------- */
 .options-group {
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border: 1px solid rgba(128, 70, 0, 0.4); /* Borda temática mais sutil */
+    border-radius: 8px; /* Consistente com outros elementos */
     padding: 15px 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Mais espaço entre grupos */
 }
 
 /* Legenda do Grupo */
 .options-group legend {
     padding: 0 10px;
     font-weight: bold;
-    color: var(--primary-color);
-    font-size: 1.1em;
+    color: #FFB74D; /* Cor de destaque, como o H2 */
+    font-size: 1.15em; /* Um pouco maior */
+    font-family: "Germania One", serif; /* Fonte temática */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Item Individual de Opção */
@@ -70,141 +70,164 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 18px; /* Aumentar um pouco o espaço */
     gap: 15px;
-    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+    flex-wrap: wrap;
 }
 
-/* Label do Item */
+/* Label do Item (como Login/Create Account) */
 .option-item label {
-    flex-basis: 40%; /* Base de largura para o label */
-    min-width: 120px; /* Largura mínima */
-    margin-bottom: 0; /* Remove margem padrão do label */
-    flex-shrink: 0; /* Não encolhe */
-    text-align: right; /* Alinha texto do label à direita */
-    padding-right: 5px;
-    font-size: 0.95em; /* Tamanho da fonte */
-    color: var(--text-color-secondary); /* Cor mais suave */
-}
-
-/* Controles dentro do Item */
-.option-item input[type="range"] {
-    flex-grow: 1; /* Ocupa espaço restante */
-    min-width: 150px; /* Largura mínima */
-    margin: 0; /* Remove margens padrão */
-    
-}
-/* Aparência customizada do Range Slider (Opcional, mas recomendado) */
-/* (Adapte cores e tamanhos conforme seu design) */
-input[type=range] {
-  height: 20px; /* Altura total incluindo track e thumb */
-  -webkit-appearance: none;
-  margin: 5px 0;
-  width: 100%;
-  background: transparent; /* Remove fundo padrão */
-}
-input[type=range]:focus {
-  outline: none;
-}
-/* Track */
-input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 6px;
-  
-  background: var(--border-color); /* Cor da trilha */
-  border-radius: 3px;
-}
-input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 6px;
-  
-  background: var(--border-color);
-  border-radius: 3px;
-}
-/* Thumb (bolinha) */
-input[type=range]::-webkit-slider-thumb {
-  border: 1px solid #000000;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: var(--primary-color); /* Cor da bolinha */
-  
-  -webkit-appearance: none;
-  margin-top: -5px; /* Centraliza verticalmente */
-}
-input[type=range]::-moz-range-thumb {
-  border: 1px solid #000000;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  
-}
-/* Estilo quando desabilitado (Muted) */
-input[type=range]:disabled::-webkit-slider-thumb { background: var(--disabled-color); }
-input[type=range]:disabled::-moz-range-thumb { background: var(--disabled-color); }
-input[type=range]:disabled::-webkit-slider-runnable-track { background: #555; }
-input[type=range]:disabled::-moz-range-track { background: #555; }
-
-
-.option-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    flex-basis: 45%; /* Dar mais espaço para o label */
+    min-width: 150px;
+    margin-bottom: 0;
     flex-shrink: 0;
+    text-align: left; /* Alterado para esquerda para consistência com login */
+    padding-right: 10px; /* Espaço antes do controle */
+    font-size: 0.95em;
+    color: #FFCC80; /* Cor laranja/âmbar mais clara para os labels */
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-weight: 500;
+}
+
+/* Controles (Inputs, Selects) */
+.option-item input[type="range"],
+.option-item input[type="checkbox"],
+.option-item select {
+    flex-grow: 1;
+    min-width: 150px;
+    margin: 0;
     
-    margin-left: auto; /* Empurra para a direita se houver espaço */
 }
 
 .option-item select {
-    width: auto; /* Largura baseada no conteúdo */
-    flex-grow: 1; /* Ocupa espaço */
-    min-width: 150px; /* Largura mínima */
-    padding: 10px 0px 10px 10px;
-    border-radius: 30px;
-    background-color: var(--background-color);
-    color: white;
-    font-size: 1em;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
-    cursor: none !important; ;
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo escuro e translúcido */
+    border: 1px solid rgba(128, 70, 0, 0.6); /* Borda sutil cor de brasa */
+    color: #FFF3E0; /* Cor do texto (creme) */
+    padding: 10px 12px; /* Padding interno */
+    border-radius: 6px; /* Bordas levemente arredondadas */
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: 0.95em;
+    
 }
+.option-item select:focus {
+    outline: none;
+    border-color: #FFA726; /* Cor da borda em foco */
+    box-shadow: 0 0 8px rgba(255, 130, 0, 0.4); /* Brilho sutil em foco */
+}
+
+
+/* Aparência customizada do Range Slider (mantido, mas cores podem ser ajustadas) */
+input[type=range] {
+  height: 20px;
+  -webkit-appearance: none;
+  margin: 5px 0;
+  width: 100%;
+  background: transparent;
+}
+input[type=range]:focus { outline: none; }
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%; height: 6px;  background: rgba(128, 70, 0, 0.5); /* Cor da trilha temática */ border-radius: 3px;
+}
+input[type=range]::-moz-range-track {
+  width: 100%; height: 6px; background: rgba(128, 70, 0, 0.5); border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  border: 1px solid #a55700; height: 16px; width: 16px; border-radius: 50%; background: #FFB74D; /* Cor da bolinha temática */ -webkit-appearance: none; margin-top: -5px;
+}
+input[type=range]::-moz-range-thumb {
+  border: 1px solid #a55700; height: 16px; width: 16px; border-radius: 50%; background: #FFB74D;
+}
+input[type=range]:disabled::-webkit-slider-thumb { background: #777; border-color: #555; }
+input[type=range]:disabled::-moz-range-thumb { background: #777; border-color: #555; }
+input[type=range]:disabled::-webkit-slider-runnable-track { background: #444; }
+input[type=range]:disabled::-moz-range-track { background: #444; }
 
 /* Valor do Volume (Span) */
 .volume-value {
-    min-width: 45px; /* Largura mínima para "100%" */
+    min-width: 45px;
     text-align: right;
     font-size: 0.9em;
-    color: var(--text-color-secondary);
-    font-variant-numeric: tabular-nums; /* Garante que os números tenham a mesma largura */
+    color: #FFCC80; /* Consistente com labels */
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0; /* Para não ser esmagado */
+    flex-basis: auto; /* Para não ocupar espaço desnecessário */
 }
 
-/* Ações (Botões Salvar/Voltar) */
+/* ---------- Ações (Botões Salvar/Voltar) ---------- */
 .options-actions {
-    margin-top: 10px;
+    margin-top: 25px; /* Aumentar espaço acima dos botões */
     flex-shrink: 0;
-    /* Herda .form-actions */
     width: 100%;
-    max-width: 600px; /* Mesma largura do container */
+    max-width: 700px; /* Mesma largura do container de opções */
+    display: flex; /* Para usar gap e flex-grow nos botões */
+    gap: 15px;
+    justify-content: space-between;
 }
 
+.options-actions button {
+    flex-grow: 1; /* Faz os botões dividirem o espaço */
+    padding: 10px 15px;
+    font-family: "Germania One", serif;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    border: 1px solid;
+    cursor: none !important;
+    transition: background-image 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+/* Botão "Salvar Opções" (Primário - como Login/Create Account) */
+#btn-save-options {
+    background-image: radial-gradient(circle at center, #FFB74D 30%, #E65100 100%);
+    color: #1A237E;
+    border-color: #BF360C;
+    text-shadow: 1px 1px 1px rgba(255,224,178,0.3);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,204,178,0.2);
+    border-radius: 6px;
+}
+#btn-save-options:hover:not(:disabled) {
+    background-image: radial-gradient(circle at center, #FFA726 30%, #F57C00 100%);
+    box-shadow: 0 0 15px rgba(255,167,38,0.6), 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,224,178,0.3);
+    transform: translateY(-1px);
+    color: black;
+}
+#btn-save-options:active:not(:disabled) {
+    background-image: radial-gradient(circle at center, #E65100 30%, #BF360C 100%);
+    transform: translateY(0px);
+}
+
+/* Botão "Voltar" (Secundário - como Login/Create Account) */
 #btn-options-back-to-main {
-    /* Herda botão base, mas cor secundária */
-     background-color: var(--button-secondary-bg);
+    background-image: linear-gradient(to bottom, #424242, #212121);
+    color: #BDBDBD;
+    border-color: #000000;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    border-radius: 6px;
 }
-#btn-options-back-to-main:hover {
-     background-color: var(--button-secondary-hover-bg);
+#btn-options-back-to-main:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #616161, #424242);
+    color: #ffffff;
+    border-color: #111111;
+    box-shadow: 0 0 10px rgba(100,100,100,0.3), 0 2px 4px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
 }
+#btn-options-back-to-main:active:not(:disabled) {
+    background-image: linear-gradient(to bottom, #212121, #000);
+    transform: translateY(0px);
+}
+
 
 /* Mensagem de Feedback ao Salvar */
 #options-save-message {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px; /* Ajustar espaço */
     min-height: 1.2em;
-    /* Herda .message */
+    font-weight: bold;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    /* A cor é definida via JS (success, error) */
 }
 
-/* --- Scrollbar --- */
+/* --- Scrollbar (mantido do original) --- */
 .options-container::-webkit-scrollbar { width: 8px; }
 .options-container::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
 .options-container::-webkit-scrollbar-thumb { background-color: var(--secondary-color); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }

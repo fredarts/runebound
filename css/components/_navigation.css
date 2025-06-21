@@ -40,6 +40,9 @@
   font-weight: bold;
   color: var(--text-color);
   white-space: nowrap;
+  font-family: "Germania One", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* Parte Direita (Informações do Usuário e Botões) */

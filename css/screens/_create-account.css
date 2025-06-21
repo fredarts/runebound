@@ -1,40 +1,28 @@
-/* ===================================================================== */
-/*  css/screens/_create-account.css  –  Visual idêntico ao da tela Login */
-/* ===================================================================== */
+/* css/screens/_create-account.css –  Visual idêntico ao da tela Login */
 
-/* ---------- Tela inteira ---------- */
 #create-account-screen {
-    /* Mesmo layout da #login-screen */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 20px;
-
-    /* Mesmo fundo (troque a imagem se desejar) */
     background: url('/assets/images/ui/create_account_background.jpg') no-repeat center/cover;
-
     background-size: cover;
-            /* base para posicionamentos absolutos */
 }
 
-/* ---------- Logo ---------- */
 .create-account-logo{
-    /* Mesmas regras da .login-logo */
     position: absolute;
     top: 8%;
     left: 50%;
     transform: translateX(-50%);
     max-width: 400px;
-    width: 0%;
+    width: 0%; /* This seems like it would make the logo invisible, intentional? */
     height: auto;
     filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4));
     z-index: 1;
 }
 
-/* ---------- Formulário ---------- */
 #create-account-screen .form-container{
-    /* Copiado de #login-screen .form-container */
     background-color: rgba(10, 15, 25, 0.85);
     padding: 30px 35px;
     border-radius: 12px;
@@ -47,9 +35,7 @@
     z-index: 2;
 }
 
-/* ---------- Título H2 ---------- */
 #create-account-screen .form-container h2{
-    /* Mesmo estilo do LOGIN */
     color: #FFB74D;
     font-family: "Germania One", serif;
     text-transform: uppercase;
@@ -60,7 +46,6 @@
     letter-spacing: 1px;
 }
 
-/* ---------- Grupos de campo ---------- */
 #create-account-screen .form-group{
     margin-bottom: 20px;
 }
@@ -97,7 +82,6 @@
     box-shadow:0 0 10px rgba(255,130,0,0.5);
 }
 
-/* ---------- Ações ---------- */
 #create-account-screen .form-container .form-actions{
     margin-top:30px;
     display:flex;
@@ -105,63 +89,9 @@
     justify-content:space-between;
 }
 
-/* Botão primário  (CRIAR CONTA) */
-#create-account-screen .form-container .form-actions button[type="submit"]{
-    flex-grow:1;
-    padding:10px 15px;
-    font-family:"Germania One", serif;
-    font-size:1.1em;
-    text-transform:uppercase;
-    border-radius:6px;
-    border:1px solid;
-    cursor:none !important;
-    background-image:radial-gradient(circle at center, #FFB74D 30%, #E65100 100%);
-    color:#1A237E;
-    border-color:#BF360C;
-    text-shadow:1px 1px 1px rgba(255,224,178,0.3);
-    box-shadow:0 2px 5px rgba(0,0,0,0.4),
-               inset 0 1px 0 rgba(255,204,178,0.2);
-    transition:background-image .3s ease, transform .2s ease,
-               box-shadow .3s ease, color .3s ease;
-}
-#create-account-screen .form-container .form-actions button[type="submit"]:hover:not(:disabled){
-    background-image:radial-gradient(circle at center, #FFA726 30%, #F57C00 100%);
-    box-shadow:0 0 15px rgba(255,167,38,0.6),
-               0 4px 8px rgba(0,0,0,0.5),
-               inset 0 1px 0 rgba(255,224,178,0.3);
-    transform:translateY(-1px);
-    color:black;
-}
-#create-account-screen .form-container .form-actions button[type="submit"]:active:not(:disabled){
-    background-image:radial-gradient(circle at center, #E65100 30%, #BF360C 100%);
-    transform:translateY(0);
-}
+/* REMOVED specific button styles for #create-account-screen .form-container .form-actions button */
+/* They are now handled by .button-login-primary and .button-login-secondary in _buttons.css */
 
-/* Botão secundário (Voltar) */
-#create-account-screen .form-container .form-actions button[type="button"]{
-    flex-grow:1;
-    padding:10px 15px;
-    font-family:"Germania One", serif;
-    font-size:1.1em;
-    text-transform:uppercase;
-    border-radius:6px;
-    border:1px solid #424242;
-    cursor:none !important;
-    background-image:linear-gradient(to bottom, #424242, #212121);
-    color:#BDBDBD;
-    box-shadow:0 2px 5px rgba(0,0,0,0.4);
-    transition:background-image .3s ease, transform .2s ease;
-}
-#create-account-screen .form-container .form-actions button[type="button"]:hover{
-    background-image:linear-gradient(to bottom, #616161, #424242);
-    transform:translateY(-1px);
-}
-#create-account-screen .form-container .form-actions button[type="button"]:active{
-    background-image:linear-gradient(to bottom, #212121, #000);
-    transform:translateY(0);
-}
-
-/* ---------- Mensagem de feedback (opcional) ---------- */
 #create-account-message{
     margin-top:15px;
     min-height:1.3em;
@@ -170,7 +100,6 @@
     font-weight:bold;
 }
 
-/* ---------- Disclaimer (se usado) ---------- */
 #create-account-screen .disclaimer{
     margin-top:10px;
     font-size:.8em;

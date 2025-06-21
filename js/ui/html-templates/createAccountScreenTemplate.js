@@ -22,12 +22,11 @@ export function generateCreateAccountScreenHTML() {
                     <input type="password" id="create-confirm-password" name="confirm_password" required>
                 </div>
                 <div class="form-actions">
-                    <button type="submit">Criar Conta</button>
-                    <button type="button" id="btn-create-back-to-title">Voltar</button>
+                    <button type="submit" class="button-login-base button-login-primary">Criar Conta</button>
+                    <button type="button" id="btn-create-back-to-title" class="button-login-base button-login-secondary">Voltar</button>
                 </div>
             </form>
             <p id="create-account-message" class="message"></p>
-            
             
         </div>
     `;

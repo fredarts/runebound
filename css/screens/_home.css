@@ -1,47 +1,38 @@
 /* css/screens/_home.css - Estilos para a Tela Inicial (Notícias) */
 
-
-
 #home-screen {
     /* Layout Geral */
-    display: flex; /* Herdado de .screen */
-    flex-direction: column; /* Organiza título, área de conteúdo e botão */
-    justify-content: flex-start; /* Alinha conteúdo no topo */
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
     align-items: center;
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
-    height: 100%; /* Garante que ocupe a altura do container */
-
-    /* Fundo */
+    height: 100%; 
+    
     background: url('../../assets/images/ui/home_background.jpg') no-repeat center center;
     background-size: cover;
-
-    /* Permite posicionamento absoluto do botão Play */
-
 }
 
 /* Título */
-.home-layout h2 { /* Usa .home-layout se você tiver esse wrapper, senão use #home-screen h2 */
-    margin-bottom: 40px;
-    color: var(--title-color);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-    flex-shrink: 0; /* Não deixa o título encolher */
-    margin-top: 120px;
-    font-weight: bolder;
-    font-size: 3em;
-    text-align: left;    
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
-
+.home-layout h2, 
+#home-screen h2 { 
+    color: #FFB74D; 
+    font-family: "Germania One", serif;
+    text-transform: uppercase;
+    font-size: 2.2em; 
+    margin-bottom: 25px; 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7), 0 0 10px rgba(255,120,0,0.4);
+    letter-spacing: 1px;
+    flex-shrink: 0; 
 }
 
-.home-layout h3 { /* Usa .home-layout se você tiver esse wrapper, senão use #home-screen h2 */
+.home-layout h3 { 
     margin-bottom: 20px;
     color: var(--accent-color-light);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-    flex-shrink: 0; /* Não deixa o título encolher */
+    flex-shrink: 0; 
     margin-top: 40px;
     font-weight: bolder;
     font-size: 1.5em;
@@ -50,28 +41,34 @@
 
 /* Área Principal de Conteúdo (Feed/Detalhe) */
 .home-content-area {
-    width: 95%;
-    max-width: 900px;
-    /* Altura flexível, limitada pelo espaço disponível menos o título e o espaço para o botão */
-    /* O cálculo exato depende da altura do h2 e do espaço desejado */
-    max-height: calc(100% - 130px); /* Exemplo: 100% - altura_titulo - margem_inferior - altura_botao */
-    position: relative; /* Para conter elementos internos se necessário */
-    background-color: rgba(0, 0, 0, 0.35); /* Fundo levemente escuro */
-    border-radius: 8px;
-    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.4);
-    overflow: hidden; /* ESSENCIAL: Contém os filhos (feed/detail) */
-    margin-bottom: 80px; /* IMPORTANTE: Espaço para o botão 'Jogar' posicionado absolutamente */
-    display: flex; /* Facilita alternar entre feed e detalhe */
+    background-color: rgba(10, 15, 25, 0.85); 
+    padding: 30px 35px; 
+    border-radius: 12px; 
+    border: 1px solid rgba(128, 70, 0, 0.7); 
+    box-shadow: 
+        0 0 25px rgba(255, 100, 0, 0.25),
+        0 5px 15px rgba(0, 0, 0, 0.6);  
+    width: 90%; 
+    max-width: 1000px; 
+    z-index: 2; 
+
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+    
+    max-height: 75vh; 
+    flex-shrink: 1; 
+    position: relative; 
 }
 
 /* Feed de Notícias */
 .news-feed {
-    padding: 15px 15px 0 15px; /* Padding interno, sem padding no fundo para scroll funcionar bem */
-    width: 100%; /* Ocupa toda a largura da .home-content-area */
-    height: 100%; /* Ocupa toda a altura da .home-content-area */
-    overflow-y: auto; /* Habilita scroll VERTICAL se o conteúdo exceder */
-    background: var(--panel-background); /* Fundo do painel */
-    display: block; /* Visível por padrão */
+    padding: 15px 15px 0 15px; 
+    width: 100%; 
+    height: 100%; 
+    overflow-y: auto; 
+    background: transparent; 
+    display: block; 
     box-sizing: border-box;
 }
 
@@ -84,14 +81,14 @@
     padding: 10px 15px;
     display: flex;
     gap: 15px;
-    
+    cursor: pointer; 
     transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
 }
 
 .news-item:hover {
     background-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
-    border-color: var(--accent-color); /* Destaque na borda ao passar o mouse */
+    border-color: #FFA726; 
 }
 
 /* Imagem Resumo */
@@ -107,7 +104,7 @@
 
 /* Conteúdo de Texto do Item */
 .news-item-content {
-    flex-grow: 1; /* Ocupa o espaço restante */
+    flex-grow: 1; 
     display: flex;
     flex-direction: column;
 }
@@ -116,8 +113,8 @@
 .news-item-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline; /* Alinha pela base do texto */
-    flex-wrap: wrap; /* Permite quebrar linha se necessário */
+    align-items: baseline; 
+    flex-wrap: wrap; 
     margin-bottom: 5px;
     text-align: left;
 }
@@ -125,22 +122,23 @@
 /* Título Resumo */
 .news-title-summary {
     margin: 0;
-    font-size: 1.1em;
-    color: var(--accent-color-light); /* Cor de destaque clara */
-    flex-basis: 60%; /* Ocupa a maior parte da linha */
-    margin-right: 10px; /* Espaço antes da data */
+    font-size: 1.2em; 
+    color: var(--accent-color-light); 
+    flex-basis: 60%; 
+    margin-right: 10px; 
 }
 
 /* Data */
 .news-date {
     font-size: 0.8em;
-    color: var(--text-color-subtle);
-    white-space: nowrap; /* Evita quebra de linha da data */
+    color: #FFCC80; 
+    white-space: nowrap; 
 }
 
 /* Categoria */
 .news-category {
     font-weight: bold;
+    font-size: 0.9em;
     margin-left: 5px;
     color: var(--accent-color);
 }
@@ -149,7 +147,7 @@
 .news-summary {
     font-size: 0.9em;
     margin: 0;
-    color: var(--text-color-secondary);
+    color: #FFCC80; 
     line-height: 1.4;
     text-align: left;
 }
@@ -158,111 +156,89 @@
 /* Visão de Detalhe da Notícia */
 .news-detail-view {
     padding: 20px;
-    width: 100%; /* Ocupa toda a .home-content-area */
-    height: 100%; /* Ocupa toda a .home-content-area */
-    display: flex; /* Alterado pelo JS para 'flex' quando visível */
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
     flex-direction: column;
     box-sizing: border-box;
-    background: var(--panel-background);
-    overflow:scroll; /* O container principal não rola */
-    /* 'display: none;' é controlado pelo JS */
+    background: transparent; 
+    overflow: scroll; 
 }
 
 #news-detail-container{
-    height: 800px;
-    height: auto;
+    height: auto; /* Removido height fixo para permitir que o conteúdo defina a altura */
     overflow-x: hidden;
 }
+
 /* Botão Voltar */
 .button-back {
-    align-self: flex-start; /* Alinha à esquerda */
-    margin-bottom: 15px;
-    background: var(--button-secondary-bg);
-    border: 1px solid var(--border-color);
-    padding: 5px 10px;
-    font-size: 0.9em;
-    flex-shrink: 0; /* Não encolhe */
-}
-
-.button-back:hover {
-    background: var(--button-secondary-hover-bg);
+    align-self: flex-start;
+    margin-left: -20px; /* Ajustado para ficar alinhado com o conteúdo */
+    margin-bottom: 15px; /* Ajustado para melhor espaçamento quando fixo */
+    flex-shrink: 0; 
+    position: sticky; /* --- ALTERAÇÃO PRINCIPAL AQUI --- */
+    top: -20px;        /* --- Distância do topo do #news-detail-container --- */
+    z-index: 10;      /* --- Para ficar acima do conteúdo que rola --- */
+    /* As classes .button-login-base .button-login-secondary já dão um bom estilo */
 }
 
 /* Título no Detalhe */
 #news-detail-title {
     text-align: left;
-    
-    margin-bottom: 15px;
-    color: var(--title-color);
+    margin-bottom: 10px; 
+    color: #FFB74D; 
     flex-shrink: 0;
     font-size: 2.3em;
-    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
-    
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7), 0 0 10px rgba(255,120,0,0.4); 
+    font-family: "Germania One", serif; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px; /* Adicionado para dar espaço abaixo do botão Voltar fixo */
 }
 
 /* Imagem no Detalhe */
 .news-image-detail {
-    
-    width: 106%;
+    width: 100%; /* Ajustado para ser responsivo dentro do padding do pai */
+    max-width: calc(100% + 60px); /* Compensa o padding do pai para preencher a largura */
+    margin-left: -30px; /* Compensa padding esquerdo do pai */
+    margin-right: -30px; /* Compensa padding direito do pai */
     object-fit: contain;
     display: block;
-    margin: -79px -30px 20px -30px;
+    margin-top: 0; /* Removido margin-top negativo, pois o título dá espaço */
+    margin-bottom: 20px;
     border-radius: 5px;
-}
-
-#btn-goto-connect-from-home{
-    position: absolute;
-    margin-top: -60px;
 }
 
 /* Conteúdo Detalhado (Área de Scroll) */
 .news-content-detail {
-    flex-grow: 1; /* Ocupa o espaço restante */
+    flex-grow: 1; 
     text-align: left;
     line-height: 1.6;
-    color: var(--text-color);
-    padding-right: 10px; /* Espaço para a barra de rolagem */
+    color: #FFF3E0; 
+    padding-right: 10px; 
+    font-family: "Segoe UI", Tahoma, sans-serif; 
 }
 
-/* Estilos para tags comuns dentro do conteúdo */
 .news-content-detail p { margin-bottom: 1em; text-align: justify;}
 .news-content-detail ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
 .news-content-detail li { margin-bottom: 0.5em; }
-.news-content-detail strong { color: var(--accent-color-light); font-weight: bold; } /* Usa a variável ou define aqui */
+.news-content-detail strong { color: #FFB74D; font-weight: bold; } 
 .news-content-detail em { color: var(--text-color-secondary); font-style: italic; }
-.news-content-detail img { width: 107%; margin: 0 -30px -40px -30px;}
-
-
-/* Botão Jogar (Posicionado Absolutamente) */
-.button-play {
-    position: absolute;
-    bottom: 100px; /* Distância do fundo da tela */
-    right: 20px; /* Distância da direita da tela */
-    padding: 10px 20px;
-    font-size: 1.1em;
-    font-weight: bold;
-    background-color: var(--button-play-bg);
-    color: var(--button-play-text);
-    border: 1px solid var(--button-play-border);
-    border-radius: 5px;
-    
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    z-index: 10; /* Garante que fique acima da área de conteúdo */
-    
+.news-content-detail img { 
+    width: 100%; 
+    max-width: calc(100% + 60px); 
+    margin-left: -30px; 
+    margin-right: -30px; 
+    margin-top: 10px; 
+    margin-bottom: 10px;
 }
 
-.button-play:hover {
-    background-color: var(--button-play-hover-bg);
-    transform: scale(1.03);
+#btn-goto-connect-from-home {
+    margin-top: 20px; 
+    align-self: center; 
 }
 
-.button-play:active {
-    transform: scale(0.98);
-}
-
-/* Placeholders e Mensagens de Erro */
-.placeholder-message { /* Já existe em _utilities? Se sim, pode remover daqui */
+.placeholder-message { 
     text-align: center;
     color: var(--text-color-subtle);
     padding: 20px;
@@ -271,67 +247,58 @@
 
 .error-message {
     text-align: center;
-    color: var(--error-color);
+    color: var(--accent-color, #e74c3c); 
     padding: 20px;
     font-weight: bold;
 }
 
-/* Estiliza a barra de rolagem inteira */
 ::-webkit-scrollbar {
-    width: 10px; /* Largura da barra de rolagem */
+    width: 10px; 
 }
 
-/* Estiliza o "polegar" (a parte que você arrasta) */
 ::-webkit-scrollbar-thumb {
-    background-color: #0659b2; /* Cor do polegar */
-    border-radius: 0px; /* Borda arredondada do polegar */
+    background-color: #0659b2; 
+    border-radius: 0px; 
 }
 
-/* Estiliza a "trilha" (o fundo da barra de rolagem) */
 ::-webkit-scrollbar-track {
-    background-color: #012b47; /* Cor da trilha */
+    background-color: #012b47; 
 }
 
-/* Estiliza o polegar quando hover */
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #064385; /* Cor do polegar no hover */
+    background-color: #064385; 
 }
 
 .cta{
     text-align: center;
     font-size: 2em;
     text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
-    
 }
 
-
 .game-link {
-    display: inline-block; /* Allows setting width/height and margin/padding */
+    display: inline-block; 
     padding: 15px 30px;
-    font-family: sans-serif; /* Choose a game-like font */
+    font-family: sans-serif; 
     font-weight: bold;
     text-decoration: none;
-    color: #fff; /* Default text color */
-    border-radius: 8px; /* Slightly rounded corners */
-    
-    position: relative; /* For absolute positioning of pseudo-elements */
-    overflow: hidden; /* Clip any overflowing pseudo-elements */
-    z-index: 1; /* Ensure text is above pseudo-elements */
-    transition: transform 0.3s ease-in-out; /* Smooth grow effect */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle initial shadow */
-    background-image: radial-gradient(circle at center, #4a90e2 0%, #1e3c72 100%); /* Initial radial gradient */
+    color: #fff; 
+    border-radius: 8px; 
+    position: relative; 
+    overflow: hidden; 
+    z-index: 1; 
+    transition: transform 0.3s ease-in-out; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    background-image: radial-gradient(circle at center, #4a90e2 0%, #1e3c72 100%); 
     margin-top: 20px;
-    margin-left: 173px;
-  }
+    margin-left: 173px; /* Este valor pode precisar de ajuste ou remoção dependendo do layout desejado */
+}
   
-  /* Hover Effect */
-  .game-link:hover {
-    transform: scale(1.05); /* Slight grow on hover */
+.game-link:hover {
+    transform: scale(1.05); 
     box-shadow: rgb(99, 164, 255, 0.3) 0px 0px 15px 6px, rgb(46, 89, 132, 0.8) 0px 0px 6px;
-  }
+}
   
-  /* Inner Glow (using a pseudo-element) */
-  .game-link::before {
+.game-link::before {
     content: '';
     position: absolute;
     top: 0;
@@ -341,45 +308,41 @@
     background-image: radial-gradient(circle at center, rgba(68, 155, 255, 0.8) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    z-index: -1; /* Behind the text */
-    border-radius: inherit; /* Match border-radius of the link */
-  }
+    z-index: -1; 
+    border-radius: inherit; 
+}
   
-  .game-link:hover::before {
-    opacity: 1; /* Fade in the inner glow on hover */
-  }
+.game-link:hover::before {
+    opacity: 1; 
+}
   
-  /* Outer Glow (using another pseudo-element) */
-  .game-link::after {
+.game-link::after {
     content: '';
     position: absolute;
     top: -5px;
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background: rgba(74, 144, 226, 0.5); /* Soft glow color */
-    border-radius: 10px; /* Slightly larger than the link */
+    background: rgba(74, 144, 226, 0.5); 
+    border-radius: 10px; 
     opacity: 0;
-    z-index: -2; /* Behind the inner glow and text */
+    z-index: -2; 
     transition: opacity 0.3s ease-in-out;
-  }
+}
   
-  .game-link:hover::after {
-    opacity: 1; /* Fade in the outer glow on hover */
-  }
+.game-link:hover::after {
+    opacity: 1; 
+}
   
-  /* Subtle Border Highlight */
-  .game-link:hover {
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Add a subtle border on hover */
-  }
+.game-link:hover {
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+}
   
-  /* Click/Active State (Optional) */
-  .game-link:active {
-    transform: scale(0.95); /* Slight shrink on click */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Reduced shadow on click */
-  }
+.game-link:active {
+    transform: scale(0.95); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); 
+}
 
-
-  .news-content-detail  h2{
-    margin-top: 60px;
-  }
+.news-content-detail  h2{
+    margin-top: 60px; /* Este é o h2 dentro do conteúdo da notícia, não o título principal da tela */
+}

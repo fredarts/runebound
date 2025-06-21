@@ -349,7 +349,7 @@ export default class UIManager {
         const requiresLogin = [
             'home-screen', 'profile-screen', 'deck-management-screen', 'deck-builder-screen',
             'connect-screen', 'battle-screen', 'set-mastery-screen', 'set-collection-screen',
-            'store-screen', 'booster-opening-screen', 'options-screen' // Opções agora requer login para saber de onde voltar
+            'store-screen', 'booster-opening-screen' // Opções agora requer login para saber de onde voltar
         ];
         const restrictedWhenLoggedIn = ['login-screen', 'create-account-screen'];
 

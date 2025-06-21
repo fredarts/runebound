@@ -6,83 +6,68 @@
     margin-left: -1400px;
     margin-top: -500px;
     max-width: 400px;
-    width: 0%;
+    width: 0%; /* This seems like it would make the logo invisible, intentional? */
     height: auto;
     filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4));
-    z-index: -1;
+    z-index: -1; /* If -1, it might be behind the background image */
 }
 
-
 #login-screen {
-    /* ... (seu CSS existente para #login-screen - fundo, etc.) ... */
     display: flex;
     justify-content: center; 
     align-items: center; 
     text-align: center;
     padding: 20px;
-    background: url('../../assets/images/ui/login_background.jpg') no-repeat center center; /* Garanta que o caminho está correto */
+    background: url('../../assets/images/ui/login_background.jpg') no-repeat center center;
     background-size: cover;
-    position: relative; /* Para posicionar absolutamente o form-container se necessário */
+    position: relative;
 }
 
-/* --- Estilo do Formulário de Login --- */
 #login-screen .form-container {
-    background-color: rgba(10, 15, 25, 0.85); /* Fundo azul escuro, quase preto, translúcido */
-    padding: 30px 35px; /* Mais padding interno */
-    border-radius: 12px; /* Bordas um pouco menos arredondadas, mais "sólidas" */
-    border: 1px solid rgba(128, 70, 0, 0.7); /* Borda sutil cor de brasa/âmbar */
+    background-color: rgba(10, 15, 25, 0.85);
+    padding: 30px 35px;
+    border-radius: 12px;
+    border: 1px solid rgba(128, 70, 0, 0.7);
     box-shadow: 
-        0 0 25px rgba(255, 100, 0, 0.25), /* Brilho externo suave cor de fogo */
-        0 5px 15px rgba(0, 0, 0, 0.6);   /* Sombra projetada mais escura */
+        0 0 25px rgba(255, 100, 0, 0.25),
+        0 5px 15px rgba(0, 0, 0, 0.6);  
     width: 100%;
-    max-width: 420px; /* Um pouco mais largo se necessário */
-    z-index: 2; /* Para ficar sobre a imagem de fundo, se houver logo atrás */
-
-    /* Removido posicionamento absoluto para centralizar com flex do #login-screen */
-    /* position: absolute; */
-    /* margin-top: ...; */
-    /* left: 50%; */
-    /* transform: translateX(-50%); */
+    max-width: 420px;
+    z-index: 2;
 }
 
-/* Título "LOGIN" dentro do form-container (se o H2 "LOGIN" estiver dentro dele)
-   Se o H2 estiver fora, estilize #login-screen h2 como você já faz. */
-#login-screen .form-container h2, /* Se o H2 estiver DENTRO do form */
-#login-screen h2.form-title-outside { /* Se o H2 estiver FORA mas relacionado */
-    color: #FFB74D; /* Laranja/Âmbar claro para o título */
-    font-family: "Germania One", serif; /* Sua fonte temática */
+#login-screen .form-container h2,
+#login-screen h2.form-title-outside {
+    color: #FFB74D;
+    font-family: "Germania One", serif;
     text-transform: uppercase;
-    font-size: 2.2em; /* Tamanho do título */
-    margin-bottom: 25px; /* Espaço abaixo do título */
+    font-size: 2.2em;
+    margin-bottom: 25px;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.7), 0 0 10px rgba(255,120,0,0.4);
     letter-spacing: 1px;
-    
 }
 
-/* Grupos de formulário (label + input) */
 #login-screen .form-group {
-    margin-bottom: 20px; /* Mais espaço entre os campos */
+    margin-bottom: 20px;
 }
 
-/* Labels */
 #login-screen .form-container label {
-    display: block; /* Faz o label ocupar a linha inteira */
-    text-align: left; /* Alinha o texto do label à esquerda */
-    color: #FFCC80; /* Cor laranja/âmbar mais clara para os labels */
-    font-family: "Segoe UI", Tahoma, sans-serif; /* Fonte mais legível para labels */
+    display: block;
+    text-align: left;
+    color: #FFCC80;
+    font-family: "Segoe UI", Tahoma, sans-serif;
     font-size: 0.9em;
-    margin-bottom: 8px; /* Espaço entre o label e o input */
+    margin-bottom: 8px;
     font-weight: 500;
 }
 
-/* Inputs */
 #login-screen .form-container input[type="text"],
 #login-screen .form-container input[type="password"] {
-    background-color: rgba(0, 0, 0, 0.4); /* Fundo do input escuro e translúcido */
-    border: 1px solid rgba(128, 70, 0, 0.6); /* Borda sutil cor de brasa */
-    color: #FFF3E0; /* Cor do texto do input (creme) */
-    padding: 12px 15px; /* Padding interno do input */
-    border-radius: 6px; /* Bordas levemente arredondadas */
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(128, 70, 0, 0.6);
+    color: #FFF3E0;
+    padding: 12px 15px;
+    border-radius: 6px;
     font-size: 1em;
     width: 100%;
     box-sizing: border-box;
@@ -92,76 +77,29 @@
 
 #login-screen .form-container input[type="text"]::placeholder,
 #login-screen .form-container input[type="password"]::placeholder {
-    color: rgba(255, 204, 128, 0.6); /* Cor do placeholder */
+    color: rgba(255, 204, 128, 0.6);
 }
 
 #login-screen .form-container input[type="text"]:focus,
 #login-screen .form-container input[type="password"]:focus {
     outline: none;
-    border-color: #FFA726; /* Cor da borda em foco (laranja mais brilhante) */
-    box-shadow: 0 0 10px rgba(255, 130, 0, 0.5); /* Brilho sutil em foco */
+    border-color: #FFA726;
+    box-shadow: 0 0 10px rgba(255, 130, 0, 0.5);
 }
 
-/* Ações do formulário (botões) */
 #login-screen .form-container .form-actions {
-    margin-top: 30px; /* Mais espaço acima dos botões */
+    margin-top: 30px;
     display: flex;
-    gap: 15px; /* Espaço entre botões */
-    justify-content: space-between; /* Para Entrar e Voltar ficarem nas pontas */
+    gap: 15px;
+    justify-content: space-between;
 }
 
-/* Estilo geral para botões DENTRO do form-container do login */
-#login-screen .form-container .form-actions button {
-    flex-grow: 1; /* Faz os botões dividirem o espaço */
-    padding: 10px 15px;
-    font-family: "Germania One", serif; /* Sua fonte temática para botões */
-    font-size: 1.1em;
-    text-transform: uppercase;
-    border-radius: 6px; /* Bordas consistentes com os inputs */
-    border: 1px solid; /* Borda será definida por tipo de botão */
-    cursor: none !important;
-    transition: background-image 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
-}
+/* REMOVED specific button styles for #login-screen .form-container .form-actions button */
+/* They are now handled by .button-login-primary and .button-login-secondary in _buttons.css */
 
-/* Botão "Entrar" (Primário) */
-#login-screen .form-container .form-actions button[type="submit"] {
-    background-image: radial-gradient(circle at center, #FFB74D 30%, #E65100 100%); /* Gradiente Laranja/Fogo */
-    color: #1A237E; /* Azul escuro, quase preto, para contraste forte com o laranja */
-    border-color: #BF360C; /* Borda laranja escura */
-    text-shadow: 1px 1px 1px rgba(255,224,178,0.3); /* Sombra clara sutil no texto */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,204,178,0.2);
-}
-#login-screen .form-container .form-actions button[type="submit"]:hover:not(:disabled) {
-    background-image: radial-gradient(circle at center, #FFA726 30%, #F57C00 100%); /* Mais brilhante no hover */
-    box-shadow: 0 0 15px rgba(255,167,38,0.6), 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,224,178,0.3);
-    transform: translateY(-1px);
-    color: black;
-}
-#login-screen .form-container .form-actions button[type="submit"]:active:not(:disabled) {
-    background-image: radial-gradient(circle at center, #E65100 30%, #BF360C 100%); /* Mais escuro no active */
-    transform: translateY(0px);
-}
-
-/* Botão "Voltar" (Secundário) */
-#login-screen .form-container .form-actions button[type="button"]#btn-login-back-to-title {
-    background-image: linear-gradient(to bottom, #424242, #212121); /* Cinza escuro */
-    color: #BDBDBD; /* Cinza claro para o texto */
-    border-color: #000000;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-}
-#login-screen .form-container .form-actions button[type="button"]#btn-login-back-to-title:hover:not(:disabled) {
-    background-image: linear-gradient(to bottom, #616161, #424242); /* Cinza um pouco mais claro */
-    color: #ffffff;
-    border-color: #111111;
-    box-shadow: 0 0 10px rgba(100,100,100,0.3), 0 2px 4px rgba(0,0,0,0.3);
-    transform: translateY(-1px);
-}
-
-/* Mensagem de feedback */
 #login-message {
     margin-top: 20px;
     font-size: 0.95em;
     min-height: 1.2em;
     font-family: "Segoe UI", Tahoma, sans-serif;
-    /* A cor é definida pelo JS (verde para sucesso, vermelho para erro) */
 }

@@ -9,9 +9,10 @@ export function generateOptionsScreenHTML() {
     return `
         <div id="options-screen" class="screen options-layout">
 
-            <h2>Opções do Jogo</h2>
+            
 
             <div class="options-container scrollable-list">
+                <h2>Opções do Jogo</h2>
 
                 <fieldset class="options-group">
                     <legend>Áudio</legend>

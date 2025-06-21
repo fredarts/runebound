@@ -1,6 +1,6 @@
 /* css/components/_buttons.css - Estilização de Botões */
 
-/* --- Game Button Style - Orange (Primary - From previous example) --- */
+/* --- Game Button Style - Orange (Original "Game Button") --- */
 .game-button {
     padding: 12px 28px;
     font-size: 1.1em;
@@ -8,13 +8,13 @@
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);    
     background-image: radial-gradient(circle at center, #FFA500 30%, #E67E00 100%);
-    border: none; /* Added for clarity, already in reset */
+    border: none; 
     border-radius: 25px;
     box-shadow:
       0 0 10px 2px rgba(255, 165, 0, 0.6),
       0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.5s cubic-bezier(0.42, 0, 0.58, 1); 
-    outline: none; /* Added for clarity, already in reset */
+    transition: transform 0.5s cubic-bezier(0.42, 0, 0.58, 1), background-image 0.3s ease, box-shadow 0.3s ease; 
+    outline: none; 
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -22,121 +22,299 @@
     font-family: "Germania One", system-ui;
     font-weight: 400;
     font-style: normal;
-    
-  }
-
-button:hover,
-.game-button:hover,
-.game-button-blue:hover {
     cursor: none !important;
 }
   
-  .game-button:hover:not(:disabled) {
+.game-button:hover:not(:disabled) {
     background-image: radial-gradient(circle at center, #FFB733 30%, #F39C12 100%);
     box-shadow: 0 0 15px 4px rgba(255, 183, 51, 0.7), 0 6px 8px rgba(0, 0, 0, 0.35);
-    transform: scale(1.1);
-  }
+    transform: scale(1.05);
+}
   
-  .game-button:active:not(:disabled) {
+.game-button:active:not(:disabled) {
     background-image: linear-gradient(to bottom, #E67E00, #D35400);
     box-shadow:
       0 0 5px 1px rgba(255, 165, 0, 0.5),
       0 2px 3px rgba(0, 0, 0, 0.2);
-      transform: scale(1.1);
-  }
+    transform: scale(0.98);
+}
   
-  .game-button:disabled {
+.game-button:disabled {
     background-image: linear-gradient(to bottom, #888888, #666666);
     color: #aaaaaa;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    
     opacity: 0.7;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     transform: none;
-  }
+    cursor: none !important;
+}
   
-  
-  /* --- NEW: Game Button Style - Blue (Secondary) --- */
-  .game-button-blue {
-    padding: 12px 28px; /* Keep consistent padding or adjust if needed */
-    font-size: 1.1em;   /* Keep consistent font size */
-    font-weight: bold; /* Keep consistent font weight */
+/* --- Game Button Style - Blue (Original "Game Button Blue") --- */
+.game-button-blue {
+    padding: 12px 28px;
+    font-size: 1.1em;  
+    font-weight: bold;
     color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Slightly adjusted shadow for blue */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     font-family: "Germania One", system-ui;
     font-weight: 400;
     font-style: normal;
-  
-    /* --- Blue Gradient --- */
-    background-image: linear-gradient(to bottom, #007bff, #0056b3); /* Light Blue to Darker Blue */
-  
+    background-image: linear-gradient(to bottom, #007bff, #0056b3);
     border: none;
-    border-radius: 25px; /* Keep consistent rounding */
-  
-    /* --- Blue Shadows --- */
+    border-radius: 25px;
     box-shadow:
-      /* Outer Glow (Blue) */
-      0 0 10px 2px rgba(0, 123, 255, 0.5), /* Adjusted glow color to blue */
-      /* Drop Shadow (Depth) - Same dark shadow */
+      0 0 10px 2px rgba(0, 123, 255, 0.5),
       0 4px 6px rgba(0, 0, 0, 0.3);
-  
-    transition: transform 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+    transition: transform 0.5s cubic-bezier(0.42, 0, 0.58, 1), background-image 0.3s ease, box-shadow 0.3s ease;
     outline: none;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-  }
+    cursor: none !important;
+}
   
-  /* Hover State - Blue */
-  .game-button-blue:hover:not(:disabled) {
-    /* Brighter Blue Gradient */
+.game-button-blue:hover:not(:disabled) {
     background-image: linear-gradient(to bottom, #3395ff, #0069d9);
-  
-    /* Enhanced Blue Glow and Shadow */
     box-shadow:
-      0 0 15px 4px rgba(51, 149, 255, 0.6), /* Brighter/larger blue glow */
-      0 6px 8px rgba(0, 0, 0, 0.35); /* Same enhanced drop shadow */
+      0 0 15px 4px rgba(51, 149, 255, 0.6),
+      0 6px 8px rgba(0, 0, 0, 0.35);
+    transform: scale(1.05);
+}
   
-    /* Same lift effect */
-    transform: scale(1.1);
-  }
-  
-  /* Active State - Blue */
-  .game-button-blue:active:not(:disabled) {
-    /* Darker Blue Gradient */
+.game-button-blue:active:not(:disabled) {
     background-image: linear-gradient(to bottom, #0056b3, #004085);
-  
-    /* Reduced Blue Glow/Shadow */
     box-shadow:
-      0 0 5px 1px rgba(0, 123, 255, 0.4), /* Dimmed blue glow */
-      0 2px 3px rgba(0, 0, 0, 0.2);      /* Same smaller drop shadow */
+      0 0 5px 1px rgba(0, 123, 255, 0.4),
+      0 2px 3px rgba(0, 0, 0, 0.2);     
+    transform: scale(0.98);
+}
   
-    /* Same press down effect */
-    transform: translateY(1px);
-  }
-  
-  /* Disabled State - Blue (Uses same grey as primary) */
-  .game-button-blue:disabled {
-    background-image: linear-gradient(to bottom, #888888, #666666); /* Grey gradient */
+.game-button-blue:disabled {
+    background-image: linear-gradient(to bottom, #888888, #666666);
     color: #aaaaaa;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    
     opacity: 0.7;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     transform: none;
-  }
+    cursor: none !important;
+}
+
+/* ========== LOGIN/ACCOUNT THEMED BUTTONS ========== */
+
+.button-login-base { 
+    flex-grow: 1; 
+    padding: 10px 15px; 
+    font-family: "Germania One", serif;
+    font-size: 1.1em; 
+    text-transform: uppercase;
+    border-radius: 6px; 
+    border: 1px solid; 
+    transition: background-image 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    outline: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: none !important;
+}
+
+/* --- Primary Themed Button (Orange/Fiery as per Login) --- */
+.button-login-primary {
+    background-image: radial-gradient(circle at center, #FFB74D 30%, #E65100 100%);
+    color: #1A237E; 
+    border-color: #BF360C; 
+    text-shadow: 1px 1px 1px rgba(255,224,178,0.3);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,204,178,0.2);
+}
+.button-login-primary:hover:not(:disabled) {
+    background-image: radial-gradient(circle at center, #FFA726 30%, #F57C00 100%);
+    box-shadow: 0 0 15px rgba(255,167,38,0.6), 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,224,178,0.3);
+    transform: translateY(-1px);
+    color: black;
+}
+.button-login-primary:active:not(:disabled) {
+    background-image: radial-gradient(circle at center, #E65100 30%, #BF360C 100%);
+    transform: translateY(0px);
+}
+.button-login-primary:disabled {
+    background-image: linear-gradient(to bottom, #888888, #666666) !important;
+    color: #aaaaaa !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+    border-color: #555555 !important;
+    opacity: 0.7 !important;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2) !important;
+    transform: none !important;
+    cursor: none !important;
+}
+
+/* --- Secondary Themed Button (Dark Grey as per Login "Voltar") --- */
+.button-login-secondary {
+    background-image: linear-gradient(to bottom, #424242, #212121); 
+    color: #BDBDBD; 
+    border-color: #000000;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+.button-login-secondary:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #616161, #424242);
+    color: #ffffff;
+    border-color: #111111;
+    box-shadow: 0 0 10px rgba(100,100,100,0.3), 0 2px 4px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+}
+.button-login-secondary:active:not(:disabled) {
+    background-image: linear-gradient(to bottom, #212121, #000);
+    transform: translateY(0px);
+}
+.button-login-secondary:disabled {
+    background-image: linear-gradient(to bottom, #777777, #555555) !important;
+    color: #aaaaaa !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+    border-color: #444444 !important;
+    opacity: 0.7 !important;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2) !important;
+    transform: none !important;
+    cursor: none !important;
+}
+
+/* ========== BATTLE SCREEN BUTTONS ========== */
+/* Base properties shared by new battle buttons */
+.button-battle-base {
+    padding: 8px 12px; 
+    font-family: "Germania One", serif;
+    font-size: 0.9em; 
+    text-transform: uppercase;
+    border-radius: 6px; 
+    border: 1px solid; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: background-image 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    outline: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: none !important;
+}
+
+.button-battle-base:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px rgba(255,255,255,0.15), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.button-battle-base:active:not(:disabled) {
+    transform: translateY(0px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(0,0,0,0.1);
+}
+
+.button-battle-base:disabled {
+    background-image: linear-gradient(to bottom, #6c757d, #495057) !important;
+    color: #adb5bd !important;
+    text-shadow: none !important;
+    border-color: #343a40 !important;
+    opacity: 0.65 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    transform: none !important;
+    cursor: none !important;
+}
+
+/* --- Confirm Action (Amber/Yellow) - For Confirm Attack --- */
+.button-battle-confirm-action {
+    background-image: radial-gradient(circle at center, #FFC107 40%, #FF8F00 100%);
+    color: #212529;
+    border-color: #E67E00;
+}
+.button-battle-confirm-action:hover:not(:disabled) {
+    background-image: radial-gradient(circle at center, #FFCA28 40%, #FFA000 100%);
+    box-shadow: 0 0 10px rgba(255,193,7,0.5), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* --- Resource Gain (Bright Blue) - For Discard Mana --- */
+.button-battle-resource-gain {
+    background-image: linear-gradient(to bottom, #007bff, #0056b3);
+    color: white;
+    border-color: #004085;
+}
+.button-battle-resource-gain:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #008cff, #0069d9);
+    box-shadow: 0 0 10px rgba(0,123,255,0.5), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* --- Confirm Defense (Darker Blue) - For Confirm Blocks --- */
+.button-battle-confirm-defense {
+    background-image: linear-gradient(to bottom, #343a40, #1d2124);
+    color: #e9ecef;
+    border-color: #000;
+}
+.button-battle-confirm-defense:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #495057, #292d30);
+    box-shadow: 0 0 10px rgba(52,58,64,0.5), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* --- Proceed Phase (Teal) - For Pass Phase --- */
+.button-battle-proceed-phase {
+    background-image: linear-gradient(to bottom, #20c997, #17a278);
+    color: white;
+    border-color: #117a58;
+}
+.button-battle-proceed-phase:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #28dcab, #1cb386);
+    box-shadow: 0 0 10px rgba(32,201,151,0.5), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* --- End Turn (Deep Purple) - For End Turn --- */
+.button-battle-end-turn {
+    background-image: linear-gradient(to bottom, #6f42c1, #563d7c);
+    color: white;
+    border-color: #452f63;
+}
+.button-battle-end-turn:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #835dd6, #664ea8);
+    box-shadow: 0 0 10px rgba(111,66,193,0.5), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* --- Cancel Action (Grey) - For Cancel Discard --- */
+.button-battle-cancel-action {
+    background-image: linear-gradient(to bottom, #6c757d, #495057);
+    color: #e9ecef;
+    border-color: #343a40;
+}
+.button-battle-cancel-action:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #868e96, #5a6268);
+    box-shadow: 0 0 10px rgba(108,117,125,0.5), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Neutral button for things like "Back to Profile" from Game Over */
+.button-battle-neutral {
+    /* Duplicated from .button-battle-cancel-action for explicitness if you want to change one later */
+    background-image: linear-gradient(to bottom, #6c757d, #495057);
+    color: #e9ecef;
+    border-color: #343a40;
+}
+.button-battle-neutral:hover:not(:disabled) {
+    background-image: linear-gradient(to bottom, #868e96, #5a6268);
+    box-shadow: 0 0 10px rgba(108,117,125,0.5), 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+
+/* ========== CURSOR FOR ALL BUTTONS ========== */
+button:hover, 
+.game-button:hover,
+.game-button-blue:hover,
+.button-login-base:hover, 
+.button-battle-base:hover 
+{
+    cursor: none !important;
+}
   
-  /* --- Other Button Styles (Keep as is) --- */
-  /* ... (Your .icon-button and default button:not(.game-button):not(.game-button-blue) styles would go here) ... */
-  
-  /* Example of adapting the default button style to exclude both game buttons */
-  button:not(.game-button):not(.game-button-blue) {
+/* --- DEFAULT Button Style (for any button not matching above classes) --- */
+button:not(.game-button):not(.game-button-blue):not(.button-login-base):not(.button-login-primary):not(.button-login-secondary):not(.button-battle-base):not(.button-battle-confirm-action):not(.button-battle-resource-gain):not(.button-battle-confirm-defense):not(.button-battle-proceed-phase):not(.button-battle-end-turn):not(.button-battle-cancel-action):not(.button-battle-neutral) {
     padding: 12px 28px;  
     font-weight: bold;
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5); /* Subtle initial shadow */
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
     background-image: radial-gradient(circle at center, #4a90e2 30%, #1e3c72 100%);
     transition: background-image 0.3s ease-in-out, transform 0.5s cubic-bezier(0.42, 0, 0.58, 1);
     border-radius: 30px;    
@@ -147,51 +325,46 @@ button:hover,
     font-family: "Germania One", system-ui;
     font-weight: 400;
     font-style: normal;
-    
-    
-  }
+    cursor: none !important;
+}
 
-  button:not(.game-button):not(.game-button-blue):hover {
-    background-image: radial-gradient(circle at center, #63a4ff 30%, #2e5984 100%); /* Change to a lighter/different gradient */
+button:not(.game-button):not(.game-button-blue):not(.button-login-base):not(.button-login-primary):not(.button-login-secondary):not(.button-battle-base):not(.button-battle-confirm-action):not(.button-battle-resource-gain):not(.button-battle-confirm-defense):not(.button-battle-proceed-phase):not(.button-battle-end-turn):not(.button-battle-cancel-action):not(.button-battle-neutral):hover {
+    background-image: radial-gradient(circle at center, #63a4ff 30%, #2e5984 100%);
     box-shadow: #63a4ff 0px 0px 15px 4px, #2e5984 0px 6px 8px;
-    transform: scale(1.05); /* Slightly grow the button on hover */
+    transform: scale(1.05); 
     border-radius: 30px;  
-    
-    border: 1px solid rgb(81, 173, 212); /* Slightly darken the border on hover (optional) */
-    color: white; /* Ensure text color remains consistent or change if desired */
-    /* Add any other hover-specific styles you want here */
-  }
+    border: 1px solid rgb(81, 173, 212);
+    color: white; 
+    cursor: none !important;
+}
   
-  
-  button:not(.game-button):not(.game-button-blue):hover:not(:disabled) {
-   
-    transform: scale(1.01);
-  }
-
-  .no-background {
-    background: transparent !important; /* Use !important para garantir a prioridade, se necessário */
-    padding: 0; /* Opcional: remove qualquer padding ao redor do emoticon */
-    border: none; /* Opcional: remove qualquer borda */
-    outline: none; /* Opcional: remove a borda de foco */
-    box-shadow: none;
-    
-
+button:not(.game-button):not(.game-button-blue):not(.button-login-base):not(.button-login-primary):not(.button-login-secondary):not(.button-battle-base):not(.button-battle-confirm-action):not(.button-battle-resource-gain):not(.button-battle-confirm-defense):not(.button-battle-proceed-phase):not(.button-battle-end-turn):not(.button-battle-cancel-action):not(.button-battle-neutral):hover:not(:disabled) {
+    transform: scale(1.05);
 }
 
-
-
-button:not(.game-button):not(.game-button-blue).no-background{
-  width: 50px !important;
-  margin-left: -30px;
-  margin-bottom: 11px;
-  font-size: 2em;
-  box-shadow: none;
-  border: none;
-  transition: transform 0.5s cubic-bezier(0.42, 0, 0.58, 1);
-
-
+/* --- Icon Only Button (no background) --- */
+.no-background {
+    background: transparent !important; 
+    padding: 0 !important; 
+    border: none !important; 
+    outline: none !important; 
+    box-shadow: none !important;
+    width: auto !important; 
+    height: auto !important; 
+    line-height: 1 !important; 
+    text-shadow: none !important;
+    transition: transform 0.2s ease !important; 
+    cursor: none !important;
+    flex-grow: 0 !important;
 }
 
+/* Applying .no-background to the default button style */
+button:not(.game-button):not(.game-button-blue):not(.button-login-base):not(.button-login-primary):not(.button-login-secondary):not(.button-battle-base):not(.button-battle-confirm-action):not(.button-battle-resource-gain):not(.button-battle-confirm-defense):not(.button-battle-proceed-phase):not(.button-battle-end-turn):not(.button-battle-cancel-action):not(.button-battle-neutral).no-background {
+  font-size: 2em; 
+  margin: 0; 
+}
 
-  
-  /* ... etc for active and disabled states of the default button ... */
+.no-background:hover:not(:disabled) {
+    transform: scale(1.1) !important; 
+    color: var(--primary-color) !important; 
+}
