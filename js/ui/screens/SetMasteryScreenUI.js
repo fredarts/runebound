@@ -61,13 +61,14 @@ export default class SetMasteryScreenUI {
         }
         this.#progressBar = this.#el.find('#mastery-screen-progress');
         this.#progressLabel = this.#el.find('#mastery-screen-progress-label');
-        this.#rewardsList = this.#el.find('#mastery-rewards-list'); // Ensure template uses this ID
+        this.#rewardsList = this.#el.find('.mastery-list'); // Ensure template uses this ID
         this.#backButton = this.#el.find('#btn-mastery-back-profile');
 
-        if (!this.#progressBar.length || !this.#progressLabel.length || !this.#rewardsList.length || !this.#backButton.length) {
-             console.error("SetMasteryScreenUI Cache Error: One or more essential child elements not found!");
-             return false;
-        }
+        if (!this.#progressBar.length || !this.#progressLabel.length ||
+            !this.#rewardsList.length || !this.#backButton.length) {
+            console.error('SetMasteryScreenUI Cache Error: One or more essential child elements not found!');
+            return false;
+        }         
         return true;
     }
 
