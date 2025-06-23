@@ -252,3 +252,8 @@ body.dragging-from-deck .deck-panel .card-list { /* Quando arrastando do DECK pa
     transform: none; /* Remove efeito de hover */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* Sombra padrão */
 }
+
+#deck-builder-screen .mini-card {
+    width: 210px;
+    height: 314px;
+}

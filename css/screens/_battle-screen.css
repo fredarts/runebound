@@ -393,8 +393,8 @@
 
 /* Specific sizing and ensure new button styles from _buttons.css apply correctly */
 .turn-controls button {
-    padding: 6px 10px; /* Specific smaller padding */
-    font-size: 0.85em; /* Specific smaller font size */
+    padding: 9px 18px; /* Specific smaller padding */
+    font-size: 1.1em; /* Specific smaller font size */
     /* border-radius: 6px; will be inherited from .button-battle-base */
     /* font-family, text-transform will be inherited from .button-battle-base */
     /* Colors and backgrounds will come from .button-battle-* specific classes */

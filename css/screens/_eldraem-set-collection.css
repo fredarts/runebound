@@ -218,3 +218,8 @@
     box-shadow: 0 0 10px rgba(100, 100, 100, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
     transform: translateY(-1px);
 }
+
+#set-collection-screen .mini-card {
+    width: 174px;  /* Novo tamanho para esta tela */
+    height: 260px; /* Novo tamanho para esta tela */
+}
