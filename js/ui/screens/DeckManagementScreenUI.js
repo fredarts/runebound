@@ -218,7 +218,7 @@ export default class DeckManagementScreenUI {
             const deck = decks[id];
             if (deck && deck.cards) {
                  const cardCount = deck.cards.length;
-                 const isValid = cardCount >= 30 && cardCount <= 40;
+                 const isValid = cardCount >= 30 && cardCount <= 60;
                  const validityClass = isValid ? 'deck-valid' : 'deck-invalid';
                  const validityText = isValid ? '' : ` (Inválido: ${cardCount})`;
                  const deckName = deck.name || `Deck ${id.substring(0, 5)}`;

@@ -40,7 +40,7 @@ export default class Game {
              console.error("Game Error: CardDatabase missing.");
              return null;
         }
-        if (!Array.isArray(deckCardIds) || deckCardIds.length < 30 || deckCardIds.length > 40) {
+        if (!Array.isArray(deckCardIds) || deckCardIds.length < 30 || deckCardIds.length > 60) {
              console.error(`Game Error: Invalid deckCardIds for player ${name}. Length: ${deckCardIds?.length}. Must be array [30-40].`);
              this.emitEvent('gameLog', { message: `Erro: Deck inválido para ${name}.` });
              return null;

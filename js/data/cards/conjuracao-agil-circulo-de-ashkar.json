@@ -1,0 +1,14 @@
+{
+  "conjuracoes_ageis": [
+    { "id": "ASH-CA-001", "nome": "Bola de Fogo de Valerian", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Bola de fogo de Valerian.jpg" },
+    { "id": "ASH-CA-002", "nome": "Chamado do Abismo", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 3, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Chamado do Abismo.jpg" },
+    { "id": "ASH-CA-003", "nome": "Corrupção Rápida", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 3, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Corrupção Rápida.jpg" },
+    { "id": "ASH-CA-004", "nome": "Destruir Vínculo", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Destruir Vínculo.jpg" },
+    { "id": "ASH-CA-005", "nome": "Erupção de Cinzas de Thar'Zhul", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 3, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Erupção de Cinzas de Thar-Zhul.jpg" },
+    { "id": "ASH-CA-006", "nome": "Fúria Caótica", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 1, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Fúria Caótica.jpg" },
+    { "id": "ASH-CA-007", "nome": "Toque de Cinzas de Morrigan", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Maldição de Morrigan.jpg" },
+    { "id": "ASH-CA-008", "nome": "Sacrifício de Sangue", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 1, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Sacrifício de Sangue.jpg" },
+    { "id": "ASH-CA-009", "nome": "Sede de Vingança", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Sede de Vingança.jpg" },
+    { "id": "ASH-CA-010", "nome": "Sussurro do Vazio", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 1, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Sussurro do Vazio.jpg" }
+  ]
+}

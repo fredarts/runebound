@@ -1,0 +1,14 @@
+{
+  "tramas_runicas": [
+    { "id": "OGL-TR-001", "nome": "Benção de Grungir", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Benção de Grungir.jpg" },
+    { "id": "OGL-TR-002", "nome": "Grito de Batalha de Thorgrim", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Grito de Batalha de Thorgrim.jpg" },
+    { "id": "OGL-TR-003", "nome": "Harmonia de Elaron", "tipo": "Trama Rúnica de Campo", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Harmonia de Elaron.jpg" },
+    { "id": "OGL-TR-004", "nome": "Ordem de silêncio de Lyrandar", "tipo": "Trama Rúnica", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Ordem de silêncio de Lyrandar.jpg" },
+    { "id": "OGL-TR-005", "nome": "Pele de Pedra de Barak'Tor", "tipo": "Trama Rúnica", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Pele de Pedra de Barak-Tor.jpg" },
+    { "id": "OGL-TR-006", "nome": "Pesquisa profunda de Arkos", "tipo": "Trama Rúnica", "raridade": "Comum", "custo": 3, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Pesquisa profunda de Arkos.jpg" },
+    { "id": "OGL-TR-007", "nome": "Runas da Sabedoria", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 3, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Runas da Sabedoria.jpg" },
+    { "id": "OGL-TR-008", "nome": "Selo de Contenção Serilda", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 3, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Selo de Contenção Serilda.jpg" },
+    { "id": "OGL-TR-009", "nome": "Vínculo de Proteção de Lyrandar", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 3, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Vínculo de Proteção de Lyrandar.jpg" },
+    { "id": "OGL-TR-010", "nome": "Vínculo Vital de Elowyn", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 3, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Vínculo Vital de Elowyn.jpg" }
+  ]
+}

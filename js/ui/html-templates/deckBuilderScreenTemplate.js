@@ -18,7 +18,7 @@ export function generateDeckBuilderScreenHTML() { // <<<--- Certifique-se que 'e
                     <input type="text" id="db-deck-name" placeholder="Meu Novo Deck" maxlength="30">
                 </div>
                 <div class="deck-info">
-                     <span id="db-deck-count">0</span>/40 cartas <!-- Contador principal na barra -->
+                     <span id="db-deck-count">0</span>/60 cartas <!-- Contador principal na barra -->
                      <span id="db-deck-validity">(Inválido)</span> <!-- Status de validade -->
                 </div>
                 <div class="deck-actions">
@@ -80,7 +80,7 @@ export function generateDeckBuilderScreenHTML() { // <<<--- Certifique-se que 'e
                 <!-- Painel Direito: Deck Atual Sendo Construído -->
                 <div class="deck-builder-panel deck-panel">
                      <!-- Contador secundário dentro do painel -->
-                    <h3>Deck Atual (<span id="db-deck-count-display">0</span>/40)</h3>
+                    <h3>Deck Atual (<span id="db-deck-count-display">0</span>/60)</h3>
                     <p class="subtle-text">Arraste cartas aqui ou para fora.</p>
                      <div id="db-current-deck" class="card-list scrollable-list">
                         <!-- Mini-cards no deck atual são renderizados aqui -->

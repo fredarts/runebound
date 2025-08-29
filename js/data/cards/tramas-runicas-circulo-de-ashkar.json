@@ -1,0 +1,14 @@
+{
+  "tramas_runicas": [
+    { "id": "ASH-TR-001", "nome": "Círculo Proibido", "tipo": "Trama Rúnica de Campo", "raridade": "Comum", "custo": 3, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Círculo Proibido.jpg" },
+    { "id": "ASH-TR-002", "nome": "Corromper Fonte de Aether", "tipo": "Trama Rúnica de Campo", "raridade": "Comum", "custo": 5, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Corromper Fonte de Aether.jpg" },
+    { "id": "ASH-TR-003", "nome": "Destruir", "tipo": "Trama Rúnica", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Destruir.jpg" },
+    { "id": "ASH-TR-004", "nome": "Drenar Vínculo", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Drenar Vínculo.jpg" },
+    { "id": "ASH-TR-005", "nome": "Fome Eterna", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 3, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Fome Eterna.jpg" },
+    { "id": "ASH-TR-006", "nome": "Fúria de Thar'Zhul", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 4, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Fúria de Thar-Zhul.jpg" },
+    { "id": "ASH-TR-007", "nome": "Juramento de Ashkar", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Juramento de Ashkar.jpg" },
+    { "id": "ASH-TR-008", "nome": "Maldição da Fraqueza", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Maldição da Fraqueza.jpg" },
+    { "id": "ASH-TR-009", "nome": "Pacto Profano", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 2, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Pacto Profano.jpg" },
+    { "id": "ASH-TR-010", "nome": "Vínculo do Caótico", "tipo": "Trama Rúnica de Selamento", "raridade": "Comum", "custo": 1, "Facção": "Círculo de Ashkar", "image_src": "assets/images/cards/Vínculo do Caótico.jpg" }
+  ]
+}

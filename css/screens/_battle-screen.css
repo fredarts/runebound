@@ -1,127 +1,125 @@
-/* css/screens/_battle-screen.css - Estilos para a Tela de Batalha */
+/* css/screens/_battle-screen.css - CÓDIGO COMPLETO E REATORADO */
 
 /* Layout Geral da Tela de Batalha */
 .battle-screen-layout {
     display: flex;
-    flex-direction: column; /* Empilha áreas: Oponente, Centro, Jogador */
-    height: 100%; /* Ocupa toda a altura do container .screen */
-    padding: 5px; /* Pequeno padding geral */
-    gap: 5px; /* Espaço entre as áreas */
+    flex-direction: column;
+    height: 100%;
+    padding: 5px;
+    gap: 5px;
     box-sizing: border-box;
-
-    /* Fundo */
     background: url('../../assets/images/ui/battle_background.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 
 /* Área do Jogador (Oponente ou Local) */
 .player-area {
-    background-color: rgba(10, 20, 30, 0.75); /* Fundo mais opaco */
+    background-color: rgba(10, 20, 30, 0.75);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 8px;
     display: flex;
-    gap: 8px; /* Espaço entre Info, Mão/Campo */
-    position: relative; /* Para posicionar as zonas (Deck/Graveyard) */
-    backdrop-filter: blur(2px); /* Desfoque sutil no fundo */
-    overflow: hidden; /* Evita que conteúdo interno vaze */
-    flex-basis: 40%; /* Cada área de jogador ocupa 40% */
-    min-height: 150px; /* Altura mínima */
+    gap: 8px;
+    backdrop-filter: blur(2px);
+    overflow: hidden;
+    flex-basis: 40%;
+    min-height: 150px;
 }
 
-.player-area.opponent {
-    flex-direction: row; /* Avatar esquerda, Mão centro, Campo direita, Zonas canto */
-    max-height: 390px;
-}
-
+.player-area.opponent,
 .player-area.local-player {
-    flex-direction: row; /* Info direita, Mão centro, Campo esquerda, Zonas canto */
-    max-height: 390px;
+    flex-direction: row;
+    max-height: 353px;
 }
 
-/* Informações do Jogador (Avatar, Nome, Stats) */
+/* === ÁREA DE INFORMAÇÕES DO JOGADOR (Refatorado) === */
 .player-info {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Alinha no topo */
-    gap: 5px;
-    flex-basis: 230px; /* Largura fixa para Info */
+    justify-content: space-between;
+    gap: 8px;
+    flex-basis: 260px;
     flex-shrink: 0;
-    padding: 5px;
+    padding: 8px;
     border-radius: 5px;
     background-color: var(--zone-background);
-    text-align: center;
-    height: 100%; /* Ocupa altura da player-area */
-    box-sizing: border-box;
-    position: relative; /* Para posicionar stats */
 }
+
 .player-area.local-player .player-info {
-    order: 3; /* Manda para a direita */
+    order: 3;
+}
+
+.player-main-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
 }
 
 .player-avatar img {
-    width: 88px;
-    height: 88px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     border: 2px solid var(--primary-color);
     object-fit: cover;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-    margin-bottom: 5px;
-    margin-top: 10px;
 }
 
-.player-stats {
-    font-size: 0.9em;
-    width: 100%;
-    position: absolute;
-    margin-top: 120px;
-    left: 0;
-    box-sizing: border-box;
+.player-identity {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+    overflow: hidden; /* Previne que o nome vaze */
 }
 
 #opponent-name, #player-name {
-    display: block;
     font-weight: bold;
-    margin-bottom: 5px;
     color: var(--text-color);
-    font-size: 1.1em;
+    font-size: 1.2em;
+    margin-bottom: 6px;
+    text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
+}
+
+.player-resources {
+    display: flex;
+    gap: 10px;
 }
 
 .resource {
-    display: inline-block;
-    margin: 1px 3px;
+    display: inline-flex;
+    align-items: center;
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.6);
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-size: 1.9em;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 1em;
     white-space: nowrap;
 }
 .resource.life { color: var(--accent-color); }
 .resource.mana { color: var(--primary-color); }
 
-.player-info .player-zones{
-    display:flex;
-    flex-direction:row;
-    gap:8px;
-    margin-top:6px;
-    align-items:center;
+.player-zones {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto;
 }
+/* ============================================== */
 
-/* Mão */
+/* Mão do Jogador */
 .hand {
     flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: calc(var(--card-height-battle) + 20px);
-    background: none;
     padding: 5px;
-    position: relative;
     gap: 5px;
     order: 2;
 }
@@ -130,348 +128,150 @@
     order: 2;
     background-color: var(--zone-background);
     border-radius: 4px;
-    padding: 10px 5px 5px 5px;
+    padding: 5px;
     height: 100%;
     box-sizing: border-box;
     position: relative;
-    max-width: 600px;
+    max-width: 700px;
 }
 .opponent-hand-area > span {
-    position: absolute;
-    top: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.8em;
-    color: var(--text-color-subtle);
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 1px 5px;
-    border-radius: 3px;
-    z-index: 1;
+    position: absolute; top: 2px; left: 50%;
+    transform: translateX(-50%); font-size: 0.8em;
+    color: var(--text-color-subtle); background-color: rgba(0, 0, 0, 0.7);
+    padding: 1px 5px; border-radius: 3px; z-index: 1;
 }
 #opponent-hand {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: -40px;
-    padding-top: 15px;
-    width: 100%;
-    height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    gap: -40px; padding-top: 20px;
+    width: 100%; height: 100%;
 }
 #opponent-hand .card-back {
-    width: var(--card-width-battle);
-    height: var(--card-height-battle);
-    background-color: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
-    display: inline-block;
-    position: relative;
+    width: var(--card-width-battle); height: var(--card-height-battle);
+    background-color: var(--secondary-color); border: 1px solid var(--border-color);
+    border-radius: 6px; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
     background-size: cover;
-    margin-right: 6px;
 }
 .player-area.local-player .hand {
-    justify-content: center;
-    background-color: var(--zone-background);
-    border-radius: 4px;
-    padding: 10px;
-    height: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-    overflow-x: auto;
-    overflow-y: hidden;
+    justify-content: center; background-color: var(--zone-background);
+    border-radius: 4px; padding: 10px;
+    height: 100%; max-width: 700px;
+    box-sizing: border-box; overflow-x: auto; overflow-y: hidden;
 }
 
 /* Campo de Batalha */
 .battlefield {
-    flex-grow: 2;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 8px;
-    border-radius: 6px;
-    background-color: var(--zone-background);
+    flex-grow: 2; display: flex;
+    flex-wrap: wrap; gap: 8px; padding: 8px;
+    border-radius: 6px; background-color: var(--zone-background);
     min-height: calc(var(--card-height-battle) + 16px);
-    align-content: flex-start;
-    align-items: flex-start;
-    overflow-y: auto;
-    height: 100%;
-    box-sizing: border-box;
-    order: 1;
+    align-content: flex-start; align-items: flex-start;
+    overflow-y: auto; height: 100%;
+    box-sizing: border-box; order: 1;
 }
 .player-area.opponent .battlefield {
     order: 3;
 }
 
-/* Zonas do Jogador (Deck/Graveyard) */
-.player-zones {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.player-area.opponent .player-zones {
-    order: 4; 
-    margin-top: 100px; 
-}
-.player-area.local-player .player-zones {
-    order: 0;
-    margin-top: 100px;
-}
-
-/* Estilo da Zona (Deck ou Cemitério) */
+/* Zonas de Deck e Cemitério */
 .deck-zone, .graveyard-zone {
     position: relative;
-    width: var(--card-width-battle);
-    height: var(--card-height-battle);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #555;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 4px;
-    padding: 2px;
-    overflow: hidden;
-    transition: border-color 0.2s ease, transform 0.2s ease;
-}
-.deck-zone::before, .graveyard-zone::before {
-    content: '';
-    position: absolute;
-    top: 3px; left: 3px; right: 3px; bottom: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-    opacity: 0.7;
-    pointer-events: none;
-}
-.deck-zone span, .graveyard-zone span {
-    font-size: 0.7em;
-    color: #ccc;
-    text-align: center;
-    line-height: 1;
-    width: 100%;
-    position: absolute;
-    bottom: 2px;
-    left: 0;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 1px 0;
-    pointer-events: none;
+    width: 156px;
+    height: 238px;
+    border: 1px solid #555; background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 4px; transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .deck-zone:hover, .graveyard-zone:hover {
-    border-color: var(--primary-color);
-    transform: scale(1.05);
-    z-index: 10;
+    border-color: var(--primary-color); transform: scale(1.05); z-index: 10;
 }
 .zone-image {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    border-radius: 3px;
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    z-index: 1; border-radius: 3px;
 }
 .deck-count, .graveyard-count {
-    position: absolute;
-    top: 3px; right: 3px;
-    background-color: rgba(0, 0, 0, 0.75);
-    color: white;
-    border-radius: 50%;
-    width: 24px; height: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.75em;
-    font-weight: bold;
-    z-index: 3;
-    border: 1px solid #aaa;
-    box-sizing: border-box;
+    position: absolute; top: 3px; right: 3px;
+    background-color: rgba(0, 0, 0, 0.75); color: white;
+    border-radius: 50%; width: 24px; height: 24px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 0.75em; font-weight: bold; z-index: 3;
+    border: 1px solid #aaa; box-sizing: border-box;
 }
 .graveyard-image.is-placeholder {
     background-color: #2a2a2a;
 }
 
-
-/* === ÁREA CENTRAL MODIFICADA === */
+/* Área Central */
 .center-area {
     background-color: rgba(0, 0, 0, 0.55);
-    border-radius: 5px;
-    padding: 10px; 
-    display: flex; 
-    flex-direction: row; 
-    justify-content: space-between; 
-    align-items: stretch; 
-    gap: 15px; 
-    flex-basis: auto; 
-    min-height: 130px;
+    border-radius: 5px; padding: 10px; 
+    display: flex; flex-direction: row; 
+    justify-content: space-between; align-items: stretch; 
+    gap: 15px; flex-grow: 1; max-height: 170px;
 }
-
-/* Coluna Esquerda: Log do Jogo */
 .game-log-container {
-    width: 500px; 
-    flex-shrink: 0; 
-    height: 200px; 
-    overflow-y: auto;
-    background-color: rgba(0, 0, 0, 0.6);
+    min-width: 500px;
+    max-width: 500px;
+    height: 150px;
+    overflow-y: auto; background-color: rgba(0, 0, 0, 0.6);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 5px 8px;
-    font-size: 0.85em;
-    box-sizing: border-box;
+    border-radius: 4px; padding: 5px 8px;
+    font-size: 0.85em; box-sizing: border-box;
 }
 .game-log { list-style: none; padding: 0; margin: 0; }
-.game-log li {
-    padding: 2px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    line-height: 1.3;
-    color: var(--text-color-secondary);
-}
+.game-log li { padding: 2px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-color-secondary); }
 .game-log li:last-child { border-bottom: none; }
-.log-damage { color: var(--accent-color); }
+.log-damage { color: var(--accent-color); } 
 .log-heal { color: var(--valid-color); }
-.log-draw { color: var(--primary-color); }
+.log-draw { color: var(--primary-color); } 
 .log-system { color: var(--disabled-color); font-style: italic; }
 .log-player-local { font-weight: 500; color: #e0eaf1;}
 .log-player-opponent { font-weight: 500; color: #f1e0e0;}
 
-/* Coluna Direita: Informações de Turno e Controles */
 .center-column-content {
-    flex-grow: 1; 
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    gap: 8px; 
-    min-height: 100%; 
-    padding: 0 5px; 
-    box-sizing: border-box;
-    margin-right: 460px; /* This seems quite large, verify it's what you intend */
+    flex: 1 1 60%; 
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; 
+    gap: 8px; padding: 0 5px;
 }
-
-/* Informações de Turno/Fase (Banner Estilizado) */
 #turn-info.turn-info-banner-styled {
     background-image: radial-gradient(circle at center, #FFA500 30%, #E67E00 100%);
-    color: #1d1d1d; 
-    padding: 10px 20px;
-    border-radius: 30px; /* Banner can be more rounded */
-    border: 1px solid #ab7905; 
+    color: #1d1d1d; padding: 8px 18px;
+    border-radius: 30px; border: 1px solid #ab7905; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    font-size: 1.15em;
-    font-weight: 600;
-    text-align: center;
-    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
-    width: auto;
-    min-width: 530px;
-    max-width: 90%;
-    margin: 10px 0 10px 0;
-    opacity: 0;
-    transform: scale(0.95) translateY(0); 
+    font-size: 1.1em; font-weight: 600; text-align: center;
+    min-width: 450px; max-width: 90%;
+    opacity: 0; transform: scale(0.95);
     visibility: hidden;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s linear 0.3s;
-    will-change: opacity, transform;
 }
 #turn-info.turn-info-banner-styled.show {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1) translateY(0);
-    transition-delay: 0s, 0s, 0s; 
+    opacity: 1; visibility: visible; transform: scale(1);
 }
-#turn-info.turn-info-banner-styled #phase-indicator {
-    color: #D32F2F; /* Reddish for phase */
-    font-weight: bold;
-}
-#turn-info.turn-info-banner-styled #current-player-indicator {
-    color: #1976D2; /* Bluish for player */
-    font-style: normal;
-}
+#turn-info.turn-info-banner-styled #phase-indicator { color: #D32F2F; font-weight: bold; }
+#turn-info.turn-info-banner-styled #current-player-indicator { color: #1976D2; }
 
-/* Controles do Turno (Botões) */
-.turn-controls {
-    display: flex;
-    gap: 8px; /* Smaller gap for these buttons */
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-/* Specific sizing and ensure new button styles from _buttons.css apply correctly */
+.turn-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .turn-controls button {
-    padding: 9px 18px; /* Specific smaller padding */
-    font-size: 1.1em; /* Specific smaller font size */
-    /* border-radius: 6px; will be inherited from .button-battle-base */
-    /* font-family, text-transform will be inherited from .button-battle-base */
-    /* Colors and backgrounds will come from .button-battle-* specific classes */
+    padding: 9px 18px;
+    font-size: 1.1em;
 }
-/* Ensure hover/active/disabled states from _buttons.css are not overly overridden */
+#btn-confirm-attack, #btn-confirm-blocks { display: none; }
 
-/* Display logic for confirm buttons is handled by JS/BattleScreenUI */
-#btn-confirm-attack, #btn-confirm-blocks {
-    display: none; 
+.action-feedback-area { 
+    color: var(--highlight-color); min-height: 1.3em; 
+    text-align: center; font-weight: bold; font-size: 0.9em; 
+    width: 100%; max-width: 400px;
 }
 
-/* Área de Feedback de Ação */
-.action-feedback-area {
-    font-style: italic;
-    color: var(--highlight-color);
-    min-height: 1.3em;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.9em;
-    width: 100%;
-    max-width: 400px;
-}
-
-/* Drag and Drop States */
-#player-hand .card.dragging-card {
-    opacity: 0.5;
-    transform: scale(0.95); 
-}
-#player-battlefield.drop-target-active {
-    background-color: rgba(0, 255, 0, 0.1); 
-    outline: 2px dashed var(--valid-color, lightgreen);
-    outline-offset: -2px;
-}
-
-/* Estilos de Cartas na Batalha (Highlighting) */
+/* Estilos de Drag, Destaques de Combate, Feedback, etc. */
+#player-hand .card.dragging-card { opacity: 0.5; transform: scale(0.95); }
+#player-battlefield.drop-target-active { background-color: rgba(0, 255, 0, 0.1); outline: 2px dashed var(--valid-color); outline-offset: -2px; }
 .card.can-attack-visual { outline: 2px dashed limegreen; outline-offset: 1px; }
 .card.selected-attacker { box-shadow: 0 0 10px 3px red, inset 0 0 0 2px red; transform: scale(1.05); }
 .card.can-block-visual { outline: 2px dashed skyblue; outline-offset: 1px; }
 .card.attacker-selected-for-blocking { box-shadow: 0 0 12px 4px orange !important; border: 2px solid orange !important; }
 .card.selected-blocker { box-shadow: 0 0 10px 3px cornflowerblue, inset 0 0 0 2px cornflowerblue; transform: scale(1.05); }
-
-/* Scrollbar Styles */
-.battle-screen-layout .game-log-container::-webkit-scrollbar,
-.battle-screen-layout .battlefield::-webkit-scrollbar,
-.battle-screen-layout .hand::-webkit-scrollbar
-{ width: 8px; }
-
-.battle-screen-layout .game-log-container::-webkit-scrollbar-track,
-.battle-screen-layout .battlefield::-webkit-scrollbar-track,
-.battle-screen-layout .hand::-webkit-scrollbar-track
-{ background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
-
-.battle-screen-layout .game-log-container::-webkit-scrollbar-thumb,
-.battle-screen-layout .battlefield::-webkit-scrollbar-thumb,
-.battle-screen-layout .hand::-webkit-scrollbar-thumb
-{ background-color: var(--secondary-color); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
-
-.battle-screen-layout .game-log-container::-webkit-scrollbar-thumb:hover,
-.battle-screen-layout .battlefield::-webkit-scrollbar-thumb:hover,
-.battle-screen-layout .hand::-webkit-scrollbar-thumb:hover
-{ background-color: var(--primary-color); }
-
-.battle-screen-layout .game-log-container,
-.battle-screen-layout .battlefield,
-.battle-screen-layout .hand
-{ scrollbar-width: thin; scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2); }
-
-/* Estilo base para a borda de par de bloqueio */
-.blocking-pair-border {
-    border-width: 3px !important; 
-    border-style: solid !important;
-    box-shadow: 0 0 8px 3px currentColor !important; 
-    outline: none !important; 
-    transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
-}
-
-/* Cores específicas para os pares */
+.blocking-pair-border { border-width: 3px !important; border-style: solid !important; box-shadow: 0 0 8px 3px currentColor !important; outline: none !important; }
 .blocking-pair-lime { border-color: lime !important; }
 .blocking-pair-cyan { border-color: cyan !important; }
 .blocking-pair-magenta { border-color: magenta !important; }
@@ -479,20 +279,14 @@
 .blocking-pair-orange { border-color: orange !important; }
 .blocking-pair-blueviolet { border-color: blueviolet !important; }
 
-/* Mantém o estilo para o atacante que está ativamente selecionado para bloqueio */
-.attacker-selected-for-blocking {
-    outline: 3px solid darkorange !important;
-    box-shadow: 0 0 12px 4px darkorange !important;
-}
-
-/* Ajuste para criaturas que podem bloquear (antes de serem designadas) */
-.card.can-block-visual {
-    outline: 2px dashed skyblue; 
-    outline-offset: 1px;
-}
-
-/* Quando uma criatura local É designada como bloqueadora */
-.card.selected-blocker {
-    /* A borda colorida do par já é o principal. */
-    /* Exemplo: transform: scale(1.03); */
+/* Scrollbar Styles */
+.battle-screen-layout ::-webkit-scrollbar { width: 8px; }
+.battle-screen-layout ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+.battle-screen-layout ::-webkit-scrollbar-thumb { background-color: var(--secondary-color); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+.battle-screen-layout ::-webkit-scrollbar-thumb:hover { background-color: var(--primary-color); }
+.battle-screen-layout .game-log-container,
+.battle-screen-layout .battlefield,
+.battle-screen-layout .hand {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) rgba(0,0,0,0.2);
 }

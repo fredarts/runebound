@@ -112,7 +112,7 @@
     background-color: rgba(0,0,0,0.4); /* Fundo do grid ainda mais translúcido */
     border: 1px dashed rgba(128,70,0,0.5); /* Borda tracejada temática */
     border-radius: 8px;
-    max-height: 780px; /* Garante altura mínima */
+    max-height: 645px; /* Garante altura mínima */
 }
 
 /* Scrollbar para o Grid de Cartas (estilo fiery) */

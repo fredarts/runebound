@@ -82,3 +82,79 @@
     /* Herda estilos de botão base, mas pode ter overrides aqui se necessário */
     margin-top: 10px; /* Adiciona espaço acima */
 }
+
+/* --- Estilos para o Pop-up de Escolha de Deck da IA --- */
+#ai-deck-choice-overlay {
+    /* Herda o display:none do .image-zoom-overlay, mas garantimos aqui */
+    display: none; 
+}
+
+#ai-deck-choice-overlay.active {
+    display: flex; /* Mostra o overlay quando a classe 'active' é adicionada */
+}
+
+#ai-deck-choice-modal {
+    background-color: var(--panel-background);
+    padding: 25px 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+#ai-deck-choice-modal h3 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.5em;
+}
+
+.deck-choices-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.deck-choice-button {
+    background: rgba(0,0,0,0.2);
+    border: 2px solid var(--border-color-light);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: none !important;
+    color: var(--text-color);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.deck-choice-button:hover {
+    transform: scale(1.05);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.deck-choice-button img {
+    width: 120px;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.deck-choice-button span {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+#btn-cancel-deck-choice {
+    margin-top: 10px;
+    padding: 8px 25px; /* Padding menor para botão secundário */
+}

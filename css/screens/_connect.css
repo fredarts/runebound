@@ -153,8 +153,8 @@
 #btn-connect-back-to-main {
     /* Herda estilos de botão base */
     background-color: var(--button-secondary-bg); /* Cor secundária */
-    margin-top: -220px;
-    margin-left: -80px;
+    margin-top: -145px;
+    margin-left: -90px;
     position: absolute;
 
 }

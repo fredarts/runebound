@@ -1,0 +1,14 @@
+{
+  "conjuracoes_ageis": [
+    { "id": "OGL-CA-001", "nome": "Bênção de Lúnia", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Bênção de Lúnia.jpg" },
+    { "id": "OGL-CA-002", "nome": "Caminho Secreto da Floresta", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Caminho Secreto da Floresta.jpg" },
+    { "id": "OGL-CA-003", "nome": "Desenlace Rúnico", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Desenlace Rúnico.jpg" },
+    { "id": "OGL-CA-004", "nome": "Entoação Reversa", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Entoação Reversa.jpg" },
+    { "id": "OGL-CA-005", "nome": "Escudo de Lyrandar", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Escudo de Lyrandar.jpg" },
+    { "id": "OGL-CA-006", "nome": "Luz Cegante de Selena", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Luz Cegante de Selena.jpg" },
+    { "id": "OGL-CA-007", "nome": "Toque de Lúnia", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Toque de Lúnia.jpg" },
+    { "id": "OGL-CA-008", "nome": "Vínculo Reestabelecido", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Vínculo Reestabelecido.jpg" },
+    { "id": "OGL-CA-009", "nome": "Visão Prismática de Arkos", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Visão Prismática de Arkos.jpg" },
+    { "id": "OGL-CA-010", "nome": "Visão Rúnica", "tipo": "Conjuração Ágil", "raridade": "Comum", "custo": 2, "Facção": "Ordem de Galadreth", "image_src": "assets/images/cards/Visão Rúnica.jpg" }
+  ]
+}

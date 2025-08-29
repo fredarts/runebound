@@ -38,7 +38,7 @@ export default class DeckBuilderUI {
         isEditing: false,
         MAX_COPIES_PER_CARD: 4, // Regra do jogo
         MIN_DECK_SIZE: 30,      // Regra do jogo
-        MAX_DECK_SIZE: 40,       // Regra do jogo
+        MAX_DECK_SIZE: 60,       // Regra do jogo
         // NOVO: Para rastrear a quantidade de cada carta possuída pelo usuário
         userCardQuantities: {}
     };
@@ -192,7 +192,7 @@ export default class DeckBuilderUI {
         this.#dbState = {
             currentDeckId: null, currentDeckName: '', currentDeckCards: [],
             isEditing: false, MAX_COPIES_PER_CARD: 4,
-            MIN_DECK_SIZE: 30, MAX_DECK_SIZE: 40,
+            MIN_DECK_SIZE: 30, MAX_DECK_SIZE: 60,
             userCardQuantities: {} // <<< ADICIONADO: resetar as quantidades do usuário
         };
         this.#messageParagraph?.text('');
