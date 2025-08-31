@@ -1,28 +1,27 @@
 /* css/screens/_lore-video.css - Estilos para a Tela do Vídeo de Lore */
 
 .lore-video-layout {
-    display: flex; /* Para centralizar conteúdo como o skip button */
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
-    background-color: #000000; /* Fundo escuro sólido */
-    position: relative; /* Para posicionamento absoluto de filhos como o botão de pular */
+    background-color: #000000;
+    position: relative;
     overflow: hidden;
+    flex: 1; /* CORREÇÃO: Faz este layout preencher o espaço do seu pai flex (.screen) */
 }
 
 
 #lore-video-player {
-    position: fixed;  /* <<<< MUDANÇA PRINCIPAL */
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;     /* <<<< MUDANÇA */
-    height: 100vh;    /* <<<< MUDANÇA */
-    object-fit: cover; /* <<<< MUDANÇA (para preencher a tela, como no seu exemplo) */
-                        /* Use 'contain' se preferir ver o vídeo inteiro com possíveis barras pretas */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
     display: block;
-    z-index: 1;       /* Abaixo dos controles da UI da tela de lore, mas acima de outras telas inativas */
-                        /* E importante: abaixo da Top Bar que tem z-index 500 */
+    z-index: 1;
 }
 
 #btn-skip-lore-video {
@@ -35,8 +34,7 @@
     color: var(--text-color, #ecf0f1);
     border: 1px solid var(--border-color-light, #555);
     border-radius: 5px;
-    
-    z-index: 10; /* Acima do vídeo que está em z-index: 1 */
+    z-index: 10; /* Garante que fique acima do vídeo */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -57,5 +55,9 @@
     border-radius: 5px;
     font-size: 1.1em;
     text-align: center;
-    z-index: 15; /* Acima do skip e do vídeo */
+    z-index: 15; /* Acima de tudo */
+}
+
+#lore-video-screen{
+    padding: 0;
 }

@@ -10,6 +10,7 @@ export default class ZoomHandler {
         'battle-screen': { overlay: '#battle-image-zoom-overlay', image: '#battle-zoomed-image' },
         'deck-management-screen': { overlay: '#deck-management-zoom-overlay', image: '#deck-management-zoomed-image' },
         'set-collection-screen': { overlay: '#set-collection-zoom-overlay', image: '#set-collection-zoomed-image' },
+        'initial-deck-choice-screen': { overlay: '#initial-deck-choice-zoom-overlay', image: '#initial-deck-choice-zoomed-image' }
     };
 
     constructor(cardDatabase) {

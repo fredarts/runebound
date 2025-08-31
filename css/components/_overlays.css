@@ -87,6 +87,12 @@
 #ai-deck-choice-overlay {
     /* Herda o display:none do .image-zoom-overlay, mas garantimos aqui */
     display: none; 
+    position: fixed;
+    inset: 0;
+    z-index: 1200;          /* > top-bar (500) e > .screen.active (10) */
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.6);
 }
 
 #ai-deck-choice-overlay.active {

@@ -1,0 +1,111 @@
+/* ===== Fiery theme ON para QUALQUER modal/tela que tiver .fiery-opt-in ===== */
+.fiery-opt-in {
+  --fiery-bg: #0c0706;
+  --fiery-panel: rgba(18,10,8,.85);
+  --fiery-text: #ffd7b3;
+  --fiery-muted: #caa792;
+}
+
+.fiery-opt-in .deck-modal,
+.fiery-opt-in .deck-selection-area {
+  background: var(--fiery-panel) !important;
+  color: var(--fiery-text);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  position: relative;
+  isolation: isolate;
+  padding: 4rem;
+  max-width: 60rem;
+}
+.fiery-opt-in .deck-selection-area::before{
+  content:""; position:absolute; inset:-2px; border-radius:inherit;
+  background: conic-gradient(from 10deg,
+    rgba(255,140,0,.0) 0%, rgba(255,140,0,.35) 12%,
+    rgba(255,60,0,.5) 28%, rgba(255,200,120,.35) 40%,
+    rgba(255,100,0,.5) 60%, rgba(255,60,0,.35) 78%,
+    rgba(255,140,0,.0) 100%);
+  filter: blur(10px); opacity:.65; z-index:-1;
+  animation: fieryPulse 4.5s ease-in-out infinite;
+}
+@keyframes fieryPulse{0%,100%{opacity:.55;filter:blur(12px)}50%{opacity:.85;filter:blur(16px)}}
+
+/* GRID dos decks */
+.fiery-opt-in .deck-choice-grid{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+@media (max-width:560px){ .fiery-opt-in .deck-choice-grid{grid-template-columns:1fr;} }
+
+/* ===== REMOVER QUALQUER AZUL herdado nos botões de deck ===== */
+.fiery-opt-in .deck-choice-option,
+.fiery-opt-in .deck-choice-option *:not(img):not(.deck-choice-label),
+.fiery-opt-in .deck-card,
+.fiery-opt-in .deck-card *:not(img) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ===== Imagem vira o BOTÃO ===== */
+.fiery-opt-in .deck-choice-option{
+  position:relative; border-radius:16px; overflow:clip; cursor:pointer;
+  transform:translateY(0) scale(1);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.fiery-opt-in .deck-choice-option .deck-choice-image{
+  display:block; width:100%; height:auto; pointer-events:none;
+}
+.fiery-opt-in .deck-choice-option::after{
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(60% 90% at 50% 10%, rgba(255,140,0,.18), transparent 60%);
+  opacity:0; transition:opacity .18s ease;
+}
+.fiery-opt-in .deck-choice-option:hover,
+.fiery-opt-in .deck-choice-option:focus-visible{
+  transform:translateY(-2px) scale(1.012);
+  box-shadow:0 10px 28px rgba(0,0,0,.6), 0 0 0 1px rgba(255,120,0,.18);
+}
+.fiery-opt-in .deck-choice-option:hover::after,
+.fiery-opt-in .deck-choice-option:focus-visible::after{ opacity:1; }
+
+/* Etiqueta opcional no hover */
+.fiery-opt-in .deck-choice-label{
+  position:absolute; inset:auto 0 0 0; padding:10px 12px;
+  background:linear-gradient(to top, rgba(20,10,8,.92), rgba(20,10,8,0));
+  color:var(--fiery-text); font-weight:700; letter-spacing:.2px;
+  opacity:0; transform:translateY(6px); transition:.18s;
+}
+.fiery-opt-in .deck-choice-option:hover .deck-choice-label,
+.fiery-opt-in .deck-choice-option:focus-visible .deck-choice-label{
+  opacity:1; transform:translateY(0);
+}
+
+/* Títulos/descrições/botões */
+.fiery-opt-in .section-title{ color:var(--fiery-text); margin:0 0 8px; font-family: "Germania One", system-ui; font-weight: 400; font-style: normal; font-size: 4rem;} 
+.fiery-opt-in .section-subtitle{ color:var(--fiery-muted); margin:0 0 16px; text-align: center;}
+
+.fiery-opt-in .actions{ display:flex; gap:10px; justify-content:center; margin-top:14px; }
+.fiery-opt-in .btn{
+  border:none; border-radius:12px; padding:10px 14px; font-weight:800; letter-spacing:.2px; cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+.fiery-opt-in .btn:active{ transform:translateY(1px); }
+.fiery-opt-in .btn-confirm{
+  background:linear-gradient(180deg,#ff7a1a,#ff3c00); color:#1a0e09;
+  box-shadow:0 6px 16px rgba(255,80,0,.45);
+}
+.fiery-opt-in .btn-cancel{
+  background:#1a0e09; color:var(--fiery-text);
+  box-shadow:0 6px 16px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,120,0,.35);
+}
+
+/* Lista de mini-cartas (se este modal também detalhar) */
+.fiery-opt-in #chosen-deck-card-list{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;
+  max-height:min(62dvh,520px); overflow:auto; padding-right:4px;
+}
+@media (max-width:560px){ .fiery-opt-in #chosen-deck-card-list{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.fiery-opt-in .mini-card{ border-radius:10px; overflow:clip; background:transparent !important; }
+
+/* Zoom overlay básico (se reutilizar classes globais) */
+.fiery-opt-in .zoom-overlay .zoom-content img{ display:block; max-width:min(92vw,720px); width:100%; height:auto; }

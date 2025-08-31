@@ -37,24 +37,7 @@ export function generateConnectScreenHTML() {
                 <button id="btn-connect-back-to-main">Voltar</button>
             </div>
 
-            <!-- ===== POP-UP DE ESCOLHA DE DECK DA IA ===== -->
-            <div id="ai-deck-choice-overlay" class="image-zoom-overlay">
-                <div id="ai-deck-choice-modal">
-                    <h3>Escolha o Deck do Oponente</h3>
-                    <div class="deck-choices-container">
-                        <button class="deck-choice-button" data-deck-id="ashkar_starter">
-                            <img src="assets/images/ui/Ashkar_deck.png" alt="Deck Círculo de Ashkar">
-                            <span>Fúria de Ashkar</span>
-                        </button>
-                        <button class="deck-choice-button" data-deck-id="galadreth_starter">
-                            <img src="assets/images/ui/Galadreth_deck.png" alt="Deck Ordem de Galadreth">
-                            <span>Defesa de Galadreth</span>
-                        </button>
-                    </div>
-                    <button id="btn-cancel-deck-choice" class="button-login-base button-login-secondary">Cancelar</button>
-                </div>
-            </div>
-            <!-- ========================================== -->
+            <!-- O modal da IA foi removido daqui e agora é carregado globalmente pelo main.js -->
 
         </div>
     `;

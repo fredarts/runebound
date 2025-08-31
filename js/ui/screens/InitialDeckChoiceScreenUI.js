@@ -1,6 +1,6 @@
-// js/ui/screens/initialDeckChoiceScreenUI.js
+// js/ui/screens/InitialDeckChoiceScreenUI.js
 import CardRenderer from '../helpers/CardRenderer.js';
-import { loadStarterDecks } from '../../utils.js'; // Importa a nova função
+import { loadStarterDecks } from '/js/utils.js'; // mantém como está no seu projeto
 
 export default class InitialDeckChoiceScreenUI {
     #uiManager;
@@ -8,7 +8,7 @@ export default class InitialDeckChoiceScreenUI {
     #audioManager;
     #cardDatabase;
     #cardRenderer;
-
+    #zoomHandler;
     #screenElement;
     #deckSelectionArea;
     #deckDetailsArea;
@@ -18,14 +18,19 @@ export default class InitialDeckChoiceScreenUI {
     #btnBackToSelection;
 
     #selectedDeckId = null;
-    #starterDecks = {}; // Começa vazio, será carregado dinamicamente
+    #starterDecks = {}; // carregado dinamicamente
 
-    constructor(uiManager, accountManager, audioManager, cardDatabase) {
+    // ✅ Agora aceitando o 5º parâmetro: zoomHandler
+    constructor(uiManager, accountManager, audioManager, cardDatabase, zoomHandler) {
         this.#uiManager = uiManager;
         this.#accountManager = accountManager;
         this.#audioManager = audioManager;
         this.#cardDatabase = cardDatabase;
         this.#cardRenderer = new CardRenderer();
+        this.#zoomHandler = zoomHandler; // ✅ fixa o bug
+        if (!this.#zoomHandler) {
+            console.warn('InitialDeckChoiceScreenUI: zoomHandler não fornecido — zoom ficará desativado nesta tela.');
+        }
         console.log("InitialDeckChoiceScreenUI instance created.");
     }
 
@@ -33,10 +38,9 @@ export default class InitialDeckChoiceScreenUI {
         this.#screenElement = screenElement;
         this._cacheSelectors();
 
-        // Carrega os decks dos arquivos
+        // Carrega os decks dos arquivos (mantém sua lógica)
         const loadedDecks = await loadStarterDecks();
         if (loadedDecks) {
-            // Combina os dados carregados com os metadados (descrição, imagem)
             this.#starterDecks = {
                 ashkar_starter: {
                     ...loadedDecks.ashkar_starter,
@@ -51,14 +55,13 @@ export default class InitialDeckChoiceScreenUI {
             };
         } else {
             console.error("Falha CRÍTICA ao carregar decks iniciais. A seleção de deck não funcionará.");
-            // Você pode adicionar uma mensagem de erro na tela aqui
         }
 
         if (!this.#deckSelectionArea.length) {
             console.error("InitialDeckChoiceScreenUI: Elementos essenciais não encontrados.");
             return;
         }
-        
+
         this._showSelectionView();
         this._bindEvents();
     }
@@ -72,35 +75,47 @@ export default class InitialDeckChoiceScreenUI {
         this.#btnBackToSelection = $(this.#screenElement).find('#btn-back-to-deck-selection');
     }
 
-    // O restante do arquivo (funções _bindEvents, _showSelectionView, _showDeckDetails, _confirmDeckChoice, destroy)
-    // pode permanecer exatamente como estava no arquivo original que você forneceu, pois a lógica interna
-    // deles já funciona com a estrutura de #starterDecks.
-    // Cole o restante do seu arquivo original a partir daqui.
-
     _bindEvents() {
         const namespace = '.initialdeckchoice';
 
+        // limpa binds antigos
         this.#deckSelectionArea.off(`click${namespace} mouseenter${namespace}`);
         this.#btnBackToSelection.off(`click${namespace} mouseenter${namespace}`);
         this.#btnConfirmChoice.off(`click${namespace} mouseenter${namespace}`);
+        this.#deckDetailsArea.off(`${namespace}`); // garante reset
 
+        // clicar no card grande da escolha (Ashkar/Galadreth)
         this.#deckSelectionArea.on(`click${namespace}`, '.deck-choice-option', (event) => {
             this.#audioManager?.playSFX('buttonClick');
             const deckId = $(event.currentTarget).data('deck-id');
             this._showDeckDetails(deckId);
         });
+
+        // voltar
         this.#btnBackToSelection.on(`click${namespace}`, () => {
             this.#audioManager?.playSFX('buttonClick');
             this._showSelectionView();
         });
+
+        // confirmar
         this.#btnConfirmChoice.on(`click${namespace}`, () => {
             this.#audioManager?.playSFX('deckSave');
             this._confirmDeckChoice();
         });
 
+        // hovers
         this.#deckSelectionArea.on(`mouseenter${namespace}`, '.deck-choice-option', () => this.#audioManager?.playSFX('buttonHover'));
         this.#btnBackToSelection.on(`mouseenter${namespace}`, () => this.#audioManager?.playSFX('buttonHover'));
         this.#btnConfirmChoice.on(`mouseenter${namespace}`, () => this.#audioManager?.playSFX('buttonHover'));
+
+        // ✅ Zoom nas mini-cartas do detalhe do deck:
+        // - mantém o botão direito (contextmenu)
+        // - adiciona clique normal (melhor UX e mobile)
+        this.#deckDetailsArea.on(`contextmenu${namespace} click${namespace}`, '.mini-card', (event) => {
+            if (event.type === 'contextmenu') event.preventDefault();
+            if (!this.#zoomHandler) return; // guard
+            this.#zoomHandler.handleZoomClick(event);
+        });
     }
 
     _showSelectionView() {
@@ -122,6 +137,7 @@ export default class InitialDeckChoiceScreenUI {
         this.#chosenDeckNameElement.text(deckInfo.name);
         this.#chosenDeckCardListElement.empty();
 
+        // conta e ordena cartas (custo, depois nome)
         const cardCounts = {};
         deckInfo.cards.forEach(cardId => {
             cardCounts[cardId] = (cardCounts[cardId] || 0) + 1;
@@ -142,9 +158,7 @@ export default class InitialDeckChoiceScreenUI {
             const quantity = cardCounts[cardId];
             if (cardDef) {
                 const $miniCard = this.#cardRenderer.renderMiniCard(cardDef, 'collection', quantity);
-                if ($miniCard) {
-                    this.#chosenDeckCardListElement.append($miniCard);
-                }
+                if ($miniCard) this.#chosenDeckCardListElement.append($miniCard);
             } else {
                 console.warn(`InitialDeckChoice: Definição não encontrada para card ID: ${cardId} no deck ${deckInfo.name}`);
             }
@@ -182,10 +196,14 @@ export default class InitialDeckChoiceScreenUI {
         this.#deckSelectionArea?.off(namespace);
         this.#btnBackToSelection?.off(namespace);
         this.#btnConfirmChoice?.off(namespace);
+        this.#deckDetailsArea?.off(namespace);
         this.#screenElement = null;
         this.#deckSelectionArea = null;
         this.#deckDetailsArea = null;
-        // ... (resto dos elementos para nulo)
+        this.#chosenDeckNameElement = null;
+        this.#chosenDeckCardListElement = null;
+        this.#btnConfirmChoice = null;
+        this.#btnBackToSelection = null;
         console.log("InitialDeckChoiceScreenUI: Destroyed.");
     }
 }

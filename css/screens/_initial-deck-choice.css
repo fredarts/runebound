@@ -1,201 +1,238 @@
-/* css/screens/_initial-deck-choice.css - Estilos para a Tela de Escolha de Deck Inicial */
+/* ===== Initial Deck Choice — Fiery Theme ===== */
 
-.initial-deck-choice-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Alinha conteúdo no topo */
-    padding: 30px 20px; /* Mais padding vertical */
-    box-sizing: border-box;
-    height: 100%;
-    text-align: center;
-    /* Escolha um fundo. Pode ser uma cor, gradiente ou imagem */
-    background-color: var(--background-color, #2c3e50);
-    background: url('../../assets/images/ui/initial_deck_choice_background.jpg') no-repeat center center;
-    background-size: cover;
-    
-}
+/* Container da tela/modal */
+#initial-deck-choice-screen {
+  --fiery-bg: #0c0706;
+  --fiery-panel: rgba(18, 10, 8, 0.85);
+  --fiery-edge: #ff7a1a;
+  --fiery-edge-2: #ff3c00;
+  --fiery-text: #ffd7b3;
+  --fiery-muted: #caa792;
+  --fiery-accent: #ffa552;
 
-.initial-deck-choice-layout h2 {
-    color: var(--title-color, #e0eaf1);
-    margin-bottom: 30px; /* Espaço abaixo do título */
-    font-size: 3em;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
+  --radius-xl: 20px;
+  --shadow-deep: 0 10px 30px rgba(0,0,0,.6);
+
+  background: radial-gradient(1200px 800px at 50% 0%, #1a0d09 0%, var(--fiery-bg) 60%);
+  min-height: 100dvh;
+  color: var(--fiery-text);
 }
 
-/* Área para seleção inicial dos dois decks */
-.deck-selection-area {
-    display: flex;
-    justify-content: space-around; /* Ou space-between/center */
-    align-items: flex-start; /* Alinha os cards de deck no topo */
-    gap: 30px; /* Espaço entre os decks */
-    width: 900px; /* Limita a largura máxima */
-    margin-bottom: 30px;
-    margin-right: 680px;
+/* “Modal” centralizado visualmente */
+#initial-deck-choice-screen .deck-selection-area {
+  max-width: 980px;
+  margin: clamp(12px,4vh,24px) auto;
+  background: var(--fiery-panel);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-deep);
+  padding: clamp(12px,2.5vh,20px);
+  position: relative;
+  isolation: isolate;
 }
 
-.deck-choice-option {
-    flex-basis: 100%; /* Cada opção de deck ocupa quase metade */
-    width: 1000px; /* Largura máxima para cada card de deck */
-    height: 860px;
-    background-color: var(--panel-background, rgba(20, 30, 40, 0.85));
-    border: 2px solid var(--border-color, #4a637a);
-    border-radius: 10px;
-    padding: 20px;
-    transition: transform 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
+/* Borda incandescente suave */
+#initial-deck-choice-screen .deck-selection-area::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 10deg,
+    rgba(255,140,0,.0) 0%,
+    rgba(255,140,0,.35) 12%,
+    rgba(255,60,0,.5) 28%,
+    rgba(255,200,120,.35) 40%,
+    rgba(255,100,0,.5) 60%,
+    rgba(255,60,0,.35) 78%,
+    rgba(255,140,0,.0) 100%
+  );
+  filter: blur(10px);
+  z-index: -1;
+  opacity: .65;
+  animation: fieryPulse 4.5s ease-in-out infinite;
 }
 
-.deck-choice-option:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: var(--primary-color, #3498db);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+@keyframes fieryPulse {
+  0%, 100% { opacity: .55; filter: blur(12px); }
+  50%      { opacity: .85; filter: blur(16px); }
 }
 
-.deck-choice-option img {
-    width: 80%; /* Responsivo dentro do card */
-    max-width: 250px; /* Limita o tamanho máximo da imagem */
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    
+/* Grade dos dois decks */
+#initial-deck-choice-screen .deck-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2.2vh, 18px);
 }
 
-.deck-choice-option h3 {
-    color: var(--primary-color, #3498db);
-    margin-top: 15px;
-    margin-bottom: 22px;
-    font-size: 3em;
-    font-weight: bold;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
+@media (max-width: 560px) {
+  #initial-deck-choice-screen .deck-choice-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.deck-choice-option p {
-    font-size: 1.4em;
-    color: var(--text-color-secondary, #bdc3c7);
-    line-height: 1.5;
-    min-height: 60px; /* Para alinhar verticalmente mesmo com descrições de tamanhos diferentes */
-    border: 1px solid var(--border-color-light, #5f7e9b);
-    border-radius: 10px;
-    padding: 18px;
-    text-align: justify;
-    margin-top: 40px;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
-    width: 740px;
-    
-
+/* ===== Deck como BOTÃO de IMAGEM ===== */
+#initial-deck-choice-screen .deck-choice-option {
+  position: relative;
+  background: transparent !important; /* remove qualquer azul herdado */
+  border-radius: 16px;
+  overflow: clip;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(0,0,0,.45);
+  transform: translateY(0) scale(1);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
 
-/* Área para mostrar detalhes do deck selecionado */
-.deck-details-area {
-    width: 100%;
-    width: 1200px; /* Pode ser um pouco menor que a área de seleção */
-    background-color: var(--panel-background, rgba(20, 30, 40, 0.9));
-    border: 1px solid var(--border-color, #4a637a);
-    border-radius: 8px;
-    padding: 20px;
-    display: flex; /* Para controle interno */
-    flex-direction: column;
-    align-items: center;
-    height: 866px;
-    overflow-x: hidden;
-    
+#initial-deck-choice-screen .deck-choice-option * {
+  background: transparent !important; /* segura casos teimosos */
 }
 
-.deck-details-area h3#chosen-deck-name {
-    color: var(--accent-color-light, #61dafb); /* Cor de destaque */
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 2.6em;
-    font-family: "Germania One", system-ui;
-    font-weight: 400;
-    font-style: normal;
+/* Imagem ocupa tudo; é o “botão” */
+#initial-deck-choice-screen .deck-choice-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none; /* clique é no container */
+  transform: translateZ(0);
 }
 
-/* Grid para mini-cartas, similar ao da coleção/deck builder */
-#chosen-deck-card-list.card-grid-mini {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--card-width-mini, 230px), 1fr));
-    gap: 10px;
-    padding: 10px;
-    width: 100%;
-    height: 1400px; /* Limita altura para scroll */
-    overflow-y: auto;
-    background-color: var(--zone-background, rgba(0, 0, 0, 0.25));
-    border: 1px dashed var(--border-color-light, #5f7e9b);
-    border-radius: 6px;
-    margin-bottom: 20px;
-    overflow-x: hidden;
-    
-}
-/* Estilos para o mini-card em si virão de css/components/_cards.css */
-
-
-.deck-choice-actions {
-    display: flex;
-    gap: 20px; /* Espaço entre os botões */
-    justify-content: center;
-    margin-top: 15px;
+/* Glow/realce ao foco/hover */
+#initial-deck-choice-screen .deck-choice-option::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(60% 90% at 50% 10%, rgba(255,140,0,.18), transparent 60%);
+  opacity: 0;
+  transition: opacity .18s ease;
 }
 
-.deck-choice-actions button {
-    padding: 12px 25px; /* Botões um pouco maiores */
-    font-size: 1em;
-    /* Herda estilos base de botão. Pode precisar de overrides. */
+#initial-deck-choice-screen .deck-choice-option:hover,
+#initial-deck-choice-screen .deck-choice-option:focus-visible {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 0 10px 28px rgba(0,0,0,.6), 0 0 0 1px rgba(255,120,0,.18);
 }
 
-#btn-confirm-deck-choice {
-    background-color: var(--button-play-bg, #28a745); /* Verde para confirmar */
-    color: var(--button-play-text, #fff);
-    
-}
-#btn-confirm-deck-choice:hover {
-    background-color: var(--button-play-hover-bg, #218838);
+#initial-deck-choice-screen .deck-choice-option:hover::after,
+#initial-deck-choice-screen .deck-choice-option:focus-visible::after {
+  opacity: 1;
 }
 
-#btn-back-to-deck-selection {
-    background-color: var(--button-secondary-bg, #6c757d);
-    color: var(--text-color, #fff);
-}
-#btn-back-to-deck-selection:hover {
-    background-color: var(--button-secondary-hover-bg, #5a6268);
-}
-
-/* --- Scrollbar para a lista de cartas do deck (opcional, mas bom) --- */
-#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar {
-    width: 8px;
-}
-#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-}
-#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-color, #2980b9);
-    border-radius: 4px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-}
-#chosen-deck-card-list.card-grid-mini::-webkit-scrollbar-thumb:hover {
-    background-color: var(--primary-color, #3498db);
-}
-#chosen-deck-card-list.card-grid-mini {
-    scrollbar-width: thin;
-    scrollbar-color: var(--secondary-color, #2980b9) rgba(0,0,0,0.1);
+/* Etiqueta opcional flutuante (aparece só no hover, se você mantiver) */
+#initial-deck-choice-screen .deck-choice-label {
+  position: absolute; inset: auto 0 0 0;
+  padding: 10px 12px;
+  background: linear-gradient(to top, rgba(20,10,8,.92), rgba(20,10,8,0));
+  color: var(--fiery-text);
+  font-weight: 600;
+  letter-spacing: .2px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease;
 }
 
+#initial-deck-choice-screen .deck-choice-option:hover .deck-choice-label,
+#initial-deck-choice-screen .deck-choice-option:focus-visible .deck-choice-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Área de Detalhes do Deck ===== */
+#initial-deck-choice-screen .deck-details-area {
+  background: var(--fiery-panel);
+  border-radius: var(--radius-xl);
+  padding: clamp(12px,2.5vh,20px);
+  box-shadow: var(--shadow-deep);
+}
+
+/* Título/descrição */
+#initial-deck-choice-screen #chosen-deck-name {
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  margin: 0 0 10px;
+  color: var(--fiery-text);
+}
+#initial-deck-choice-screen .deck-description {
+  color: var(--fiery-muted);
+  margin: 0 0 14px;
+}
+
+/* Lista de mini-cartas */
+#initial-deck-choice-screen #chosen-deck-card-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  max-height: min(62dvh, 520px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+@media (max-width: 560px) {
+  #initial-deck-choice-screen #chosen-deck-card-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mini-cartinha */
 #initial-deck-choice-screen .mini-card {
-    width: 270px;
-    height: 404px;
+  border-radius: 10px;
+  overflow: clip;
+  box-shadow: 0 3px 10px rgba(0,0,0,.5);
+  transition: transform .14s ease;
+  background: transparent !important;
+}
+
+#initial-deck-choice-screen .mini-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Botões */
+#initial-deck-choice-screen .actions {
+  display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px;
+}
+
+#initial-deck-choice-screen .btn {
+  -webkit-tap-highlight-color: transparent;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+
+#initial-deck-choice-screen .btn:active { transform: translateY(1px); }
+
+/* Confirmar = botão “fogo” */
+#initial-deck-choice-screen #btn-confirm-deck-choice.btn {
+  background: linear-gradient(180deg, #ff7a1a, #ff3c00);
+  color: #1a0e09;
+  box-shadow: 0 6px 16px rgba(255,80,0,.45);
+}
+#initial-deck-choice-screen #btn-confirm-deck-choice.btn:hover {
+  box-shadow: 0 10px 24px rgba(255,80,0,.55);
+}
+
+/* Voltar = escuro com borda quente */
+#initial-deck-choice-screen #btn-back-to-deck-selection.btn {
+  background: #1a0e09;
+  color: var(--fiery-text);
+  box-shadow: 0 6px 16px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,120,0,.35);
+}
+#initial-deck-choice-screen #btn-back-to-deck-selection.btn:hover {
+  box-shadow: 0 10px 24px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,140,0,.6);
+}
+
+/* Acessibilidade/motion */
+@media (prefers-reduced-motion: reduce) {
+  #initial-deck-choice-screen *,
+  #initial-deck-choice-screen *::before,
+  #initial-deck-choice-screen *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+
+#initial-deck-choice-zoomed-image{
+    height: 100%;
 }

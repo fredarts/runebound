@@ -68,7 +68,7 @@ export default class UIManager {
         this.#storeUI = new StoreScreenUI(this.#screenManager, this.#accountManager, this.#audioManager, this);
         this.#boosterOpeningUI = new BoosterOpeningScreenUI(this.#screenManager, this.#accountManager, this.#audioManager, this, this.#cardRenderer);
         this.#loreVideoUI = new LoreVideoScreenUI(this, this.#audioManager);
-        this.#initialDeckChoiceUI = new InitialDeckChoiceScreenUI(this, this.#accountManager, this.#audioManager, this.#cardDatabase);
+        this.#initialDeckChoiceUI = new InitialDeckChoiceScreenUI(this, this.#accountManager, this.#audioManager, this.#cardDatabase, this.#zoomHandler);
 
         this._bindPermanentUIActions();
         console.log("UIManager (Coordinator) initialized (v2.7 - Retorno Inteligente da Batalha).");
