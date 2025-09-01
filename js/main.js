@@ -1,4 +1,4 @@
-// js/main.js - ATUALIZADO com Pop-up de Escolha de Deck e ESC Menu integrado
+// js/main.js - COMPLETO (com a lógica do cemitério removida e movida para seus próprios módulos)
 
 // --- Imports ---
 import Game from './core/Game.js';
@@ -31,8 +31,8 @@ import { generateBoosterOpeningTemplate } from './ui/html-templates/boosterOpeni
 import { generateLoreVideoScreenHTML } from './ui/html-templates/loreVideoScreenTemplate.js';
 import { generateInitialDeckChoiceScreenHTML } from './ui/html-templates/initialDeckChoiceScreenTemplate.js';
 import opponentDeckChoiceModalTemplate from './ui/html-templates/opponentDeckChoiceModalTemplate.js';
+import graveyardModalTemplate from './ui/html-templates/graveyardModalTemplate.js';
 
-// --- Document Ready ---
 $(document).ready(async () => {
   console.log("Runebound Clash - Initializing (Dynamic HTML)...");
 
@@ -52,7 +52,6 @@ $(document).ready(async () => {
     return;
   }
 
-  // --- Geração do HTML das telas ---
   try {
     $screensContainer.empty()
       .append(generateSplashScreenHTML())
@@ -72,7 +71,6 @@ $(document).ready(async () => {
       .append(generateBoosterOpeningTemplate())
       .append(generateLoreVideoScreenHTML())
       .append(generateInitialDeckChoiceScreenHTML());
-
     $body.prepend(generateTopBarHTML());
     console.log("MAIN: HTML Structure dynamically generated.");
   } catch (htmlGenError) {
@@ -81,13 +79,13 @@ $(document).ready(async () => {
     return;
   }
 
-  // --- Injeta o modal de escolha do deck da IA e garante overlay correto ---
+  // Modais globais
   $body.append(opponentDeckChoiceModalTemplate());
-  $('#ai-deck-choice-overlay').addClass('image-zoom-overlay'); // garante z-index/posicionamento de overlay
+  $body.append(graveyardModalTemplate()); // A importação do template do cemitério ainda é necessária aqui
 
   console.log("MAIN: Initializing modules and binding events...");
-
   try {
+    // ===== Carrega card DB com IMAGEM única por carta =====
     const cardDatabase = await loadCardDefinitions();
     if (!cardDatabase || Object.keys(cardDatabase).length === 0) {
       console.error("MAIN: Card database is empty or failed to load. Aborting initialization.");
@@ -95,13 +93,23 @@ $(document).ready(async () => {
       return;
     }
 
+    // Coloca no escopo global (útil para debug e outros módulos)
+    window.cardDatabase = cardDatabase;
+
+    // Lookup por ID (tolerante a case)
+    function lookupCard(id) {
+      if (!id) return null;
+      const u = String(id).trim().toUpperCase();
+      return window.cardDatabase[u] || null;
+    }
+    window.lookupCard = lookupCard;
+
     const screenManager = new ScreenManager();
     const accountManager = new AccountManager();
     const audioManager = new AudioManager();
     const uiManager = new UIManager(screenManager, accountManager, cardDatabase, audioManager);
 
     setTimeout(() => $('#splash-screen').addClass('loading'), 50);
-
     setTimeout(async () => {
       $('#splash-screen').removeClass('active loading');
       await uiManager.navigateTo('title-screen');
@@ -114,7 +122,7 @@ $(document).ready(async () => {
         .on('mouseenter.uisfx', () => audioManager?.playSFX(sfxHover));
     };
 
-    // --- Navegações e formulários básicos ---
+    // Navegações básicas
     const $btnBackToTitle = $('#btn-create-back-to-title, #btn-login-back-to-title');
     $btnBackToTitle.on('click', () => {
       $('#create-account-message, #login-message').text('');
@@ -128,9 +136,7 @@ $(document).ready(async () => {
       const p = $('#create-password').val();
       const r = accountManager.createAccount(u, p);
       $('#create-account-message').text(r.message).css('color', r.success ? 'lightgreen' : 'salmon');
-      if (r.success) {
-        setTimeout(() => uiManager.navigateTo('login-screen'), 2000);
-      }
+      if (r.success) setTimeout(() => uiManager.navigateTo('login-screen'), 2000);
     });
     addAudioListeners($('#create-account-form button'));
 
@@ -154,7 +160,7 @@ $(document).ready(async () => {
     addAudioListeners($('#btn-connect-back-to-main'));
     addAudioListeners($('#btn-save-options'), 'deckSave');
 
-    // --- Estado de jogo e inicialização de partida vs. IA ---
+    // ===== Partida vs IA =====
     let gameInstance = null;
 
     async function initializeAndStartGame(localPlayerDeckId, opponentUsername = "Opponent_AI", opponentDeckId) {
@@ -188,6 +194,8 @@ $(document).ready(async () => {
       console.log(`MAIN: Usando deck do oponente '${opponentDeckId}' (${opponentDeckIds.length} cartas).`);
       console.log(`MAIN: Preparando ${currentUser.username} vs ${opponentUsername}`);
 
+      // REMOVIDO: GY_MIRROR.reset();
+
       try {
         gameInstance = new Game(cardDatabase);
         const player1 = gameInstance.addPlayer(currentUser.username, localDeck.cards);
@@ -203,6 +211,8 @@ $(document).ready(async () => {
           uiManager.renderInitialGameState();
           console.log("MAIN: Game started successfully!");
           $('#connect-message').text('');
+
+          // REMOVIDO: GY_MIRROR.seedFromScan(gameInstance, player1, player2_IA);
         }
       } catch (error) {
         $('#connect-message').text(`Erro ao iniciar: ${error.message}`).css('color', 'salmon');
@@ -210,54 +220,12 @@ $(document).ready(async () => {
       }
     }
 
-    // --- Pause Menu (ESC) - Instância ---
+    // ===== Pause Menu (ESC) =====
     const pauseMenu = new PauseMenuUI({
       audioManager,
-      // Checagem de "estou em batalha"
       isBattleActive: () => !!document.querySelector('.battle-screen.active, [data-screen="battle"].active, #battle-screen.active, #game-battle-screen.active')
     });
 
-    // ==== ESC MENU INTEGRAÇÃO CORRIGIDA ====
-
-    // 1) Ir para Opções ao clicar em "Opções"
-    document.addEventListener('pause:options', async () => {
-      try { pauseMenu?.close(); } catch {}
-      await uiManager.navigateTo('options-screen');
-      audioManager?.fadeMusic?.(0.6);
-    });
-
-    // 2) Sair da partida de verdade (encerrar jogo e voltar pra "Conectar")
-    function quitMatchAndReturnToConnect() {
-      try { pauseMenu?.close(); } catch {}
-
-      // Para loops/timers se existirem
-      try { window.GameLoop?.stop?.(); } catch {}
-      try { window.GameLoop?.pause?.(); } catch {}
-
-      // Tenta desmontar/fechar o jogo
-      try { gameInstance?.destroy?.(); } catch {}
-      try { gameInstance?.endGame?.(); } catch {}
-      try { gameInstance = null; } catch {}
-
-      // Remove qualquer marcação de tela de batalha
-      $('.battle-screen, [data-screen="battle"], #battle-screen, #game-battle-screen').removeClass('active');
-
-      // Volta para a tela de conectar
-      uiManager.navigateTo('connect-screen').then(() => {
-        $('#connect-message').text('Partida encerrada.').css('color', 'orange');
-      });
-
-      // SFX / música
-      audioManager?.playSFX?.('menuBack') || audioManager?.playSFX?.('buttonClick');
-      audioManager?.fadeMusic?.(1.0);
-    }
-
-    // 3) Handler do "Sair da partida"
-    document.addEventListener('pause:exit', () => {
-      quitMatchAndReturnToConnect();
-    });
-
-    // 4) (Opcional) Abrindo o pause baixa um pouco a música; voltando restaura
     document.addEventListener('pause:opened', () => {
       window.GameLoop?.pause?.();
       audioManager?.fadeMusic?.(0.4);
@@ -268,11 +236,32 @@ $(document).ready(async () => {
       audioManager?.fadeMusic?.(1.0);
     });
 
+    function quitMatchAndReturnToConnect() {
+      try { pauseMenu?.close(); } catch {}
+      try { window.GameLoop?.stop?.(); } catch {}
+      try { window.GameLoop?.pause?.(); } catch {}
+      try { gameInstance?.destroy?.(); } catch {}
+      try { gameInstance?.endGame?.(); } catch {}
+      gameInstance = null;
+      $('.battle-screen, [data-screen="battle"], #battle-screen, #game-battle-screen').removeClass('active');
+      uiManager.navigateTo('connect-screen').then(() => {
+        $('#connect-message').text('Partida encerrada.').css('color', 'orange');
+      });
+      audioManager?.playSFX?.('menuBack') || audioManager?.playSFX?.('buttonClick');
+      audioManager?.fadeMusic?.(1.0);
+    }
+    document.addEventListener('pause:exit', quitMatchAndReturnToConnect);
+
+    document.addEventListener('pause:options', async () => {
+      try { pauseMenu?.close(); } catch {}
+      await uiManager.navigateTo('options-screen');
+      audioManager?.fadeMusic?.(0.6);
+    });
+
     // ======================================================================
-    // <<< LÓGICA DO POP-UP DE ESCOLHA DE DECK >>> (ATUALIZADO)
+    // <<< MODAL DE ESCOLHA DE DECK (vs IA) >>>
     // ======================================================================
 
-    // Abre o modal ao clicar em "Criar Jogo (vs. IA)"
     $(document).on('click', '#btn-create-server', () => {
       audioManager.playSFX('buttonClick');
       const decks = accountManager.loadDecks();
@@ -286,7 +275,6 @@ $(document).ready(async () => {
       $('#ai-deck-choice-overlay').addClass('active');
     });
 
-    // Seleção do deck do oponente dentro do modal
     $(document).on('click', '#ai-deck-choice-overlay .deck-choice-option', function () {
       audioManager.playSFX('buttonClick');
       const chosenOpponentDeckId = $(this).data('deck-id');
@@ -302,15 +290,19 @@ $(document).ready(async () => {
       }
     });
 
-    // Botão "Cancelar" do modal
     $(document).on('click', '#ai-deck-choice-overlay [data-action="cancelar"]', () => {
       audioManager.playSFX('buttonClick');
       $('#ai-deck-choice-overlay').removeClass('active');
     });
 
     // ======================================================================
-
-    // UI de conectar/juntar-se (placeholders)
+    // <<< ÁREA REMOVIDA >>>
+    // A lógica antiga do cemitério (GY_MIRROR, openGraveyardModal, etc.)
+    // foi removida daqui e agora é gerenciada pelo GraveyardModalUI.js,
+    // que é instanciado e controlado pelo BattleScreenUI.js.
+    // ======================================================================
+    
+    // Outras ações (placeholders multiplayer etc.)
     $('#btn-show-join-options').on('click', () => {
       $('#server-status-section').hide();
       $('#join-game-section').show();

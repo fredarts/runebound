@@ -40,6 +40,7 @@
 @import 'screens/_set-mastery.css';
 @import 'screens/_eldraem-set-collection.css';
 @import 'screens/_fiery-deck-choice.css';
+@import url('./graveyard-modal.css');
 
 @import 'pause-menu.css';
 
@@ -49,3 +50,25 @@
 
 /* Utilities */
 @import 'utilities/_utilities.css'; /* Classes auxiliares, scrollbars */
+
+
+/* Garantia de overlay global (se ainda não existir) */
+.image-zoom-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 1200;            /* acima de topbar/ telas ativas */
+  display: none;            /* aparece com .active */
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,.6);
+}
+.image-zoom-overlay.active{ display: flex; }
+
+/* Dica visual nas pilhas de cemitério (pode ficar aqui ou no graveyard-modal.css) */
+#player-graveyard, #opponent-graveyard,
+[data-zone="graveyard"]{ cursor: context-menu; user-select: none; }
+
+
+.graveyard-zone,
+#player-graveyard-img,
+#opponent-graveyard-img { cursor: context-menu; user-select: none; }

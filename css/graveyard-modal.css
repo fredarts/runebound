@@ -1,0 +1,79 @@
+/* assets/css/graveyard-modal.css */
+/* VERSÃO SIMPLIFICADA: Remove estilos de metadados e botões */
+
+/* Painel do modal */
+#graveyard-overlay .graveyard-panel{
+  width: min(96vw, 980px);
+  max-width: 980px;
+  border-radius: 20px;
+  padding: 18px 16px;
+  margin: 0 12px;
+  background: var(--fiery-panel, rgba(18,10,8,.9));
+  color: var(--fiery-text, #ffd7b3);
+  box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Glow decorativo como o estilo fiery */
+#graveyard-overlay .graveyard-panel::before{
+  content:""; position:absolute; inset:-2px; border-radius:inherit;
+  background: conic-gradient(from 10deg,
+    rgba(255,140,0,.0) 0%, rgba(255,140,0,.35) 12%,
+    rgba(255,60,0,.5) 28%, rgba(255,200,120,.35) 40%,
+    rgba(255,100,0,.5) 60%, rgba(255,60,0,.35) 78%,
+    rgba(255,140,0,.0) 100%);
+  filter: blur(10px); opacity:.65; z-index:-1;
+  animation: fieryPulse 4.5s ease-in-out infinite;
+}
+
+#graveyard-overlay .section-title{ margin:0 0 6px; }
+#graveyard-overlay .section-subtitle{ margin:0 0 12px; color: var(--fiery-muted, #caa792); }
+
+/* Grid de cartas do cemitério */
+#graveyard-overlay .graveyard-grid{
+  display:grid;
+  grid-template-columns: repeat(6, minmax(0,1fr));
+  gap:10px;
+  max-height: min(70dvh, 600px); /* Aumentado um pouco a altura máxima */
+  overflow:auto;
+  padding-right:4px;
+}
+
+@media (max-width: 1024px){
+  #graveyard-overlay .graveyard-grid{ grid-template-columns: repeat(5, minmax(0,1fr)); }
+}
+@media (max-width: 800px){
+  #graveyard-overlay .graveyard-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+@media (max-width: 560px){
+  #graveyard-overlay .graveyard-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+@media (max-width: 420px){
+  #graveyard-overlay .graveyard-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+/* Card compacta do cemitério (agora só a imagem) */
+#graveyard-overlay .gy-card{
+  position:relative;
+  border-radius:12px;
+  overflow:hidden;
+  background: rgba(12,7,6,.6);
+  box-shadow: 0 4px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,120,0,.2);
+}
+
+#graveyard-overlay .gy-thumb{
+  display:block; width:100%; height:auto; aspect-ratio: 2/3; object-fit:cover; background:#0c0706;
+  pointer-events:none; user-select:none;
+}
+
+#graveyard-overlay .graveyard-empty{
+  padding:18px; text-align:center; color: var(--fiery-muted, #caa792);
+}
+
+/* Cursor para pilhas de cemitério (dica visual) */
+#player-graveyard, #opponent-graveyard,
+[data-zone="graveyard"]{ cursor: context-menu; }
+
+/* Reusa a mesma animação do tema fiery se ainda não existir */
+@keyframes fieryPulse{0%,100%{opacity:.55;filter:blur(12px)}50%{opacity:.85;filter:blur(16px)}}
