@@ -1,128 +1,241 @@
 // js/ui/GraveyardModalUI.js
-// VERSÃO SIMPLIFICADA: Remove toda a lógica de ordenação e renderização de metadados.
+// Modal do Cemitério, robusto e modular.
+// - Seletores resilientes (#graveyard-card-list OU .graveyard-cards-grid)
+// - Renderiza a partir do player (player.graveyard OU player.getZone('graveyard') OU player.zones.graveyard)
+// - Integra ModalStack + ZoomHandler
+// - Usa CardRegistry para normalizar cartas e resolver imagens
+
+import ModalStack from './helpers/ModalStack.js';
+import ZoomHandler from './helpers/ZoomHandler.js';
+import CardRegistry from '../data/CardRegistry.js';
 
 export default class GraveyardModalUI {
-    #audioManager;
-    #cardDatabase;
-    #initialized = false;
-    
-    // Elementos do DOM (cacheados e simplificados)
-    #$overlay;
-    #$grid;
-    #$emptyMessage;
-    #$titleOwner;
+  /**
+   * @param {Object} opts
+   * @param {string} [opts.overlaySelector='#graveyard-overlay']
+   * @param {string[]} [opts.gridSelectors=['#graveyard-card-list','.graveyard-cards-grid']]
+   * @param {ZoomHandler} [opts.zoomHandler]
+   */
+  constructor(opts = {}) {
+    this.overlaySelector = opts.overlaySelector || '#graveyard-overlay';
+    this.gridSelectors =
+      opts.gridSelectors || ['#graveyard-card-list', '.graveyard-cards-grid'];
 
-    constructor(audioManager, cardDatabase) {
-        this.#audioManager = audioManager;
-        this.#cardDatabase = cardDatabase;
+    /** @type {HTMLElement|null} */
+    this.$overlay = null;
+    /** @type {HTMLElement|null} */
+    this.$grid = null;
+
+    this._isOpen = false;
+    this._playerRef = null;
+
+    this.zoom =
+      opts.zoomHandler ||
+      new ZoomHandler({
+        overlaySelector: '#battle-image-zoom-overlay',
+        baseZ: 1300,
+        autoCreate: true,
+      });
+
+    this._cacheSelectors();
+    this._bindCloseButtons();
+  }
+
+  _cacheSelectors() {
+    this.$overlay = document.querySelector(this.overlaySelector);
+    if (!this.$overlay) {
+      console.warn('[GraveyardModalUI] Overlay não encontrado:', this.overlaySelector);
+      return;
     }
 
-    /**
-     * Cacheia os elementos do DOM e liga os eventos internos do modal.
-     */
-    init() {
-        if (this.#initialized) return;
+    // tenta o primeiro que existir
+    for (const sel of this.gridSelectors) {
+      const g = this.$overlay.querySelector(sel);
+      if (g) {
+        this.$grid = g;
+        break;
+      }
+    }
+    if (!this.$grid) {
+      console.warn(
+        '[GraveyardModalUI] Grid do cemitério não encontrado. Tentados:',
+        this.gridSelectors.join(', ')
+      );
+    }
+  }
 
-        this.#$overlay = $('#graveyard-overlay');
-        if (!this.#$overlay.length) {
-            console.error("GraveyardModalUI Error: Overlay element #graveyard-overlay not found!");
-            return;
+  _bindCloseButtons() {
+    if (!this.$overlay) return;
+
+    // qualquer botão com data-action="close-graveyard"
+    this.$overlay.addEventListener('click', (e) => {
+      const t = /** @type {HTMLElement} */ (e.target);
+      const btn = t.closest?.('[data-action="close-graveyard"]');
+      if (btn) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.close();
+      }
+    });
+  }
+
+  /** API para telas: abre o modal para um jogador */
+  open(playerObject) {
+    if (!this.$overlay) {
+      this._cacheSelectors();
+      if (!this.$overlay) return;
+    }
+
+    this._playerRef = playerObject || this._playerRef;
+
+    // Mostra overlay
+    this.$overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      this.$overlay.classList.add('active');
+      this.$overlay.setAttribute('aria-hidden', 'false');
+      this._isOpen = true;
+
+      // Empilha: ESC/backdrop fecham apenas o topo
+      ModalStack.push(this.$overlay, {
+        onClose: () => this.close(),
+        esc: true,
+        backdrop: true,
+        baseZ: 1200,
+      });
+
+      // Renderiza as cartas agora que o overlay está visível
+      this._renderCards();
+    });
+  }
+
+  close() {
+    if (!this._isOpen || !this.$overlay) return;
+
+    // Se o zoom estiver aberto, fecha o zoom antes (mantém o cemitério)
+    if (this.zoom?.isZoomOpen && this.zoom.isZoomOpen()) {
+      this.zoom.closeZoom();
+      return;
+    }
+
+    // Saída visual
+    this.$overlay.classList.remove('active');
+    this.$overlay.setAttribute('aria-hidden', 'true');
+
+    setTimeout(() => {
+      if (!this.$overlay?.classList.contains('active')) {
+        this.$overlay.style.display = 'none';
+      }
+    }, 200);
+
+    this._isOpen = false;
+    this._playerRef = null;
+
+    // Desempilha
+    ModalStack.remove(this.$overlay);
+  }
+
+  /** Atualiza a lista (pode ser chamado após entradas saírem/entrarem no GY) */
+  refresh() {
+    if (!this._isOpen) return;
+    this._renderCards();
+  }
+
+  /** Busca a zona graveyard em diferentes formatos */
+  _readGraveyardFrom(player) {
+    if (!player) return [];
+    // preferências:
+    if (Array.isArray(player.graveyard)) return player.graveyard;
+    if (typeof player.getZone === 'function') {
+      const z = player.getZone('graveyard');
+      if (Array.isArray(z)) return z;
+    }
+    if (player.zones && Array.isArray(player.zones.graveyard)) {
+      return player.zones.graveyard;
+    }
+    // fallback: algumas implementações guardam em map { zoneName: [...] }
+    if (player.zones && player.zones.graveyard && typeof player.zones.graveyard.toArray === 'function') {
+      try { return player.zones.graveyard.toArray(); } catch {}
+    }
+    return [];
+  }
+
+  _clearGrid() {
+    if (!this.$grid) return;
+    this.$grid.innerHTML = '';
+  }
+
+  _renderCards() {
+    if (!this.$grid) {
+      this._cacheSelectors();
+      if (!this.$grid) return;
+    }
+    this._clearGrid();
+
+    const gy = this._readGraveyardFrom(this._playerRef);
+    if (!Array.isArray(gy) || gy.length === 0) {
+      this.$grid.innerHTML =
+        '<div class="gy-empty">Nenhuma carta no cemitério.</div>';
+      return;
+    }
+
+    const frag = document.createDocumentFragment();
+
+    gy.forEach((raw) => {
+      const c = CardRegistry.toEntity(raw);
+
+      // item
+      const item = document.createElement('div');
+      // usa tua classe preferida; se quiser compat com as duas:
+      item.className = 'gy-card'; // ou 'graveyard-card'
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      item.setAttribute('aria-label', `Ampliar ${c.name}`);
+      item.dataset.fullSrc = c.image || c.thumb;
+      item.dataset.cardId = c.baseId || '';
+      if (c.uniqueId) item.dataset.uniqueId = c.uniqueId;
+
+      // thumb (usa <img> pra acessibilidade e melhor extração de src)
+      const img = document.createElement('img');
+      img.className = 'gy-thumb';
+      img.alt = c.name;
+      img.decoding = 'async';
+      img.loading = 'lazy';
+      img.src = c.thumb || c.image;
+
+      // título opcional
+      const title = document.createElement('div');
+      title.className = 'gy-title';
+      title.textContent = c.name;
+
+      item.appendChild(img);
+      item.appendChild(title);
+      frag.appendChild(item);
+
+      // Bind zoom (não deixa clique vazar pro backdrop)
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const url =
+          item.dataset.fullSrc ||
+          img.getAttribute('data-full-src') ||
+          img.src;
+        this.zoom.handleZoomClick(e, url);
+      });
+
+      // Enter também abre
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          e.stopPropagation();
+          const url =
+            item.dataset.fullSrc ||
+            img.getAttribute('data-full-src') ||
+            img.src;
+          this.zoom.handleZoomClick(e, url);
         }
+      });
+    });
 
-        this.#$grid = this.#$overlay.find('#graveyard-card-list');
-        this.#$emptyMessage = this.#$overlay.find('.graveyard-empty');
-        this.#$titleOwner = this.#$overlay.find('.gy-owner');
-
-        this._bindInternalEvents();
-        this.#initialized = true;
-        console.log("GraveyardModalUI Initialized (Simplified Version).");
-    }
-
-    /**
-     * Liga o evento de fechar o modal.
-     */
-    _bindInternalEvents() {
-        const namespace = '.graveyardModal';
-        
-        // Fechar ao clicar no fundo do overlay
-        this.#$overlay.off(`mousedown${namespace}`).on(`mousedown${namespace}`, (e) => {
-            if (e.target === this.#$overlay[0]) {
-                this.close();
-            }
-        });
-    }
-
-    /**
-     * Abre e popula o modal do cemitério para um jogador específico.
-     * @param {Player} playerObject - A instância do jogador cujo cemitério será exibido.
-     */
-    open(playerObject) {
-        if (!this.#initialized) this.init();
-        if (!this.#initialized || !playerObject) {
-            console.error("GraveyardModalUI: Não é possível abrir. Não inicializado ou jogador inválido.");
-            return;
-        }
-
-        this.#audioManager?.playSFX('buttonClick');
-
-        const graveyardCards = playerObject.graveyard.getCards();
-        const isLocalPlayer = playerObject.name !== 'Opponent_AI';
-
-        // Atualiza o título
-        this.#$titleOwner.text(isLocalPlayer ? 'Você' : 'Oponente');
-
-        // Limpa o grid
-        this.#$grid.empty();
-
-        if (graveyardCards.length === 0) {
-            this.#$emptyMessage.prop('hidden', false);
-        } else {
-            this.#$emptyMessage.prop('hidden', true);
-            
-            // Exibe sempre da mais recente para a mais antiga
-            const orderedCards = [...graveyardCards].reverse();
-
-            orderedCards.forEach((cardInstance) => {
-                const cardData = cardInstance.getRenderData();
-                const name = cardData.name || 'Carta Desconhecida';
-                const imageSrc = cardData.imageSrc || this.#cardDatabase[cardData.id]?.image_src || 'assets/images/cards/__missing.png';
-
-                // HTML simplificado: apenas o contêiner e a imagem
-                const cardHTML = `
-                    <div class="gy-card" title="${name}">
-                        <img class="gy-thumb" src="${imageSrc}" alt="${name}"
-                             onerror="this.onerror=null;this.src='assets/images/cards/__missing.png';">
-                    </div>
-                `;
-                this.#$grid.append(cardHTML);
-            });
-        }
-        
-        // Exibe o modal
-        this.#$overlay.css('display', 'flex');
-        requestAnimationFrame(() => this.#$overlay.addClass('active').attr('aria-hidden', 'false'));
-    }
-
-    /**
-     * Fecha o modal do cemitério.
-     */
-    close() {
-        if (!this.#initialized) return;
-        this.#audioManager?.playSFX('buttonClick');
-        this.#$overlay.removeClass('active').attr('aria-hidden', 'true');
-        setTimeout(() => {
-            if (!this.#$overlay.hasClass('active')) {
-                this.#$overlay.css('display', 'none');
-            }
-        }, 250); // Duração da animação de fade-out
-    }
-
-    /**
-     * Limpa os eventos para evitar memory leaks.
-     */
-    destroy() {
-        const namespace = '.graveyardModal';
-        this.#$overlay?.off(namespace);
-        this.#initialized = false;
-    }
+    this.$grid.appendChild(frag);
+  }
 }

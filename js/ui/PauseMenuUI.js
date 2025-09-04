@@ -1,102 +1,258 @@
 // js/ui/PauseMenuUI.js
-import pauseMenuTemplate from './html-templates/pauseMenuTemplate.js';
+// Gerencia o menu de pausa usando uma pilha de modais (ModalStack).
+// Requisitos de markup (exemplo):
+// <div id="pause-menu-overlay" class="overlay" aria-hidden="true" style="display:none">
+//   <div class="pause-menu">
+//     <button class="pause-item" data-action="resume">Continuar</button>
+//     <button class="pause-item" data-action="options">Opções</button>
+//     <button class="pause-item" data-action="concede">Conceder Partida</button>
+//     <button class="pause-item" data-action="exit">Sair para o Título</button>
+//   </div>
+// </div>
+
+import ModalStack from './helpers/ModalStack.js';
 
 export default class PauseMenuUI {
   /**
-   * @param {{ audioManager?: any, isBattleActive?: () => boolean }} cfg
+   * @param {Object} opts
+   * @param {string} [opts.overlaySelector='#pause-menu-overlay']
+   * @param {string} [opts.itemSelector='.pause-item']
+   * @param {string} [opts.activeClass='active']
+   * @param {(action:string)=>void} [opts.onAction]  // callback opcional para ações (resume/options/concede/exit)
+   * @param {() => boolean} [opts.isBattleActive]    // função opcional para checar se a batalha está ativa
    */
-  constructor(cfg = {}) {
-    this.audioManager = cfg.audioManager || null;
-    this.isBattleActive =
-      cfg.isBattleActive ||
-      (() => !!document.querySelector('.battle-screen.active, [data-screen="battle"].active, #battle-screen.active, #game-battle-screen.active'));
+  constructor(opts = {}) {
+    this.overlaySelector = opts.overlaySelector || '#pause-menu-overlay';
+    this.itemSelector = opts.itemSelector || '.pause-item';
+    this.activeClass = opts.activeClass || 'active';
+    this.onAction = typeof opts.onAction === 'function' ? opts.onAction : null;
 
-    this.id = '#pause-menu-overlay';
-    this.itemsSelector = '.pause-item';
-    this.activeClass = 'is-active';
+    /** @type {HTMLElement|null} */
+    this.$overlay = null;
+    /** @type {HTMLElement[]} */
+    this.$items = [];
     this.opened = false;
     this.index = 0;
 
-    this.ensureInDOM();
-    this.cache();
-    this.bindGlobalShortcut();
-    this.bindPointer();
+    // key handler durante o menu aberto (setado em open)
+    this.trapKeys = null;
+
+    // Função opcional para verificar se a batalha está ativa
+    this._isBattleActiveExternal = typeof opts.isBattleActive === 'function' ? opts.isBattleActive : null;
+
+    // Inicialização básica
+    this._cacheSelectors();
+    this._bindClickHandlers();
   }
 
-  ensureInDOM() {
-    if (!document.querySelector(this.id)) {
-      document.body.insertAdjacentHTML('beforeend', pauseMenuTemplate());
+  _cacheSelectors() {
+    this.$overlay = /** @type {HTMLElement|null} */ (document.querySelector(this.overlaySelector));
+    if (!this.$overlay) {
+      console.warn(`[PauseMenuUI] Overlay não encontrado por seletor: ${this.overlaySelector}`);
+      return;
     }
+    this._refreshItems();
   }
 
-  cache() {
-    this.$overlay = document.querySelector(this.id);
-    this.$panel = this.$overlay?.querySelector('.pause-menu-panel');
-    this.$items = Array.from(this.$overlay?.querySelectorAll(this.itemsSelector) || []);
+  _refreshItems() {
+    if (!this.$overlay) return;
+    this.$items = Array.from(this.$overlay.querySelectorAll(this.itemSelector));
   }
 
-  sfx(name, fallback = 'buttonClick') {
-    try {
-      if (this.audioManager?.playSFX) this.audioManager.playSFX(name);
-    } catch (e) {
-      try { this.audioManager?.playSFX?.(fallback); } catch {}
-    }
+  _bindClickHandlers() {
+    if (!this.$overlay) return;
+    // Delegação de clique para itens do menu
+    this.$overlay.addEventListener('click', (e) => {
+      const target = /** @type {HTMLElement} */ (e.target);
+      if (!target) return;
+      const item = target.closest(this.itemSelector);
+      if (!item) return;
+      e.stopPropagation();
+      e.preventDefault();
+      const action = item.getAttribute('data-action') || '';
+      this._execute(action);
+    });
   }
 
+  /**
+   * Registra um atalho global para ESC:
+   * - Se o menu estiver fechado E não houver nenhum modal na pilha -> abre o Pause.
+   * - Se o menu estiver aberto -> deixa o ModalStack fechar (não fecha aqui para evitar duplicidade).
+   */
+  bindGlobalShortcut() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+
+      if (this.opened) {
+        // Quem fecha é o ModalStack; aqui não fazemos nada para evitar concorrência.
+        return;
+      }
+
+      // Só permite abrir o pause se não houver outros modais ativos
+      if (!ModalStack.hasActive() && this.isBattleActive()) {
+        this.open();
+      }
+    });
+  }
+
+  /**
+   * Abre o menu de pausa e registra no ModalStack
+   */
   open() {
     if (this.opened) return;
-    // só abre se estiver em batalha (ajuste predicate se precisar)
+    if (!this.$overlay) return;
     if (!this.isBattleActive()) return;
 
+    // Não abra o pause por cima de outros modais
+    if (ModalStack.hasActive()) return;
+
+    this._refreshItems();
+    this.index = Math.min(this.index, Math.max(0, this.$items.length - 1));
+
     this.opened = true;
-    this.index = Math.max(0, this.index) % this.$items.length;
 
+    // Exibe overlay
     this.$overlay.style.display = 'flex';
-    requestAnimationFrame(() => this.$overlay.classList.add('active'));
-    this.$overlay.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(() => {
+      this.$overlay.classList.add(this.activeClass);
+      this.$overlay.setAttribute('aria-hidden', 'false');
+    });
 
+    // Empilha no ModalStack — ESC e clique no backdrop fecharão o topo
+    ModalStack.push(this.$overlay, {
+      onClose: () => this.close(),
+      esc: true,
+      backdrop: true,
+      baseZ: 1200, // deixe como quiser; pode remover para usar apenas CSS
+    });
+
+    // Foco/seleção inicial
     this.highlight(this.index);
-    this.trapKeys = (e) => this.onKeyDown(e);
+    this._focusSelected();
+
+    // Trava setas/enter enquanto o menu está aberto
+    this.trapKeys = (e) => this._onKeyDown(e);
     document.addEventListener('keydown', this.trapKeys, true);
 
-    // sinaliza pra engine que pausou (quem ouvir, pausa timers/loops)
     document.dispatchEvent(new CustomEvent('pause:opened'));
-    this.sfx('menuOpen', 'buttonClick');
+    this._sfx('menuOpen', 'buttonClick');
   }
 
+  /**
+   * Fecha o menu de pausa e remove do ModalStack
+   */
   close() {
     if (!this.opened) return;
+    if (!this.$overlay) return;
+
     this.opened = false;
 
-    this.$overlay.classList.remove('active');
+    // Visual
+    this.$overlay.classList.remove(this.activeClass);
     this.$overlay.setAttribute('aria-hidden', 'true');
-    // atraso mínimo pra permitir transição, mantém simples
-    setTimeout(() => { if (!this.opened) this.$overlay.style.display = 'none'; }, 120);
+    setTimeout(() => {
+      if (!this.$overlay) return;
+      if (!this.$overlay.classList.contains(this.activeClass)) {
+        this.$overlay.style.display = 'none';
+      }
+    }, 200);
 
-    document.removeEventListener('keydown', this.trapKeys, true);
-    document.dispatchEvent(new CustomEvent('pause:resumed'));
-    this.sfx('menuBack', 'buttonClick');
+    // Remove listeners
+    if (this.trapKeys) {
+      try {
+        document.removeEventListener('keydown', this.trapKeys, true);
+      } catch {}
+      this.trapKeys = null;
+    }
+
+    // Desempilha do ModalStack
+    ModalStack.remove(this.$overlay);
+
+    document.dispatchEvent(new CustomEvent('pause:closed'));
+    this._sfx('menuBack', 'buttonClick');
   }
 
-  toggle() {
-    this.opened ? this.close() : this.open();
-  }
+  /**
+   * Handler de teclado enquanto o pause está aberto
+   * - Seta para cima/baixo: navega
+   * - Enter/Espaço: executa ação
+   * - Tab/Shift+Tab: também navega (opcional)
+   */
+  _onKeyDown(e) {
+    if (!this.opened) return;
 
-  highlight(i) {
-    this.$items.forEach((el) => el.classList.remove(this.activeClass));
-    const el = this.$items[i];
-    if (el) {
-      el.classList.add(this.activeClass);
-      this.$overlay.querySelector('[role="menu"]').setAttribute('aria-activedescendant', el.id);
-      // não usa focus() pra não "puxar" scroll em mobile; visual é suficiente
+    // Não tratamos ESC aqui; o ModalStack já cuida de fechar o topo da pilha.
+    const key = e.key;
+
+    // Captura e não deixa vazar para o jogo
+    const handledKeys = ['ArrowUp', 'ArrowDown', 'Enter', ' ', 'Tab'];
+    if (!handledKeys.includes(key)) return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    if (key === 'ArrowUp') {
+      this.index = (this.index - 1 + this.$items.length) % this.$items.length;
+      this.highlight(this.index);
+      this._focusSelected();
+      this._sfx('menuNav');
+      return;
+    }
+
+    if (key === 'ArrowDown' || key === 'Tab') {
+      const delta = key === 'Tab' && e.shiftKey ? -1 : 1;
+      this.index = (this.index + delta + this.$items.length) % this.$items.length;
+      this.highlight(this.index);
+      this._focusSelected();
+      this._sfx('menuNav');
+      return;
+    }
+
+    if (key === 'Enter' || key === ' ') {
+      const el = this.$items[this.index];
+      const action = el?.getAttribute('data-action') || '';
+      this._execute(action);
+      return;
     }
   }
 
-  activate(i) {
-    const el = this.$items[i];
-    if (!el) return;
-    const action = el.dataset.action;
-    this.sfx('menuSelect', 'buttonClick');
+  /**
+   * Destaca visualmente o item selecionado
+   * @param {number} idx
+   */
+  highlight(idx) {
+    this.$items.forEach((btn, i) => {
+      if (i === idx) {
+        btn.classList.add('selected');
+        btn.setAttribute('aria-selected', 'true');
+      } else {
+        btn.classList.remove('selected');
+        btn.removeAttribute('aria-selected');
+      }
+    });
+  }
+
+  _focusSelected() {
+    const el = this.$items[this.index];
+    if (el && typeof el.focus === 'function') {
+      // Evita scroll indesejado
+      el.focus({ preventScroll: true });
+    }
+  }
+
+  /**
+   * Executa a ação do item selecionado
+   * @param {string} action
+   */
+  _execute(action) {
+    if (!action) return;
+
+    // Callback externo tem prioridade (se fornecido)
+    if (this.onAction) {
+      const maybeClose = this.onAction(action);
+      // Se o callback não fechar, a gente decide fechar quando apropriado
+      if (maybeClose === true) return;
+    }
 
     switch (action) {
       case 'resume':
@@ -104,85 +260,58 @@ export default class PauseMenuUI {
         break;
 
       case 'options':
-        // Dispara evento que o teu OptionsUI já pode ouvir pra abrir sobreposto
-        document.dispatchEvent(new CustomEvent('pause:options'));
+        // Notifica para abrir opções (outro módulo pode ouvir)
+        document.dispatchEvent(new CustomEvent('options:open', { detail: { source: 'pause' } }));
+        // Mantemos o pause aberto — se quiser fechar, troque para this.close();
+        break;
+
+      case 'concede':
+        // Pergunta externa pode abrir um modal de confirmação; aqui apenas disparamos o evento.
+        document.dispatchEvent(new CustomEvent('battle:concede:request'));
+        // Mantém o pause aberto até confirmação
         break;
 
       case 'exit':
-        // Emite evento p/ sua engine encerrar e voltar pra tela de conexão
-        // (fazemos close depois pra não ver "unpause" na transição)
-        document.dispatchEvent(new CustomEvent('pause:exit'));
-        this.$overlay.classList.remove('active');
-        this.$overlay.setAttribute('aria-hidden', 'true');
-        this.$overlay.style.display = 'none';
-        this.opened = false;
+        document.dispatchEvent(new CustomEvent('app:navigate:title', { detail: { from: 'pause' } }));
+        // Fechar imediatamente
+        this.close();
+        break;
+
+      default:
+        console.warn('[PauseMenuUI] Ação desconhecida:', action);
         break;
     }
+
+    this._sfx('buttonClick');
   }
 
-  onKeyDown(e) {
-    // Bloqueia propagação pra UI da batalha enquanto o menu está aberto
-    if (!this.opened) return;
-
-    const key = e.key;
-    if (['ArrowUp', 'ArrowDown', 'Enter', ' ', 'Escape', 'Tab', 'Home', 'End'].includes(key)) {
-      e.preventDefault();
-      e.stopPropagation();
+  /**
+   * Checa se a batalha está ativa para permitir abrir o Pause
+   * Pode ser substituída via construtor (opts.isBattleActive)
+   */
+  isBattleActive() {
+    if (this._isBattleActiveExternal) {
+      try { return !!this._isBattleActiveExternal(); } catch { /* noop */ }
     }
+    // Heurística padrão: existe uma tela de batalha visível?
+    const battle = document.getElementById('battle-screen');
+    if (!battle) return true; // fallback permissivo
+    const style = window.getComputedStyle(battle);
+    const visible = style.display !== 'none' && style.visibility !== 'hidden' && battle.offsetParent !== null;
+    return visible;
+  }
 
-    if (key === 'ArrowUp') {
-      this.index = (this.index - 1 + this.$items.length) % this.$items.length;
-      this.highlight(this.index);
-      this.sfx('menuMove', 'buttonHover');
-    } else if (key === 'ArrowDown' || key === 'Tab') {
-      this.index = (this.index + 1) % this.$items.length;
-      this.highlight(this.index);
-      this.sfx('menuMove', 'buttonHover');
-    } else if (key === 'Home') {
-      this.index = 0;
-      this.highlight(this.index);
-      this.sfx('menuMove', 'buttonHover');
-    } else if (key === 'End') {
-      this.index = this.$items.length - 1;
-      this.highlight(this.index);
-      this.sfx('menuMove', 'buttonHover');
-    } else if (key === 'Enter' || key === ' ') {
-      this.activate(this.index);
-    } else if (key === 'Escape') {
-      this.close();
+  /**
+   * Dispara SFX de forma desacoplada
+   * (adapte para seu AudioManager se quiser)
+   */
+  _sfx(...names) {
+    try {
+      names.forEach((name) => {
+        document.dispatchEvent(new CustomEvent('sfx:play', { detail: { name } }));
+      });
+    } catch {
+      /* noop */
     }
-  }
-
-  bindPointer() {
-    // Hover move seleção
-    this.$overlay.addEventListener('mousemove', (ev) => {
-      if (!this.opened) return;
-      const btn = ev.target.closest(this.itemsSelector);
-      if (!btn) return;
-      const idx = this.$items.indexOf(btn);
-      if (idx >= 0 && idx !== this.index) {
-        this.index = idx;
-        this.highlight(this.index);
-      }
-    });
-
-    // Click ativa
-    this.$overlay.addEventListener('click', (ev) => {
-      if (!this.opened) return;
-      const btn = ev.target.closest(this.itemsSelector);
-      if (btn) {
-        this.index = this.$items.indexOf(btn);
-        this.activate(this.index);
-      }
-    });
-  }
-
-  bindGlobalShortcut() {
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        // Só reage ao ESC global quando estiver em batalha
-        if (this.opened || this.isBattleActive()) this.toggle();
-      }
-    });
   }
 }

@@ -194,10 +194,20 @@ $(document).ready(async () => {
       console.log(`MAIN: Usando deck do oponente '${opponentDeckId}' (${opponentDeckIds.length} cartas).`);
       console.log(`MAIN: Preparando ${currentUser.username} vs ${opponentUsername}`);
 
-      // REMOVIDO: GY_MIRROR.reset();
-
       try {
         gameInstance = new Game(cardDatabase);
+        
+        // >>> [ATUALIZAÇÃO INSERIDA AQUI] <<<
+        // Registra a instância do jogo no modal do cemitério assim que ela é criada.
+        // Isso permite que o modal saiba qual jogo consultar quando for aberto.
+        if (window.GraveyardModal && typeof window.GraveyardModal.registerGame === 'function') {
+            window.GraveyardModal.registerGame(gameInstance);
+            console.log("[main.js] Instância do jogo registrada com sucesso no GraveyardModal.");
+        }
+        // (Opcional, mas útil para depuração no console do navegador)
+        window.__lastGame = gameInstance;
+        // >>> FIM DA ATUALIZAÇÃO <<<
+
         const player1 = gameInstance.addPlayer(currentUser.username, localDeck.cards);
         const player2_IA = gameInstance.addPlayer(opponentUsername, opponentDeckIds);
 
@@ -211,8 +221,6 @@ $(document).ready(async () => {
           uiManager.renderInitialGameState();
           console.log("MAIN: Game started successfully!");
           $('#connect-message').text('');
-
-          // REMOVIDO: GY_MIRROR.seedFromScan(gameInstance, player1, player2_IA);
         }
       } catch (error) {
         $('#connect-message').text(`Erro ao iniciar: ${error.message}`).css('color', 'salmon');

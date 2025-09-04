@@ -15,6 +15,42 @@
   isolation: isolate;
 }
 
+
+#graveyard-card-list.gy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+/* Cartas no cemitério */
+.gy-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.gy-thumb {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  /* se quiser sombra: */
+  /* box-shadow: 0 4px 10px rgba(0,0,0,.25); */
+}
+
+.gy-title {
+  margin-top: 6px;
+  font-size: .8rem;
+  text-align: center;
+  opacity: .8;
+}
+
+.gy-empty {
+  padding: 24px;
+  text-align: center;
+  opacity: .7;
+}
+
 /* Glow decorativo como o estilo fiery */
 #graveyard-overlay .graveyard-panel::before{
   content:""; position:absolute; inset:-2px; border-radius:inherit;

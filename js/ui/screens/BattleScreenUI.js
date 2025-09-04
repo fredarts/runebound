@@ -1,14 +1,10 @@
 // js/ui/screens/BattleScreenUI.js
+// VERSÃO ATUALIZADA: Usa o GraveyardModal global e possui lógica de fechamento hierárquica para a tecla ESC.
 
-// --- NOVA IMPORTAÇÃO ---
-import GraveyardModalUI from '../GraveyardModalUI.js';
-// -----------------------
-
-import CardRenderer from '../helpers/CardRenderer.js';
-import ZoomHandler from '../helpers/ZoomHandler.js';
+// Importações dos módulos necessários
+// import GraveyardModalUI from '../GraveyardModalUI.js'; // >>> [CORREÇÃO] <<< REMOVIDO: Não criamos mais uma instância aqui.
 import BattleRenderer from './battle/BattleRenderer.js';
 import BattleInteractionManager from './battle/BattleInteractionManager.js';
-import CreatureCard from '../../core/CreatureCard.js';
 
 export default class BattleScreenUI {
     // --- Referências Injetadas ---
@@ -18,14 +14,11 @@ export default class BattleScreenUI {
     #zoomHandler;
     #audioManager;
     #uiManager;
-
+    
     // --- Componentes de UI da Batalha ---
     #battleRenderer;
     #battleInteractionManager = null;
-    
-    // --- NOVA PROPRIEDADE ---
-    #graveyardModalUI; 
-    // -----------------------
+    // #graveyardModalUI; // >>> [CORREÇÃO] <<< REMOVIDO: Usaremos a instância global window.GraveyardModal
 
     // --- Estado do Jogo (Recebido) ---
     #gameInstance = null;
@@ -49,16 +42,14 @@ export default class BattleScreenUI {
 
         this.#battleRenderer = new BattleRenderer(cardRendererMaster, this.#accountManager);
         
-        // --- NOVA INICIALIZAÇÃO ---
-        this.#graveyardModalUI = new GraveyardModalUI(this.#audioManager, this.#cardDatabase);
-        // -----------------------
-
+        // >>> [CORREÇÃO] <<< A linha que criava `new GraveyardModalUI()` foi removida.
+        
         this._cacheEssentialSelectors();
         if (!this.#battleScreenElement || !this.#battleScreenElement.length) {
             console.error("BattleScreenUI Error: #battle-screen element not found!");
             return;
         }
-        console.log("BattleScreenUI refatorado inicializado.");
+        console.log("BattleScreenUI (com Graveyard Global e ESC hierárquico) inicializado.");
     }
 
     _cacheEssentialSelectors() {
@@ -91,8 +82,7 @@ export default class BattleScreenUI {
     }
 
     renderInitialState() {
-        if (!this.#battleScreenElement?.length) this._cacheEssentialSelectors();
-        if (!this.#battleScreenElement?.length) {
+        if (!this.#battleScreenElement?.length && !this._cacheEssentialSelectors()) {
              console.error("BattleScreenUI Render Error: Root element not found after re-cache."); return;
         }
 
@@ -106,7 +96,7 @@ export default class BattleScreenUI {
             if (this.#uiManager) this.#uiManager.navigateTo('home-screen');
             return;
         }
-        this.#battleInteractionManager._unbindGameActions(); // Garante que os listeners antigos sejam removidos
+        this.#battleInteractionManager._unbindGameActions();
 
         $('#top-bar').addClass('battle-only');
         if (!this.#gameInstance || !this.#localPlayerId) {
@@ -142,48 +132,39 @@ export default class BattleScreenUI {
         this.#battleRenderer.updateTurnNumber(this.#gameInstance.turnNumber || 1);
         this._updatePhaseIndicator();
         this._updateCurrentPlayerIndicator();
-        this._updateTurnControls(); // Chama para configurar os botões iniciais
+        this._updateTurnControls();
 
-        this.#battleInteractionManager.bindGameActions(); // Liga os listeners de interação
+        this.#battleInteractionManager.bindGameActions();
         console.log('BattleScreenUI: Initial game state render complete.');
     }
 
     _bindPermanentEvents() {
         if (!this.#btnBackToProfile?.length && this.#battleScreenElement?.length) this._cacheEssentialSelectors();
 
-        // --- NOVA LÓGICA DE BINDING PARA O CEMITÉRIO ---
         const graveyardNamespace = '.battlescreen_graveyard';
         const graveyardSelectors = '.graveyard-zone, #player-graveyard-img, #opponent-graveyard-img';
-        this.#battleScreenElement.off(graveyardNamespace); // Limpa listeners antigos
 
-        // Botão direito do mouse para abrir o modal
-        this.#battleScreenElement.on(`contextmenu${graveyardNamespace}`, graveyardSelectors, (e) => {
+        this.#battleScreenElement.off(graveyardNamespace);
+
+        // >>> [CORREÇÃO] <<< Lógica de abertura do cemitério usando a instância global
+        this.#battleScreenElement.on(`contextmenu${graveyardNamespace} click${graveyardNamespace}`, graveyardSelectors, (e) => {
+            if (e.type === 'click' && !e.shiftKey) return;
             e.preventDefault();
-            const isOpponentGraveyard = $(e.currentTarget).closest('.player-area').hasClass('opponent');
-            const targetPlayer = isOpponentGraveyard 
-                ? this.#gameInstance.getOpponent(this.#localPlayerId)
-                : this.#gameInstance.getPlayer(this.#localPlayerId);
             
-            if (targetPlayer) {
-                this.#graveyardModalUI.open(targetPlayer);
-            }
-        });
-
-        // Shift+Click como alternativa
-        this.#battleScreenElement.on(`click${graveyardNamespace}`, graveyardSelectors, (e) => {
-            if (!e.shiftKey) return;
-            e.preventDefault();
             const isOpponentGraveyard = $(e.currentTarget).closest('.player-area').hasClass('opponent');
-            const targetPlayer = isOpponentGraveyard
-                ? this.#gameInstance.getOpponent(this.#localPlayerId)
-                : this.#gameInstance.getPlayer(this.#localPlayerId);
-                
-            if (targetPlayer) {
-                this.#graveyardModalUI.open(targetPlayer);
+            const targetSelector = isOpponentGraveyard ? 'opponent' : 'current';
+            
+            if (window.GraveyardModal) {
+                console.log(`[BattleScreenUI] Abrindo cemitério para: '${targetSelector}'`);
+                window.GraveyardModal.open(targetSelector, {
+                    ownerLabel: isOpponentGraveyard ? 'Oponente' : 'Você'
+                });
+            } else {
+                console.warn('[BattleScreenUI] Não foi possível abrir o cemitério: window.GraveyardModal não encontrado.');
             }
         });
-        // --- FIM DA NOVA LÓGICA ---
-
+        
+        // BOTÃO DE FIM DE JOGO
         this.#btnBackToProfile?.off('click.gameoverbtn_ui').on('click.gameoverbtn_ui', () => {
             this.#audioManager?.playSFX('buttonClick');
             this.#battleRenderer.hideGameOver();
@@ -195,28 +176,35 @@ export default class BattleScreenUI {
             $('#top-bar').removeClass('battle-only');
         });
 
+        // LÓGICA HIERÁRQUICA DA TECLA ESC
         $(document).off('keydown.battlescreen_esc_ui').on('keydown.battlescreen_esc_ui', (e) => {
-            if (!this.#battleScreenElement?.hasClass('active')) return;
-            if (e.key === "Escape") {
-                this.#graveyardModalUI.close(); // Adiciona o fechamento do modal de cemitério ao ESC
-                this.#battleInteractionManager?.handleEscKey();
+            if (e.key !== "Escape" || !this.#battleScreenElement?.hasClass('active')) {
+                return;
             }
+
+            // O `GraveyardController` (em graveyardModalTemplate.js) já usa `ModalStack`
+            // e se registrará como o modal do topo. O `ModalStack` cuidará do ESC para ele.
+            // Portanto, não precisamos de uma verificação explícita aqui. Se houver um modal
+            // na pilha, o `ModalStack` o fechará. Se não, o código abaixo será executado.
+            
+            if (window.ModalStack && window.ModalStack.hasActive()) {
+                // Deixa o ModalStack lidar com isso. Não fazemos nada aqui.
+                return;
+            }
+
+            // Se nenhum modal estiver aberto (pilha vazia), a tecla ESC cancela ações do jogo.
+            this.#battleInteractionManager?.handleEscKey();
         });
 
+        // Observador do Zoom
         const zoomOverlayNode = document.getElementById('battle-image-zoom-overlay');
         if (zoomOverlayNode) {
-            const observerCallback = (mutationsList, observer) => {
+            const observerCallback = (mutationsList) => {
                 for (const mutation of mutationsList) {
                     if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                         const targetElement = $(mutation.target);
-                        const wasActive = mutation.oldValue?.includes('active');
-                        const isNowInactive = !targetElement.hasClass('active');
-
-                        if (wasActive && isNowInactive && this.#battleScreenElement?.hasClass('active')) {
-                            console.log("BattleScreenUI: Zoom overlay ('battle-image-zoom-overlay') foi fechado. Refrescando destaques.");
-                            setTimeout(() => {
-                                 this.#battleInteractionManager?.refreshVisualHighlights();
-                            }, 50);
+                        if (mutation.oldValue?.includes('active') && !targetElement.hasClass('active') && this.#battleScreenElement?.hasClass('active')) {
+                            setTimeout(() => this.#battleInteractionManager?.refreshVisualHighlights(), 50);
                         }
                     }
                 }
@@ -227,7 +215,9 @@ export default class BattleScreenUI {
             console.warn("BattleScreenUI: Não foi possível encontrar #battle-image-zoom-overlay para o MutationObserver.");
         }
     }
-
+    
+    // O resto do arquivo (todos os _handleEvent, _updatePhaseIndicator, etc.) permanece exatamente o mesmo.
+    // ... (cole o resto do seu arquivo BattleScreenUI.js aqui, sem alterações) ...
     _bindGameEventListeners() {
          if (!this.#gameInstance) return;
          console.log("BattleScreenUI: Binding game event listeners...");
@@ -248,24 +238,23 @@ export default class BattleScreenUI {
          });
     }
 
-    // --- Handlers de Eventos do Jogo ---
     _handleTurnChange(e) {
         console.log("BattleScreenUI Event: Turn Change", e.detail);
         this._updateCurrentPlayerIndicator();
-        this.#battleInteractionManager?.handleTurnChange(); // Reseta modos de interação
-        this._updateTurnControls(); // Atualiza botões para o novo jogador ativo
+        this.#battleInteractionManager?.handleTurnChange();
+        this._updateTurnControls();
         this.#battleRenderer.clearAllCardHighlights();
     }
 
     _handlePhaseChange(e) {
         console.log("BattleScreenUI Event: Phase Change", e.detail);
         this._updatePhaseIndicator();
-        this.#battleInteractionManager?.handlePhaseChange(); // Reseta modos de interação
-        this._updateTurnControls(); // Atualiza botões para a nova fase
+        this.#battleInteractionManager?.handlePhaseChange();
+        this._updateTurnControls();
     }
 
     _handlePlayerStatsChanged(e) {
-        console.log("BattleUI Event: Player Stats Changed", e.detail);
+        //console.log("BattleUI Event: Player Stats Changed", e.detail);
         const player = this.#gameInstance?.getPlayer(e.detail.playerId);
         if (player) this.#battleRenderer.updatePlayerStats(player);
         if (e.detail.updates.maxMana !== undefined || e.detail.updates.mana !== undefined || e.detail.updates.life !== undefined) {
@@ -287,7 +276,7 @@ export default class BattleScreenUI {
         this._updateTurnControls();
     }
 
-    _handleCardPlayed(e) { /* Somente logs ou SFX globais */ }
+    _handleCardPlayed(e) { /* Placeholder para sons ou lógicas futuras */ }
 
     _handleCardMoved(e) {
         const { cardUniqueId, cardData, fromZone, toZone, ownerId } = e.detail;
@@ -523,7 +512,8 @@ export default class BattleScreenUI {
                 passPhaseDis = false;
 
                 if (interaction.isAssigningBlockers()) {
-                    const assignmentsMade = Object.keys(interaction.getBlockerAssignmentsUI()).length > 0;
+                    const assignmentsMade =
+                        Object.keys(interaction.getBlockerAssignmentsUI()).length > 0;
                     confirmBlkVis = true;
                     confirmBlkDis = !assignmentsMade;
                 } else {
@@ -540,10 +530,6 @@ export default class BattleScreenUI {
         $.find('#btn-confirm-blocks') .toggle(confirmBlkVis) .prop('disabled', confirmBlkDis);
         $.find('#btn-discard-mana')   .toggle(discardManaVis).prop('disabled', discardManaDis);
         $.find('#btn-cancel-discard') .toggle(cancelDiscardVis);
-
-        console.log(`_updateTurnControls: phase=${phase}, isMyTurn=${isMyTurn}, cmState=${combatState},`
-            + ` passPhaseVis=${passPhaseVis}, passPhaseDis=${passPhaseDis},`
-            + ` confirmAtkVis=${confirmAtkVis}, confirmBlkVis=${confirmBlkVis}`);
     }
 
     _checkIfValidTarget(targetId, targetOwnerId, actionPendingTarget) {
@@ -565,14 +551,27 @@ export default class BattleScreenUI {
                 return false;
         }
     }
-    
+
     destroy() {
         console.log("BattleScreenUI: Destroying...");
-        this._unbindGameActions(); // Garante que os listeners do jogo sejam removidos
-        this.#battleScreenElement.off('.battlescreen_graveyard'); // Remove listeners do cemitério
-        // ... outras lógicas de limpeza que você possa ter ...
-        this.#graveyardModalUI?.destroy(); // Destrói o modal de cemitério
+        const namespace = '.battlescreen_ui';
+        this.#battleScreenElement?.off(namespace);
+        $(document).off(`keydown${namespace}_esc_ui`);
+
+        if (this.#zoomObserver) {
+            this.#zoomObserver.disconnect();
+            this.#zoomObserver = null;
+        }
+
+        this.#battleInteractionManager?._unbindGameActions();
         this.#battleInteractionManager = null;
         this.#gameInstance = null;
+        
+        this.#battleScreenElement = null;
+        this.#gameOverOverlayElement = null;
+        this.#btnBackToProfile = null;
+        
+        this.#permanentEventsBound = false;
+        console.log("BattleScreenUI: Destroy complete.");
     }
 }

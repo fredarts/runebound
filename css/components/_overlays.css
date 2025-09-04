@@ -31,6 +31,10 @@
     
 }
 
+/* --- Z-INDEX HIERÁRQUICO --- */
+#graveyard-overlay            { z-index: 1200; }  /* modal do cemitério */
+#battle-image-zoom-overlay    { z-index: 1300; }  /* zoom acima do cemitério */
+
 /* --- Imagem Ampliada (Zoom) --- */
 /* IDs específicos para cada contexto onde o zoom é usado */
 #zoomed-image, /* Usado no profile (se ainda existir lá) */

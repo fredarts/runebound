@@ -1,131 +1,240 @@
 // js/ui/helpers/ZoomHandler.js
+// Zoom de cartas com integração à pilha de modais (ModalStack).
+// Compatível com chamadas antigas: handleZoomClick(event, imageUrlOpcional)
+// e novos helpers: openImage(url), openFromElement(el).
+
+import ModalStack from './ModalStack.js';
 
 export default class ZoomHandler {
-    #cardDatabase;
-    #activeOverlayId = null;
-    #activeOverlayElement = null; // Guardar referência ao elemento do overlay ativo
+  /**
+   * @param {Object} opts
+   * @param {string}  [opts.overlaySelector='#battle-image-zoom-overlay']  // prioriza o id usado na batalha
+   * @param {number}  [opts.baseZ=1300]
+   * @param {boolean} [opts.autoCreate=true]  // cria overlay se não existir
+   */
+  constructor(opts = {}) {
+    this.overlaySelector = opts.overlaySelector || '#battle-image-zoom-overlay';
+    this.baseZ = Number.isFinite(opts.baseZ) ? opts.baseZ : 1300;
+    this.autoCreate = opts.autoCreate !== false;
 
-    #overlayMap = {
-        'deck-builder-screen': { overlay: '#deckbuilder-image-zoom-overlay', image: '#deckbuilder-zoomed-image' },
-        'battle-screen': { overlay: '#battle-image-zoom-overlay', image: '#battle-zoomed-image' },
-        'deck-management-screen': { overlay: '#deck-management-zoom-overlay', image: '#deck-management-zoomed-image' },
-        'set-collection-screen': { overlay: '#set-collection-zoom-overlay', image: '#set-collection-zoomed-image' },
-        'initial-deck-choice-screen': { overlay: '#initial-deck-choice-zoom-overlay', image: '#initial-deck-choice-zoomed-image' }
-    };
+    /** @type {HTMLElement|null} */
+    this._overlayEl = null;
+    /** @type {HTMLImageElement|null} */
+    this._imgEl = null;
 
-    constructor(cardDatabase) {
-        if (!cardDatabase) {
-            throw new Error("ZoomHandler requires cardDatabase.");
+    this._isOpen = false;
+
+    this._ensureOverlay();
+  }
+
+  /** Garante que existe um overlay válido e cacheia referências */
+  _ensureOverlay() {
+    let el = document.querySelector(this.overlaySelector);
+
+    // Fallbacks comuns antes de criar
+    if (!el) {
+      const fallbacks = ['#battle-image-zoom-overlay', '#image-zoom-overlay'];
+      for (const sel of fallbacks) {
+        if (sel !== this.overlaySelector) {
+          el = document.querySelector(sel);
+          if (el) {
+            this.overlaySelector = sel;
+            break;
+          }
         }
-        this.#cardDatabase = cardDatabase;
-        this._bindGlobalEscKey(); // Renomeado para clareza
-        console.log("ZoomHandler initialized.");
+      }
     }
 
-    handleZoomClick(event, gameInstance = null) {
-        event.preventDefault();
-        event.stopPropagation();
+    if (!el && this.autoCreate) {
+      el = document.createElement('div');
+      const id = this.overlaySelector.startsWith('#')
+        ? this.overlaySelector.slice(1)
+        : 'image-zoom-overlay';
+      el.id = id;
+      el.className = 'image-zoom-overlay';
+      el.setAttribute('aria-hidden', 'true');
+      el.style.display = 'none';
 
-        const $card = $(event.currentTarget);
-        const cardUniqueId = $card.data('card-unique-id');
-        const cardBaseId = $card.data('card-id');
+      const img = document.createElement('img');
+      img.alt = 'Zoomed Card';
+      el.appendChild(img);
 
-        let cardData = null;
-        let imageSrc = null;
-        let cardName = 'Carta Desconhecida';
-
-        if (cardUniqueId && gameInstance) {
-             try {
-                 const gameCard = gameInstance.findCardInstance(cardUniqueId);
-                 if (gameCard) {
-                     cardData = gameCard.getRenderData();
-                     imageSrc = cardData.imageSrc;
-                     cardName = cardData.name;
-                 }
-             } catch (e) {
-                 console.error("ZoomHandler: Error calling gameInstance.findCardInstance:", e);
-             }
-        }
-
-        if (!imageSrc && cardBaseId) {
-            cardData = this.#cardDatabase[cardBaseId];
-            if (cardData) {
-                imageSrc = cardData.image_src;
-                cardName = cardData.name;
-            }
-        }
-
-        if (imageSrc) {
-            const $screen = $card.closest('.screen');
-            if (!$screen.length) {
-                console.error("ZoomHandler: Could not find parent .screen for the card.");
-                return;
-            }
-            const screenId = $screen.attr('id');
-            const mapping = this.#overlayMap[screenId];
-
-            if (mapping) {
-                const $overlay = $(mapping.overlay);
-                const $image = $(mapping.image);
-
-                if ($overlay.length && $image.length) {
-                    this.closeZoom(); // Fecha qualquer zoom anterior e remove listeners antigos
-
-                    $image.attr('src', imageSrc).attr('alt', cardName);
-                    $overlay.addClass('active');
-
-                    this.#activeOverlayId = mapping.overlay;
-                    this.#activeOverlayElement = $overlay; // Armazena o elemento jQuery
-
-                    // Adiciona listener de clique AO OVERLAY ATIVO
-                    this.#activeOverlayElement.on('click.zoomhandler_overlay', (e) => {
-                        if (e.target === this.#activeOverlayElement[0]) { // Verifica se o clique foi no próprio overlay
-                            this.closeZoom();
-                        }
-                    });
-                    console.log(`ZoomHandler: Overlay ${this.#activeOverlayId} activated and click listener attached.`);
-                } else {
-                    console.error(`ZoomHandler Error: Zoom overlay ('${mapping.overlay}') or image ('${mapping.image}') element not found for screen '${screenId}'!`);
-                }
-            } else {
-                console.warn(`ZoomHandler Warning: Zoom mapping not found for screen: ${screenId}.`);
-            }
-        } else {
-            console.log(`ZoomHandler: No image source found for card ${cardUniqueId || cardBaseId}.`);
-        }
+      document.body.appendChild(el);
     }
 
-    closeZoom() {
-        if (this.#activeOverlayElement && this.#activeOverlayElement.length) {
-            this.#activeOverlayElement.removeClass('active');
-            // Limpa a imagem para evitar flash de imagem antiga
-            this.#activeOverlayElement.find('img').attr('src', ''); // Acha a img dentro do overlay ativo
-            
-            // Remove o listener de clique específico deste overlay
-            this.#activeOverlayElement.off('click.zoomhandler_overlay');
-            
-            console.log(`ZoomHandler: Closed zoom overlay: ${this.#activeOverlayId} and unbound its click listener.`);
-            
-            this.#activeOverlayId = null;
-            this.#activeOverlayElement = null;
-        }
-        // Fallback (mantido por segurança, mas menos provável de ser necessário agora)
-        else if ($('.image-zoom-overlay.active').length > 0) {
-            console.warn("ZoomHandler: Closing zoom overlay without activeOverlayId set. Closing all active.");
-            $('.image-zoom-overlay.active').each(function() {
-                const $currentOverlay = $(this);
-                $currentOverlay.removeClass('active');
-                $currentOverlay.find('img').attr('src', '');
-                $currentOverlay.off('click.zoomhandler_overlay'); // Tenta remover se houver algum listener perdido
-            });
-        }
+    this._overlayEl = el || null;
+    this._imgEl = this._overlayEl ? this._overlayEl.querySelector('img') : null;
+
+    if (!this._overlayEl || !this._imgEl) {
+      console.warn('[ZoomHandler] Overlay não encontrado/criado. Seletor:', this.overlaySelector);
+    }
+  }
+
+  /** Retorna true se o zoom está aberto */
+  isZoomOpen() {
+    return !!this._isOpen;
+  }
+
+  /**
+   * Handler compatível com chamadas antigas.
+   * Aceita: (event, urlOpcional) | (urlDireta) | ({src, alt})
+   */
+  handleZoomClick(arg1, arg2) {
+    let event = null;
+    let src = null;
+    let alt = '';
+
+    if (typeof arg1 === 'string') {
+      // handleZoomClick(urlDireta)
+      src = arg1;
+    } else if (arg1 && typeof arg1 === 'object' && arg1.target) {
+      // handleZoomClick(event, urlOpcional)
+      event = arg1;
+      if (typeof arg2 === 'string') src = arg2;
+    } else if (arg1 && typeof arg1 === 'object' && ('src' in arg1)) {
+      // handleZoomClick({src, alt})
+      src = arg1.src;
+      alt = arg1.alt || '';
     }
 
-    _bindGlobalEscKey() {
-        $(document).off('keydown.zoomhandler_esc').on('keydown.zoomhandler_esc', (e) => {
-            if (e.key === "Escape") {
-                this.closeZoom();
-            }
-        });
+    if (event) {
+      // Evita que cliques dentro de outros modais “vazem” e fechem camadas abaixo
+      event.preventDefault?.();
+      event.stopPropagation?.();
     }
+
+    if (!src && event) {
+      const t = /** @type {HTMLElement} */ (event.currentTarget || event.target);
+      if (t) {
+        src =
+          // data-* primeiro
+          t.getAttribute?.('data-full-src') ||
+          t.getAttribute?.('data-src') ||
+          // <img> direto
+          (t.tagName === 'IMG' ? /** @type {HTMLImageElement} */ (t).src : null) ||
+          // procura <img> descendente
+          this._inferImageFromDescendants(t) ||
+          // NOVO: tenta extrair de background-image inline/computed
+          this._extractBgUrlFromElement(t);
+
+        alt =
+          t.getAttribute?.('data-alt') ||
+          t.getAttribute?.('aria-label') ||
+          t.getAttribute?.('title') ||
+          alt;
+      }
+    }
+
+    if (!src) {
+      console.warn('[ZoomHandler] handleZoomClick: não foi possível determinar o src da imagem.');
+      return;
+    }
+
+    this.openZoom({ src, alt });
+  }
+
+  /** Procura um <img> dentro do alvo e retorna seu .src */
+  _inferImageFromDescendants(root) {
+    try {
+      const img = root.querySelector?.('img');
+      return img?.src || null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Extrai URL de um background-image (inline ou computed style) */
+  _extractBgUrlFromElement(el) {
+    try {
+      // inline primeiro
+      let bg = el.style?.backgroundImage;
+      if (!bg || bg === 'none') {
+        // computed depois
+        const cs = window.getComputedStyle?.(el);
+        bg = cs?.backgroundImage;
+      }
+      if (!bg || bg === 'none') return null;
+
+      // pega a primeira url("...") encontrada
+      const m = bg.match(/url\((['"]?)(.*?)\1\)/i);
+      if (m && m[2]) return m[2];
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Abre zoom a partir de um elemento (tenta data-attrs, <img> ou background) */
+  openFromElement(el) {
+    if (!el) return;
+    const src =
+      el.getAttribute?.('data-full-src') ||
+      el.getAttribute?.('data-src') ||
+      (el.tagName === 'IMG' ? el.src : null) ||
+      this._inferImageFromDescendants(el) ||
+      this._extractBgUrlFromElement(el);
+    const alt =
+      el.getAttribute?.('data-alt') ||
+      el.getAttribute?.('aria-label') ||
+      el.getAttribute?.('title') ||
+      '';
+    if (src) this.openZoom({ src, alt });
+  }
+
+  /** Abre zoom diretamente com uma URL */
+  openImage(src, alt = '') {
+    if (src) this.openZoom({ src, alt });
+  }
+
+  /**
+   * Abre o zoom programaticamente.
+   * @param {{src:string, alt?:string}} payload
+   */
+  openZoom({ src, alt = '' }) {
+    if (!this._overlayEl || !this._imgEl) {
+      this._ensureOverlay();
+      if (!this._overlayEl || !this._imgEl) return;
+    }
+
+    this._imgEl.src = src;
+    if (alt) this._imgEl.alt = alt;
+
+    // Exibe overlay
+    this._overlayEl.style.display = 'flex';
+    requestAnimationFrame(() => {
+      this._overlayEl.classList.add('active');
+      this._overlayEl.setAttribute('aria-hidden', 'false');
+
+      // Empilha no ModalStack — ESC/Backdrop fecham apenas o topo
+      ModalStack.push(this._overlayEl, {
+        onClose: () => this.closeZoom(),
+        esc: true,
+        backdrop: true,
+        baseZ: this.baseZ,
+      });
+
+      this._isOpen = true;
+    });
+  }
+
+  /** Fecha o zoom programaticamente */
+  closeZoom() {
+    if (!this._overlayEl) return;
+
+    // Remove do stack primeiro para evitar duplo onClose
+    ModalStack.remove(this._overlayEl);
+
+    this._overlayEl.classList.remove('active');
+    this._overlayEl.setAttribute('aria-hidden', 'true');
+
+    // Esconde após a transição
+    window.setTimeout(() => {
+      if (!this._overlayEl?.classList.contains('active')) {
+        this._overlayEl.style.display = 'none';
+        if (this._imgEl) this._imgEl.src = '';
+      }
+    }, 200);
+
+    this._isOpen = false;
+  }
 }
