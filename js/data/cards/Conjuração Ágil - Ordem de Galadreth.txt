@@ -1,7 +1,7 @@
 {
   "conjuracoes_ageis": [
     {
-      "id": "OGL-CA-001",
+      "id": "CA001",
       "nome": "Bênção de Lúnia",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -13,7 +13,7 @@
       "flavor text": "\"Uma gota das fontes sagradas, um reflexo do luar. Em um instante, a essência de Lúnia preenche um ser, transformando-o em um farol de vigor e esperança.\""
     },
     {
-      "id": "OGL-CA-002",
+      "id": "CA002",
       "nome": "Caminho Secreto da Floresta",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -25,7 +25,7 @@
       "flavor text": "\"O sussurro do vento dobra o tempo. As árvores se movem, as raízes se erguem, e a floresta tece um caminho invisível, uma trilha de luz que só os seus aliados podem percorrer.\""
     },
     {
-      "id": "OGL-CA-003",
+      "id": "CA003",
       "nome": "Desenlace Rúnico",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -37,7 +37,7 @@
       "flavor text": "\"Uma criatura tecida no caos não tem lugar na tapeçaria. O desenlace rúnico é a correção da realidade, o fim de um vínculo antes que ele comece a sangrar.\""
     },
     {
-      "id": "OGL-CA-004",
+      "id": "CA004",
       "nome": "Entoação Reversa",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -49,7 +49,7 @@
       "flavor text": "\"Como um canto que ecoa para trás no tempo, os vínculos que ligam o inimigo ao plano de Eldraem são forçados a se desenredar, devolvendo-o à sua origem primordial.\""
     },
     {
-      "id": "OGL-CA-005",
+      "id": "CA005",
       "nome": "Escudo de Lyrandar",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -61,7 +61,7 @@
       "flavor text": "\"A magia se adensa em um escudo de pura luz. Não há lâmina que o corte nem magia que o quebre, pois a sua proteção é a própria vontade de Eldraem.\""
     },
     {
-      "id": "OGL-CA-006",
+      "id": "CA006",
       "nome": "Luz Cegante de Selena",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -73,7 +73,7 @@
       "flavor text": "\"A luz de Lúnia não apenas cura. Ela também cega a fúria e o propósito daqueles que a opõem, congelando a lâmina antes que ela atinja o seu alvo.\""
     },
     {
-      "id": "OGL-CA-007",
+      "id": "CA007",
       "nome": "Toque de Lúnia",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -85,7 +85,7 @@
       "flavor text": "\"Como o orvalho que beija a folha ao amanhecer, a luz dos espíritos desce, um sussurro ancestral que os elfos e as mãos puras dos antigos aprenderam a entoar.\""
     },
     {
-      "id": "OGL-CA-008",
+      "id": "CA008",
       "nome": "Vínculo Reestabelecido",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -97,7 +97,7 @@
       "flavor text": "\"As runas guardam a memória da alma. Com a entoação correta, o que foi perdido retorna, pois a própria magia de Eldraem se nega a ver o seu ciclo quebrado.\""
     },
     {
-      "id": "OGL-CA-009",
+      "id": "CA009",
       "nome": "Visão Prismática de Arkos",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -109,7 +109,7 @@
       "flavor text": "\"Os cristais do Círculo filtram o fluxo do tempo. A mente de Arkos Prismalente não prevê o futuro, ela o enxerga e por um momento, a mente vê os múltiplos caminhos do destino. Um deles é o verdadeiro e nos levará à vitória.\""
     },
     {
-      "id": "OGL-CA-010",
+      "id": "CA010",
       "nome": "Visão Rúnica",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",

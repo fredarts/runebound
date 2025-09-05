@@ -1,7 +1,7 @@
 {
   "conjuracoes_ageis": [
     {
-      "id": "ASH-CA-001",
+      "id": "CA101",
       "nome": "Bola de Fogo de Valerian",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -13,7 +13,7 @@
       "flavor text": "\"O Vazio queima como as chamas. E a cada Bola de Fogo conjurada, os Magos Vermelhos de Ashkar lembram ao mundo que a salvação virá através do fogo e cinzas.\""
     },
     {
-      "id": "ASH-CA-002",
+      "id": "CA102",
       "nome": "Chamado do Abismo",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -25,7 +25,7 @@
       "flavor text": "\"Não há limites, não há razão. A Fúria Caótica é o próprio sopro do Vazio, um surto de poder bruto que destrói tudo o que toca, deixando para trás apenas a memória de sua devastação.\""
     },
     {
-      "id": "ASH-CA-003",
+      "id": "CA103",
       "nome": "Corrupção Rápida",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -37,7 +37,7 @@
       "flavor text": "\"Pestilência não ataca com garras, mas com o beijo frio da decadência. Sua influência é uma maré invisível que corrói a carne até o osso e envenena a alma, desfazendo Vínculos de vida até o nada.\""
     },
     {
-      "id": "ASH-CA-004",
+      "id": "CA104",
       "nome": "Destruir Vínculo",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -49,19 +49,19 @@
       "flavor text": "\"Eles chamavam de ordem, Valerian chamou de prisão. Este foi o primeiro corte na teia da existência, a audácia de um homem que se atreveu a desfazer o que os deuses haviam tecido, marcando assim o início da era do caos.\""
     },
     {
-      "id": "ASH-CA-005",
+      "id": "CA105",
       "nome": "Erupção de Cinzas de Thar'Zhul",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
       "custo": 3,
       "Facção": "Círculo de Ashkar",
-      "image_src": "assets/images/cards/Erupção de Cinzas de Thar-Zhul.jpg",
+      "image_src": "assets/images/cards/Erupção de Cinzas de Thar'Zhul.jpg",
       "set": "ELDRAEM",
       "habilidade": "Cause 1 de dano a todas as criaturas do oponente.",
       "flavor text": "\"O coração de Thar'Zhul explode. Cinzas flamejantes e rocha derretida varrem a terra, e para aqueles que o desafiam, resta apenas a promessa de serem reduzidos a pó no sopro de sua ira.\""
     },
     {
-      "id": "ASH-CA-006",
+      "id": "CA106",
       "nome": "Fúria Caótica",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -73,7 +73,7 @@
       "flavor text": "\"Por um breve e terrível instante, as correntes se rompem. O poder primordial do caos inunda o ser, transformando a pele em rocha e o punho em martelo, um surto devastador que não conhece mestre nem lei.\""
     },
     {
-      "id": "ASH-CA-007",
+      "id": "CA107",
       "nome": "Toque de Cinzas de Morrigan",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -85,7 +85,7 @@
       "flavor text": "\"O que antes era vitalidade, agora é pó. Morrigan sussurra os segredos das planícies devastadas, e seu toque arranca a força vital, transformando carne em cinza e vida em um lamento silencioso no vento da desolação.\""
     },
     {
-      "id": "ASH-CA-008",
+      "id": "CA108",
       "nome": "Sacrifício de Sangue",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -97,7 +97,7 @@
       "flavor text": "\"O Vazio exige. Ashkar oferece. E o poder que surge das cinzas de cada vida é a prova de que nenhum preço é alto demais pela liberdade que anseiam, mesmo que o preço seja a própria vida.\""
     },
     {
-      "id": "ASH-CA-009",
+      "id": "CA109",
       "nome": "Sede de Vingança",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",
@@ -109,7 +109,7 @@
       "flavor text": "\"Não há luto na batalha, apenas uma sede insaciável. A morte de um aliado não é o fim, mas o juramento de retribuição, e o sangue derramado alimenta a implacável fúria daqueles que ainda respiram.\""
     },
     {
-      "id": "ASH-CA-010",
+      "id": "CA110",
       "nome": "Sussurro do Vazio",
       "tipo": "Conjuração Ágil",
       "raridade": "Comum",

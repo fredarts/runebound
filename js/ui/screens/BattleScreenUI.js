@@ -1,8 +1,9 @@
 // js/ui/screens/BattleScreenUI.js
-// VERSÃO ATUALIZADA: Usa o GraveyardModal global e possui lógica de fechamento hierárquica para a tecla ESC.
+// VERSÃO ATUALIZADA: Corrige a lógica de abertura do cemitério para ser explícita ao jogador clicado,
+// em vez de depender de "current" ou "opponent".
 
 // Importações dos módulos necessários
-// import GraveyardModalUI from '../GraveyardModalUI.js'; // >>> [CORREÇÃO] <<< REMOVIDO: Não criamos mais uma instância aqui.
+// import GraveyardModalUI from '../GraveyardModalUI.js'; // REMOVIDO: Não criamos mais uma instância aqui.
 import BattleRenderer from './battle/BattleRenderer.js';
 import BattleInteractionManager from './battle/BattleInteractionManager.js';
 
@@ -18,7 +19,6 @@ export default class BattleScreenUI {
     // --- Componentes de UI da Batalha ---
     #battleRenderer;
     #battleInteractionManager = null;
-    // #graveyardModalUI; // >>> [CORREÇÃO] <<< REMOVIDO: Usaremos a instância global window.GraveyardModal
 
     // --- Estado do Jogo (Recebido) ---
     #gameInstance = null;
@@ -27,7 +27,7 @@ export default class BattleScreenUI {
     #permanentEventsBound = false;
     #zoomObserver = null;
 
-    // --- Elementos da UI (Apenas os que BattleScreenUI gerencia diretamente) ---
+    // --- Elementos da UI ---
     #battleScreenElement;
     #gameOverOverlayElement;
     #btnBackToProfile;
@@ -39,17 +39,16 @@ export default class BattleScreenUI {
         this.#zoomHandler = zoomHandler;
         this.#audioManager = audioManager;
         this.#uiManager = uiManager;
-
         this.#battleRenderer = new BattleRenderer(cardRendererMaster, this.#accountManager);
         
-        // >>> [CORREÇÃO] <<< A linha que criava `new GraveyardModalUI()` foi removida.
+        // A linha que criava `new GraveyardModalUI()` foi removida para usar a instância global.
         
         this._cacheEssentialSelectors();
         if (!this.#battleScreenElement || !this.#battleScreenElement.length) {
             console.error("BattleScreenUI Error: #battle-screen element not found!");
             return;
         }
-        console.log("BattleScreenUI (com Graveyard Global e ESC hierárquico) inicializado.");
+        console.log("BattleScreenUI (com Graveyard Explícito e ESC hierárquico) inicializado.");
     }
 
     _cacheEssentialSelectors() {
@@ -85,39 +84,31 @@ export default class BattleScreenUI {
         if (!this.#battleScreenElement?.length && !this._cacheEssentialSelectors()) {
              console.error("BattleScreenUI Render Error: Root element not found after re-cache."); return;
         }
-
         if (!this.#permanentEventsBound) {
             this._bindPermanentEvents();
             this.#permanentEventsBound = true;
         }
-
         if (!this.#battleInteractionManager) {
             console.error("BattleScreenUI: BattleInteractionManager não foi instanciado. Chame setGameInstance primeiro.");
             if (this.#uiManager) this.#uiManager.navigateTo('home-screen');
             return;
         }
         this.#battleInteractionManager._unbindGameActions();
-
         $('#top-bar').addClass('battle-only');
         if (!this.#gameInstance || !this.#localPlayerId) {
             console.error('BattleScreenUI: gameInstance ou localPlayerId não definidos – abortando render.');
             this.#uiManager?.navigateTo('home-screen');
             return;
         }
-        console.log('BattleScreenUI: Rendering initial game state via BattleRenderer…');
-
         this.#battleRenderer.clearUI();
         this.#battleInteractionManager._resetInteractionModes();
-
         const localPlayer = this.#gameInstance.getPlayer(this.#localPlayerId);
         const opponent    = this.#gameInstance.getOpponent(this.#localPlayerId);
-
         if (!localPlayer || !opponent) {
             console.error('BattleScreenUI: jogadores não encontrados – abort.');
             this.#uiManager?.navigateTo('home-screen');
             return;
         }
-
         this.#battleRenderer.renderPlayerInfo(localPlayer, true);
         this.#battleRenderer.renderPlayerInfo(opponent,   false);
         this.#battleRenderer.renderPlayerHand(localPlayer);
@@ -128,14 +119,11 @@ export default class BattleScreenUI {
         this.#battleRenderer.updateGraveyardDisplay(opponent);
         this.#battleRenderer.renderBattlefield(localPlayer.battlefield, localPlayer.id);
         this.#battleRenderer.renderBattlefield(opponent.battlefield, opponent.id);
-
         this.#battleRenderer.updateTurnNumber(this.#gameInstance.turnNumber || 1);
         this._updatePhaseIndicator();
         this._updateCurrentPlayerIndicator();
         this._updateTurnControls();
-
         this.#battleInteractionManager.bindGameActions();
-        console.log('BattleScreenUI: Initial game state render complete.');
     }
 
     _bindPermanentEvents() {
@@ -146,21 +134,28 @@ export default class BattleScreenUI {
 
         this.#battleScreenElement.off(graveyardNamespace);
 
-        // >>> [CORREÇÃO] <<< Lógica de abertura do cemitério usando a instância global
+        // >>> [CORREÇÃO APLICADA AQUI] <<< Lógica de abertura do cemitério
         this.#battleScreenElement.on(`contextmenu${graveyardNamespace} click${graveyardNamespace}`, graveyardSelectors, (e) => {
             if (e.type === 'click' && !e.shiftKey) return;
             e.preventDefault();
             
+            // Determina qual monte de cemitério foi clicado, encontrando o elemento .player-area pai.
             const isOpponentGraveyard = $(e.currentTarget).closest('.player-area').hasClass('opponent');
-            const targetSelector = isOpponentGraveyard ? 'opponent' : 'current';
             
-            if (window.GraveyardModal) {
-                console.log(`[BattleScreenUI] Abrindo cemitério para: '${targetSelector}'`);
-                window.GraveyardModal.open(targetSelector, {
+            // Busca o objeto do jogador correspondente, independentemente de quem é o jogador "current".
+            const targetPlayer = isOpponentGraveyard 
+                ? this.#gameInstance.getOpponent(this.#localPlayerId)
+                : this.#gameInstance.getPlayer(this.#localPlayerId);
+            
+            if (targetPlayer && window.GraveyardModal) {
+                console.log(`[BattleScreenUI] Abrindo cemitério para jogador específico: ${targetPlayer.name}`);
+                // Passamos o OBJETO do jogador diretamente para o modal.
+                // Isso elimina qualquer ambiguidade sobre 'current' vs 'opponent'.
+                window.GraveyardModal.open(targetPlayer, {
                     ownerLabel: isOpponentGraveyard ? 'Oponente' : 'Você'
                 });
             } else {
-                console.warn('[BattleScreenUI] Não foi possível abrir o cemitério: window.GraveyardModal não encontrado.');
+                console.warn('[BattleScreenUI] Não foi possível abrir o cemitério: jogador alvo ou modal não encontrado.');
             }
         });
         
@@ -181,14 +176,11 @@ export default class BattleScreenUI {
             if (e.key !== "Escape" || !this.#battleScreenElement?.hasClass('active')) {
                 return;
             }
-
-            // O `GraveyardController` (em graveyardModalTemplate.js) já usa `ModalStack`
-            // e se registrará como o modal do topo. O `ModalStack` cuidará do ESC para ele.
-            // Portanto, não precisamos de uma verificação explícita aqui. Se houver um modal
-            // na pilha, o `ModalStack` o fechará. Se não, o código abaixo será executado.
             
+            // O ModalStack (usado pelo GraveyardModal) é inteligente. Ele só reage se tiver um modal no topo da pilha.
+            // Se a pilha estiver vazia, ele não fará nada, permitindo que a lógica abaixo seja executada.
             if (window.ModalStack && window.ModalStack.hasActive()) {
-                // Deixa o ModalStack lidar com isso. Não fazemos nada aqui.
+                // Deixa o ModalStack lidar com o ESC para o modal do topo. Não fazemos nada aqui.
                 return;
             }
 
@@ -216,11 +208,8 @@ export default class BattleScreenUI {
         }
     }
     
-    // O resto do arquivo (todos os _handleEvent, _updatePhaseIndicator, etc.) permanece exatamente o mesmo.
-    // ... (cole o resto do seu arquivo BattleScreenUI.js aqui, sem alterações) ...
     _bindGameEventListeners() {
          if (!this.#gameInstance) return;
-         console.log("BattleScreenUI: Binding game event listeners...");
          const gameEvents = [
             'turnChange', 'phaseChange', 'playerStatsChanged', 'cardDrawn',
             'cardMoved', 'gameLog', 'creatureUpdate', 'damagePrevented',
@@ -239,7 +228,6 @@ export default class BattleScreenUI {
     }
 
     _handleTurnChange(e) {
-        console.log("BattleScreenUI Event: Turn Change", e.detail);
         this._updateCurrentPlayerIndicator();
         this.#battleInteractionManager?.handleTurnChange();
         this._updateTurnControls();
@@ -247,14 +235,12 @@ export default class BattleScreenUI {
     }
 
     _handlePhaseChange(e) {
-        console.log("BattleScreenUI Event: Phase Change", e.detail);
         this._updatePhaseIndicator();
         this.#battleInteractionManager?.handlePhaseChange();
         this._updateTurnControls();
     }
 
     _handlePlayerStatsChanged(e) {
-        //console.log("BattleUI Event: Player Stats Changed", e.detail);
         const player = this.#gameInstance?.getPlayer(e.detail.playerId);
         if (player) this.#battleRenderer.updatePlayerStats(player);
         if (e.detail.updates.maxMana !== undefined || e.detail.updates.mana !== undefined || e.detail.updates.life !== undefined) {
@@ -276,7 +262,7 @@ export default class BattleScreenUI {
         this._updateTurnControls();
     }
 
-    _handleCardPlayed(e) { /* Placeholder para sons ou lógicas futuras */ }
+    _handleCardPlayed(e) { /* Placeholder */ }
 
     _handleCardMoved(e) {
         const { cardUniqueId, cardData, fromZone, toZone, ownerId } = e.detail;
@@ -289,9 +275,8 @@ export default class BattleScreenUI {
         if (toZone === 'hand' && isLocal) this.#battleRenderer.addCardToHandUI(cardData);
         else if (toZone === 'battlefield') this.#battleRenderer.addCardToBattlefieldUI(cardData, ownerId);
 
-        if (toZone === 'graveyard' && fromZone === 'hand') {
-            this.#audioManager?.playSFX('cardDiscard');
-        } else if (toZone === 'battlefield' && fromZone === 'hand') {
+        if (toZone === 'graveyard' && fromZone === 'hand') this.#audioManager?.playSFX('cardDiscard');
+        else if (toZone === 'battlefield' && fromZone === 'hand') {
             if (cardData?.type === 'Creature') this.#audioManager?.playSFX('playCreature');
             else if (cardData?.type === 'Instant') this.#audioManager?.playSFX('playInstant');
             else if (cardData?.type === 'Runebinding') this.#audioManager?.playSFX('playRunebinding');
@@ -340,13 +325,11 @@ export default class BattleScreenUI {
     }
 
     _handleNoBlockersPossible(e) {
-        console.log("BattleScreenUI Event: No Blockers Possible. Updating turn controls.");
         this.#battleRenderer.addLogMessage("Oponente sem bloqueadores. Ataque direto.", "system");
         this._updateTurnControls();
     }
 
     _handleCombatResolved(e) {
-        console.log("BattleScreenUI Event: Combat Resolved", e.detail);
         this.#battleRenderer.clearAllCardHighlights();
         this.#battleInteractionManager?._exitBlockerAssignmentMode();
         this.#battleInteractionManager?._exitAttackerDeclarationMode();
@@ -370,9 +353,7 @@ export default class BattleScreenUI {
         this.#battleRenderer.addLogMessage(`${name} não pode comprar cartas!`, 'error');
     }
 
-    _handleGameStarted(e) {
-        setTimeout(() => this._updateTurnControls(), 50);
-    }
+    _handleGameStarted(e) { setTimeout(() => this._updateTurnControls(), 50); }
 
     _handleDiscardRequired(e) {
         const { playerId, count } = e.detail;
@@ -400,27 +381,20 @@ export default class BattleScreenUI {
 
     _handleAttackersDeclared(e) {
         const { attackingPlayerId, attackers } = e.detail;
-        console.log(`BattleScreenUI: Attackers declared by ${attackingPlayerId}. Local player is ${this.#localPlayerId}`);
         this.#battleRenderer.clearAllCardHighlights();
         attackers.forEach(data => {
             const $card = this.#battleScreenElement.find(`.card[data-card-unique-id="${data.uniqueId}"]`);
             if ($card.length) this.#battleRenderer.setCardAttackingVisual($card, true);
         });
-
         if (attackingPlayerId !== this.#localPlayerId) {
-            console.log("BattleScreenUI: Opponent declared attackers. Entering blocker assignment mode for local player.");
             this.#battleInteractionManager?.onOpponentAttackersDeclared();
-        } else {
-             console.log("BattleScreenUI: Local player declared attackers. Waiting for opponent.");
         }
         this._updateTurnControls();
     }
 
     _handleBlockersDeclared(e) {
         const { defendingPlayerId, declaredBlockers } = e.detail;
-        console.log(`BattleScreenUI: Blockers declared by ${defendingPlayerId}.`);
         this.#battleRenderer.clearAllCardHighlights();
-
         declaredBlockers.forEach(info => {
             const $card = this.#battleScreenElement.find(`.card[data-card-unique-id="${info.blockerId}"]`);
             if ($card.length) this.#battleRenderer.setCardBlockingVisual($card, true);
@@ -429,7 +403,6 @@ export default class BattleScreenUI {
             const $card = this.#battleScreenElement.find(`.card[data-card-unique-id="${attacker.uniqueId}"]`);
             if ($card.length) this.#battleRenderer.setCardAttackingVisual($card, true);
         });
-
         if (defendingPlayerId === this.#localPlayerId) {
             this.#battleInteractionManager?._exitBlockerAssignmentMode();
         }
@@ -450,86 +423,56 @@ export default class BattleScreenUI {
     }
 
     _updateTurnControls() {
-        const game = this.#gameInstance;
-        if (!game) return;
+        const game = this.#gameInstance; if (!game) return;
+        const phase = game.getCurrentPhase();
+        const activePlayer = game.getCurrentPlayer(); if (!activePlayer) return;
+        const isMyTurn = activePlayer.id === this.#localPlayerId;
+        const interaction = this.#battleInteractionManager; if (!interaction) return;
+        const combatState = game.getCombatManager()?.state;
 
-        const phase        = game.getCurrentPhase();
-        const activePlayer = game.getCurrentPlayer();
-        if (!activePlayer) return;
-
-        const isMyTurn     = activePlayer.id === this.#localPlayerId;
-        const interaction  = this.#battleInteractionManager;
-        if (!interaction) return;
-
-        const combatState  = game.getCombatManager()?.state;
-
-        let passPhaseVis = false, passPhaseDis = true;
-        let endTurnVis   = false, endTurnDis   = true;
-        let confirmAtkVis = false, confirmAtkDis = true;
-        let confirmBlkVis = false, confirmBlkDis = true;
+        let passPhaseVis = false, passPhaseDis = true, endTurnVis = false, endTurnDis = true;
+        let confirmAtkVis = false, confirmAtkDis = true, confirmBlkVis = false, confirmBlkDis = true;
         let discardManaVis = false, discardManaDis = true;
-        const cancelDiscardVis = (interaction.isSelectingDiscardMana?.() ?? false)
-                            || (interaction.isSelectingTarget?.()      ?? false);
+        const cancelDiscardVis = (interaction.isSelectingDiscardMana?.() ?? false) || (interaction.isSelectingTarget?.() ?? false);
 
         if (isMyTurn) {
-            passPhaseVis = true;  passPhaseDis = false;
-            endTurnVis   = true;  endTurnDis   = false;
-
-            if (phase === 'main' &&
-                !activePlayer.hasDiscardedForMana &&
-                activePlayer.maxMana < 10 &&
-                activePlayer.hand.getSize() > 0) {
-                discardManaVis = true;  discardManaDis = false;
+            passPhaseVis = true; passPhaseDis = false; endTurnVis = true; endTurnDis = false;
+            if (phase === 'main' && !activePlayer.hasDiscardedForMana && activePlayer.maxMana < 10 && activePlayer.hand.getSize() > 0) {
+                discardManaVis = true; discardManaDis = false;
             }
-
             if (phase === 'attack') {
                 const atkMode = interaction.isDeclaringAttackers();
                 if (atkMode) {
                     const anySel = interaction.getSelectedAttackerIds().size > 0;
-                    confirmAtkVis = anySel;
-                    confirmAtkDis = !anySel;
-                    passPhaseDis  = anySel;
-                    endTurnDis    = anySel;
+                    confirmAtkVis = anySel; confirmAtkDis = !anySel; passPhaseDis = anySel; endTurnDis = anySel;
                 } else if (combatState === 'declare_blockers') {
-                    passPhaseDis = true;
-                    endTurnDis   = true;
-                    discardManaVis = false;
+                    passPhaseDis = true; endTurnDis = true; discardManaVis = false;
                 }
             }
-
             if (cancelDiscardVis || interaction.getPendingEOTDiscardCount() > 0) {
-                passPhaseDis   = true;
-                endTurnDis     = true;
-                discardManaDis = true;
+                passPhaseDis = true; endTurnDis = true; discardManaDis = true;
             }
             if (interaction.getPendingEOTDiscardCount() > 0) {
-                passPhaseVis = endTurnVis = discardManaVis =
-                confirmAtkVis = confirmBlkVis = false;
+                passPhaseVis = endTurnVis = discardManaVis = confirmAtkVis = confirmBlkVis = false;
             }
         } else {
             if (phase === 'attack' && combatState === 'declare_blockers') {
-                passPhaseVis = true;
-                passPhaseDis = false;
-
+                passPhaseVis = true; passPhaseDis = false;
                 if (interaction.isAssigningBlockers()) {
-                    const assignmentsMade =
-                        Object.keys(interaction.getBlockerAssignmentsUI()).length > 0;
-                    confirmBlkVis = true;
-                    confirmBlkDis = !assignmentsMade;
+                    const assignmentsMade = Object.keys(interaction.getBlockerAssignmentsUI()).length > 0;
+                    confirmBlkVis = true; confirmBlkDis = !assignmentsMade;
                 } else {
-                    confirmBlkVis = false;
-                    confirmBlkDis = true;
+                    confirmBlkVis = false; confirmBlkDis = true;
                 }
             }
         }
-
         const $ = this.#battleScreenElement;
-        $.find('#btn-pass-phase')     .toggle(passPhaseVis)  .prop('disabled', passPhaseDis);
-        $.find('#btn-end-turn')       .toggle(endTurnVis)    .prop('disabled', endTurnDis);
-        $.find('#btn-confirm-attack') .toggle(confirmAtkVis) .prop('disabled', confirmAtkDis);
-        $.find('#btn-confirm-blocks') .toggle(confirmBlkVis) .prop('disabled', confirmBlkDis);
-        $.find('#btn-discard-mana')   .toggle(discardManaVis).prop('disabled', discardManaDis);
-        $.find('#btn-cancel-discard') .toggle(cancelDiscardVis);
+        $.find('#btn-pass-phase').toggle(passPhaseVis).prop('disabled', passPhaseDis);
+        $.find('#btn-end-turn').toggle(endTurnVis).prop('disabled', endTurnDis);
+        $.find('#btn-confirm-attack').toggle(confirmAtkVis).prop('disabled', confirmAtkDis);
+        $.find('#btn-confirm-blocks').toggle(confirmBlkVis).prop('disabled', confirmBlkDis);
+        $.find('#btn-discard-mana').toggle(discardManaVis).prop('disabled', discardManaDis);
+        $.find('#btn-cancel-discard').toggle(cancelDiscardVis);
     }
 
     _checkIfValidTarget(targetId, targetOwnerId, actionPendingTarget) {
@@ -538,17 +481,11 @@ export default class BattleScreenUI {
         if (!targetCardInstance) return false;
         const requiredTypeFromAction = actionPendingTarget.targetType;
         switch (requiredTypeFromAction) {
-            case 'creature':
-                return targetCardInstance.type === 'Creature' && targetCardInstance.location === 'battlefield';
-            case 'opponent_creature':
-                return targetCardInstance.type === 'Creature' && targetCardInstance.location === 'battlefield' && targetCardInstance.ownerId !== this.#localPlayerId;
-            case 'own_creature':
-                return targetCardInstance.type === 'Creature' && targetCardInstance.location === 'battlefield' && targetCardInstance.ownerId === this.#localPlayerId;
-            case 'runebinding':
-                 return targetCardInstance.type === 'Runebinding' && targetCardInstance.location === 'battlefield';
-            default:
-                console.warn(`BattleScreenUI: Unhandled targetType in _checkIfValidTarget: '${requiredTypeFromAction}' from card '${actionPendingTarget.cardName}'`);
-                return false;
+            case 'creature': return targetCardInstance.type === 'Creature' && targetCardInstance.location === 'battlefield';
+            case 'opponent_creature': return targetCardInstance.type === 'Creature' && targetCardInstance.location === 'battlefield' && targetCardInstance.ownerId !== this.#localPlayerId;
+            case 'own_creature': return targetCardInstance.type === 'Creature' && targetCardInstance.location === 'battlefield' && targetCardInstance.ownerId === this.#localPlayerId;
+            case 'runebinding': return targetCardInstance.type === 'Runebinding' && targetCardInstance.location === 'battlefield';
+            default: return false;
         }
     }
 
@@ -557,21 +494,16 @@ export default class BattleScreenUI {
         const namespace = '.battlescreen_ui';
         this.#battleScreenElement?.off(namespace);
         $(document).off(`keydown${namespace}_esc_ui`);
-
         if (this.#zoomObserver) {
             this.#zoomObserver.disconnect();
             this.#zoomObserver = null;
         }
-
         this.#battleInteractionManager?._unbindGameActions();
         this.#battleInteractionManager = null;
         this.#gameInstance = null;
-        
         this.#battleScreenElement = null;
         this.#gameOverOverlayElement = null;
         this.#btnBackToProfile = null;
-        
         this.#permanentEventsBound = false;
-        console.log("BattleScreenUI: Destroy complete.");
     }
 }

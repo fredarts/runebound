@@ -1,12 +1,15 @@
 // js/ui/html-templates/battleScreenTemplate.js
+// VERSÃO ATUALIZADA: O overlay de zoom da carta (#battle-image-zoom-overlay)
+// foi removido deste template para se tornar um componente global injetado
+// diretamente no <body> pelo main.js.
 
 export function generateBattleScreenHTML() {
-    const deckCoverImage = 'assets/images/ui/card_cover.png'; // Corrigido o caminho que estava errado no log
+    const deckCoverImage = 'assets/images/ui/card_cover.png';
     const graveyardPlaceholderImg = 'assets/images/ui/graveyard.png';
 
     return `
         <div id="battle-screen" class="screen battle-screen-layout">
-            <!-- ===== ÁREA DO OPONENTE (ESTRUTURA ATUALIZADA) ===== -->
+            <!-- ===== ÁREA DO OPONENTE ===== -->
             <div class="player-area opponent">
                 <div class="player-info">
                     <div class="player-main-details">
@@ -29,7 +32,7 @@ export function generateBattleScreenHTML() {
                             <div class="deck-count" id="opponent-deck-count">0</div>
                             <span>Deck</span>
                         </div>
-                        <div class="graveyard-zone" title="Cemitério do Oponente">
+                        <div class="graveyard-zone" title="Cemitério do Oponente (Clique Direito para ver)">
                             <img id="opponent-graveyard-img" src="${graveyardPlaceholderImg}" alt="Cemitério Oponente" class="zone-image graveyard-image is-placeholder">
                             <div class="graveyard-count" id="opponent-graveyard-count">0</div>
                             <span>Cemitério</span>
@@ -43,7 +46,7 @@ export function generateBattleScreenHTML() {
                 <div id="opponent-battlefield" class="battlefield card-zone"></div>
             </div>
 
-            <!-- ===== ÁREA CENTRAL (SEM MUDANÇAS) ===== -->
+            <!-- ===== ÁREA CENTRAL ===== -->
             <div class="center-area"> 
                 <ul id="game-log" class="game-log-container scrollable-list">
                     <li>Log da Partida:</li>
@@ -66,7 +69,7 @@ export function generateBattleScreenHTML() {
                 </div> 
             </div>
             
-            <!-- ===== ÁREA DO JOGADOR LOCAL (ESTRUTURA ATUALIZADA) ===== -->
+            <!-- ===== ÁREA DO JOGADOR LOCAL ===== -->
             <div class="player-area local-player">
                 <div id="player-battlefield" class="battlefield card-zone"></div>
                 <div id="player-hand" class="hand card-zone"></div>
@@ -91,7 +94,7 @@ export function generateBattleScreenHTML() {
                             <div class="deck-count" id="player-deck-count">0</div>
                             <span>Deck</span>
                         </div>
-                        <div class="graveyard-zone" title="Seu Cemitério">
+                        <div class="graveyard-zone" title="Seu Cemitério (Clique Direito para ver)">
                             <img id="player-graveyard-img" src="${graveyardPlaceholderImg}" alt="Seu Cemitério" class="zone-image graveyard-image is-placeholder">
                             <div class="graveyard-count" id="player-graveyard-count">0</div>
                             <span>Cemitério</span>
@@ -100,9 +103,8 @@ export function generateBattleScreenHTML() {
                 </div>
             </div>
             
-            <div id="battle-image-zoom-overlay" class="image-zoom-overlay">
-                <img id="battle-zoomed-image" src="" alt="Zoomed Card">
-            </div>
+            <!-- >>> [REMOVIDO] <<< O overlay de zoom foi movido para o main.js -->
+            
             <div id="game-over-overlay" class="game-over-overlay">
                 <div> 
                     <div id="game-over-message">Fim de Jogo!</div>

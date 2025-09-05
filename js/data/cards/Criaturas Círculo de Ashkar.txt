@@ -1,7 +1,7 @@
 {
   "cartas": [
     {
-      "id": "ASH-CR-001",
+      "id": "CR001",
       "nome": "A Runa Vazia",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -16,7 +16,7 @@
       "flavor text": "\"O Vazio não tem propósito, apenas existência. Ele é a própria entidade da ruptura, uma consciência que se manifesta no caos, e sua única intenção é reescrever a canção da existência até que Eldraem seja apenas um reflexo de sua forma distorcida.\""
     },
     {
-      "id": "ASH-CR-002",
+      "id": "CR002",
       "nome": "Acólito de Ashkar",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -31,7 +31,7 @@
       "flavor text": "\"O Vazio não tem propósito, apenas existência. Ele é a própria entidade da ruptura, uma consciência que se manifesta no caos, e sua única intenção é reescrever a canção da existência até que Eldraem seja apenas um reflexo de sua forma distorcida.\""
     },
     {
-      "id": "ASH-CR-003",
+      "id": "CR003",
       "nome": "Azrael Vaziovento",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -46,7 +46,7 @@
       "flavor text": "\"Eles me disseram que a Runa Vazia era só silêncio. Como eles estavam enganados. Eu ouvi a canção do caos, a sinfonia que desdobra o universo. E cada sacrifício é uma nota, um passo em direção à melodia final que irá reescrever toda a realidade. Cada vida sacrificada é um grito em direção ao Vazio. Eu não mato por ódio, mas por princípio, pois cada sacrifício é uma porta que se abre para o caos primordial.\""
     },
     {
-      "id": "ASH-CR-004",
+      "id": "CR004",
       "nome": "Carniçal das Cinzas",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -61,7 +61,7 @@
       "flavor text": "\"Ele não é feito de carne, mas de cinzas e rancor. Nascido da desolação das planícies, este carniçal é a prova viva de que a vida se esvai, e tudo que resta é a decadência que ele espalha com seu toque.\""
     },
     {
-      "id": "ASH-CR-005",
+      "id": "CR005",
       "nome": "Carniçal de Nocthyr",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -76,7 +76,7 @@
       "flavor text": "\"Na Cripta de Nocthyr, as almas se perdem mas os corpos se tornam meros ecos do que já foram. Esta criatura nojenta é a personificação da gula, a própria morte que se alimenta não apenas da carne dos cadáveres, mas também do Vínculo de vida de cada um que ousa profanar o reino eterno de morte.\""
     },
     {
-      "id": "ASH-CR-006",
+      "id": "CR006",
       "nome": "Cavaleiro da Cripta de Nocthyr",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -91,7 +91,7 @@
       "flavor text": "\"Para os servos da Cripta de Nocthyr, a morte não é uma escolha. E o serviço ao Rei Nocthyr é um juramento que se prova na eternidade.\""
     },
     {
-      "id": "ASH-CR-007",
+      "id": "CR007",
       "nome": "Ceifador das Sombras",
       "tipo": "Criatura",
       "raridade": "Incomum",
@@ -106,7 +106,7 @@
       "flavor text": "\"Apenas as sombras conhecem sua verdadeira forma. Você não ouve seus passos, mas sente o frio gélido em sua espinha; a sua lâmina não é feita de aço, mas da própria escuridão. E as sombras serão a última coisa que você verá antes de se juntar à colheita do Ceifador.\""
     },
     {
-      "id": "ASH-CR-008",
+      "id": "CR008",
       "nome": "Colosso Vulcânico de Thar'Zhul",
       "tipo": "Criatura",
       "raridade": "Incomum",
@@ -115,13 +115,13 @@
       "resistencia": 2,
       "tribo": "Elemental",
       "Facção": "Círculo de Ashkar",
-      "image_src": "assets/images/cards/Colosso Vulcânico de Thar-Zhul.jpg",
+      "image_src": "assets/images/cards/Colosso Vulcânico de Thar'Zhul.jpg",
       "set": "ELDRAEM",
       "habilidade": "",
       "flavor text": "\"Ele não é feito de pedra, mas de magma e fúria. Quando os rituais proibidos o despertam, ele não caminha sobre a terra, ele a consome, e o seu rugido é a promessa de que as cinzas serão o novo solo.\""
     },
     {
-      "id": "ASH-CR-009",
+      "id": "CR009",
       "nome": "Cultista Fanático de Ashkar",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -136,7 +136,7 @@
       "flavor text": "\"O fogo de Thar'Zhul me purificou. A dor se tornou a canção da minha fé, e a única verdade que me importa é que o Caos irá nos libertar de todas as correntes.\""
     },
     {
-      "id": "ASH-CR-010",
+      "id": "CR010",
       "nome": "Elemental da Tempestade",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -151,7 +151,7 @@
       "flavor text": "\"O caos não tem forma, mas pode ser invocado. Onde os Vínculos de Eldraem se rompem, o céu sangra, e a fúria dos ventos e dos raios ganha forma para servir àquele que a controla.\""
     },
     {
-      "id": "ASH-CR-011",
+      "id": "CR011",
       "nome": "Espectro Vingador",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -160,13 +160,13 @@
       "resistencia": 2,
       "tribo": "Morto-vivo",
       "Facção": "Círculo de Ashkar",
-      "image_src": "assets/images/cards/Espectro-Vingador.jpg",
+      "image_src": "assets/images/cards/Espectro Vingador.jpg",
       "set": "ELDRAEM",
       "habilidade": "",
       "flavor text": "\"Um Vínculo corrompido que se recusa a ser quebrado. Este espectro vingativo retorna do abismo, incapaz de encontrar paz, condenado a assombrar seus inimigos até o fim dos tempos.\""
     },
     {
-      "id": "ASH-CR-012",
+      "id": "CR012",
       "nome": "Korgath Fulgorrúina",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -181,7 +181,7 @@
       "flavor text": "\"Onde o ferreiro encontrou a ruína, o mestre encontrou a liberdade. Ele trocou seu corpo de carne pela eternidade de magma, e agora, cada elemental que ele liberta é um fragmento de sua própria alma, uma promessa de que o fogo purificará o mundo através dele.\""
     },
     {
-      "id": "ASH-CR-013",
+      "id": "CR013",
       "nome": "Magus Valerian Cinzarrubro",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -196,7 +196,7 @@
       "flavor text": "\"As correntes são uma prisão, e os Vínculos, uma mentira. Para Valerian, ele não é um vilão, mas um libertador, e ele vai libertá-los, mesmo que o mundo tenha que arder para isso. Os Vínculos se desfazerão em cinzas, e o Vazio finalmente consumirá tudo.\""
     },
     {
-      "id": "ASH-CR-014",
+      "id": "CR014",
       "nome": "Mercenário de Ashkar",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -211,7 +211,7 @@
       "flavor text": "\"Treinado na loucura da cidade, ele vê a vida como uma prisão e o combate, como a chave para a liberdade. Os Mercenários de Ashkar não temem a morte, pois em seu último suspiro, eles almejam se tornar um com o Caos Primordial.\""
     },
     {
-      "id": "ASH-CR-015",
+      "id": "CR015",
       "nome": "Morrigan Cinzalma",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -226,7 +226,7 @@
       "flavor text": "\"Onde o mundo vê desolação, ela vê um jardim. A terra queimada não é o fim, mas o seu trono. Morrigan não cura a terra, mas a comanda, e agora, cada vida que se esvai na desolação a torna mais forte.\""
     },
     {
-      "id": "ASH-CR-016",
+      "id": "CR016",
       "nome": "Pestilência",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -241,7 +241,7 @@
       "flavor text": "\"Ela não é uma criatura, mas a própria consciência do apodrecimento. Não se move, mas se espalha, um sussurro de esporos que encontra sua voz na tosse dos condenados e sua forma na corrupção da carne. Onde os Vínculos se rompem, o Caos encontra seu hospedeiro ideal, pois a Pestilência é o fim sussurrado, a melodia final de uma vida que se esvai.\""
     },
     {
-      "id": "ASH-CR-017",
+      "id": "CR017",
       "nome": "Ratos da Pestilência",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -256,7 +256,7 @@
       "flavor text": "\"Onde a magia se corrompe, a vida apodrece. Nascido da instabilidade mágica de Eldraem, este não é um mensageiro da peste, mas a própria praga encarnada. Em seus pequenos corpos, carregam o peso da maldição.\""
     },
     {
-      "id": "ASH-CR-018",
+      "id": "CR018",
       "nome": "Rei Nocthyr, o Não-vivo",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -271,7 +271,7 @@
       "flavor text": "\"Eldraem já foi toda minha. E sob meu novo domínio eterno, ele voltará a ser. Seus impérios são areia, suas vidas, um piscar. Eu sou a fundação, a coroa que não cai e a lei que não se dobra. Todos se tornarão meus súditos, e que o meu reino eterno comece, onde a nova ordem durará para sempre.\""
     },
     {
-      "id": "ASH-CR-019",
+      "id": "CR019",
       "nome": "Verme Ígneo",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -286,7 +286,7 @@
       "flavor text": "\"O rugido do Verme Ígneo é a canção da fornalha. Cada investida é um golpe de um martelo invisível, e cada rastro que ele deixa, um rio de ruína e destruição.\""
     },
     {
-      "id": "ASH-CR-020",
+      "id": "CR020",
       "nome": "Zelote das Chamas de Thar'Zhul",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -295,7 +295,7 @@
       "resistencia": 1,
       "tribo": "Humano",
       "Facção": "Círculo de Ashkar",
-      "image_src": "assets/images/cards/Zelote-das-Chamas-de-TharZhul.jpg",
+      "image_src": "assets/images/cards/Zelote das Chamas de Thar'Zhul.jpg",
       "set": "ELDRAEM",
       "habilidade": "⤴: Cause 1 ponto de dano na criatura alvo.",
       "flavor text": "\"A fé dele não está em uma oração, mas no rugido de um vulcão em erupção. Onde outros veem a ruína, o Zelote das Chamas de Thar'Zhul vê a salvação, pois é dito que somente das cinzas do velho mundo um novo mundo pode nascer.\""

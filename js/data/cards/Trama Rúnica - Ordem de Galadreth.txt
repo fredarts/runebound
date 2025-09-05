@@ -1,7 +1,7 @@
 {
   "tramas_runicas": [
     {
-      "id": "OGL-TR-001",
+      "id": "TR001",
       "nome": "Benção de Grungir",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -13,7 +13,7 @@
       "flavor text": "\"A runa do aprimoramento se acende. É o eco do martelo de Grungir, Forja da Montanha que infunde não apenas força, mas o propósito da forja: tornar o fraco em forte e o comum em lendário.\""
     },
     {
-      "id": "OGL-TR-002",
+      "id": "TR002",
       "nome": "Grito de Batalha de Thorgrim",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -25,7 +25,7 @@
       "flavor text": "\"O som do martelo de Thorgrim se transforma em um grito que ecoa na batalha. Uma runa da forja se acende no coração. O Grito de Batalha de Thorgrim é o chamado da montanha, a manifestação da força ancestral que transforma um mero golpe em um ataque esmagador que nem o mais forte dos inimigos pode resistir.\""
     },
     {
-      "id": "OGL-TR-003",
+      "id": "TR003",
       "nome": "Harmonia de Elaron",
       "tipo": "Trama Rúnica de Campo",
       "raridade": "Comum",
@@ -37,7 +37,7 @@
       "flavor text": "\"Não é a magia que cura, mas a própria natureza. Sintonize-se com o Vale de Elaron, e a energia vital do Vínculo que o sustenta irá tecer lentamente cada ferida, restaurando a sua força com a canção da terra.\""
     },
     {
-      "id": "OGL-TR-004",
+      "id": "TR004",
       "nome": "Ordem de silêncio de Lyrandar",
       "tipo": "Trama Rúnica",
       "raridade": "Comum",
@@ -49,19 +49,19 @@
       "flavor text": "\"Em cada Vínculo há uma canção. A Ordem de Lyrandar aprendeu a calar a melodia, e com uma única nota, transforma-a em um silêncio absoluto, aprisionando a fúria e o grito de guerra dos mais vorazes.\""
     },
     {
-      "id": "OGL-TR-005",
+      "id": "TR005",
       "nome": "Pele de Pedra de Barak'Tor",
       "tipo": "Trama Rúnica",
       "raridade": "Comum",
       "custo": 2,
       "Facção": "Ordem de Galadreth",
-      "image_src": "assets/images/cards/Pele de Pedra de Barak-Tor.jpg",
+      "image_src": "assets/images/cards/Pele de Pedra de Barak'Tor.jpg",
       "set": "ELDRAEM",
       "habilidade": "Criatura alvo ganha +4 de defesa neste turno.",
       "flavor text": "\"Uma runa de resistência gravada na carne. Não é uma armadura, mas uma camada da própria fortaleza de Barak'Tor, que se molda ao corpo para resistir aos golpes mais poderosos.\""
     },
     {
-      "id": "OGL-TR-006",
+      "id": "TR006",
       "nome": "Pesquisa profunda de Arkos",
       "tipo": "Trama Rúnica",
       "raridade": "Comum",
@@ -73,7 +73,7 @@
       "flavor text": "\"A mente se une ao grande Véu dos Vínculos. Um momento de comunhão com a sabedoria rúnica revela os fios do destino, e você escolhe quais seguir e quais deixar para trás.\""
     },
     {
-      "id": "OGL-TR-007",
+      "id": "TR007",
       "nome": "Runas da Sabedoria",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -85,7 +85,7 @@
       "flavor text": "\"O conhecimento não está apenas nos livros, mas no fluxo da batalha. Cada golpe da criatura vinculada é um traço de uma nova runa, um segredo que se revela em meio ao caos do combate.\""
     },
     {
-      "id": "OGL-TR-008",
+      "id": "TR008",
       "nome": "Selo de Contenção Serilda",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -97,7 +97,7 @@
       "flavor text": "\"Uma vez gravado, o selo se torna o seu novo propósito. Ele não te destrói, mas te aprisiona em uma paz forçada, onde a batalha é um eco distante e o movimento, um sonho esquecido.\""
     },
     {
-      "id": "OGL-TR-009",
+      "id": "TR009",
       "nome": "Vínculo de Proteção de Lyrandar",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -109,7 +109,7 @@
       "flavor text": "\"Uma aura defensiva que se recusa a ser tocada. O Vínculo de Proteção é a resposta à agressão, uma teia de luz que se forma ao redor de um aliado, tornando-o em um farol de determinação.\""
     },
     {
-      "id": "OGL-TR-010",
+      "id": "TR010",
       "nome": "Vínculo Vital de Elowyn",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",

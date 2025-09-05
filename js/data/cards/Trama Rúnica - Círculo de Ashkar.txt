@@ -1,7 +1,7 @@
 {
   "tramas_runicas": [
     {
-      "id": "ASH-TR-001",
+      "id": "TRC101",
       "nome": "Círculo Proibido",
       "tipo": "Trama Rúnica de Campo",
       "raridade": "Comum",
@@ -13,7 +13,7 @@
       "flavor text": "\"Não há distinção entre amigo ou inimigo, entre a vida que se perde em glória ou em desespero. Dentro do Círculo Proibido, toda morte é uma nota na sinfonia do caos, um combustível para a chama da revolução que Valerian acendeu.\""
     },
     {
-      "id": "ASH-TR-002",
+      "id": "TRC102",
       "nome": "Corromper Fonte de Aether",
       "tipo": "Trama Rúnica de Campo",
       "raridade": "Comum",
@@ -25,7 +25,7 @@
       "flavor text": "\"O Vazio se espalha, e a própria terra se torna parte da corrupção. Corromper Fonte de Aether é o reflexo de que a ordem antiga está desmoronando, e cada Trama Rúnica invocada dela traz a marca da ruína do vazio.\""
     },
     {
-      "id": "ASH-TR-003",
+      "id": "TRC103",
       "nome": "Destruir",
       "tipo": "Trama Rúnica",
       "raridade": "Comum",
@@ -37,7 +37,7 @@
       "flavor text": "\"Aniquilação pura que rompe os Vínculos vitais.\""
     },
     {
-      "id": "ASH-TR-004",
+      "id": "TRC104",
       "nome": "Drenar Vínculo",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -49,7 +49,7 @@
       "flavor text": "\"Um fio invisível, tecido da Runa Vazia, liga o ser à sua própria erosão. Dia após dia, a vitalidade se desfaz como névoa ao sol, e a força se torna uma memória distante, consumida pela sombra que não cessa de drenar.\""
     },
     {
-      "id": "ASH-TR-005",
+      "id": "TRC105",
       "nome": "Fome Eterna",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -61,19 +61,19 @@
       "flavor text": "\"Não é apenas sangue, é a própria essência que nutre. A Fome Eterna é a maldição da Runa Vazia, um pacto insaciável que drena a vida dos outros para manter a sua, uma existência sem fim, mas sem paz.\""
     },
     {
-      "id": "ASH-TR-006",
+      "id": "TRC106",
       "nome": "Fúria de Thar'Zhul",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
       "custo": 4,
       "Facção": "Círculo de Ashkar",
-      "image_src": "assets/images/cards/Fúria de Thar-Zhul.jpg",
+      "image_src": "assets/images/cards/Fúria de Thar'Zhul .jpg",
       "set": "ELDRAEM",
       "habilidade": "A criatura vinculada tem 'No final do seu turno, cause 2 de dano a um oponente'. (anexe esta carta à criatura alvo).",
       "flavor text": "\"Não é a criatura que ataca, mas o próprio Thar'Zhul que respira através dela. O Selo do Vulcão transforma a carne em conduto, e a fúria da montanha se manifesta em rajadas de calor e destruição a cada batida de seu coração.\""
     },
     {
-      "id": "ASH-TR-007",
+      "id": "TRC107",
       "nome": "Juramento de Ashkar",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -85,7 +85,7 @@
       "flavor text": "\"Eles caíram, mas sua vontade persiste. O Juramento de Ashkar canaliza a força dos mortos, transformando o luto em poder bruto para aqueles que ousam empunhar a ruína como arma.\""
     },
     {
-      "id": "ASH-TR-008",
+      "id": "TRC108",
       "nome": "Maldição da Fraqueza",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -97,7 +97,7 @@
       "flavor text": "\"Não é um golpe, mas um sussurro de exaustão. Esta maldição não atrofia apenas os músculos, ela esmaga a determinação, tecendo uma aura de desespero que drena a própria vontade de lutar.\""
     },
     {
-      "id": "ASH-TR-009",
+      "id": "TRC109",
       "nome": "Pacto Profano",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",
@@ -109,7 +109,7 @@
       "flavor text": "\"Cada batida do coração alimenta a Runa Vazia. Cada gota de sangue sussurra promessas de liberdade. O preço da força é pago em vida — e os fiéis do Círculo o pagam com prazer.\""
     },
     {
-      "id": "ASH-TR-010",
+      "id": "TRC110",
       "nome": "Vínculo do Caótico",
       "tipo": "Trama Rúnica de Selamento",
       "raridade": "Comum",

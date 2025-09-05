@@ -1,5 +1,5 @@
 /* assets/css/graveyard-modal.css */
-/* VERSÃO SIMPLIFICADA: Remove estilos de metadados e botões */
+/* VERSÃO COMPLETA E CORRIGIDA */
 
 /* Painel do modal */
 #graveyard-overlay .graveyard-panel{
@@ -34,8 +34,6 @@
   width: 100%;
   height: auto;
   border-radius: 8px;
-  /* se quiser sombra: */
-  /* box-shadow: 0 4px 10px rgba(0,0,0,.25); */
 }
 
 .gy-title {
@@ -71,7 +69,7 @@
   display:grid;
   grid-template-columns: repeat(6, minmax(0,1fr));
   gap:10px;
-  max-height: min(70dvh, 600px); /* Aumentado um pouco a altura máxima */
+  max-height: min(70dvh, 600px);
   overflow:auto;
   padding-right:4px;
 }
@@ -89,7 +87,7 @@
   #graveyard-overlay .graveyard-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 
-/* Card compacta do cemitério (agora só a imagem) */
+/* Card compacta do cemitério */
 #graveyard-overlay .gy-card{
   position:relative;
   border-radius:12px;
@@ -107,9 +105,28 @@
   padding:18px; text-align:center; color: var(--fiery-muted, #caa792);
 }
 
-/* Cursor para pilhas de cemitério (dica visual) */
+/* Cursor para pilhas de cemitério */
 #player-graveyard, #opponent-graveyard,
 [data-zone="graveyard"]{ cursor: context-menu; }
 
-/* Reusa a mesma animação do tema fiery se ainda não existir */
 @keyframes fieryPulse{0%,100%{opacity:.55;filter:blur(12px)}50%{opacity:.85;filter:blur(16px)}}
+
+
+/* ======================================================= */
+/* === SOLUÇÃO INFALÍVEL PARA ZOOM DENTRO DO MODAL ===     */
+/* ======================================================= */
+
+/*
+ * Explicação da Solução Final:
+ * `body:has(#graveyard-overlay.active)`: Este seletor encontra o <body> APENAS SE
+ * ele contiver um filho que seja o #graveyard-overlay com a classe .active.
+ * `#battle-image-zoom-overlay.active img`: A partir desse body "condicional", ele
+ * procura pelo overlay de zoom (que também deve estar ativo) e seleciona a tag `<img>`
+ * dentro dele.
+ * Isso funciona independentemente da ordem dos overlays no HTML.
+*/
+body:has(#graveyard-overlay.active) #battle-image-zoom-overlay.active img {
+  /* O padrão é geralmente 90vh/90vw. Reduzimos para dar espaço para o painel do modal. */
+  max-height: 75vh;
+  max-width: 75vw;
+}

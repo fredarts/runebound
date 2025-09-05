@@ -1,7 +1,7 @@
 {
   "cartas": [
     {
-      "id": "OGL-CR-001",
+      "id": "CR001",
       "nome": "Arkos Prismalente",
       "tipo": "Criatura",
       "raridade": "Incomum",
@@ -16,7 +16,7 @@
       "flavor text": "\"Ele não lê runas; ele ouve seus segredos. E enquanto o mundo se desfaz, Arkos busca nas rachaduras dos Vínculos não a ruína, mas a chave para uma nova verdade.\""
     },
     {
-      "id": "OGL-CR-002",
+      "id": "CR002",
       "nome": "Anão Guardião de Barak'Tor",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -25,13 +25,13 @@
       "resistencia": 4,
       "tribo": "Anão",
       "Facção": "Ordem de Galadreth",
-      "image_src": "assets/images/cards/Anão Guardião de Barak-Tor.jpg",
+      "image_src": "assets/images/cards/Anão Guardião de Barak'Tor.jpg",
       "set": "ELDRAEM",
       "habilidade": "",
       "flavor text": "\"Seus ancestrais esculpiram a maior das fortalezas, e ele é a sua muralha mais forte. O Guardião de Barak'Tor não conhece o medo, pois a sua resolução é tão sólida quanto as colunas rúnicas que sustentam os salões de seu lar.\""
     },
     {
-      "id": "OGL-CR-003",
+      "id": "CR003",
       "nome": "Caçador Élfico Terysia",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -46,7 +46,7 @@
       "flavor text": "\"Se a tapeçaria de Eldraem chegar a se rasgar, eu serei o fio que a sentirá primeiro. Nas profundezas de Terysia, a melodia dos Vínculos virou um grito silencioso ensurdecedor.\""
     },
     {
-      "id": "OGL-CR-004",
+      "id": "CR004",
       "nome": "Cavaleiro da Ordem de Prata",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -61,7 +61,7 @@
       "flavor text": "\"Não somos movidos pela fúria, mas pela fé. Nossa armadura é a esperança, e nossa lâmina, a vontade inabalável de Eldraem que habita em nossos corações.\""
     },
     {
-      "id": "OGL-CR-005",
+      "id": "CR005",
       "nome": "Elowyn Sussurroverde",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -76,7 +76,7 @@
       "flavor text": "\"A floresta vive nela, e ela vive para a floresta. Elowyn é a canção da vida, e seu propósito é silenciar o caos que ameaça o coração de Terysia. Ela não é a voz da floresta; ela é a própria floresta a se comunicar. Elowyn sente a agonia de cada galho quebrado, de cada Vínculo corrompido, e sua missão é curar a terra, mesmo que para isso precise encarar o próprio Vazio.\""
     },
     {
-      "id": "OGL-CR-006",
+      "id": "CR006",
       "nome": "Espírito do Vale de Elaron",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -91,7 +91,7 @@
       "flavor text": "\"Uma brisa de luz e cura. O Espírito de Elaron surge para lembrá-los que, mesmo na ruína, a vida persiste, e um único sopro pode restaurar o que a escuridão tentou corromper.\""
     },
     {
-      "id": "OGL-CR-007",
+      "id": "CR007",
       "nome": "Familiar Arcano",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -106,7 +106,7 @@
       "flavor text": "\"Uma brisa de luz e cura. O Espírito de Elaron surge para lembrá-los que, mesmo na ruína, a vida persiste, e um único sopro pode restaurar o que a escuridão tentou corromper.\""
     },
     {
-      "id": "OGL-CR-008",
+      "id": "CR008",
       "nome": "Golem de Runita",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -121,7 +121,7 @@
       "flavor text": "\"Um coração de runita. Sua forma cristalina reflete a eternidade da montanha. Ele não sente medo ou dor, apenas o propósito inquebrável de ser a última linha de defesa dos sagrados salões de Barak'Tor.\""
     },
     {
-      "id": "OGL-CR-009",
+      "id": "CR009",
       "nome": "Guardião da Fonte Lunar",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -136,7 +136,7 @@
       "flavor text": "\"Quando as luas se alinham sobre as Fontes Sagradas, a própria água respira vida. A pureza se manifesta como um protetor de cristal e luz, defendendo seu santuário de qualquer mácula.\""
     },
     {
-      "id": "OGL-CR-010",
+      "id": "CR010",
       "nome": "Lume Errante",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -151,7 +151,7 @@
       "flavor text": "\"Quando o véu da noite se adensa e os Vínculos sussurram incertezas, o Lume Errante surge: uma centelha de esperança que se faz guia, levando o olhar à aurora esquecida.\""
     },
     {
-      "id": "OGL-CR-011",
+      "id": "CR011",
       "nome": "Lumina Espelhod'água",
       "tipo": "Criatura",
       "raridade": "Incomum",
@@ -160,13 +160,13 @@
       "resistencia": 5,
       "tribo": "Espírito",
       "Facção": "Ordem de Galadreth",
-      "image_src": "assets/images/cards/Lumina Espelhodagua.jpg",
+      "image_src": "assets/images/cards/Lumina Espelhod'água.jpg",
       "set": "ELDRAEM",
       "habilidade": "As criaturas que você controla têm Proteção (o oponente deve pagar 1 Aether a mais para alvejar esta criatura com Trama Rúnica).",
       "flavor text": "\"Sou a voz dos Vínculos que o mundo esqueceu e a ponte entre o eco e a canção. Ao lado de Lumina, a alma dos mortais e o lamento dos espíritos se unem sob a mesma luz.\""
     },
     {
-      "id": "OGL-CR-012",
+      "id": "CR012",
       "nome": "Lyrandar Vínculoforte",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -181,7 +181,7 @@
       "flavor text": "\"Sua sabedoria é o legado de eras, e também o seu fardo. Lyrandar não prega a ordem, ele a personifica, e seu olhar fixo na Runa Vazia revela o desespero de um mundo que ele teme não ser capaz salvar.\""
     },
     {
-      "id": "OGL-CR-013",
+      "id": "CR013",
       "nome": "Protetor do Círculo de Cristal",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -196,7 +196,7 @@
       "flavor text": "\"Uma sentinela forjada na pura runita. Ele é a própria vontade de Arkos materializada. Seu corpo é uma fortaleza e sua vigília, eterna, para que nenhum segredo seja perdido.\""
     },
     {
-      "id": "OGL-CR-014",
+      "id": "CR014",
       "nome": "Roric Cantapedra",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -211,7 +211,7 @@
       "flavor text": "\"Não são meras pedras que ele comanda, mas a própria memória da montanha. Seu canto é um eco ancestral que desperta muralhas vivas e a fúria adormecida de Barak'Tor.\""
     },
     {
-      "id": "OGL-CR-015",
+      "id": "CR015",
       "nome": "Sentinela de Galadreth",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -226,7 +226,7 @@
       "flavor text": "\"A vigília de Galadreth é uma oração contínua. Nós somos o muro de luz contra a sombra, a vigilância que não dorme enquanto um único Vínculo rúnico ainda se mantém.\""
     },
     {
-      "id": "OGL-CR-016",
+      "id": "CR016",
       "nome": "Serilda Florescente",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -241,7 +241,7 @@
       "flavor text": "\"Sou a voz do riacho, o toque da folha, a promessa da semente. Ela não protege a natureza; ela a ouve. Onde os Vínculos sangram, Serilda floresce, e cada toque seu restaura a melodia esquecida do Vale de Elaron.\""
     },
     {
-      "id": "OGL-CR-017",
+      "id": "CR017",
       "nome": "Thorgrim Runagranito",
       "tipo": "Criatura",
       "raridade": "Rara",
@@ -256,7 +256,7 @@
       "flavor text": "\"Sou a voz do riacho, o toque da folha, a promessa da semente. Ela não protege a natureza; ela a ouve. Onde os Vínculos sangram, Serilda floresce, e cada toque seu restaura a melodia esquecida do Vale de Elaron.\""
     },
     {
-      "id": "OGL-CR-018",
+      "id": "CR018",
       "nome": "Thurden Mestre-forjador",
       "tipo": "Criatura",
       "raridade": "Incomum",
@@ -271,7 +271,7 @@
       "flavor text": "\"O martelo de Thurden não apenas forja metal; ele canta. A cada batida, runas ancestrais ressoam, tecendo uma canção de poder que amarra a própria magia à vontade do anão.\""
     },
     {
-      "id": "OGL-CR-019",
+      "id": "CR019",
       "nome": "Urso Feral",
       "tipo": "Criatura",
       "raridade": "Comum",
@@ -286,7 +286,7 @@
       "flavor text": "\"Não é a fera que ruge, mas o próprio caos que a habita. A runa da natureza foi quebrada em seu espírito, e a dor o tornou fúria. A loucura da Runa Vazia alcança até mesmo os mais selvagens.\""
     },
     {
-      "id": "OGL-CR-020",
+      "id": "CR020",
       "nome": "Vaelyr o Esquecido",
       "tipo": "Criatura",
       "raridade": "Rara",

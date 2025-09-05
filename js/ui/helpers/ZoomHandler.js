@@ -56,6 +56,9 @@ export default class ZoomHandler {
       el.style.display = 'none';
 
       const img = document.createElement('img');
+      if (!img.id) img.id = 'battle-zoomed-image';
+        // opcionalmente uma classe comum para depurar/estilizar:
+        img.classList.add('zoomed-image');
       img.alt = 'Zoomed Card';
       el.appendChild(img);
 

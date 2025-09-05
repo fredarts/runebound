@@ -34,7 +34,7 @@ export default class GraveyardModalUI {
       new ZoomHandler({
         overlaySelector: '#battle-image-zoom-overlay',
         baseZ: 1300,
-        autoCreate: true,
+        autoCreate: false,
       });
 
     this._cacheSelectors();

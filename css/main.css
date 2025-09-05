@@ -40,7 +40,9 @@
 @import 'screens/_set-mastery.css';
 @import 'screens/_eldraem-set-collection.css';
 @import 'screens/_fiery-deck-choice.css';
-@import url('./graveyard-modal.css');
+@import 'graveyard-modal.css';
+
+
 
 @import 'pause-menu.css';
 

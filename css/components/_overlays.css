@@ -168,3 +168,20 @@
     margin-top: 10px;
     padding: 8px 25px; /* Padding menor para botão secundário */
 }
+
+/* Base universal para qualquer zoom de imagem */
+.image-zoom-overlay > img {
+  max-width: var(--zoom-max-w, 90vw);
+  max-height: var(--zoom-max-h, 90vh);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,.4);
+}
+
+/* Quando o modal do Cemitério está aberto, encolhe um pouco o zoom */
+body:has(#graveyard-overlay.active) #battle-image-zoom-overlay.active img {
+  max-width: var(--zoom-gy-max-w, 75vw);
+  max-height: var(--zoom-gy-max-h, 75vh);
+}
