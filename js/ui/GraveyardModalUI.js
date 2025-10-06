@@ -81,6 +81,12 @@ export default class GraveyardModalUI {
 
   /** API para telas: abre o modal para um jogador */
   open(playerObject) {
+    // Evita reentrância / multi-push
+    if (this._isOpen) {
+      // opcional: apenas atualize ownerLabel/estado se precisar
+      return;
+    }
+
     if (!this.$overlay) {
       this._cacheSelectors();
       if (!this.$overlay) return;
@@ -88,14 +94,14 @@ export default class GraveyardModalUI {
 
     this._playerRef = playerObject || this._playerRef;
 
-    // Mostra overlay
+    // Marque aberto imediatamente para bloquear chamadas repetidas
+    this._isOpen = true;
+
     this.$overlay.style.display = 'flex';
     requestAnimationFrame(() => {
       this.$overlay.classList.add('active');
       this.$overlay.setAttribute('aria-hidden', 'false');
-      this._isOpen = true;
 
-      // Empilha: ESC/backdrop fecham apenas o topo
       ModalStack.push(this.$overlay, {
         onClose: () => this.close(),
         esc: true,
@@ -103,13 +109,12 @@ export default class GraveyardModalUI {
         baseZ: 1200,
       });
 
-      // Renderiza as cartas agora que o overlay está visível
       this._renderCards();
     });
-  }
+}
 
   close() {
-    if (!this._isOpen || !this.$overlay) return;
+    if (!this.$overlay) return;
 
     // Se o zoom estiver aberto, fecha o zoom antes (mantém o cemitério)
     if (this.zoom?.isZoomOpen && this.zoom.isZoomOpen()) {
@@ -117,10 +122,20 @@ export default class GraveyardModalUI {
       return;
     }
 
-    // Saída visual
+    // Remova SEMPRE da pilha primeiro (evita duplo onClose + entradas órfãs)
+    ModalStack.remove(this.$overlay);
+
+    // Se já estava “fechado” do ponto de vista do componente, apenas garanta a limpeza visual e saia
+    if (!this._isOpen) {
+      this.$overlay.classList.remove('active');
+      this.$overlay.setAttribute('aria-hidden', 'true');
+      this.$overlay.style.display = 'none';
+      return;
+    }
+
+    // Saída visual padrão
     this.$overlay.classList.remove('active');
     this.$overlay.setAttribute('aria-hidden', 'true');
-
     setTimeout(() => {
       if (!this.$overlay?.classList.contains('active')) {
         this.$overlay.style.display = 'none';
@@ -129,10 +144,7 @@ export default class GraveyardModalUI {
 
     this._isOpen = false;
     this._playerRef = null;
-
-    // Desempilha
-    ModalStack.remove(this.$overlay);
-  }
+}
 
   /** Atualiza a lista (pode ser chamado após entradas saírem/entrarem no GY) */
   refresh() {
@@ -163,6 +175,13 @@ export default class GraveyardModalUI {
     if (!this.$grid) return;
     this.$grid.innerHTML = '';
   }
+
+  dispose() {
+    try { this.close(); } catch {}
+    this._playerRef = null;
+    this.zoom = null;
+    this.$overlay = null;
+}
 
   _renderCards() {
     if (!this.$grid) {

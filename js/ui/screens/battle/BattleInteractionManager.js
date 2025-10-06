@@ -787,33 +787,45 @@ export default class BattleInteractionManager {
     }
 
     handleEscKey() {
-        // ... (lógica de handleEscKey permanece a mesma)
-        let modeExited = false;
-        if (this.#isSelectingTarget) { this._exitTargetSelectionMode(); modeExited = true; }
-        else if (this.#isSelectingDiscardMana) { this._exitDiscardManaSelectionMode(); modeExited = true; }
+        let handled = false;
+
+        if (this.#isSelectingTarget) { 
+            this._exitTargetSelectionMode(); 
+            handled = true; 
+        }
+        else if (this.#isSelectingDiscardMana) { 
+            this._exitDiscardManaSelectionMode(); 
+            handled = true; 
+        }
         else if (this.#pendingEOTDiscardCount > 0) {
             this.#battleRenderer.updateActionFeedback(`Mão cheia! Descarte ${this.#pendingEOTDiscardCount} carta(s).`);
+            handled = true;
         }
-        else if (this.#isDeclaringAttackers) { this._exitAttackerDeclarationMode(); modeExited = true; }
+        else if (this.#isDeclaringAttackers) { 
+            this._exitAttackerDeclarationMode(); 
+            handled = true; 
+        }
         else if (this.#isAssigningBlockers) {
-            // Se estiver no modo de bloqueio e pressionar ESC, desmarca o atacante atualmente selecionado.
-            // Se nenhum estiver selecionado, sai do modo de bloqueio.
             if (this.#selectedAttackerForBlocking) {
-                this.#selectedAttackerForBlocking = null;
-                this.#battleRenderer.updateActionFeedback('Atacante desmarcado. Selecione outro atacante ou um bloqueador.');
-                modeExited = true; // Considera que um modo de "sub-seleção" foi saído
+            this.#selectedAttackerForBlocking = null;
+            this.#battleRenderer.updateActionFeedback('Atacante desmarcado. Selecione outro atacante ou um bloqueador.');
+            handled = true;
             } else {
-                this._exitBlockerAssignmentMode();
-                modeExited = true;
+            this._exitBlockerAssignmentMode();
+            handled = true;
             }
         }
-        else {
+        else if (this.#zoomHandler?.isZoomOpen?.()) {
             this.#zoomHandler.closeZoom();
+            handled = true;
         }
-        if (modeExited) {
+
+        if (handled) {
             this.refreshVisualHighlights();
         }
-    }
+
+        return handled;
+        }
 
     handlePhaseChange() {
         // ... (lógica de handlePhaseChange permanece a mesma)

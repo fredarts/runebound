@@ -529,4 +529,24 @@ export default class Game {
     addEventListener(eventName, callback) { this.#eventDispatcher.addEventListener(eventName, callback); }
     removeEventListener(eventName, callback) { this.#eventDispatcher.removeEventListener(eventName, callback); }
     emitEvent(eventName, detail) { this.#eventDispatcher.dispatchEvent(new CustomEvent(eventName, { detail })); }
+
+    destroy() {
+    try { this.combatManager?.destroy?.(); } catch {}
+    try { clearTimeout(this._tickTimer); } catch {}
+    try { clearInterval(this._aiTimer); } catch {}
+
+    try {
+        (this.players || []).forEach(p => {
+        try { p.destroy?.(); } catch {}
+        try { p.hand && (p.hand.length = 0); } catch {}
+        try { p.deck && (p.deck.length = 0); } catch {}
+        try { p.graveyard && (p.graveyard.length = 0); } catch {}
+        try { p.battlefield && (p.battlefield.length = 0); } catch {}
+        });
+    } catch {}
+
+    this.players = [];
+    this.currentPlayer = null;
+    this.turn = 0;
+    }
 }

@@ -15,7 +15,7 @@ export default class ZoomHandler {
   constructor(opts = {}) {
     this.overlaySelector = opts.overlaySelector || '#battle-image-zoom-overlay';
     this.baseZ = Number.isFinite(opts.baseZ) ? opts.baseZ : 1300;
-    this.autoCreate = opts.autoCreate !== false;
+    this.autoCreate = opts.autoCreate !== true;
 
     /** @type {HTMLElement|null} */
     this._overlayEl = null;
@@ -29,9 +29,14 @@ export default class ZoomHandler {
 
   /** Garante que existe um overlay válido e cacheia referências */
   _ensureOverlay() {
+    // Defaults seguros
+    if (typeof this.autoCreate === 'undefined') this.autoCreate = true;
+    if (!this.overlaySelector) this.overlaySelector = '#battle-image-zoom-overlay';
+
+    // 1) Tenta pelo seletor principal
     let el = document.querySelector(this.overlaySelector);
 
-    // Fallbacks comuns antes de criar
+    // 2) Fallbacks comuns antes de criar
     if (!el) {
       const fallbacks = ['#battle-image-zoom-overlay', '#image-zoom-overlay'];
       for (const sel of fallbacks) {
@@ -45,33 +50,40 @@ export default class ZoomHandler {
       }
     }
 
+    // 3) Cria se autorizado
     if (!el && this.autoCreate) {
       el = document.createElement('div');
       const id = this.overlaySelector.startsWith('#')
         ? this.overlaySelector.slice(1)
-        : 'image-zoom-overlay';
+        : 'battle-image-zoom-overlay';
       el.id = id;
       el.className = 'image-zoom-overlay';
       el.setAttribute('aria-hidden', 'true');
       el.style.display = 'none';
 
       const img = document.createElement('img');
-      if (!img.id) img.id = 'battle-zoomed-image';
-        // opcionalmente uma classe comum para depurar/estilizar:
-        img.classList.add('zoomed-image');
+      img.id = 'battle-zoomed-image';
+      img.classList.add('zoomed-image'); // opcional p/ depurar/estilizar
       img.alt = 'Zoomed Card';
       el.appendChild(img);
 
       document.body.appendChild(el);
     }
 
+    // 4) Cache/aliases compatíveis com o restante da classe
     this._overlayEl = el || null;
-    this._imgEl = this._overlayEl ? this._overlayEl.querySelector('img') : null;
+    this._imgEl = this._overlayEl ? this._overlayEl.querySelector('#battle-zoomed-image, img') : null;
 
-    if (!this._overlayEl || !this._imgEl) {
+    // Aliases esperados por outros métodos
+    this.$overlay = this._overlayEl;
+    this.$img = this._imgEl;
+
+    // 5) Aviso se ainda assim estiver faltando algo
+    if (!this.$overlay || !this.$img) {
       console.warn('[ZoomHandler] Overlay não encontrado/criado. Seletor:', this.overlaySelector);
     }
-  }
+}
+
 
   /** Retorna true se o zoom está aberto */
   isZoomOpen() {

@@ -210,18 +210,10 @@ export default class HomeScreenUI {
     destroy() {
         console.log("HomeScreenUI: Destroying (unbinding events)...");
         const namespace = '.homescreenui';
+        // Apenas desvincula os eventos com o namespace. Não anula as propriedades.
         this.#newsFeedContainer?.off(namespace); 
         this.#btnBackToFeed?.off(namespace); 
         this.#btnGotoConnect?.off(namespace);
-        
-        this.#homeScreenElement = null;
-        this.#newsFeedContainer = null;
-        this.#newsDetailContainer = null;
-        this.#newsDetailTitle = null;
-        this.#newsDetailImage = null;
-        this.#newsDetailContent = null;
-        this.#btnBackToFeed = null; 
-        this.#btnGotoConnect = null;
         console.log("HomeScreenUI: Destroy complete.");
     }
 }

@@ -359,20 +359,10 @@ export default class DeckManagementScreenUI {
     destroy() {
         console.log("DeckManagementScreenUI: Destroying...");
         const namespace = '.deckmgmt';
+        // Apenas desvincula os eventos com o namespace. Não anula as propriedades.
         this.#screenElement?.off(namespace);
         this.#btnCreateNewDeck?.off(namespace);
         $('#deck-management-zoom-overlay')?.off(namespace);
-
-        this.#screenElement = null;
-        this.#deckListElement = null;
-        this.#collectionElement = null;
-        this.#collectionCountSpan = null;
-        this.#messageParagraph = null;
-        this.#filterNameInput = null;
-        this.#filterTypeSelect = null;
-        this.#filterCostSelect = null;
-        this.#filterTribeSelect = null;
-        this.#btnCreateNewDeck = null;
         console.log("DeckManagementScreenUI: Destroy complete.");
     }
 }

@@ -55,6 +55,13 @@ class ModalStack {
       return;
     }
 
+    // >>> bloqueia duplicatas do mesmo elemento
+    if (this.stack.some(entry => entry.el === el)) {
+      // opcional: leve o item ao topo antes de sair
+      // this.remove(el); // e depois cai no fluxo normal para repush
+      return;
+    }
+
     const entry = {
       el,
       id: el.id || '',
@@ -64,11 +71,9 @@ class ModalStack {
       origZ: el.style.zIndex || null,
     };
 
-    // Garanta z-index acima do restante, se quiser uma base por tipo:
     const base = Number.isFinite(opts.baseZ) ? opts.baseZ : 1200;
     el.style.zIndex = String(base + this.stack.length * 10);
 
-    // Clique no backdrop fecha APENAS se for o topo:
     if (entry.backdrop) {
       el.__modalstack_click_handler__ = (ev) => {
         if (ev.target === el && this._isTop(el)) {
@@ -121,6 +126,29 @@ class ModalStack {
 
     this.stack.splice(idx, 1);
   }
+
+  clearAll() {
+  try {
+    while (this.stack?.length) {
+      const entry = this.stack.pop();
+      const el = entry.el;
+      // remove listener de backdrop, se houver
+      if (entry.__modalstack_click_handler__) {
+        el.removeEventListener('click', entry.__modalstack_click_handler__);
+      }
+      // restaura z-index original
+      if (entry.origZ == null) el.style.removeProperty('z-index');
+      else el.style.zIndex = entry.origZ;
+
+      // fecha visualmente
+      el.classList.remove('active');
+      el.setAttribute('aria-hidden', 'true');
+      el.style.display = 'none';
+    }
+  } catch (e) {
+    console.warn('[ModalStack] clearAll error:', e);
+  }
+}
 
   // Fechamento padrão caso o chamador não passe onClose
   _defaultClose(el) {

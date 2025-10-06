@@ -1,7 +1,10 @@
-// js/main.js - VERSÃO COMPLETA E ATUALIZADA
-// Inclui a correção para o overlay de zoom global, mantendo todas as funcionalidades.
+// js/main.js - VERSÃO COMPLETA E CORRIGIDA
+// - Teardown canônico (uma única função)
+// - Pause Menu com eventos alinhados e fechamento antes de navegar
+// - Overlay de zoom global garantido e único
+// - Integração correta com GraveyardModal (ESM default) + template nomeado
 
-// --- Imports de Módulos Core ---
+// --- Imports Core ---
 import Game from './core/Game.js';
 import UIManager from './ui/UIManager.js';
 import ScreenManager from './ui/ScreenManager.js';
@@ -12,7 +15,7 @@ import CustomCursor from './ui/CustomCursor.js';
 import { getAIProfile } from './data/ai/AIData.js';
 import PauseMenuUI from './ui/PauseMenuUI.js';
 
-// --- Imports de Templates HTML ---
+// --- Imports de Templates HTML (screens/globais) ---
 import { generateSplashScreenHTML } from './ui/html-templates/splashScreenTemplate.js';
 import { generateTitleScreenHTML } from './ui/html-templates/titleScreenTemplate.js';
 import { generateLoginScreenHTML } from './ui/html-templates/loginScreenTemplate.js';
@@ -32,25 +35,107 @@ import { generateBoosterOpeningTemplate } from './ui/html-templates/boosterOpeni
 import { generateLoreVideoScreenHTML } from './ui/html-templates/loreVideoScreenTemplate.js';
 import { generateInitialDeckChoiceScreenHTML } from './ui/html-templates/initialDeckChoiceScreenTemplate.js';
 import opponentDeckChoiceModalTemplate from './ui/html-templates/opponentDeckChoiceModalTemplate.js';
-import graveyardModalTemplate from './ui/html-templates/graveyardModalTemplate.js';
+
+// >>> Graveyard (agora ESM com export default) + HTML template nomeado
+import GraveyardModal, { generateGraveyardModalHTML } from './ui/html-templates/graveyardModalTemplate.js';
+
+// Outros modais globais
 import pauseMenuTemplate from './ui/html-templates/pauseMenuTemplate.js';
 
-// >>> [NOVO E CORRIGIDO] <<< Template para o overlay de zoom global
+// >>> Overlay de zoom global (garantido)
 const globalZoomOverlayTemplate = () => `
-<div id="battle-image-zoom-overlay" class="image-zoom-overlay">
-    <img id="battle-zoomed-image" src="" alt="Zoomed Card">
+<div id="battle-image-zoom-overlay" class="image-zoom-overlay" aria-hidden="true" style="display:none">
+  <img id="battle-zoomed-image" src="" alt="Zoomed Card">
 </div>
 `;
 
+// ---------- Funções utilitárias globais (declaradas como function para hoisting) ----------
+function ensureZoomOverlay() {
+  let ov = document.getElementById('battle-image-zoom-overlay');
+  if (!ov) {
+    const wrap = document.createElement('div');
+    wrap.innerHTML = globalZoomOverlayTemplate();
+    ov = wrap.firstElementChild;
+    document.body.appendChild(ov);
+  }
+  return ov;
+}
+
+// >>> INÍCIO DA CORREÇÃO: Função de Limpeza Canônica <<<
+/**
+ * Destrói completamente o estado de uma partida ativa.
+ * É seguro chamar esta função mesmo que não haja partida em andamento.
+ * @param {string | null} nextScreen - A tela para a qual navegar após a limpeza. Se for `null`, não navega.
+ */
+function teardownMatch(nextScreen = 'connect-screen') {
+  console.log(`[TEARDOWN] Iniciando limpeza completa. Próxima tela: ${nextScreen}`);
+  try {
+    // 1. Fecha modais abertos (Pausa, Cemitério, etc.)
+    window.ModalStack?.clearAll?.();
+    
+    // 2. Reseta o estado do modal de Cemitério
+    GraveyardModal?.reset?.();
+    
+    // 3. Destrói a UI específica da batalha (desvincula listeners, etc.)
+    // O ideal é que BattleScreenUI tenha um método para isso.
+    if (window.uiManager) {
+        const battleUI = window.uiManager._battleUI; // Acessando via UIManager
+        if (battleUI && typeof battleUI.destroyMatch === 'function') {
+            battleUI.destroyMatch();
+            console.log("[TEARDOWN] BattleScreenUI.destroyMatch() chamado.");
+        }
+    }
+
+    // 4. Limpa o DOM das zonas de batalha para garantir que não sobrem cartas visíveis.
+    const zoneIds = [
+      'player-hand', 'opponent-hand',
+      'player-battlefield', 'opponent-battlefield',
+      'game-log'
+    ];
+    zoneIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = ''; // Limpa o conteúdo
+    });
+    $('#game-log').html('<li>Log da Partida:</li>'); // Reseta o log com o cabeçalho
+    console.log("[TEARDOWN] Zonas do DOM limpas.");
+
+    // 5. Destrói a instância lógica do jogo e zera a referência global
+    window.gameInstance?.destroy?.();
+    window.gameInstance = null;
+    console.log("[TEARDOWN] Instância do jogo destruída.");
+
+    // 6. Para a música de batalha e outros sons contínuos
+    window.audioManager?.stopBGM?.();
+    console.log("[TEARDOWN] Áudio da partida interrompido.");
+
+    // 7. Navega para a próxima tela, se especificado
+    if (nextScreen && window.uiManager) {
+      window.uiManager.navigateTo(nextScreen);
+    }
+  } catch (e) {
+    console.error('[TEARDOWN] Erro durante a limpeza da partida:', e);
+    // Em caso de erro, tenta uma navegação de fallback para evitar que o usuário fique preso
+    if (nextScreen && window.uiManager) {
+      window.uiManager.navigateTo('home-screen');
+    }
+  }
+}
+// Exporta a função para o escopo global para que outros módulos possam acessá-la.
+window.teardownMatch = teardownMatch;
+
+
+
+// -------------------------------------------------------------------------------------------------
 
 $(document).ready(async () => {
-  console.log("Runebound Clash - Initializing (Dynamic HTML)...");
+  console.log('Runebound Clash - Initializing (Dynamic HTML).');
 
+  // Cursor customizado com fallback
   let customCursorInstance = null;
   try {
     customCursorInstance = new CustomCursor(260);
   } catch (cursorError) {
-    console.error("Failed to initialize custom cursor:", cursorError);
+    console.error('Failed to initialize custom cursor:', cursorError);
     $('body').css('cursor', 'url("assets/images/ui/cursor.png"), auto');
   }
 
@@ -58,13 +143,14 @@ $(document).ready(async () => {
   const $body = $('body');
 
   if (!$screensContainer.length) {
-    console.error("CRITICAL ERROR: #screens-container not found!");
+    console.error('CRITICAL ERROR: #screens-container not found!');
     return;
   }
 
+  // ---------- 1) Render de TEMPLATES ----------
   try {
-    // Renderiza todas as telas no container principal
-    $screensContainer.empty()
+    $screensContainer
+      .empty()
       .append(generateSplashScreenHTML())
       .append(generateTitleScreenHTML())
       .append(generateLoginScreenHTML())
@@ -82,37 +168,47 @@ $(document).ready(async () => {
       .append(generateBoosterOpeningTemplate())
       .append(generateLoreVideoScreenHTML())
       .append(generateInitialDeckChoiceScreenHTML());
-    
-    // Adiciona elementos globais (Top Bar e Modais) diretamente ao <body>
+
+    // Elementos globais no <body>
     $body.prepend(generateTopBarHTML());
     $body.append(opponentDeckChoiceModalTemplate());
-    $body.append(graveyardModalTemplate());
-    $body.append(pauseMenuTemplate());
-    // >>> [NOVO E CORRIGIDO] <<< Adiciona o zoom overlay globalmente
-    if (!document.getElementById('battle-image-zoom-overlay')) {
-      $body.append(globalZoomOverlayTemplate()); // mantém o <img id="battle-zoomed-image">
-}
 
-    console.log("MAIN: HTML Structure dynamically generated.");
+    // Cemitério: injeta o HTML (idempotente). O controller também cria se faltar,
+    // mas manter o template aqui ajuda o SSR/manual debug.
+    if (!document.getElementById('graveyard-overlay')) {
+      $body.append(generateGraveyardModalHTML());
+    }
+
+    // Pause menu
+    $body.append(pauseMenuTemplate());
+
+    // Overlay global de zoom – só adiciona se não existir
+    if (!document.getElementById('battle-image-zoom-overlay')) {
+      $body.append(globalZoomOverlayTemplate());
+    }
+
+    console.log('MAIN: HTML Structure dynamically generated.');
   } catch (htmlGenError) {
-    console.error("MAIN: Critical error during HTML generation:", htmlGenError);
+    console.error('MAIN: Critical error during HTML generation:', htmlGenError);
     if (customCursorInstance) customCursorInstance.destroy();
     return;
   }
 
-  console.log("MAIN: Initializing modules and binding events...");
+  // ---------- 2) Inicialização de módulos ----------
+  console.log('MAIN: Initializing modules and binding events...');
   try {
     const cardDatabase = await loadCardDefinitions();
     if (!cardDatabase || Object.keys(cardDatabase).length === 0) {
-      console.error("MAIN: Card database is empty or failed to load. Aborting initialization.");
+      console.error('MAIN: Card database is empty or failed to load. Aborting initialization.');
       if (customCursorInstance) customCursorInstance.destroy();
       return;
     }
-    
+
+    // helpers globais
     window.cardDatabase = cardDatabase;
-    window.lookupCard = function(id) {
-        if (!id) return null;
-        return window.cardDatabase[String(id).trim().toUpperCase()] || null;
+    window.lookupCard = function (id) {
+      if (!id) return null;
+      return window.cardDatabase[String(id).trim().toUpperCase()] || null;
     };
 
     const screenManager = new ScreenManager();
@@ -120,26 +216,33 @@ $(document).ready(async () => {
     const audioManager = new AudioManager();
     const uiManager = new UIManager(screenManager, accountManager, cardDatabase, audioManager);
 
-    // Lógica da Splash Screen
+    // Torna acessível para teardown e debugging (onde necessário)
+    window.uiManager = uiManager;
+    window.audioManager = audioManager;
+
+    // Splash -> Title
     setTimeout(() => $('#splash-screen').addClass('loading'), 50);
     setTimeout(async () => {
       $('#splash-screen').removeClass('active loading');
       await uiManager.navigateTo('title-screen');
-      console.log("MAIN: Initial screen setup complete.");
+      console.log('MAIN: Initial screen setup complete.');
     }, 3000);
 
-    // Navegações e formulários
+    // ---------- 3) Utilidades de UI ----------
     const addAudioListeners = ($element, sfxClick = 'buttonClick', sfxHover = 'buttonHover') => {
-      $element.off('click.uisfx mouseenter.uisfx')
-        .on('click.uisfx', () => audioManager?.playSFX(sfxClick))
-        .on('mouseenter.uisfx', () => audioManager?.playSFX(sfxHover));
+      $element
+        .off('click.uisfx mouseenter.uisfx')
+        .on('click.uisfx', () => audioManager?.playSFX?.(sfxClick))
+        .on('mouseenter.uisfx', () => audioManager?.playSFX?.(sfxHover));
     };
 
+    // Navegação básica
     $('#btn-create-back-to-title, #btn-login-back-to-title').on('click', () => {
       $('#create-account-message, #login-message').text('');
       uiManager.navigateTo('title-screen');
     });
 
+    // Formulários
     $('#create-account-form').on('submit', (event) => {
       event.preventDefault();
       const u = $('#create-username').val().trim();
@@ -164,11 +267,19 @@ $(document).ready(async () => {
     $('#btn-deck-builder-back').on('click', () => uiManager.navigateTo('deck-management-screen'));
     $('#btn-connect-back-to-main').on('click', () => uiManager.navigateTo('home-screen'));
 
-    // ===== Partida vs IA =====
-    let gameInstance = null;
+    // Garante overlays globais
+    ensureZoomOverlay();
+    // Força o controller do cemitério a existir e ficar limpo
+    try { GraveyardModal.reset(); } catch {}
 
-    async function initializeAndStartGame(localPlayerDeckId, opponentUsername = "Opponent_AI", opponentDeckId) {
-      console.log("MAIN: Initializing game...");
+    // ---------- 4) Partida vs IA ----------
+    let gameInstance = null;
+    window.gameInstance = window.gameInstance || null; // referência global (para teardown seguro)
+
+    async function initializeAndStartGame(localPlayerDeckId, opponentUsername = 'Opponent_AI', opponentDeckId) {
+      console.log('MAIN: Initializing game...');
+      try { teardownMatch(null); } catch {}
+
       const aiProfileData = await getAIProfile();
       if (!aiProfileData) {
         $('#connect-message').text('Erro Crítico: Não foi possível carregar os dados da IA.').css('color', 'salmon');
@@ -179,39 +290,49 @@ $(document).ready(async () => {
       }
 
       const currentUser = accountManager.getCurrentUser();
-      const localDeck = (accountManager.loadDecks() || {})[localPlayerDeckId];
+      const allDecks = accountManager.loadDecks() || {};
+      const localDeck = allDecks[localPlayerDeckId];
       const opponentDeckIds = accountManager.getUserData(opponentUsername)?.decks?.[opponentDeckId]?.cards;
-      
+
       if (!localDeck || !localDeck.cards || localDeck.cards.length < 30 || localDeck.cards.length > 60) {
-        $('#connect-message').text(`Erro: Seu deck é inválido.`).css('color', 'salmon');
+        $('#connect-message').text('Erro: Seu deck é inválido.').css('color', 'salmon');
         return;
       }
       if (!opponentDeckIds || opponentDeckIds.length === 0) {
         $('#connect-message').text('Erro Crítico: Não foi possível carregar o deck do oponente.').css('color', 'salmon');
         return;
       }
-      
+
       try {
         gameInstance = new Game(cardDatabase);
 
-        // Registra a instância do jogo no modal do cemitério
-        if (window.GraveyardModal && typeof window.GraveyardModal.registerGame === 'function') {
-            window.GraveyardModal.registerGame(gameInstance);
-            console.log("[main.js] Instância do jogo registrada com sucesso no GraveyardModal.");
-        }
-        // (Opcional, mas útil para depuração no console)
+        // Útil para debug
         window.__lastGame = gameInstance;
 
+        // Cria jogadores e registra no UI
         const player1 = gameInstance.addPlayer(currentUser.username, localDeck.cards);
         const player2_IA = gameInstance.addPlayer(opponentUsername, opponentDeckIds);
 
         uiManager.setGameInstance(gameInstance);
         uiManager.setLocalPlayer(player1.id);
 
+        // >>> Integra o cemitério com o jogo ATUAL (antes de startGame)
+        try {
+          GraveyardModal.reset(); // estado limpo de partida anterior
+          GraveyardModal.registerGame(gameInstance);
+          GraveyardModal.registerPlayerResolver((ownerIdOrName) => {
+            const list = Array.isArray(gameInstance.players) ? gameInstance.players : [];
+            return list.find(p => p?.id === ownerIdOrName || p?.name === ownerIdOrName) || null;
+          });
+          console.log('[main.js] Instância do jogo registrada com sucesso no GraveyardModal.');
+        } catch (e) {
+          console.warn('[main.js] Falha ao registrar jogo no GraveyardModal:', e);
+        }
+
         if (gameInstance.setupGame()) {
           gameInstance.startGame();
           uiManager.renderInitialGameState();
-          console.log("MAIN: Game started successfully!");
+          console.log('MAIN: Game started successfully!');
           $('#connect-message').text('');
         }
       } catch (error) {
@@ -220,23 +341,48 @@ $(document).ready(async () => {
       }
     }
 
-    // ===== Pause Menu (ESC) =====
+    // ---------- 5) Pause Menu ----------
     const pauseMenu = new PauseMenuUI({
       isBattleActive: () => $('#battle-screen').hasClass('active')
     });
     pauseMenu.bindGlobalShortcut();
+    if (typeof pauseMenu.bindOpenRequest === 'function') {
+      pauseMenu.bindOpenRequest();
+    }
+
+    // Eventos do Pause (padronizados)
+    document.addEventListener('pause:options', () => {
+      try { pauseMenu.close(); } catch {}
+      uiManager.navigateTo('options-screen');
+    });
 
     document.addEventListener('pause:exit', () => {
-      gameInstance = null;
-      uiManager.navigateTo('connect-screen');
+      teardownMatch('connect-screen');
     });
-    document.addEventListener('pause:options', () => uiManager.navigateTo('options-screen'));
 
+    document.addEventListener('pause:concede', () => {
+      teardownMatch('connect-screen');
+    });
 
-    // ===== Modal de Escolha de Deck (vs IA) =====
+    // Compatibilidade com emissões antigas (se ainda existirem)
+    document.addEventListener('app:navigate:title', () => {
+      teardownMatch('connect-screen');
+    });
+    document.addEventListener('battle:concede:request', () => {
+      teardownMatch('connect-screen');
+    });
+    document.addEventListener('options:open', () => {
+      try { pauseMenu.close(); } catch {}
+      uiManager.navigateTo('options-screen');
+    });
+
+    // ---------- 6) Modal de escolha de Deck (vs IA) ----------
     $(document).on('click', '#btn-create-server', () => {
       const decks = accountManager.loadDecks();
-      const firstValidDeckId = decks ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 60) : null;
+      const firstValidDeckId = decks
+        ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 60)
+        : null;
+
       if (!firstValidDeckId) {
         $('#connect-message').text('Erro: Nenhum deck válido (30-60 cartas) encontrado.').css('color', 'salmon');
         return;
@@ -247,8 +393,12 @@ $(document).ready(async () => {
     $(document).on('click', '#ai-deck-choice-overlay .deck-choice-option', function () {
       const chosenOpponentDeckId = $(this).data('deck-id');
       $('#ai-deck-choice-overlay').removeClass('active');
+
       const decks = accountManager.loadDecks();
-      const firstValidDeckId = decks ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 60) : null;
+      const firstValidDeckId = decks
+        ? Object.keys(decks).find(id => decks[id]?.cards?.length >= 30 && decks[id]?.cards?.length <= 60)
+        : null;
+
       if (firstValidDeckId && chosenOpponentDeckId) {
         initializeAndStartGame(firstValidDeckId, 'Opponent_AI', chosenOpponentDeckId);
       }
@@ -257,8 +407,8 @@ $(document).ready(async () => {
     $(document).on('click', '#ai-deck-choice-overlay [data-action="cancelar"]', () => {
       $('#ai-deck-choice-overlay').removeClass('active');
     });
-    
-    // Outras ações (placeholders multiplayer etc.)
+
+    // Placeholders de multiplayer
     $('#btn-show-join-options').on('click', () => {
       $('#join-game-section').show();
       $('#connect-message').text('');
@@ -267,11 +417,12 @@ $(document).ready(async () => {
       $('#connect-message').text('Modo multiplayer ainda não implementado.').css('color', 'orange');
     });
 
-    console.log("Runebound Clash UI Ready.");
+    console.log('Runebound Clash UI Ready.');
 
   } catch (initError) {
-    console.error("MAIN: Critical initialization error:", initError);
-    $screensContainer.html(`<p style="color:red; font-weight:bold;">Erro Crítico: ${initError.message}. Recarregue.</p>`);
-    if (customCursorInstance) customCursorInstance.destroy();
+    console.error('MAIN: Critical initialization error:', initError);
+    $('#screens-container').html(
+      `<p style="color:red; font-weight:bold;">Erro Crítico: ${initError.message}</p>`
+    );
   }
 });

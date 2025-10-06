@@ -1,331 +1,282 @@
 // js/ui/html-templates/graveyardModalTemplate.js
-// Template + Controller com autodetecção e possibilidade de registrar game/resolver externamente.
-// Mantém compatibilidade com o seu template e adiciona:
-//  - GraveyardModal.registerGame(game)
-//  - GraveyardModal.registerPlayerResolver(fn)
-//  - Eventos: ui:register:game, ui:register:player-resolver, ui:graveyard:open
-//  - Fallbacks robustos para localizar a zona "cemitério" e transformar raw->card entity.
+// -----------------------------------------------------------------------------
+// VERSÃO FINAL COMPLETA E CORRIGIDA
+// - Renderiza o HTML das cartas com as classes CSS corretas (.gy-card, .gy-thumb).
+// - Utiliza o CardRegistry para normalizar os dados da carta e encontrar a URL da imagem.
+// - Integra-se com o ZoomHandler global da UI da batalha para ampliar as cartas.
+// - Mantém a estrutura modular com uma façade singleton para fácil uso.
+// -----------------------------------------------------------------------------
 
-import ModalStack from '../helpers/ModalStack.js';
-import ZoomHandler from '../helpers/ZoomHandler.js';
+// Adicionado import para o CardRegistry, que é essencial.
 import CardRegistry from '../../data/CardRegistry.js';
 
-// ---------------- TEMPLATE (default export — inalterado) ----------------
-export default function graveyardModalTemplate() {
+"use strict";
+
+const GY_OVERLAY_ID = "graveyard-overlay";
+const GY_GRID_SELECTOR = "#graveyard-card-list, .graveyard-grid";
+const GY_OVERLAY_CLASS = "graveyard-overlay";
+
+/**
+ * Gera o HTML do overlay do Cemitério.
+ */
+export function generateGraveyardModalHTML() {
   return `
-<div id="graveyard-overlay"
-     class="image-zoom-overlay fiery-opt-in"
-     aria-hidden="true"
-     style="display:none">
+<div id="${GY_OVERLAY_ID}" class="${GY_OVERLAY_CLASS} fiery-opt-in" aria-hidden="true" style="display:none; z-index:1200;">
   <div class="graveyard-panel" role="dialog" aria-modal="true" aria-labelledby="graveyard-title">
     <header class="section-header">
       <h2 id="graveyard-title" class="section-title">
-        Cemitério — <span class="gy-owner">Você</span>
+        Cemitério — <span class="gy-owner"></span> (<span class="gy-count"></span>)
       </h2>
-      <p class="section-subtitle">Clique fora para fechar.</p>
+      <p class="section-subtitle">Clique com o botão direito para ampliar. Clique fora para fechar.</p>
     </header>
-
-    <div id="graveyard-card-list" class="graveyard-grid" role="list"></div>
-
-    <div class="graveyard-empty" hidden>
+    <div id="graveyard-card-list" class="graveyard-grid" role="list">
+      <!-- As cartas serão renderizadas aqui pelo JavaScript -->
+    </div>
+    <div class="graveyard-empty" style="display: none;">
       <p>O cemitério está vazio.</p>
     </div>
   </div>
 </div>
-  `;
+`.trim();
 }
 
-// ---------------- CONTROLLER ----------------
-class GraveyardController {
+/**
+ * Controller principal do Cemitério.
+ */
+export class GraveyardController {
   constructor() {
-    /** @type {HTMLElement|null} */ this.$overlay = null;
-    /** @type {HTMLElement|null} */ this.$grid = null;
-    /** @type {HTMLElement|null} */ this.$empty = null;
-    /** @type {HTMLElement|null} */ this.$owner = null;
+    this.$overlay = null;
+    this.$grid = null;
+    this.$empty = null;
+    this.$owner = null;
+    this.$count = null;
 
-    /** @type {any} */ this._playerRef = null;
-    /** @type {any} */ this._gameRef = null;
-    /** @type {function|null} */ this._playerResolver = null;
     this._isOpen = false;
+    this._game = null;
+    this._playerRef = null;
+
     this.DEBUG = false;
+    this._onKeyDown = this._onKeyDown.bind(this);
+    this._onOutsideClick = this._onOutsideClick.bind(this);
 
-    // Zoom compartilhado (usa overlay do zoom de batalha se já existir)
-    this.zoom = new ZoomHandler({
-      overlaySelector: '#battle-image-zoom-overlay',
-      baseZ: 1300,
-      autoCreate: false,
-    });
-
-    this._ensureMounted();
-    this._bindBackdropClose();
-    this._bindCloseButton();
-    this._bindGlobalEvent();
-    this._registerExternalRefsBridge();
+    this._ensureOverlay();
+    this._cacheSelectors();
+    this._bindEventsSafe();
   }
 
-  // --------------- Logging helpers ---------------
-  _log(...a){ if(this.DEBUG) console.log('[GraveyardModal]', ...a); }
-  _warn(...a){ console.warn('[GraveyardModal]', ...a); }
-
-  // --------------- Montagem/Binding ---------------
-  _ensureMounted() {
-    let overlay = document.getElementById('graveyard-overlay');
-    if (!overlay) {
-      const tpl = graveyardModalTemplate();
-      const div = document.createElement('div');
-      div.innerHTML = tpl.trim();
-      document.body.appendChild(div.firstElementChild);
-      overlay = document.getElementById('graveyard-overlay');
-      this._log('Template injetado no DOM.');
+  _ensureOverlay() {
+    let ov = document.getElementById(GY_OVERLAY_ID);
+    if (!ov) {
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = generateGraveyardModalHTML();
+      ov = wrapper.firstElementChild;
+      document.body.appendChild(ov);
     }
-    this.$overlay = overlay;
-    this.$grid = overlay.querySelector('#graveyard-card-list') || overlay.querySelector('.graveyard-grid');
-    this.$empty = overlay.querySelector('.graveyard-empty');
-    this.$owner = overlay.querySelector('.gy-owner');
-
-    if (!this.$grid) this._warn('Grid não encontrado (#graveyard-card-list ou .graveyard-grid).');
+    this.$overlay = ov;
   }
 
-  _bindBackdropClose() {
+  _cacheSelectors(force = false) {
+    if (!this.$overlay) this._ensureOverlay();
+    if (force || !this.$grid) this.$grid = this.$overlay.querySelector(GY_GRID_SELECTOR);
+    if (force || !this.$empty) this.$empty = this.$overlay.querySelector(".graveyard-empty");
+    if (force || !this.$owner) this.$owner = this.$overlay.querySelector(".gy-owner");
+    if (force || !this.$count) this.$count = this.$overlay.querySelector(".gy-count");
+  }
+
+  _bindEventsSafe() {
     if (!this.$overlay) return;
-    this.$overlay.addEventListener('click', (e) => {
-      if (e.target === this.$overlay && this._isOpen && ModalStack.top()?.el === this.$overlay) {
-        e.preventDefault(); e.stopPropagation();
-        this.close();
-      }
-    });
+    this.$overlay.addEventListener("mousedown", this._onOutsideClick, { passive: true });
+    this.$overlay.addEventListener("touchstart", this._onOutsideClick, { passive: true });
+    const panel = this.$overlay.querySelector(".graveyard-panel");
+    if (panel) {
+      panel.addEventListener("mousedown", (e) => e.stopPropagation(), { passive: true });
+      panel.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
+    }
   }
 
-  _bindCloseButton() {
-    if (!this.$overlay) return;
-    this.$overlay.addEventListener('click', (e) => {
-      const t = /** @type {HTMLElement} */ (e.target);
-      const btn = t.closest?.('[data-action="close-graveyard"]');
-      if (btn) { e.preventDefault(); e.stopPropagation(); this.close(); }
-    });
+  _bindEsc() {
+    document.addEventListener("keydown", this._onKeyDown);
   }
 
-  _bindGlobalEvent() {
-    document.addEventListener('ui:graveyard:open', (e) => {
-      const detail = e.detail || {};
-      this.open(detail.player ?? detail.selector ?? 'current', { ownerLabel: detail.ownerLabel });
-    });
+  _unbindEsc() {
+    document.removeEventListener("keydown", this._onKeyDown);
   }
 
-  _registerExternalRefsBridge() {
-    document.addEventListener('ui:register:game', (e) => {
-      const g = e?.detail?.game;
-      if (g) {
-        this._gameRef = g;
-        this._log('Game registrado via evento:', !!this._gameRef);
-      }
-    });
-
-    document.addEventListener('ui:register:player-resolver', (e) => {
-      const fn = e?.detail?.resolver;
-      if (typeof fn === 'function') {
-        this._playerResolver = fn;
-        this._log('Player resolver registrado (evento).');
-      }
-    });
+  _onKeyDown(ev) {
+    if (ev.key === "Escape" && this._isOpen) {
+      this.close();
+    }
   }
 
-  // --------------- API de registro explícito ---------------
+  _onOutsideClick(e) {
+    if (e.target === this.$overlay && this._isOpen) {
+      this.close();
+    }
+  }
+
   registerGame(game) {
-    this._gameRef = game || null;
-    this._log('Game registrado via API:', !!this._gameRef);
+    this._game = game || null;
+    this._playerRef = null;
+    this._cacheSelectors(true);
   }
+
   registerPlayerResolver(fn) {
-    if (typeof fn === 'function') {
-      this._playerResolver = fn;
-      this._log('Player resolver registrado via API.');
-    }
+    this._playerResolver = typeof fn === "function" ? fn : null;
   }
 
-  // --------------- Autodetecção de game/player ---------------
-  _autodetectGame() {
-    if (this._gameRef) return this._gameRef;
+  open(playerObject) {
+    if (this._isOpen) return;
+    this._ensureOverlay();
+    this._cacheSelectors();
+    this._playerRef = playerObject;
 
-    const w = window;
-    const candidates = [
-      w.game, w.__game, w.__CURRENT_GAME, w.__lastGame, w.RBC?.game,
-      w.UIManager?.game, w.UIManager?.currentGame, w.UIManager?._game,
-      w.UI?.game, w.__RBC?.game, w.ScreenManager?.game
-    ].filter(Boolean);
+    this.refresh();
 
-    const best = candidates.find(g => g && typeof g.getPlayer === 'function' && g.getCurrentPlayer);
-    return best || candidates[0] || null;
-  }
+    this.$overlay.style.display = "flex";
+    this.$overlay.classList.add("active");
+    this.$overlay.setAttribute("aria-hidden", "false");
+    this._isOpen = true;
+    this._bindEsc();
 
-  _autodetectPlayer(selector = 'current') {
-    if (this._playerResolver) {
-      try {
-        const p = this._playerResolver(selector);
-        if (p) return p;
-      } catch {}
-    }
-
-    const game = this._autodetectGame();
-    if (!game) return null;
-
-    if (selector === 'current') return game.getCurrentPlayer ? game.getCurrentPlayer() : null;
-    if (selector === 'opponent') return game.getOpponent ? game.getOpponent(game.getCurrentPlayer()?.id) : null;
-    if (typeof selector === 'string' && selector.startsWith('player_')) return game.getPlayer ? game.getPlayer(selector) : null;
-    if (selector && typeof selector === 'object' && selector.id) return selector;
-
-    return null;
-  }
-
-  // --------------- API PÚBLICA ---------------
-  open(playerOrSelector, { ownerLabel } = {}) {
-    let player = playerOrSelector;
-    if (!player || typeof player === 'string') {
-      player = this._autodetectPlayer(player || 'current') || null;
-    }
-
-    this._playerRef = player || this._playerRef;
-    if (!this._playerRef) {
-      document.dispatchEvent(new CustomEvent('ui:graveyard:needs-game'));
-      this._warn('Nenhum player disponível em .open(). Registre o game: GraveyardModal.registerGame(game)');
-      return;
-    }
-
-    if (this.$owner && ownerLabel) this.$owner.textContent = ownerLabel;
-
-    this.$overlay.style.display = 'flex';
-    requestAnimationFrame(() => {
-      this.$overlay.classList.add('active');
-      this.$overlay.setAttribute('aria-hidden', 'false');
-      this._isOpen = true;
-      ModalStack.push(this.$overlay, { onClose: () => this.close(), esc: true, backdrop: true, baseZ: 1200 });
-      this._renderCards();
-    });
+    if (this.DEBUG) console.info("[Graveyard] Aberto para:", this._playerRef?.name);
   }
 
   close() {
-    if (!this._isOpen || !this.$overlay) return;
-    if (this.zoom?.isZoomOpen && this.zoom.isZoomOpen()) { this.zoom.closeZoom(); return; }
-    this.$overlay.classList.remove('active');
-    this.$overlay.setAttribute('aria-hidden', 'true');
-    setTimeout(() => { if (!this.$overlay?.classList.contains('active')) this.$overlay.style.display = 'none'; }, 200);
-    this._isOpen = false;
-    ModalStack.remove(this.$overlay);
-  }
-
-  refresh() { if (this._isOpen) this._renderCards(); }
-
-  // --------------- Lógica de Leitura e Renderização ---------------
-  
-  _readGraveyardFrom(player) {
-    const { arr } = this._detectGraveyardArray(player, this.DEBUG);
-    return arr || [];
-  }
-  
-  // AQUI ESTÁ A CORREÇÃO PRINCIPAL
-  _detectGraveyardArray(player, verbose = false) {
-    if (!player) return { arr: [], path: '', reason: 'sem player' };
-
-    // >>> [CORREÇÃO APLICADA] <<<
-    // Tenta primeiro o padrão do seu projeto: player.graveyard.getCards()
-    if (player.graveyard && typeof player.graveyard.getCards === 'function') {
-        try {
-            const cards = player.graveyard.getCards();
-            if (Array.isArray(cards)) {
-                if (verbose) this._log("Zona encontrada via 'player.graveyard.getCards()'");
-                return { arr: cards, path: 'player.graveyard.getCards()', reason: 'método getCards()' };
-            }
-        } catch (e) {
-            this._warn('Erro ao chamar player.graveyard.getCards()', e);
-        }
-    }
-    // >>> FIM DA CORREÇÃO <<<
-
-    // Fallbacks (mantidos por robustez)
-    if (Array.isArray(player.graveyard)) return { arr: player.graveyard, path: 'player.graveyard', reason: 'propriedade direta' };
-    if (typeof player.getZone === 'function') {
-      try {
-        const z = player.getZone('graveyard');
-        if (Array.isArray(z)) return { arr: z, path: "player.getZone('graveyard')", reason: 'getter' };
-      } catch {}
-    }
-    if (player.zones && Array.isArray(player.zones.graveyard)) {
-      return { arr: player.zones.graveyard, path: 'player.zones.graveyard', reason: 'zones.graveyard' };
-    }
-    // ... outros fallbacks ...
-    return { arr: [], path: '', reason: 'não encontrado' };
-  }
-
-  _toEntity(raw) {
-    try {
-      if (CardRegistry && typeof CardRegistry.toEntity === 'function') {
-        return CardRegistry.toEntity(raw);
+    if (!this.$overlay || !this._isOpen) return;
+    this.$overlay.classList.remove("active");
+    this.$overlay.setAttribute("aria-hidden", "true");
+    setTimeout(() => {
+      if (!this.$overlay?.classList.contains('active')) {
+        this.$overlay.style.display = 'none';
       }
-    } catch {}
-    const id = raw.id || raw.cardId || raw.baseId || '';
-    const name = raw.name || id || 'Carta';
-    const image = raw.image_src || raw.image || raw.art || '';
-    return { id, name, image, thumb: image, uniqueId: raw.uniqueId || id };
+    }, 200);
+    this._isOpen = false;
+    this._unbindEsc();
+    if (this.DEBUG) console.info("[Graveyard] Fechado.");
   }
 
-  _renderCards() {
-    if (!this.$grid) { this._ensureMounted(); if (!this.$grid) return; }
-    const gy = this._readGraveyardFrom(this._playerRef);
-    this.$grid.innerHTML = '';
+  reset() {
+    this.close();
+    this._ensureOverlay();
+    this._cacheSelectors(true);
+    if (this.$grid) this.$grid.replaceChildren();
+    if (this.$empty) this.$empty.style.display = 'block';
+    if (this.$owner) this.$owner.textContent = "";
+    if (this.$count) this.$count.textContent = "0";
+    this._isOpen = false;
+    this._playerRef = null;
+    if (this.DEBUG) console.info("[Graveyard] Reset concluído.");
+  }
 
-    if (!Array.isArray(gy) || gy.length === 0) {
-      if (this.$empty) this.$empty.hidden = false;
-      return;
+  refresh() {
+    if (!this._isOpen) return;
+    this._cacheSelectors();
+    this._renderCards();
+  }
+
+  _getLiveCards() {
+    const p = this._playerRef;
+    if (!p) return [];
+    if (p.graveyard && typeof p.graveyard.getCards === 'function') {
+      return p.graveyard.getCards();
     }
-    if (this.$empty) this.$empty.hidden = true;
+    return [];
+  }
+
+  /**
+   * [CORRIGIDO] Renderiza as cartas usando a estrutura HTML esperada pelo CSS
+   * e integra com o ZoomHandler global.
+   */
+  _renderCards() {
+    if (!this.$grid) {
+      this._cacheSelectors();
+      if (!this.$grid) return;
+    }
+    this.$grid.replaceChildren();
+
+    const graveyardCards = this._getLiveCards();
+    const hasCards = graveyardCards.length > 0;
+
+    this.$empty.style.display = hasCards ? 'none' : 'block';
+    if (this.$owner) this.$owner.textContent = this._playerRef?.name || "";
+    if (this.$count) this.$count.textContent = String(graveyardCards.length);
+
+    if (!hasCards) return;
 
     const frag = document.createDocumentFragment();
-    gy.forEach((raw) => {
-      const c = this._toEntity(raw);
-      const item = document.createElement('div');
-      item.className = 'gy-card';
-      item.setAttribute('tabindex', '0');
-      item.setAttribute('role', 'button');
-      item.setAttribute('aria-label', `Ampliar ${c.name}`);
-      item.dataset.fullSrc = c.image || c.thumb || '';
 
-      const img = document.createElement('img');
-      img.className = 'gy-thumb';
-      img.alt = c.name;
-      img.decoding = 'async';
-      img.loading = 'lazy';
-      img.src = c.thumb || c.image || '';
+    graveyardCards.forEach((cardInstance) => {
+      const cardEntity = CardRegistry.toEntity(cardInstance.getRenderData());
 
-      const title = document.createElement('div');
-      title.className = 'gy-title';
-      title.textContent = c.name;
+      const cardElement = document.createElement('div');
+      cardElement.className = 'gy-card';
+      cardElement.setAttribute('role', 'button');
+      cardElement.setAttribute('tabindex', '0');
+      cardElement.setAttribute('aria-label', `Ampliar ${cardEntity.name}`);
+      cardElement.dataset.fullSrc = cardEntity.image;
+      cardElement.dataset.cardId = cardEntity.baseId;
 
-      item.appendChild(img);
-      item.appendChild(title);
-      frag.appendChild(item);
+      const thumbElement = document.createElement('img');
+      thumbElement.className = 'gy-thumb';
+      thumbElement.src = cardEntity.image;
+      thumbElement.alt = cardEntity.name;
+      thumbElement.loading = 'lazy';
 
-      const openZoom = (e) => {
-        e.preventDefault(); e.stopPropagation();
-        const url = item.dataset.fullSrc || img.src;
-        if (url) this.zoom.handleZoomClick(e, url);
-      };
-      item.addEventListener('click', openZoom);
-      item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openZoom(e); });
+      const titleElement = document.createElement('div');
+      titleElement.className = 'gy-title';
+      titleElement.textContent = cardEntity.name;
+
+      cardElement.appendChild(thumbElement);
+      cardElement.appendChild(titleElement);
+      
+      cardElement.addEventListener('click', this._handleZoomClick);
+      cardElement.addEventListener('contextmenu', this._handleZoomClick);
+
+      frag.appendChild(cardElement);
     });
+
     this.$grid.appendChild(frag);
+  }
+
+  _handleZoomClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const zoomHandler = window.uiManager?._battleUI?._zoomHandler;
+    if (zoomHandler && typeof zoomHandler.handleZoomClick === 'function') {
+      zoomHandler.handleZoomClick(e);
+    } else {
+      console.warn("ZoomHandler global não encontrado. Zoom não funcionará.");
+    }
   }
 }
 
-// ---------------- Bootstrap/Exposição Global ----------------
-(function bootstrapGraveyard() {
-  if (typeof window === 'undefined') return;
-  const controller = new GraveyardController();
-  window.GraveyardModal = {
-    open: (...a) => controller.open(...a),
-    close: () => controller.close(),
-    refresh: () => controller.refresh(),
-    registerGame: (g) => controller.registerGame(g),
-    registerPlayerResolver: (fn) => controller.registerPlayerResolver(fn),
-    get DEBUG() { return controller.DEBUG; },
-    set DEBUG(v) { controller.DEBUG = !!v; },
-  };
-})();
+// -----------------------------------------------------------------------------
+// Façade Singleton (sem alterações)
+// -----------------------------------------------------------------------------
+let _controllerSingleton = null;
+
+function getController() {
+  if (!_controllerSingleton) {
+    _controllerSingleton = new GraveyardController();
+  }
+  return _controllerSingleton;
+}
+
+const GraveyardModal = {
+  open: (...a) => getController().open(...a),
+  close: () => getController().close(),
+  refresh: () => getController().refresh(),
+  reset: () => getController().reset(),
+  registerGame: (g) => getController().registerGame(g),
+  registerPlayerResolver: (fn) => getController().registerPlayerResolver(fn),
+};
+
+try {
+  if (typeof window !== "undefined") {
+    if (!window.GraveyardModal) window.GraveyardModal = GraveyardModal;
+    if (!window.GraveyardController) window.GraveyardController = GraveyardController;
+  }
+} catch {}
+
+export default GraveyardModal;

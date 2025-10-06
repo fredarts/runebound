@@ -130,3 +130,71 @@ body:has(#graveyard-overlay.active) #battle-image-zoom-overlay.active img {
   max-height: 75vh;
   max-width: 75vw;
 }
+
+
+.graveyard-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;                 /* aparece com .active */
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.88);
+  backdrop-filter: blur(5px);
+  z-index: 1200;                 /* já havia uma regra por ID; mantemos aqui também */
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 1;                    /* usamos toggle por display/active */
+  visibility: visible;           /* idem */
+}
+
+.graveyard-overlay.active {
+  display: flex;
+}
+
+/* Opcional: se usar empilhamento com zoom dentro do cemitério */
+#battle-image-zoom-overlay { z-index: 1300; }
+
+
+/* Grade do cemitério */
+.graveyard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+  max-height: min(70vh, 720px);
+  overflow: auto;
+  padding: 8px;
+}
+
+/* Cartinha do cemitério (div com bg) */
+.gy-card {
+  width: 100%;
+  /* Altura visível mesmo sendo só background: */
+  aspect-ratio: 63 / 88;     /* proporção padrão de carta (aprox. 0.716) */
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, #4a637a);
+  box-shadow: 0 6px 14px rgba(0,0,0,.35);
+  cursor: zoom-in;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Se o renderer usar <img> ao invés de bg-image, garante visibilidade */
+.graveyard-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, #4a637a);
+  box-shadow: 0 6px 14px rgba(0,0,0,.35);
+}
+
+/* Mensagem de vazio some quando há cartas */
+.graveyard-empty { display: none; }
+.graveyard-empty.is-visible { 
+  display: block; 
+  text-align: center; 
+  opacity: .85; 
+  padding: 16px 8px;
+}

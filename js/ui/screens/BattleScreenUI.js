@@ -15,6 +15,7 @@ export default class BattleScreenUI {
     #zoomHandler;
     #audioManager;
     #uiManager;
+    #graveyard; 
     
     // --- Componentes de UI da Batalha ---
     #battleRenderer;
@@ -127,65 +128,66 @@ export default class BattleScreenUI {
     }
 
     _bindPermanentEvents() {
-        if (!this.#btnBackToProfile?.length && this.#battleScreenElement?.length) this._cacheEssentialSelectors();
+        if (!this.#btnBackToProfile?.length && this.#battleScreenElement?.length) this._cacheSelectors();
 
         const graveyardNamespace = '.battlescreen_graveyard';
         const graveyardSelectors = '.graveyard-zone, #player-graveyard-img, #opponent-graveyard-img';
 
         this.#battleScreenElement.off(graveyardNamespace);
 
-        // >>> [CORREÇÃO APLICADA AQUI] <<< Lógica de abertura do cemitério
+        // Lógica correta para abrir o cemitério do jogador específico clicado
         this.#battleScreenElement.on(`contextmenu${graveyardNamespace} click${graveyardNamespace}`, graveyardSelectors, (e) => {
             if (e.type === 'click' && !e.shiftKey) return;
             e.preventDefault();
             
-            // Determina qual monte de cemitério foi clicado, encontrando o elemento .player-area pai.
             const isOpponentGraveyard = $(e.currentTarget).closest('.player-area').hasClass('opponent');
             
-            // Busca o objeto do jogador correspondente, independentemente de quem é o jogador "current".
             const targetPlayer = isOpponentGraveyard 
                 ? this.#gameInstance.getOpponent(this.#localPlayerId)
                 : this.#gameInstance.getPlayer(this.#localPlayerId);
             
             if (targetPlayer && window.GraveyardModal) {
                 console.log(`[BattleScreenUI] Abrindo cemitério para jogador específico: ${targetPlayer.name}`);
-                // Passamos o OBJETO do jogador diretamente para o modal.
-                // Isso elimina qualquer ambiguidade sobre 'current' vs 'opponent'.
-                window.GraveyardModal.open(targetPlayer, {
-                    ownerLabel: isOpponentGraveyard ? 'Oponente' : 'Você'
-                });
+                window.GraveyardModal.open(targetPlayer);
             } else {
                 console.warn('[BattleScreenUI] Não foi possível abrir o cemitério: jogador alvo ou modal não encontrado.');
             }
         });
         
-        // BOTÃO DE FIM DE JOGO
+        // BOTÃO DE FIM DE JOGO - CORRIGIDO PARA RESET COMPLETO
         this.#btnBackToProfile?.off('click.gameoverbtn_ui').on('click.gameoverbtn_ui', () => {
             this.#audioManager?.playSFX('buttonClick');
-            this.#battleRenderer.hideGameOver();
-            this.#gameInstance = null;
-            this.#battleInteractionManager?._unbindGameActions();
-            this.#battleInteractionManager = null;
-            if (this.#zoomObserver) { this.#zoomObserver.disconnect(); this.#zoomObserver = null; }
-            this.#uiManager?.navigateTo('profile-screen');
+            this.#battleRenderer.hideGameOver(); // Feedback visual imediato
+
+            // CHAMADA CRÍTICA PARA A FUNÇÃO DE LIMPEZA GLOBAL
+            // Esta função (definida em main.js) reseta o jogo, o cemitério e navega.
+            if (typeof window.teardownMatch === 'function') {
+                window.teardownMatch('profile-screen'); 
+            } else {
+                // Fallback de segurança caso a função global não seja encontrada
+                console.error("Função global teardownMatch() não encontrada! Realizando limpeza manual mínima.");
+                this.#gameInstance = null;
+                this.#battleInteractionManager?._unbindGameActions();
+                this.#battleInteractionManager = null;
+                if (this.#zoomObserver) { this.#zoomObserver.disconnect(); this.#zoomObserver = null; }
+                this.#uiManager?.navigateTo('profile-screen');
+            }
+
+            // A UI é responsável por gerenciar seus próprios estados, como a top bar
             $('#top-bar').removeClass('battle-only');
         });
 
         // LÓGICA HIERÁRQUICA DA TECLA ESC
         $(document).off('keydown.battlescreen_esc_ui').on('keydown.battlescreen_esc_ui', (e) => {
-            if (e.key !== "Escape" || !this.#battleScreenElement?.hasClass('active')) {
-                return;
-            }
-            
-            // O ModalStack (usado pelo GraveyardModal) é inteligente. Ele só reage se tiver um modal no topo da pilha.
-            // Se a pilha estiver vazia, ele não fará nada, permitindo que a lógica abaixo seja executada.
-            if (window.ModalStack && window.ModalStack.hasActive()) {
-                // Deixa o ModalStack lidar com o ESC para o modal do topo. Não fazemos nada aqui.
-                return;
-            }
+            if (e.key !== "Escape" || !this.#battleScreenElement?.hasClass('active')) return;
 
-            // Se nenhum modal estiver aberto (pilha vazia), a tecla ESC cancela ações do jogo.
-            this.#battleInteractionManager?.handleEscKey();
+            if (window.ModalStack && window.ModalStack.hasActive()) return;
+
+            const handled = this.#battleInteractionManager?.handleEscKey?.() === true;
+
+            if (!handled) {
+                document.dispatchEvent(new CustomEvent('pause:request'));
+            }
         });
 
         // Observador do Zoom
@@ -489,21 +491,55 @@ export default class BattleScreenUI {
         }
     }
 
-    destroy() {
-        console.log("BattleScreenUI: Destroying...");
-        const namespace = '.battlescreen_ui';
+     destroy() {
+        console.log("BattleScreenUI: Destroying (unbinding events)...");
+        const namespace = '.battle_ui'; // Use um namespace para desvincular apenas os eventos desta UI
+        
+        // Desvincula eventos delegados no elemento raiz
         this.#battleScreenElement?.off(namespace);
-        $(document).off(`keydown${namespace}_esc_ui`);
+        
+        // Desvincula eventos globais que esta UI possa ter adicionado
+        $(document).off(`keydown.battlescreen_esc_ui`);
+
         if (this.#zoomObserver) {
             this.#zoomObserver.disconnect();
             this.#zoomObserver = null;
         }
+        
+        // Limpa o interaction manager
         this.#battleInteractionManager?._unbindGameActions();
-        this.#battleInteractionManager = null;
-        this.#gameInstance = null;
-        this.#battleScreenElement = null;
-        this.#gameOverOverlayElement = null;
-        this.#btnBackToProfile = null;
-        this.#permanentEventsBound = false;
+        
+        // Reseta a flag para que os eventos permanentes possam ser vinculados novamente na próxima partida.
+        this.#permanentEventsBound = false; 
+        
+        console.log("BattleScreenUI: Event listeners unbound.");
+    
     }
+
+     destroyMatch() {
+        console.log("BattleScreenUI: Destroying match-specific state and listeners...");
+        try {
+            // 1. Desvincula todos os listeners de eventos de jogo
+            this.#battleInteractionManager?._unbindGameActions();
+            this.#battleInteractionManager = null; // Remove a referência
+
+            // 2. Desvincula listeners de eventos permanentes (como cliques no cemitério)
+            const namespace = '.battlescreen_graveyard';
+            this.#battleScreenElement?.off(namespace);
+            $(document).off('.battlescreen_esc_ui');
+
+            // 3. Para o observador de zoom, se existir
+            if (this.#zoomObserver) {
+                this.#zoomObserver.disconnect();
+                this.#zoomObserver = null;
+            }
+
+            // 4. Limpa o DOM (redundante com a limpeza no main.js, mas garante encapsulamento)
+            this.#battleRenderer?.clearUI();
+        } catch (e) {
+            console.warn('[BattleScreenUI] Erro durante destroyMatch:', e);
+        }
+    }
+
 }
+

@@ -671,24 +671,18 @@ export default class DeckBuilderUI {
     }
 
     destroy() {
-        // ... (mesmo destroy de antes) ...
         console.log("DeckBuilderUI: Destroying...");
         const namespace = '.deckbuilder';
+        // Desvincula eventos
         this.#deckBuilderScreenElement?.off(namespace);
         $('#deckbuilder-image-zoom-overlay')?.off(namespace);
 
+        // Destrói as instâncias do SortableJS
         if (this.#collectionSortable) try { this.#collectionSortable.destroy(); } catch(e) { console.warn("Error destroying collection sortable:", e);}
         if (this.#deckSortable) try { this.#deckSortable.destroy(); } catch(e) { console.warn("Error destroying deck sortable:", e); }
         this.#collectionSortable = null;
         this.#deckSortable = null;
-
-        this.#deckBuilderScreenElement = null;
-        this.#collectionListElement = null; this.#deckListElement = null; this.#deckNameInput = null;
-        this.#deckCountDisplay = null; this.#deckCountTop = null; this.#deckValiditySpan = null;
-        this.#saveButton = null; this.#clearButton = null; this.#backButton = null;
-        this.#messageParagraph = null; this.#titleElement = null; this.#collectionCountSpan = null;
-        this.#filterNameInput = null; this.#filterTypeSelect = null; this.#filterCostSelect = null; this.#filterTribeSelect = null;
-
+        
         this._filtersPopulated = false;
         console.log("DeckBuilderUI: Destroy complete.");
     }

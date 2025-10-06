@@ -258,11 +258,8 @@ export default class ProfileScreenUI {
 
     destroy() {
         console.log("ProfileScreenUI: Destroying (unbinding events)...");
-        this.#el?.off('.profileui'); // Remove listeners do elemento raiz e seus filhos delegados
-        // Se #avatarChoicesContainer tinha listeners diretos e não delegados, precisaria de um .off() específico.
-        // Mas como usamos delegação a partir de this.#el, o .off() acima deve cobrir.
-        this.#el = null; // Importante: permite que _cacheSelectors() o recupere na próxima renderização
-        this.#avatarChoicesContainer = null;
-        this.#usernameDisplayElement = null;
+        // Apenas desvincula os eventos com o namespace. Não anula as propriedades.
+        this.#el?.off('.profileui');
+        console.log("ProfileScreenUI: Destroy complete.");
     }
 }

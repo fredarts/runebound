@@ -1,14 +1,6 @@
 // js/ui/PauseMenuUI.js
 // Gerencia o menu de pausa usando uma pilha de modais (ModalStack).
-// Requisitos de markup (exemplo):
-// <div id="pause-menu-overlay" class="overlay" aria-hidden="true" style="display:none">
-//   <div class="pause-menu">
-//     <button class="pause-item" data-action="resume">Continuar</button>
-//     <button class="pause-item" data-action="options">Opções</button>
-//     <button class="pause-item" data-action="concede">Conceder Partida</button>
-//     <button class="pause-item" data-action="exit">Sair para o Título</button>
-//   </div>
-// </div>
+// VERSÃO CORRIGIDA: A ação 'exit' chama diretamente a função global de limpeza da partida.
 
 import ModalStack from './helpers/ModalStack.js';
 
@@ -18,8 +10,8 @@ export default class PauseMenuUI {
    * @param {string} [opts.overlaySelector='#pause-menu-overlay']
    * @param {string} [opts.itemSelector='.pause-item']
    * @param {string} [opts.activeClass='active']
-   * @param {(action:string)=>void} [opts.onAction]  // callback opcional para ações (resume/options/concede/exit)
-   * @param {() => boolean} [opts.isBattleActive]    // função opcional para checar se a batalha está ativa
+   * @param {(action:string)=>void} [opts.onAction]
+   * @param {() => boolean} [opts.isBattleActive]
    */
   constructor(opts = {}) {
     this.overlaySelector = opts.overlaySelector || '#pause-menu-overlay';
@@ -34,13 +26,9 @@ export default class PauseMenuUI {
     this.opened = false;
     this.index = 0;
 
-    // key handler durante o menu aberto (setado em open)
     this.trapKeys = null;
-
-    // Função opcional para verificar se a batalha está ativa
     this._isBattleActiveExternal = typeof opts.isBattleActive === 'function' ? opts.isBattleActive : null;
 
-    // Inicialização básica
     this._cacheSelectors();
     this._bindClickHandlers();
   }
@@ -61,7 +49,6 @@ export default class PauseMenuUI {
 
   _bindClickHandlers() {
     if (!this.$overlay) return;
-    // Delegação de clique para itens do menu
     this.$overlay.addEventListener('click', (e) => {
       const target = /** @type {HTMLElement} */ (e.target);
       if (!target) return;
@@ -74,138 +61,93 @@ export default class PauseMenuUI {
     });
   }
 
-  /**
-   * Registra um atalho global para ESC:
-   * - Se o menu estiver fechado E não houver nenhum modal na pilha -> abre o Pause.
-   * - Se o menu estiver aberto -> deixa o ModalStack fechar (não fecha aqui para evitar duplicidade).
-   */
-  bindGlobalShortcut() {
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') return;
-
-      if (this.opened) {
-        // Quem fecha é o ModalStack; aqui não fazemos nada para evitar concorrência.
-        return;
-      }
-
-      // Só permite abrir o pause se não houver outros modais ativos
+  bindOpenRequest() {
+    document.addEventListener('pause:request', () => {
+      if (this.opened) return;
+      // Adicionado !ModalStack.hasActive() para segurança
       if (!ModalStack.hasActive() && this.isBattleActive()) {
         this.open();
       }
     });
   }
 
-  /**
-   * Abre o menu de pausa e registra no ModalStack
-   */
-  open() {
-    if (this.opened) return;
-    if (!this.$overlay) return;
-    if (!this.isBattleActive()) return;
+  bindGlobalShortcut() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (this.opened) return;
+      if (!ModalStack.hasActive() && this.isBattleActive()) {
+        this.open();
+      }
+    });
+  }
 
-    // Não abra o pause por cima de outros modais
-    if (ModalStack.hasActive()) return;
+  open() {
+    if (this.opened || !this.$overlay || !this.isBattleActive() || ModalStack.hasActive()) {
+        return;
+    }
 
     this._refreshItems();
     this.index = Math.min(this.index, Math.max(0, this.$items.length - 1));
-
     this.opened = true;
 
-    // Exibe overlay
     this.$overlay.style.display = 'flex';
     requestAnimationFrame(() => {
       this.$overlay.classList.add(this.activeClass);
       this.$overlay.setAttribute('aria-hidden', 'false');
     });
 
-    // Empilha no ModalStack — ESC e clique no backdrop fecharão o topo
     ModalStack.push(this.$overlay, {
       onClose: () => this.close(),
       esc: true,
       backdrop: true,
-      baseZ: 1200, // deixe como quiser; pode remover para usar apenas CSS
+      baseZ: 1200,
     });
 
-    // Foco/seleção inicial
     this.highlight(this.index);
     this._focusSelected();
 
-    // Trava setas/enter enquanto o menu está aberto
     this.trapKeys = (e) => this._onKeyDown(e);
     document.addEventListener('keydown', this.trapKeys, true);
 
     document.dispatchEvent(new CustomEvent('pause:opened'));
-    this._sfx('menuOpen', 'buttonClick');
+    this._sfx('buttonClick'); // Som de abrir
   }
 
-  /**
-   * Fecha o menu de pausa e remove do ModalStack
-   */
   close() {
-    if (!this.opened) return;
-    if (!this.$overlay) return;
+    if (!this.opened || !this.$overlay) return;
 
     this.opened = false;
-
-    // Visual
     this.$overlay.classList.remove(this.activeClass);
     this.$overlay.setAttribute('aria-hidden', 'true');
     setTimeout(() => {
-      if (!this.$overlay) return;
-      if (!this.$overlay.classList.contains(this.activeClass)) {
+      if (this.$overlay && !this.$overlay.classList.contains(this.activeClass)) {
         this.$overlay.style.display = 'none';
       }
     }, 200);
 
-    // Remove listeners
     if (this.trapKeys) {
-      try {
-        document.removeEventListener('keydown', this.trapKeys, true);
-      } catch {}
+      document.removeEventListener('keydown', this.trapKeys, true);
       this.trapKeys = null;
     }
 
-    // Desempilha do ModalStack
     ModalStack.remove(this.$overlay);
-
     document.dispatchEvent(new CustomEvent('pause:closed'));
-    this._sfx('menuBack', 'buttonClick');
+    // Som de fechar pode ser acionado aqui, mas a ação 'resume' já tem som
   }
 
-  /**
-   * Handler de teclado enquanto o pause está aberto
-   * - Seta para cima/baixo: navega
-   * - Enter/Espaço: executa ação
-   * - Tab/Shift+Tab: também navega (opcional)
-   */
   _onKeyDown(e) {
     if (!this.opened) return;
-
-    // Não tratamos ESC aqui; o ModalStack já cuida de fechar o topo da pilha.
     const key = e.key;
-
-    // Captura e não deixa vazar para o jogo
     const handledKeys = ['ArrowUp', 'ArrowDown', 'Enter', ' ', 'Tab'];
     if (!handledKeys.includes(key)) return;
 
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    if (key === 'ArrowUp') {
+    if (key === 'ArrowUp' || (key === 'Tab' && e.shiftKey)) {
       this.index = (this.index - 1 + this.$items.length) % this.$items.length;
-      this.highlight(this.index);
-      this._focusSelected();
-      this._sfx('menuNav');
-      return;
-    }
-
-    if (key === 'ArrowDown' || key === 'Tab') {
-      const delta = key === 'Tab' && e.shiftKey ? -1 : 1;
-      this.index = (this.index + delta + this.$items.length) % this.$items.length;
-      this.highlight(this.index);
-      this._focusSelected();
-      this._sfx('menuNav');
-      return;
+    } else if (key === 'ArrowDown' || key === 'Tab') {
+      this.index = (this.index + 1) % this.$items.length;
     }
 
     if (key === 'Enter' || key === ' ') {
@@ -214,104 +156,95 @@ export default class PauseMenuUI {
       this._execute(action);
       return;
     }
+
+    this.highlight(this.index);
+    this._focusSelected();
+    this._sfx('buttonHover'); // Som de navegação
   }
 
-  /**
-   * Destaca visualmente o item selecionado
-   * @param {number} idx
-   */
   highlight(idx) {
     this.$items.forEach((btn, i) => {
-      if (i === idx) {
-        btn.classList.add('selected');
-        btn.setAttribute('aria-selected', 'true');
-      } else {
-        btn.classList.remove('selected');
-        btn.removeAttribute('aria-selected');
-      }
+      btn.classList.toggle('is-active', i === idx); // Usando a classe do seu CSS
+      btn.setAttribute('aria-selected', i === idx ? 'true' : 'false');
     });
   }
 
   _focusSelected() {
     const el = this.$items[this.index];
     if (el && typeof el.focus === 'function') {
-      // Evita scroll indesejado
       el.focus({ preventScroll: true });
     }
   }
 
+  // --- [ MÉTODO CORRIGIDO ] ---
   /**
-   * Executa a ação do item selecionado
+   * Executa a ação do item selecionado.
    * @param {string} action
    */
   _execute(action) {
     if (!action) return;
+    this._sfx('buttonClick');
 
-    // Callback externo tem prioridade (se fornecido)
+    // Callback externo tem prioridade se existir
     if (this.onAction) {
-      const maybeClose = this.onAction(action);
-      // Se o callback não fechar, a gente decide fechar quando apropriado
-      if (maybeClose === true) return;
+      this.onAction(action);
+      return;
     }
 
+    // Ações padrão
     switch (action) {
       case 'resume':
         this.close();
         break;
 
       case 'options':
-        // Notifica para abrir opções (outro módulo pode ouvir)
-        document.dispatchEvent(new CustomEvent('options:open', { detail: { source: 'pause' } }));
-        // Mantemos o pause aberto — se quiser fechar, troque para this.close();
+        this.close(); // Fecha o pause ANTES de emitir o evento de navegação
+        document.dispatchEvent(new CustomEvent('pause:options'));
         break;
 
       case 'concede':
-        // Pergunta externa pode abrir um modal de confirmação; aqui apenas disparamos o evento.
-        document.dispatchEvent(new CustomEvent('battle:concede:request'));
-        // Mantém o pause aberto até confirmação
-        break;
-
-      case 'exit':
-        document.dispatchEvent(new CustomEvent('app:navigate:title', { detail: { from: 'pause' } }));
-        // Fechar imediatamente
         this.close();
+        document.dispatchEvent(new CustomEvent('pause:concede'));
+        break;
+      
+      case 'exit':
+        this.close(); // Primeiro, fecha o modal visualmente
+
+        if (typeof window.teardownMatch === 'function') {
+            console.log("[PauseMenuUI] Ação 'exit': Chamando teardownMatch() globalmente para resetar o jogo.");
+            // Navega para a tela de conexão como destino padrão ao sair da partida
+            window.teardownMatch('connect-screen'); 
+        } else {
+            console.error("[PauseMenuUI] Ação 'exit': Função global teardownMatch() não foi encontrada! O estado do jogo pode persistir.");
+            // Dispara o evento como um fallback, caso o main.js esteja ouvindo e possa agir
+            document.dispatchEvent(new CustomEvent('pause:exit'));
+        }
         break;
 
       default:
         console.warn('[PauseMenuUI] Ação desconhecida:', action);
         break;
     }
-
-    this._sfx('buttonClick');
   }
+  // --- [ FIM DO MÉTODO CORRIGIDO ] ---
 
-  /**
-   * Checa se a batalha está ativa para permitir abrir o Pause
-   * Pode ser substituída via construtor (opts.isBattleActive)
-   */
   isBattleActive() {
     if (this._isBattleActiveExternal) {
-      try { return !!this._isBattleActiveExternal(); } catch { /* noop */ }
+      try { return !!this._isBattleActiveExternal(); } catch { return true; }
     }
-    // Heurística padrão: existe uma tela de batalha visível?
     const battle = document.getElementById('battle-screen');
-    if (!battle) return true; // fallback permissivo
-    const style = window.getComputedStyle(battle);
-    const visible = style.display !== 'none' && style.visibility !== 'hidden' && battle.offsetParent !== null;
-    return visible;
+    return battle ? battle.classList.contains('active') : false;
   }
 
-  /**
-   * Dispara SFX de forma desacoplada
-   * (adapte para seu AudioManager se quiser)
-   */
-  _sfx(...names) {
+  _sfx(name) {
     try {
-      names.forEach((name) => {
+      // Usa o AudioManager global se disponível para mais controle
+      if (window.audioManager && typeof window.audioManager.playSFX === 'function') {
+        window.audioManager.playSFX(name);
+      } else {
+        // Fallback para evento genérico
         document.dispatchEvent(new CustomEvent('sfx:play', { detail: { name } }));
-      });
-    } catch {
-      /* noop */
-    }
+      }
+    } catch {}
   }
 }
